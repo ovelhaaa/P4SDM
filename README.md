@@ -17,6 +17,9 @@ Python, evitando misturar seu `penv` com outro Python de versão diferente.
 Os comandos abaixo pressupõem `pio` disponível nesse terminal:
 
 ```powershell
+# No Windows, evita falha de encoding na barra de progresso do esptool:
+$env:PYTHONIOENCODING = "utf-8"
+$env:PYTHONUTF8 = "1"
 pio run -e guition_boot
 pio run -e guition_audio
 pio device list
@@ -28,13 +31,17 @@ pio device monitor --port COMx --baud 115200
 Nesta máquina o executável funcional é
 `C:\.platformio\penv\Scripts\python.exe -m platformio` (Python 3.11.7).
 Após abrir o monitor, pressione RESET para ver o boot.
-USB CDC usa a porta nativa adequada da placa; se necessário, entre no modo de
+Este build usa `ARDUINO_USB_MODE=1`: conecte à porta **USB/JTAG** da placa
+(303A:1001; COM13 na unidade testada). A porta USB-OTG do ROM apareceu como
+303A:0012/COM12, mas não é a porta Serial desta variante. Se necessário, entre no modo de
 download com BOOT/RESET conforme a placa. Não flasheie o `.ino.bin` antigo.
 
 `platformio.ini` fixa pioarduino **55.03.36-1** (Arduino **3.3.6**) e a board
 definition usa **esp32p4_es**, flash 16 MB QIO, PSRAM QSPI. A definição vem do
 [BSP funcional](https://github.com/ultramcu/guition-jc4880p4-bsp/tree/324970bade0d1f4e52880fe8016580368bc1e06e),
 com licença em `boards/LICENSE`; o nome foi corrigido para explicitar ES.
+Na unidade rev. 1.3 conectada, o framework rejeitou 400 MHz e informou suporte
+a 360 MHz; por isso `f_cpu` foi ajustado para 360 MHz.
 Não trocar automaticamente pela plataforma mais recente. Para uma placa de
 outra revisão, conferir o chip real antes de alterar o alvo.
 
@@ -131,6 +138,8 @@ arredondamento e limites do buffer. Não substitui teste I2S na placa.
 ## Limite da validação
 
 Compilar não confirma som, pinagem da unidade física ou ausência de dropouts.
+Nesta unidade, boot, PSRAM 32 MiB, ACK 0x18 e execução completa do teste foram
+confirmados por Serial em 2026-10-05; a confirmação auditiva continua pendente.
 Milestone 2 só fica **validado em hardware** após boot, 32 MiB, ACK 0x18 e tom
 audível pelo SPEAKER, sem falhas. Registrar revisão, fonte, speaker e logs.
 Depois ligar synth/wavetable sem SD ao HAL; não avançar display/touch/USB antes

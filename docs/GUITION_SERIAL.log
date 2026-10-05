@@ -1,0 +1,22 @@
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0x17 (CHIP_USB_UART_RESET),boot:0xc (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4ff02c52
+Core1 Saved PC:0x4ff02c52
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+
+[BOOT] P4SDM Guition diagnostic; cores=2 revision=103
+[MEM] boot PSRAM total=33554432 free=33551856 largest=33030132 internal_free=572068
+[BOOT] 32 MiB physical PSRAM detected OK
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[MEM] audio init PSRAM total=33554432 free=33550588 largest=33030132 internal_free=566284
+[AUDIO] Playing 440 Hz test tone for 5 seconds
+[MEM] after audio test PSRAM total=33554432 free=33550636 largest=33030132 internal_free=567104

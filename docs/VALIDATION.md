@@ -30,9 +30,27 @@ g++ -std=c++17 -Wall -Wextra -Werror tests/pcm_mono_test.cpp -o .pio/pcm_mono_te
 exit code 0
 ```
 
-`git diff --check` passou. A lista de portas desta máquina apresentou somente
-COM6/COM7 Bluetooth. Nenhum flash foi feito; PSRAM, ACK do codec, clocks reais,
-áudio audível, pops e underruns **não foram validados em hardware**.
+`git diff --check` passou. Inicialmente só existiam COM6/COM7 Bluetooth.
+Posteriormente a placa foi conectada e o diagnóstico foi gravado com hashes
+verificados. ESP32-P4 rev. v1.3 e flash 16 MB confirmados pelo esptool.
+
+## Bring-up na unidade conectada
+
+- USB-OTG do ROM: COM12, VID:PID 303A:0012. Gravação direta verificou hashes,
+  mas a desconexão durante reset produziu erro de porta no host.
+- USB/JTAG: COM13, VID:PID 303A:1001. Upload PlatformIO concluído com SUCCESS.
+  Mantido `ARDUINO_USB_MODE=1` para Serial nessa porta.
+- Captura Serial confirmou PSRAM física 32 MiB; heap total 33.554.432,
+  livre no boot 33.551.856, maior bloco 33.030.132 bytes.
+- ES8311 respondeu em 0x18; I2S inicializou 44100/16, playback configurado,
+  PA11 habilitado, geração de tom terminou e PA foi desligado sem erro.
+- Framework rejeitou CPU 400 MHz e informou suporte a 360 MHz; board JSON
+  corrigido para 360 MHz.
+- Terminal precisou de `PYTHONIOENCODING=utf-8` para a barra de progresso.
+
+O log da última execução está em `docs/GUITION_SERIAL.log`. Frequências I2S
+são valores configurados/reportados, não medidas com osciloscópio.
+Áudio audível, pops e underruns do engine ainda dependem de validação física.
 
 ## Arquivos desta entrega
 
