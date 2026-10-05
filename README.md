@@ -1,4 +1,144 @@
-# M5STACK-TAB5-SAMPLER-DRUM-MACHINE-2026
+# P4SDM — Guition audio bring-up (milestones 1–2)
+
+Fork de `zircothc/M5STACK-TAB5-SAMPLER-DRUM-MACHINE-2026` para Guition
+JC4880P443C_I_W / JC-ESP32P4-M3. Nesta etapa, o firmware novo é um diagnóstico
+de boot/PSRAM e áudio ES8311 → NS4150 → SPEAKER. O engine original foi
+preservado; sua integração será o milestone 3, depois da validação física do tom.
+
+A [auditoria](docs/GUITION_AUDIT.md) registra os acoplamentos, inventário gráfico,
+riscos e plano mínimo. Nenhum display, SD, touch, MIDI Host ou Wi-Fi é
+inicializado pelo diagnóstico.
+
+## Compilar e flashear
+
+Use Python **3.10–3.13** e PlatformIO Core **6.1.18** (versão usada na validação). Python 3.14 é rejeitado
+pela plataforma fixada. Use o terminal do PlatformIO com seu próprio runtime
+Python, evitando misturar seu `penv` com outro Python de versão diferente.
+Os comandos abaixo pressupõem `pio` disponível nesse terminal:
+
+```powershell
+pio run -e guition_boot
+pio run -e guition_audio
+pio device list
+# Troque COMx pela porta USB da Guition (não por uma porta Bluetooth):
+pio run -e guition_audio -t upload --upload-port COMx
+pio device monitor --port COMx --baud 115200
+```
+
+Nesta máquina o executável funcional é
+`C:\.platformio\penv\Scripts\python.exe -m platformio` (Python 3.11.7).
+Após abrir o monitor, pressione RESET para ver o boot.
+USB CDC usa a porta nativa adequada da placa; se necessário, entre no modo de
+download com BOOT/RESET conforme a placa. Não flasheie o `.ino.bin` antigo.
+
+`platformio.ini` fixa pioarduino **55.03.36-1** (Arduino **3.3.6**) e a board
+definition usa **esp32p4_es**, flash 16 MB QIO, PSRAM QSPI. A definição vem do
+[BSP funcional](https://github.com/ultramcu/guition-jc4880p4-bsp/tree/324970bade0d1f4e52880fe8016580368bc1e06e),
+com licença em `boards/LICENSE`; o nome foi corrigido para explicitar ES.
+Não trocar automaticamente pela plataforma mais recente. Para uma placa de
+outra revisão, conferir o chip real antes de alterar o alvo.
+
+## Speaker e pinagem
+
+| Sinal | GPIO |
+|---|---:|
+| ES8311 I2C SDA / SCL | 7 / 8 |
+| I2S MCLK / BCLK / WS | 13 / 12 / 10 |
+| P4 DOUT → codec | 9 |
+| codec DIN → P4 (não usado) | 48 |
+| NS4150 PA enable, HIGH | 11 |
+
+ES8311: endereço I2C **0x18**. Conferidos contra pinos do BSP e
+[esquemáticos da placa](https://github.com/ultramcu/guition-jc4880p443c-i-w/tree/main/schematic).
+A folha 02 mostra CN1 SPEAKER entre **SPEAKER_P e SPEAKER_N**, saídas em ponte
+do NS4150. Conecte um alto-falante passivo entre esses dois terminais;
+nenhum deles deve ir ao GND ou ser tratado como saída de fone/linha.
+
+Para o bring-up, use **8 Ω / pelo menos 2 W** como escolha conservadora.
+O [datasheet NS4150 da Nsiway (cópia)](https://snapeda.s3.amazonaws.com/datasheets/NS4150_power_amplifier.pdf)
+caracteriza cargas 4 Ω e 8 Ω: a 5 V, 1% THD, aproximadamente 2 W/4 Ω e
+1,3 W/8 Ω; a potência depende da tensão e distorção. O esquemático alimenta
+o amp por VOUT-BAT e não especifica um speaker obrigatório; portanto **não**
+se promete “3 W” na alimentação real da placa. A seleção 8 Ω/2 W é uma
+recomendação baseada nessas condições, não especificação confirmada do kit.
+Comece com o ganho atenuado definido no firmware.
+
+## Diagnóstico e logs esperados
+
+`guition_boot` só informa revisão, núcleos e memória. `guition_audio` exige
+32 MiB de PSRAM e toca 440 Hz por cinco segundos; reset repete o teste.
+Estas são mensagens esperadas, não logs de uma placa já validada:
+
+```text
+[BOOT] P4SDM Guition diagnostic; cores=2 revision=...
+[MEM] boot PSRAM total=... free=... largest=... internal_free=...
+[BOOT] 32 MiB physical PSRAM detected OK
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[MEM] audio init PSRAM total=... free=... largest=... internal_free=...
+[AUDIO] Playing 440 Hz test tone for 5 seconds
+[AUDIO] Tone finished; PA disabled. Reset to replay.
+```
+
+Erros imprimem nome/valor `esp_err_t`, interrompem o teste e desligam PA11.
+O teste de 32 MiB usa o tamanho físico; `total` no relatório é o heap PSRAM
+utilizável e pode ser menor por reservas do sistema.
+Não há retry infinito. Falha de PSRAM impede inicialização do áudio.
+O volume do codec começa em 80 na escala do driver (registro 203/255,
+atenuado; **não significa 80% de potência**), seno com pico 8192/32767 e
+rampas de 20 ms. I2S recebe silêncio antes e depois do tom para reduzir pops.
+
+## HAL e realtime
+
+`src/hal/audio_hal.*`: `audio::begin(44100)`, `audio::write(pcm, frames)`,
+`audio::set_volume(0..100)`, `audio::end()`. PCM de entrada é estéreo
+intercalado 16-bit. `(int32_t(L)+int32_t(R))/2` é duplicado nos dois slots;
+o engine continua estéreo. Chamada futura: `audio::write(out_buf, DMA_BUF_LEN)`.
+
+I2S Philips, master TX, 44.1 kHz, slots 16-bit, MCLK 256×Fs. Mantidos os
+256 frames do engine: **5,805 ms por bloco**. Quatro descritores DMA somam
+1024 frames / **23,22 ms de capacidade de fila**, mais tempo de render do
+mixer e atraso do codec. Esse é limite de buffering estimado, não medição
+de latência fim a fim. Escolhidos quatro em vez de oito para reduzir fila;
+dropouts/custo de todos os FX ainda precisam ser medidos no milestone 3.
+
+No caminho de PCM não há alocação, I2C, desenho ou Serial. Buffer mono é
+estático e a escrita bloqueia apenas por backpressure do DMA, timeout 100 ms
+por chamada, evitando busy-loop na task de prioridade máxima no core 0.
+Há um único writer; init/end/volume pertencem ao controle fora do realtime.
+Em erro de escrita, pode ter ocorrido envio parcial: parar e reinicializar,
+sem repetir o bloco inteiro.
+
+`src/hal/guition_board.*` é dono único do barramento moderno I2C_NUM_0.
+O touch futuro deverá receber `guition::i2c_bus()`; adaptar a inicialização
+GT911 do BSP, que hoje cria outro bus. Não chamar `Wire.begin()` nesses pinos.
+O driver ES8311 Espressif está em `lib/es8311`, com
+[origem/licença e alterações](lib/es8311/PROVENANCE.md).
+
+Teste host do downmix (GCC C++ disponível):
+
+```powershell
+g++ -std=c++17 -Wall -Wextra -Werror tests/pcm_mono_test.cpp -o .pio/pcm_mono_test.exe
+.\.pio\pcm_mono_test.exe
+```
+
+Verifica overflow nos extremos, conteúdo isolado em L/R, cancelamento,
+arredondamento e limites do buffer. Não substitui teste I2S na placa.
+
+## Limite da validação
+
+Compilar não confirma som, pinagem da unidade física ou ausência de dropouts.
+Milestone 2 só fica **validado em hardware** após boot, 32 MiB, ACK 0x18 e tom
+audível pelo SPEAKER, sem falhas. Registrar revisão, fonte, speaker e logs.
+Depois ligar synth/wavetable sem SD ao HAL; não avançar display/touch/USB antes
+disso. A documentação original do Tab5 permanece abaixo como referência.
+
+---
+
+# M5STACK-TAB5-SAMPLER-DRUM-MACHINE-2026 (original)
 
 ![tab5_synth (Pequeña)](https://github.com/user-attachments/assets/57b2cbd7-b851-4b18-aadb-c19e939da05c)
 
