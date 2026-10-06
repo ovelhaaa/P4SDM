@@ -5,6 +5,8 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11.7'
@@ -13,3 +15,4 @@ jobs:
       - run: pio run -e guition_boot -e guition_audio -e guition_synth -e guition_fx
       - run: g++ -std=c++17 -Wall -Wextra -Werror tests/pcm_mono_test.cpp -o /tmp/pcm_mono_test && /tmp/pcm_mono_test
       - run: g++ -std=c++17 -Wall -Wextra -Werror -Itests/fx_stubs tests/fx_safety_test.cpp -o /tmp/fx_safety_test && /tmp/fx_safety_test
+      - run: python tests/compare_fx_baseline.py

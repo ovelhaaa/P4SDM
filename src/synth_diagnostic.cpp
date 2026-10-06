@@ -96,6 +96,9 @@ static void diagnostic_task(void *) {
 #endif
         vTaskPrioritySet(nullptr, configMAX_PRIORITIES - 1);
         for (unsigned v = 0; v < 16; ++v) { PITCH[v] = 255; AMP[v] = 0; }
+#if P4SDM_FX_DIAGNOSTIC
+        for (unsigned v = 0; v < 16; ++v) PCW[v]=0;
+#endif
         // All triggers occur before the first sample: exact simultaneous onset
         // in engine sample time, distinct MIDI notes, wavetables and pans.
         for (unsigned v = 0; v < s.voices; ++v) synthESP32_TRIGGER_P(v, 48 + v);

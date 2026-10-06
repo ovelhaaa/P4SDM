@@ -18,6 +18,7 @@ struct EspStub { int getFreePsram() { return 0; } } ESP;
 #undef free
 
 template<class T> void digest(const char *name,T &fx) {
+    const int allocations=fx_alloc_calls;
     uint64_t hash=1469598103934665603ULL;
     for(int i=0;i<132352;++i) {
         int16_t l=int16_t((i*97)%16001-8000),r=int16_t((i*131)%14001-7000);
@@ -26,6 +27,7 @@ template<class T> void digest(const char *name,T &fx) {
         hash=(hash^uint32_t(b))*1099511628211ULL;
     }
     std::printf("%s %llu\n",name,static_cast<unsigned long long>(hash));
+    assert(fx_alloc_calls==allocations);
 }
 #ifndef FX_BASELINE
 template<class T,class Init> void failures(T &fx,Init init,int allocations,bool delay=false) {
