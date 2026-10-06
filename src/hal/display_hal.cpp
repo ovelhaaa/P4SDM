@@ -1,0 +1,167 @@
+#if P4SDM_DISPLAY
+// Hardware recipe adapted from ultramcu/guition-jc4880p4-bsp, MIT,
+// commit 324970bade0d1f4e52880fe8016580368bc1e06e. See vendor/SOURCE.md.
+#include "display_hal.h"
+#include "guition_board.h"
+#include "driver/gpio.h"
+#include "driver/ppa.h"
+#include "esp_ldo_regulator.h"
+#include "esp_lcd_mipi_dsi.h"
+#include "esp_lcd_panel_io.h"
+#include "esp_lcd_panel_ops.h"
+#include "esp_heap_caps.h"
+#include "esp_memory_utils.h"
+#include "esp_cache.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/semphr.h"
+#include "freertos/task.h"
+#include <algorithm>
+#include <atomic>
+#include <cstdlib>
+#include <cstring>
+#include "vendor/board_p4_st7701_init.h"
+
+namespace display {
+static esp_ldo_channel_handle_t ldo;
+static esp_lcd_dsi_bus_handle_t bus;
+static esp_lcd_panel_io_handle_t io;
+static esp_lcd_panel_handle_t panel;
+static ppa_client_handle_t ppa;
+static uint16_t *logical, *native[2];
+static int back=1;
+static bool initialized;
+static StaticSemaphore_t refresh_storage;
+static SemaphoreHandle_t refresh_sem;
+static std::atomic<uint32_t> refreshes{0};
+static_assert(std::atomic<uint32_t>::is_always_lock_free,"ISR counter must be lock-free");
+static bool IRAM_ATTR refreshed(esp_lcd_panel_handle_t,esp_lcd_dpi_panel_event_data_t *,void *) {
+    refreshes.fetch_add(1,std::memory_order_relaxed);
+    BaseType_t wake=pdFALSE;
+    xSemaphoreGiveFromISR(refresh_sem,&wake);
+    return wake==pdTRUE;
+}
+uint32_t refresh_count() { return refreshes.load(std::memory_order_relaxed); }
+bool ready() { return initialized; }
+void backlight(bool on) { gpio_set_level(guition::LCD_BACKLIGHT,on?1:0); }
+esp_err_t end() {
+    initialized=false;
+    backlight(false);
+    esp_err_t first=ESP_OK;
+    auto check=[&](esp_err_t e) { if(first==ESP_OK && e!=ESP_OK) first=e; };
+    if(ppa) { check(ppa_unregister_client(ppa)); ppa=nullptr; }
+    if(panel) { check(esp_lcd_panel_del(panel)); panel=nullptr; }
+    if(io) { check(esp_lcd_panel_io_del(io)); io=nullptr; }
+    if(bus) { check(esp_lcd_del_dsi_bus(bus)); bus=nullptr; }
+    if(ldo) { check(esp_ldo_release_channel(ldo)); ldo=nullptr; }
+    free(logical); logical=nullptr; native[0]=native[1]=nullptr;
+    return first;
+}
+esp_err_t begin() {
+    if(initialized) return ESP_OK;
+    gpio_set_direction(guition::LCD_BACKLIGHT,GPIO_MODE_OUTPUT);
+    backlight(false);
+    refresh_sem=xSemaphoreCreateBinaryStatic(&refresh_storage);
+    esp_err_t error=ESP_OK;
+    auto check=[&](esp_err_t e) { error=e; if(e!=ESP_OK) end(); return e==ESP_OK; };
+    esp_ldo_channel_config_t power={}; power.chan_id=3; power.voltage_mv=2500;
+    if(!check(esp_ldo_acquire_channel(&power,&ldo))) return error;
+    esp_lcd_dsi_bus_config_t dsi={}; dsi.bus_id=0; dsi.num_data_lanes=2;
+    dsi.phy_clk_src=MIPI_DSI_PHY_CLK_SRC_DEFAULT; dsi.lane_bit_rate_mbps=500;
+    if(!check(esp_lcd_new_dsi_bus(&dsi,&bus))) return error;
+    esp_lcd_dbi_io_config_t dbi={}; dbi.virtual_channel=0; dbi.lcd_cmd_bits=8; dbi.lcd_param_bits=8;
+    if(!check(esp_lcd_new_panel_io_dbi(bus,&dbi,&io))) return error;
+    esp_lcd_dpi_panel_config_t dpi={}; dpi.virtual_channel=0;
+    dpi.dpi_clk_src=MIPI_DSI_DPI_CLK_SRC_DEFAULT; dpi.dpi_clock_freq_mhz=34;
+    dpi.pixel_format=LCD_COLOR_PIXEL_FORMAT_RGB565;
+    dpi.in_color_format=dpi.out_color_format=LCD_COLOR_FMT_RGB565; dpi.num_fbs=2;
+    dpi.video_timing.h_size=NATIVE_WIDTH; dpi.video_timing.v_size=NATIVE_HEIGHT;
+    dpi.video_timing.hsync_pulse_width=12; dpi.video_timing.hsync_back_porch=42; dpi.video_timing.hsync_front_porch=42;
+    dpi.video_timing.vsync_pulse_width=2; dpi.video_timing.vsync_back_porch=8; dpi.video_timing.vsync_front_porch=166;
+    dpi.flags.use_dma2d=1;
+    if(!check(esp_lcd_new_panel_dpi(bus,&dpi,&panel))) return error;
+    gpio_set_direction(guition::LCD_RESET,GPIO_MODE_OUTPUT);
+    gpio_set_level(guition::LCD_RESET,0); vTaskDelay(pdMS_TO_TICKS(20));
+    gpio_set_level(guition::LCD_RESET,1); vTaskDelay(pdMS_TO_TICKS(120));
+    for(const auto &command : board_p4_panel_init_cmds) {
+        if(!check(esp_lcd_panel_io_tx_param(io,command.cmd,command.data,command.len))) return error;
+        if(command.delay_ms) vTaskDelay(pdMS_TO_TICKS(command.delay_ms));
+    }
+    esp_lcd_dpi_panel_event_callbacks_t callbacks={}; callbacks.on_refresh_done=refreshed;
+    if(!check(esp_lcd_dpi_panel_register_event_callbacks(panel,&callbacks,nullptr))) return error;
+    if(!check(esp_lcd_panel_init(panel))) return error;
+    void *a=nullptr,*b=nullptr;
+    if(!check(esp_lcd_dpi_panel_get_frame_buffer(panel,2,&a,&b))) return error;
+    native[0]=static_cast<uint16_t *>(a); native[1]=static_cast<uint16_t *>(b);
+    logical=static_cast<uint16_t *>(heap_caps_aligned_calloc(64,1,FRAME_BYTES,MALLOC_CAP_SPIRAM|MALLOC_CAP_8BIT));
+    if(!logical || !esp_ptr_external_ram(native[0]) || !esp_ptr_external_ram(native[1])) {
+        check(ESP_ERR_NO_MEM); return error;
+    }
+    ppa_client_config_t accelerator={}; accelerator.oper_type=PPA_OPERATION_SRM; accelerator.max_pending_trans_num=1;
+    if(!check(ppa_register_client(&accelerator,&ppa))) return error;
+    back=1; initialized=true;
+    backlight(true);
+    return ESP_OK;
+}
+esp_err_t present() {
+    if(!initialized) return ESP_ERR_INVALID_STATE;
+    ppa_srm_oper_config_t rotation={};
+    rotation.in.buffer=logical; rotation.in.pic_w=WIDTH; rotation.in.pic_h=HEIGHT;
+    rotation.in.block_w=WIDTH; rotation.in.block_h=HEIGHT; rotation.in.srm_cm=PPA_SRM_COLOR_MODE_RGB565;
+    rotation.out.buffer=native[back]; rotation.out.buffer_size=FRAME_BYTES;
+    rotation.out.pic_w=NATIVE_WIDTH; rotation.out.pic_h=NATIVE_HEIGHT; rotation.out.srm_cm=PPA_SRM_COLOR_MODE_RGB565;
+    rotation.rotation_angle=PPA_SRM_ROTATION_ANGLE_270;
+    rotation.scale_x=rotation.scale_y=1.0f; rotation.mode=PPA_TRANS_MODE_BLOCKING;
+    esp_err_t error=ppa_do_scale_rotate_mirror(ppa,&rotation);
+    if(error!=ESP_OK) return error;
+    error=esp_lcd_panel_draw_bitmap(panel,0,0,NATIVE_WIDTH,NATIVE_HEIGHT,native[back]);
+    if(error!=ESP_OK) return error;
+    // The DPI DMA samples cur_fb_index before its callback. Wait two refreshes
+    // to cover a switch racing that sample; only UI waits, audio never does.
+    const uint32_t start=refresh_count();
+    while(uint32_t(refresh_count()-start)<2) {
+        if(xSemaphoreTake(refresh_sem,pdMS_TO_TICKS(100))!=pdTRUE) return ESP_ERR_TIMEOUT;
+    }
+    back^=1;
+    return ESP_OK;
+}
+void rect(int x,int y,int w,int h,uint16_t color) {
+    if(!logical || w<=0 || h<=0) return;
+    const int x0=std::max(x,0),y0=std::max(y,0),x1=std::min(x+w,WIDTH),y1=std::min(y+h,HEIGHT);
+    if(x1<=x0 || y1<=y0) return;
+    for(int row=y0;row<y1;++row) std::fill(logical+row*WIDTH+x0,logical+row*WIDTH+x1,color);
+}
+void fill(uint16_t color) { rect(0,0,WIDTH,HEIGHT,color); }
+void line(int x0,int y0,int x1,int y1,uint16_t color) {
+    const int dx=std::abs(x1-x0),sx=x0<x1?1:-1,dy=-std::abs(y1-y0),sy=y0<y1?1:-1;
+    int error=dx+dy;
+    for(;;) {
+        rect(x0,y0,1,1,color); if(x0==x1 && y0==y1) break;
+        const int twice=2*error;
+        if(twice>=dy) {error+=dy; x0+=sx;} if(twice<=dx) {error+=dx; y0+=sy;}
+    }
+}
+void circle(int x,int y,int radius,uint16_t color) {
+    int a=radius,b=0,error=1-radius;
+    while(a>=b) {
+        rect(x+a,y+b,1,1,color); rect(x+b,y+a,1,1,color); rect(x-b,y+a,1,1,color); rect(x-a,y+b,1,1,color);
+        rect(x-a,y-b,1,1,color); rect(x-b,y-a,1,1,color); rect(x+b,y-a,1,1,color); rect(x+a,y-b,1,1,color);
+        ++b; if(error<0) error+=2*b+1; else {--a; error+=2*(b-a)+1;}
+    }
+}
+void text(int x,int y,const char *value,uint16_t color,int scale) {
+    // Small original 3x5 diagnostic alphabet; no graphics/UI dependency.
+    static const uint16_t glyphs[]={
+        0x7b6f,0x2492,0x73e7,0x73cf,0x5bc9,0x79cf,0x79ef,0x7249,0x7bef,0x7bcf,
+        0x2bed,0x6bae,0x7927,0x6b6e,0x79e7,0x79e4,0x796f,0x5bed,0x7497,0x124e,
+        0x5bad,0x4927,0x5fed,0x5f6d,0x7b6f,0x7be4,0x7b7b,0x7bad,0x79cf,0x7492,
+        0x5b6f,0x5b6a,0x5bfd,0x5aad,0x5a92,0x72a7
+    };
+    for(;*value;++value,x+=4*scale) {
+        const int index=*value>='0'&&*value<='9'?*value-'0':*value>='A'&&*value<='Z'?10+*value-'A':-1;
+        if(index<0) continue;
+        for(int row=0;row<5;++row) for(int col=0;col<3;++col)
+            if(glyphs[index]&(1u<<(14-row*3-col))) rect(x+col*scale,y+row*scale,scale,scale,color);
+    }
+}
+}
+#endif
