@@ -29,3 +29,5 @@ jobs:
       - run: g++ -std=c++17 -Wall -Wextra -Werror -pthread tests/wav_sampler_test.cpp -o /tmp/wav_sampler_test && /tmp/wav_sampler_test /tmp/m6-fixtures
 
       - run: python tests/analyze_m6.py docs/GUITION_M6_NO_CARD_STRESS_SERIAL.log
+
+      - run: python tests/analyze_m6.py docs/GUITION_M61_NO_CARD_STRESS_SERIAL.log

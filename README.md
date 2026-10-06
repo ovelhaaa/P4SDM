@@ -348,3 +348,5 @@ resident sample voices and a TRACK → SAMPLE assignment page. Put WAV files in
 Synth fallback still boots without a card. No formatting is performed.
 See [M6 architecture, audit and qualification](docs/GUITION_M6.md).
 **PHYSICAL SD VALIDATION PENDING** until a microSD card is available.
+
+M6.1 sample pitch/source semantics and optional physical-card runner: [qualification report](docs/GUITION_M61.md).
