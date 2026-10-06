@@ -22,6 +22,14 @@ an extra row's cache writeback, not a full-frame copy. This branch is coupled
 to the pinned SDK and must be re-audited on SDK upgrades. Hardware panel
 initialization, timings, resets and touch protocol remain as above.
 
+The NativeQueued variant uses three driver-owned PSRAM native framebuffers
+and no logical/PPA buffer. It prepares a safe spare while the latest selected
+buffer remains immutable, waits two refreshes for that earlier selection,
+then selects the prepared spare. Only one selection can be pending. A final
+`wait_idle()` drains it. Completion counters advance after the two-refresh
+acknowledgement, separately from submission counters. The third native buffer
+replaces the old logical buffer, retaining the same 2304000-byte payload.
+
 GT911 register protocol follows the Espressif Apache-2.0 driver bundled by the
 same pinned BSP (`examples/DisplayTouchTest/lib/esp_lcd_touch_gt911`). The small
 HAL uses the existing board-owned I2C bus directly rather than importing its

@@ -8,14 +8,18 @@ struct Telemetry {
     uint32_t dirty_bytes=0,repair_bytes=0,cache_span_bytes=0;
 };
 Telemetry telemetry();
-enum class Pipeline {FullPpa,NativeFull,NativeDirty};
-esp_err_t begin(Pipeline pipeline=Pipeline::NativeDirty);
+enum class Pipeline {FullPpa,NativeFull,NativeDirty,NativeQueued};
+esp_err_t begin(Pipeline pipeline=Pipeline::NativeQueued,bool reserve_third=false);
 esp_err_t set_pipeline(Pipeline pipeline); // idle UI context; FullPpa requires its startup buffer.
 esp_err_t begin_frame(); // repair stale backbuffer tiles before any drawing
 bool idle();
+esp_err_t wait_idle(); // drain a queued presentation before static/page/teardown
+uint32_t completed_presentations(); // acknowledged two-refresh retirements, not requests
 esp_err_t end();
 bool ready();
-esp_err_t present(); // single UI owner; returns after two refreshes, or faults until end().
+// Single UI owner. NativeQueued fences the previous submission before selecting
+// this one; wait_idle() drains the final pending image. Other paths fence here.
+esp_err_t present(); // faults prevent reuse until end()/begin()
 void backlight(bool on);
 void fill(uint16_t color);
 void clip(int x,int y,int w,int h); // single UI owner's logical drawing clip

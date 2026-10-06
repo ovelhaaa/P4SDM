@@ -11,12 +11,13 @@ static touch::State previous;
 void setup() {
     Serial.setTxBufferSize(4096); Serial.begin(115200); Serial.setTxTimeoutMs(1000);
     uint32_t start=millis(); while(!Serial && millis()-start<3000) delay(10);
-    Serial.printf("[M4 DISPLAY] CPU=%u MHz native=480x800 logical=800x480 PPA_CCW=270 RGB565 native_fbs=2 logical_fbs=1 bytes_each=768000\n",ESP.getCpuFreqMHz());
+    Serial.printf("[M4 DISPLAY] CPU=%u MHz native=480x800 logical=800x480 direct_native=1 RGB565 native_fbs=3 logical_fbs=0 bytes_each=768000\n",ESP.getCpuFreqMHz());
     guition::memory_report("before display"); delay(100);
     esp_err_t error=display::begin();
     Serial.printf("[M4 DISPLAY] begin=%s\n",esp_err_to_name(error)); if(error!=ESP_OK) return;
     guition::memory_report("after display"); delay(100);
     ui_pattern::base(); error=display::present();
+    if(error==ESP_OK) error=display::wait_idle();
     Serial.printf("[M4 DISPLAY] pattern=%s\n",esp_err_to_name(error)); if(error!=ESP_OK) return;
     error=touch::begin();
     Serial.printf("[M4 TOUCH] begin=%s address=0x%02x id=%s native=%ux%u\n",esp_err_to_name(error),touch::address(),touch::product_id(),touch::native_width(),touch::native_height());
@@ -52,7 +53,7 @@ void loop() {
         next_frame=millis()+1; // actual cadence measured; present fences refreshes.
     }
     if(millis()>=next_report) {
-        Serial.printf("[M4 LIVE] frames=%u refreshes=%u polls=%u errors=%u presses=%u releases=%u x=%u y=%u down=%u\n",frames,display::refresh_count(),polls,errors,presses,releases,previous.x,previous.y,previous.pressed);
+        Serial.printf("[M4 LIVE] frames_drawn=%u visible_ack=%u refreshes=%u polls=%u errors=%u presses=%u releases=%u x=%u y=%u down=%u\n",frames,display::completed_presentations(),display::refresh_count(),polls,errors,presses,releases,previous.x,previous.y,previous.pressed);
         next_report=millis()+1000;
     }
     delay(2);

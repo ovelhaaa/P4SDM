@@ -35,14 +35,26 @@ struct DirtyMask {
         return tiles*TILE*TILE*2;
     }
 };
-struct DirtyHistory {
-    DirtyMask stale[2];
+template<unsigned Count> struct BufferHistory {
+    static_assert(Count==2 || Count==3,"only bounded double/triple buffering");
+    DirtyMask stale[Count];
     unsigned front=0,back=1;
-    void reset() {front=0;back=1;stale[0].clear();stale[1].all();}
+    void reset(unsigned selected=0) {
+        front=selected;back=(front+1)%Count;
+        for(unsigned i=0;i<Count;++i) {stale[i].clear();if(i!=front) stale[i].all();}
+    }
     void repaired() {stale[back].clear();}
     void committed(const DirtyMask &changed) {
-        stale[front].merge(changed);
-        front=back; back^=1;
+        for(unsigned i=0;i<Count;++i) if(i!=back) stale[i].merge(changed);
+        front=back; back=(back+1)%Count;
     }
+};
+using DirtyHistory=BufferHistory<2>;
+using TripleHistory=BufferHistory<3>;
+struct RefreshFence {
+    bool pending=false;
+    uint32_t submitted_at=0;
+    void submit(uint32_t refresh) {pending=true;submitted_at=refresh;}
+    bool complete(uint32_t refresh) const {return pending && uint32_t(refresh-submitted_at)>=2;}
 };
 }

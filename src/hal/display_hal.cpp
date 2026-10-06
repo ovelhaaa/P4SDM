@@ -29,12 +29,16 @@ static esp_lcd_dsi_bus_handle_t bus;
 static esp_lcd_panel_io_handle_t io;
 static esp_lcd_panel_handle_t panel;
 static ppa_client_handle_t ppa;
-static uint16_t *logical, *native[2];
+static uint16_t *logical, *native[3];
 static int back=1;
 static bool initialized;
 static bool frame_open=false,faulted=false;
 static Pipeline pipeline;
 static DirtyHistory history;
+static TripleHistory triple;
+static RefreshFence fence;
+static std::atomic<uint32_t> completions{0};
+uint32_t completed_presentations() {return completions.load(std::memory_order_acquire);}
 static DirtyMask changed,flushed;
 static int clip_x0=0,clip_y0=0,clip_x1=WIDTH,clip_y1=HEIGHT;
 void reset_clip() {clip_x0=clip_y0=0;clip_x1=WIDTH;clip_y1=HEIGHT;}
@@ -68,10 +72,10 @@ esp_err_t end() {
     if(io) { check(esp_lcd_panel_io_del(io)); io=nullptr; }
     if(bus) { check(esp_lcd_del_dsi_bus(bus)); bus=nullptr; }
     if(ldo) { check(esp_ldo_release_channel(ldo)); ldo=nullptr; }
-    free(logical); logical=nullptr; native[0]=native[1]=nullptr;
+    free(logical); logical=nullptr; native[0]=native[1]=native[2]=nullptr;
     return first;
 }
-esp_err_t begin(Pipeline requested) {
+esp_err_t begin(Pipeline requested,bool reserve_third) {
     if(initialized) return ESP_OK;
     gpio_set_direction(guition::LCD_BACKLIGHT,GPIO_MODE_OUTPUT);
     backlight(false);
@@ -88,7 +92,8 @@ esp_err_t begin(Pipeline requested) {
     esp_lcd_dpi_panel_config_t dpi={}; dpi.virtual_channel=0;
     dpi.dpi_clk_src=MIPI_DSI_DPI_CLK_SRC_DEFAULT; dpi.dpi_clock_freq_mhz=34;
     dpi.pixel_format=LCD_COLOR_PIXEL_FORMAT_RGB565;
-    dpi.in_color_format=dpi.out_color_format=LCD_COLOR_FMT_RGB565; dpi.num_fbs=2;
+    dpi.in_color_format=dpi.out_color_format=LCD_COLOR_FMT_RGB565;
+    dpi.num_fbs=reserve_third || requested==Pipeline::NativeQueued?3:2;
     dpi.video_timing.h_size=NATIVE_WIDTH; dpi.video_timing.v_size=NATIVE_HEIGHT;
     dpi.video_timing.hsync_pulse_width=12; dpi.video_timing.hsync_back_porch=42; dpi.video_timing.hsync_front_porch=42;
     dpi.video_timing.vsync_pulse_width=2; dpi.video_timing.vsync_back_porch=8; dpi.video_timing.vsync_front_porch=166;
@@ -104,25 +109,42 @@ esp_err_t begin(Pipeline requested) {
     esp_lcd_dpi_panel_event_callbacks_t callbacks={}; callbacks.on_refresh_done=refreshed;
     if(!check(esp_lcd_dpi_panel_register_event_callbacks(panel,&callbacks,nullptr))) return error;
     if(!check(esp_lcd_panel_init(panel))) return error;
-    void *a=nullptr,*b=nullptr;
-    if(!check(esp_lcd_dpi_panel_get_frame_buffer(panel,2,&a,&b))) return error;
+    void *a=nullptr,*b=nullptr,*c=nullptr;
+    if(!check(esp_lcd_dpi_panel_get_frame_buffer(panel,dpi.num_fbs,&a,&b,&c))) return error;
     native[0]=static_cast<uint16_t *>(a); native[1]=static_cast<uint16_t *>(b);
+    native[2]=static_cast<uint16_t *>(c);
     if(requested==Pipeline::FullPpa) logical=static_cast<uint16_t *>(heap_caps_aligned_calloc(64,1,FRAME_BYTES,MALLOC_CAP_SPIRAM|MALLOC_CAP_8BIT));
-    if((requested==Pipeline::FullPpa && !logical) || !esp_ptr_external_ram(native[0]) || !esp_ptr_external_ram(native[1])) {
+    if((requested==Pipeline::FullPpa && !logical) || !esp_ptr_external_ram(native[0]) || !esp_ptr_external_ram(native[1]) || (dpi.num_fbs==3 && !esp_ptr_external_ram(native[2]))) {
         check(ESP_ERR_NO_MEM); return error;
     }
     ppa_client_config_t accelerator={}; accelerator.oper_type=PPA_OPERATION_SRM; accelerator.max_pending_trans_num=1;
     if(requested==Pipeline::FullPpa && !check(ppa_register_client(&accelerator,&ppa))) return error;
     back=1; initialized=true; faulted=false; frame_open=false; pipeline=requested; reset_clip();
-    history.reset();
+    history.reset();triple.reset();fence={};completions.store(0);
     backlight(true);
     return ESP_OK;
 }
-bool idle() {return initialized && !frame_open && !faulted;}
+static esp_err_t wait_pending() {
+    const int64_t start=esp_timer_get_time();
+    while(fence.pending && !fence.complete(refresh_count())) {
+        if(xSemaphoreTake(refresh_sem,pdMS_TO_TICKS(100))!=pdTRUE) {faulted=true;return ESP_ERR_TIMEOUT;}
+    }
+    if(fence.pending) {fence.pending=false;completions.fetch_add(1,std::memory_order_release);}
+    last_telemetry.wait_us+=esp_timer_get_time()-start;
+    return ESP_OK;
+}
+bool idle() {return initialized && !frame_open && !faulted && !fence.pending;}
+esp_err_t wait_idle() {
+    if(!initialized || faulted || frame_open) return ESP_ERR_INVALID_STATE;
+    return wait_pending();
+}
 esp_err_t set_pipeline(Pipeline requested) {
-    if(!idle() || (requested==Pipeline::FullPpa && (!logical || !ppa))) return ESP_ERR_INVALID_STATE;
+    if(requested==pipeline) return faulted?ESP_ERR_INVALID_STATE:ESP_OK;
+    if(wait_idle()!=ESP_OK || (requested==Pipeline::FullPpa && (!logical || !ppa)) || (requested==Pipeline::NativeQueued && !native[2])) return ESP_ERR_INVALID_STATE;
+    if(pipeline==Pipeline::NativeQueued && requested!=pipeline) return ESP_ERR_NOT_SUPPORTED; // end/rebegin to return to a double-buffer strategy
+    if(requested==Pipeline::NativeQueued) {triple.reset(history.front);back=triple.back;}
     pipeline=requested;
-    history.stale[back].all(); // switching strategies must reconstruct the next backbuffer
+    if(requested!=Pipeline::NativeQueued) history.stale[back].all(); // reconstruct the next safe backbuffer
     return ESP_OK;
 }
 // All work is preemptible in the UI task. Only the selected safe backbuffer
@@ -133,7 +155,8 @@ esp_err_t begin_frame() {
     last_telemetry={}; changed.clear(); flushed.clear();
     const int64_t start=esp_timer_get_time();
     if(pipeline!=Pipeline::FullPpa) {
-        DirtyMask repair=history.stale[back];
+        const unsigned front=pipeline==Pipeline::NativeQueued?triple.front:history.front;
+        DirtyMask repair=pipeline==Pipeline::NativeQueued?triple.stale[back]:history.stale[back];
         if(pipeline==Pipeline::NativeFull) repair.all();
         for(int r=0;r<TILE_ROWS;++r) for(int c=0;c<TILE_COLS;) {
             if(!(repair.rows[r]&(1u<<c))) {++c;continue;}
@@ -141,11 +164,11 @@ esp_err_t begin_frame() {
             while(c<TILE_COLS && (repair.rows[r]&(1u<<c))) ++c;
             for(int y=r*TILE;y<(r+1)*TILE;++y) {
                 const unsigned offset=y*NATIVE_WIDTH+first*TILE;
-                memcpy(native[back]+offset,native[history.front]+offset,(c-first)*TILE*2);
+                memcpy(native[back]+offset,native[front]+offset,(c-first)*TILE*2);
             }
         }
         flushed.merge(repair); last_telemetry.repair_bytes=repair.bytes();
-        history.repaired();
+        if(pipeline==Pipeline::NativeQueued) triple.repaired();else history.repaired();
     }
     last_telemetry.repair_us=esp_timer_get_time()-start; frame_open=true;
     return ESP_OK;
@@ -188,6 +211,9 @@ esp_err_t present() {
         last_telemetry.cache_us=esp_timer_get_time()-cache_start;
         last_telemetry.dirty_bytes=changed.bytes();
     }
+    // With three buffers, this fence retires the previous submission *after*
+    // drawing into the already safe spare. CPU work overlaps the old wait.
+    if(pipeline==Pipeline::NativeQueued && wait_pending()!=ESP_OK) return ESP_ERR_TIMEOUT;
     const int64_t submit_start=esp_timer_get_time();
     // The pinned IDF native-FB branch selects the entire buffer after flushing
     // the supplied rows. Native paths already flushed every repaired/drawn tile;
@@ -198,13 +224,12 @@ esp_err_t present() {
     // Bundled f56bea3d1f has independent DMA completion and bridge VSYNC ISRs,
     // without buffer identity in refresh callbacks. One VSYNC cannot prove
     // an old DMA list is retired. Retain two callbacks; only UI waits.
-    const uint32_t start=refresh_count();
-    while(uint32_t(refresh_count()-start)<2) {
-        if(xSemaphoreTake(refresh_sem,pdMS_TO_TICKS(100))!=pdTRUE) {faulted=true;return ESP_ERR_TIMEOUT;}
-    }
+    fence.submit(refresh_count());
+    if(pipeline!=Pipeline::NativeQueued && wait_pending()!=ESP_OK) return ESP_ERR_TIMEOUT;
     if(pipeline==Pipeline::FullPpa) changed.all();
-    history.committed(changed); back=history.back; frame_open=false;
-    last_telemetry.wait_us=esp_timer_get_time()-t2;
+    if(pipeline==Pipeline::NativeQueued) {triple.committed(changed);back=triple.back;}
+    else {history.committed(changed);back=history.back;}
+    frame_open=false;
     last_telemetry.present_us=esp_timer_get_time()-t0;
     return ESP_OK;
 }

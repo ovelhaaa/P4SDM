@@ -7,7 +7,7 @@
 
 namespace m41 {
 constexpr unsigned LONG_BLOCKS=(SAMPLE_RATE*60+DMA_BUF_LEN-1)/DMA_BUF_LEN;
-constexpr unsigned SHORT_CASES=14, ALL_CASES=15;
+constexpr unsigned SHORT_CASES=17, ALL_CASES=18;
 static bool long_only;
 static std::atomic<int> phase{-1},mode{0}; // -1 parked, -2 stop; 0 static,1 light,2 heavy,3 page
 static std::atomic<bool> ui_busy{false};
@@ -22,6 +22,8 @@ struct Stats {
     uint32_t touch_blocks=0,touch_misses=0;
     uint32_t frames=0,skips=0,display_errors=0,polls=0,touch_errors=0,presses=0,releases=0,drags=0;
     uint32_t pages=0,idle_seen=0,inflight_at_request=0;
+    uint32_t visible_start=0,visible_end=0,refresh_start=0,refresh_end=0;
+    unsigned audio_core=99,ui_core=99;
     Metric repair,draw,ppa,cache,submit,wait,present,total,dirty_bytes,repair_bytes,cache_span_bytes;
     int64_t start=0,end=0,transition_us=0;
     unsigned transition_block=100;
@@ -38,21 +40,21 @@ static size_t in_free(){return heap_caps_get_free_size(MALLOC_CAP_INTERNAL|MALLO
 static size_t largest(){return heap_caps_get_largest_free_block(MALLOC_CAP_SPIRAM);}
 static unsigned requested_fps(int m){return m==0?0:m==2?10:30;}
 static display::Pipeline strategy(unsigned p) {
-    return p<3?display::Pipeline::FullPpa:p<6?display::Pipeline::NativeFull:display::Pipeline::NativeDirty;
+    return p<3?display::Pipeline::FullPpa:p<6?display::Pipeline::NativeFull:p<9?display::Pipeline::NativeDirty:display::Pipeline::NativeQueued;
 }
 static const char *name(unsigned p) {
     static const char *names[]={"PPA_STATIC","PPA_LIGHT","PPA_HEAVY","NATIVE_FULL_STATIC","NATIVE_FULL_LIGHT","NATIVE_FULL_HEAVY",
-        "DIRTY_STATIC","DIRTY_LIGHT","DIRTY_HEAVY","STATIC_TO_LIGHT","LIGHT_TO_STATIC","LIGHT_TO_HEAVY","HEAVY_TO_LIGHT","PAGE_TO_LIGHT","LONG_LIGHT"};
+        "DIRTY_STATIC","DIRTY_LIGHT","DIRTY_HEAVY","QUEUED_STATIC","QUEUED_LIGHT","QUEUED_HEAVY","STATIC_TO_LIGHT","LIGHT_TO_STATIC","LIGHT_TO_HEAVY","HEAVY_TO_LIGHT","PAGE_TO_LIGHT","LONG_LIGHT"};
     return names[p];
 }
 static int initial_mode(unsigned p) {
-    if(p<9) return p%3;
-    if(p==9) return 0;
-    if(p==10 || p==11) return 1;
-    if(p==12) return 2;
+    if(p<12) return p%3;
+    if(p==12) return 0;
+    if(p==13 || p==14) return 1;
+    if(p==15) return 2;
     return 1;
 }
-static int target_mode(unsigned p) {return p==10?0:p==11?2:p==13?3:1;}
+static int target_mode(unsigned p) {return p==13?0:p==14?2:p==16?3:1;}
 static void touch_task(void *) {
     touch::State previous;TickType_t next=xTaskGetTickCount();int64_t last_drag=0;
     while(phase.load(std::memory_order_acquire)!=-2) {
@@ -89,7 +91,7 @@ static void touch_task(void *) {
 static void background(unsigned p) {
     ui_pattern::base();
     display::rect(95,177,610,51,ui_pattern::BG);
-    display::text(110,182,p==14?"60S TOUCH CORNERS CENTER DRAG TAP":"PIPELINE TEST",0xffff,2);
+    display::text(110,182,p==17?"60S TOUCH CORNERS CENTER DRAG TAP":"PIPELINE TEST",0xffff,2);
     for(unsigned i=0;i<8;++i) display::rect(90+i*80,292,24,98,ui_pattern::BG);
     display::rect(60,415,680,24,ui_pattern::BG);
     for(unsigned i=0;i<16;++i) display::rect(70+i*41,420,28,14,0x3186);
@@ -120,11 +122,12 @@ static void ui_task(void *) {
         const int m=mode.load(std::memory_order_acquire);
         if(p<0) {delay(1);continue;}
         auto &s=stats[p];
+        s.ui_core=xPortGetCoreID();
         if(p!=prior_phase) {
             if(display::set_pipeline(strategy(p))!=ESP_OK) {++s.display_errors;break;}
             prior_phase=p;prior_mode=-1;frame=0;previous={};due=esp_timer_get_time();
         }
-        if(m==0) {if(display::idle()) ++s.idle_seen;delay(1);continue;}
+        if(m==0) {if(display::wait_idle()!=ESP_OK) {++s.display_errors;break;}if(display::idle()) ++s.idle_seen;delay(1);continue;}
         const int64_t now=esp_timer_get_time();if(now<due) {delay(1);continue;}
         ui_busy.store(true,std::memory_order_release);
         const int64_t begin=esp_timer_get_time();
@@ -133,7 +136,7 @@ static void ui_task(void *) {
         const uint32_t packed=packed_touch.load(std::memory_order_acquire);
         touch::State point;point.x=packed&1023;point.y=(packed>>10)&511;point.pressed=(packed>>19)&1;
         const unsigned old_frame=frame;++frame;
-        const bool page=m==3 || (p==14 && frame%150==0);
+        const bool page=m==3 || (p==17 && frame%150==0);
         if(prior_mode==-1 || (prior_mode==2 && m!=2) || page) {background(p);++s.pages;}
         if(m==2) ui_pattern::update(frame,point,true);else light(p,frame,old_frame,point,previous);
         const int64_t drawn=esp_timer_get_time();
@@ -151,6 +154,7 @@ static void ui_task(void *) {
         due+=interval;
         if(end>due) {const unsigned skip=(end-due)/interval;s.skips+=skip;due+=int64_t(skip)*interval;}
     }
+    if(display::wait_idle()!=ESP_OK && prior_phase>=0) ++stats[prior_phase].display_errors;
     ui_busy.store(false,std::memory_order_release);done.fetch_or(1,std::memory_order_release);vTaskSuspend(nullptr);
 }
 static void notes() {for(unsigned v=0;v<16;++v) {PCW[v]=0;synthESP32_TRIGGER_P(v,48+v);}}
@@ -158,20 +162,21 @@ static void metric_report(const char *label,const Metric &m,unsigned n) {
     reportf("[M41] part=%s avg=%.2f max=%u\n",label,n?double(m.sum)/n:0.,m.max);
 }
 static void audio_task(void *) {
-    const unsigned first=long_only?14:0,last=long_only?15:14;
+    const unsigned first=long_only?17:0,last=long_only?18:17;
     const size_t ps_start=ps_free(),in_start=in_free(),largest_start=largest();
     bool valid=true;esp_err_t error=ESP_OK;
     vTaskPrioritySet(nullptr,configMAX_PRIORITIES-1);
     for(unsigned p=first;p<last;++p) {
-        auto &s=stats[p];const unsigned count=p==14?LONG_BLOCKS:STAGE_BLOCKS;
+        auto &s=stats[p];const unsigned count=p==17?LONG_BLOCKS:STAGE_BLOCKS;
         notes();s.ps_before=ps_free();s.in_before=in_free();s.largest_before=largest();
+        s.visible_start=display::completed_presentations();s.refresh_start=display::refresh_count();s.audio_core=xPortGetCoreID();
         s.start=esp_timer_get_time();mode.store(initial_mode(p),std::memory_order_release);phase.store(p,std::memory_order_release);
         uint32_t prior_epoch=touch_epoch.load(std::memory_order_acquire);
         for(unsigned b=0;b<count;++b) {
-            if(p>=9 && p<=13 && b==s.transition_block) {
+            if(p>=12 && p<=16 && b==s.transition_block) {
                 s.transition_us=esp_timer_get_time();s.inflight_at_request=ui_busy.load();mode.store(target_mode(p),std::memory_order_release);
             }
-            if(p==14 && b && b%STAGE_BLOCKS==0) notes(); // same original envelope, retrigger before its five-second expiry
+            if(p==17 && b && b%STAGE_BLOCKS==0) notes(); // same original envelope, retrigger before its five-second expiry
             s.active_min=std::min(s.active_min,active_voices());s.active_max=std::max(s.active_max,active_voices());
             const uint32_t epoch=touch_epoch.load(std::memory_order_acquire);const bool touched=epoch!=prior_epoch;prior_epoch=epoch;
             const int64_t start=esp_timer_get_time();render_buffer();const uint32_t us=esp_timer_get_time()-start;
@@ -187,7 +192,8 @@ static void audio_task(void *) {
             error=audio::write(out_buf,DMA_BUF_LEN);++s.blocks;
             if(error!=ESP_OK) {++s.write_errors;if(error==ESP_ERR_TIMEOUT) ++s.timeouts;break;}
         }
-        s.end=esp_timer_get_time();s.ps_after=ps_free();s.in_after=in_free();s.largest_after=largest();
+        s.end=esp_timer_get_time();s.visible_end=display::completed_presentations();s.refresh_end=display::refresh_count();
+        s.ps_after=ps_free();s.in_after=in_free();s.largest_after=largest();
         valid &= s.blocks==count && s.active_min==16 && s.active_max==16 && !s.misses && !s.write_errors && !s.rails && !s.silent;
         if(error!=ESP_OK) break;
     }
@@ -208,13 +214,14 @@ static void audio_task(void *) {
             for(unsigned j=b;j<std::min(b+16,s.blocks);++j) used+=snprintf(row+used,sizeof(row)-used,"%s%u",j==b?"":",",s.raw[j]);
             reportf("%s\n",row);
         }
-        if(p>=9 && p<=13) {
+        if(p>=12 && p<=16) {
             uint32_t maximum=0;unsigned misses=0;for(unsigned b=80;b<std::min(180u,s.blocks);++b){maximum=std::max(maximum,s.raw[b]);misses+=s.raw[b]>=BUDGET_US;}
             reportf("[M41] transition request_block=%u inflight=%u around_blocks=80..179 max_us=%u misses=%u idle_observations=%u\n",s.transition_block,s.inflight_at_request,maximum,misses,s.idle_seen);
         }
         uint64_t sum=0;for(unsigned b=0;b<s.blocks;++b) sum+=s.raw[b];std::sort(s.raw,s.raw+s.blocks);
         if(s.blocks) reportf("[M41] render min=%u avg=%.2f p50=%u p95=%u p99=%u max=%u headroom_worst_us=%.3f\n",s.raw[0],double(sum)/s.blocks,s.raw[(s.blocks*50+99)/100-1],s.raw[(s.blocks*95+99)/100-1],s.raw[(s.blocks*99+99)/100-1],s.raw[s.blocks-1],BUDGET_US-s.raw[s.blocks-1]);
-        reportf("[M41] UI requested_fps=%u frames=%u achieved_fps=%.3f skipped=%u errors=%u pages=%u\n",requested_fps(initial_mode(p)),s.frames,seconds>0?s.frames/seconds:0.,s.skips,s.display_errors,s.pages);
+        const unsigned visible=s.visible_end-s.visible_start;
+        reportf("[M41] UI requested_fps=%u frames=%u achieved_fps=%.3f skipped=%u errors=%u pages=%u submitted=%u refresh_hz=%.3f core_observed=%u audio_core_observed=%u\n",requested_fps(initial_mode(p)),visible,seconds>0?visible/seconds:0.,s.skips,s.display_errors,s.pages,s.frames,seconds>0?(s.refresh_end-s.refresh_start)/seconds:0.,s.ui_core,s.audio_core);
         metric_report("repair",s.repair,s.frames);metric_report("draw",s.draw,s.frames);metric_report("ppa",s.ppa,s.frames);metric_report("cache",s.cache,s.frames);
         metric_report("submit",s.submit,s.frames);metric_report("wait",s.wait,s.frames);metric_report("present",s.present,s.frames);metric_report("total",s.total,s.frames);
         metric_report("dirty_bytes",s.dirty_bytes,s.frames);metric_report("repair_bytes",s.repair_bytes,s.frames);
@@ -230,9 +237,9 @@ static void audio_task(void *) {
 }
 static void initialize(void *) {
     guition::memory_report("M41 before display");
-    const auto pipeline=long_only?display::Pipeline::NativeDirty:display::Pipeline::FullPpa;
-    esp_err_t error=display::begin(pipeline);reportf("[M41] display_begin=%s pipeline=%s fence=2\n",esp_err_to_name(error),long_only?"NativeDirty":"FullPpa");if(error!=ESP_OK) {vTaskDelete(nullptr);return;}
-    guition::memory_report("M41 after display");background(long_only?14:0);error=display::present();if(error!=ESP_OK){reportf("[M41 INIT_FAIL] present=%s\n",esp_err_to_name(error));vTaskDelete(nullptr);return;}
+    const auto pipeline=long_only?display::Pipeline::NativeQueued:display::Pipeline::FullPpa;
+    esp_err_t error=display::begin(pipeline,!long_only);reportf("[M41] display_begin=%s pipeline=%s fence=2 CPU_MHz=%u init_core=%u native_fbs=3 logical_fbs=%u\n",esp_err_to_name(error),long_only?"NativeQueued":"FullPpa",ESP.getCpuFreqMHz(),xPortGetCoreID(),long_only?0:1);if(error!=ESP_OK) {vTaskDelete(nullptr);return;}
+    guition::memory_report("M41 after display");background(long_only?17:0);error=display::present();if(error==ESP_OK) error=display::wait_idle();if(error!=ESP_OK){reportf("[M41 INIT_FAIL] present=%s\n",esp_err_to_name(error));vTaskDelete(nullptr);return;}
     error=touch::begin();reportf("[M41] touch=%s address=0x%02x id=%s\n",esp_err_to_name(error),touch::address(),touch::product_id());if(error!=ESP_OK){vTaskDelete(nullptr);return;}
     guition::memory_report("M41 after touch");
     synthESP32_begin();initADSR();
@@ -241,7 +248,7 @@ static void initialize(void *) {
     if(!myDelay.init(88200)){reportf("[M41 INIT_FAIL] Delay\n");vTaskDelete(nullptr);return;}
     myDelay.setTime(12000);myDelay.setFeedback(120);myDelay.setInputLevel(160);is_delay=true;delays=0xffff;level_delay=100;
     guition::memory_report("M41 after Delay");
-    const unsigned first=long_only?14:0,last=long_only?15:14;
+    const unsigned first=long_only?17:0,last=long_only?18:17;
     const unsigned samples=long_only?LONG_BLOCKS:SHORT_CASES*STAGE_BLOCKS;
     auto *raw=static_cast<uint32_t *>(heap_caps_malloc(samples*sizeof(uint32_t),MALLOC_CAP_SPIRAM|MALLOC_CAP_8BIT));
     if(!raw){reportf("[M41 INIT_FAIL] fixed timing storage\n");vTaskDelete(nullptr);return;}
@@ -252,7 +259,7 @@ static void initialize(void *) {
     xTaskCreateStaticPinnedToCore(ui_task,"m41ui",sizeof(ui_stack),nullptr,2,ui_stack,&ui_tcb,0);
     xTaskCreateStaticPinnedToCore(touch_task,"m41touch",sizeof(touch_stack),nullptr,3,touch_stack,&touch_tcb,1);
     guition::memory_report("M41 tasks transport and capture storage live");
-    reportf("[M41 READY] %s audio starts after this message; no serial output until stopped\n",long_only?"LONG 60 seconds: touch four corners, center, drag and rapid taps":"SHORT 14 windows: three pipelines plus five transitions");
+    reportf("[M41 READY] %s audio starts after this message; no serial output until stopped\n",long_only?"LONG 60 seconds: touch four corners, center, drag and rapid taps":"SHORT 17 windows: four pipelines plus five transitions");
     if(xTaskCreatePinnedToCore(audio_task,"m41audio",8000,nullptr,1,nullptr,0)!=pdPASS){phase.store(-2);audio::end();reportf("[M41 INIT_FAIL] audio task\n");}
     vTaskSuspend(nullptr); // retain startup task storage during all heap comparisons
 }

@@ -4,6 +4,32 @@
 #include <vector>
 #include <iostream>
 using namespace display;
+template<unsigned Count> void exercise_history() {
+    BufferHistory<Count> history;history.reset();
+    std::array<std::vector<uint16_t>,Count> buffers;
+    for(auto &buffer:buffers) buffer.resize(384000);
+    std::vector<uint16_t> expected(384000);
+    auto repair=[&]() {
+        const auto pending=history.stale[history.back];
+        for(int r=0;r<TILE_ROWS;++r) for(int c=0;c<TILE_COLS;++c) if(pending.rows[r]&(1u<<c))
+            for(int y=r*TILE;y<(r+1)*TILE;++y) for(int x=c*TILE;x<(c+1)*TILE;++x)
+                buffers[history.back][y*NATIVE_WIDTH+x]=buffers[history.front][y*NATIVE_WIDTH+x];
+        history.repaired();
+    };
+    for(unsigned frame=0;frame<100;++frame) {
+        repair();assert(buffers[history.back]==expected);DirtyMask changed;
+        auto draw=[&](int x,int y,int w,int h,uint16_t value) {
+            changed.logical_rect(x,y,w,h);
+            for(int yy=std::max(y,0);yy<std::min(y+h,HEIGHT);++yy) for(int xx=std::max(x,0);xx<std::min(x+w,WIDTH);++xx) {
+                auto p=to_native(xx,yy);buffers[history.back][p.y*NATIVE_WIDTH+p.x]=expected[p.y*NATIVE_WIDTH+p.x]=value;
+            }
+        };
+        if(frame==0 || frame==51) draw(0,0,800,480,frame+1);
+        else {draw(int(frame*7%780)-10,int(frame*13%460)-10,60,48,frame+1);draw(200,240,35,20,frame+2);draw(215,230,40,40,frame+3);draw(798,478,20,20,frame+4);}
+        history.committed(changed);assert(buffers[history.front]==expected);
+    }
+    repair();assert(buffers[history.back]==expected);
+}
 int main() {
     DirtyMask mask; assert(mask.empty()); mask.logical_rect(-10,-10,20,20);
     assert(mask.bytes()==TILE*TILE*2); assert(mask.rows[0]==(1u<<(TILE_COLS-1)));
@@ -41,5 +67,8 @@ int main() {
         history.committed(changed); assert(buffers[history.front]==expected);
     }
     repair(); assert(buffers[history.back]==expected);
+    exercise_history<2>();exercise_history<3>();
+    RefreshFence fence;assert(!fence.complete(100));fence.submit(UINT32_MAX);
+    assert(!fence.complete(UINT32_MAX));assert(!fence.complete(0));assert(fence.complete(1));
     std::cout<<"Dirty history: first frame, alternating buffers, disjoint/overlapping regions, clipping and full page transitions PASS\n";
 }
