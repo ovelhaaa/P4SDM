@@ -670,3 +670,8 @@ For final physical qualification, restart normal `guition_app`, perform actual
 pads/steps/transport/BPM/track drags/page changes during a fresh 75-second capture,
 confirm sound and picture, and record the physical evidence separately. No
 microSD is required. The board is left on normal application firmware.
+
+M9 pattern tools, deterministic editing RNG, Euclidean generation, TOOLS UI and
+device stress are documented in [the M9 qualification report](GUITION_M9.md).
+Run `tests/pattern_tools_test.cpp` with the existing C++17 host test flags and
+validate genuine captures using `python tests/analyze_m9.py <log>`.

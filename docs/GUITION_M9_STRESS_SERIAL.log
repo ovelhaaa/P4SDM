@@ -1,0 +1,32 @@
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0x17 (CHIP_USB_UART_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4ff02d26
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M6 budget] total=33554432 display=2304000 fx_delay=352800 samples=0 reserve=4194304 free=30885508 largest=30408692 internal=382820
+E (2465) sdmmc_common: sdmmc_init_ocr: send_op_cond (1) returned 0x107
+E (2465) vfs_fat_sdmmc: sdmmc_card_init failed (0x107).
+[   793][E][SD_MMC.cpp:307] begin(): Failed to initialize the card (0x107). Make sure SD card lines have pull-up resistors in place.
+[M6 SD] mounted=0 width=4 clock_khz=20000 mount_us=259436 capacity=0 status=NO CARD / MOUNT ERROR
+[M5] blocks=10337 p50=3240 p95=3973 p99=4015 max=4124 misses=0 failures=0 timeouts=0 peak=7599 nonzero=5290992 rails=0 active_min=16 active_max=16
+[M8 groove] parents=14976 passed=13768 skipped=1208 ratchets=39053 pending_max=48 velocity_min=1 velocity_max=127 swing_changes=8
+[M8 worst] blocks=2068 bpm=240 voices=16 ratchet=4 swing=50 delay=1 max=4124 triggers=12304 triggers_per_second=1024
+[MEM] M8 after 60s PSRAM total=33554432 free=30885508 largest=30408692 internal_free=381812
+[M9 tools] rotate=37 reverse=26 copy_track=18 clear_track=15 duplicate=14 euclidean=14 randomize=18 mutate=15 reroll=15 blocks=151 dense_blocks=121 max=4124
+[M5 UI] seconds=63.008 submitted=1478 completed=1478 dirty_avg=81003 dirty_max=768000 full=30 preparation_max_us=150987 touch_errors=0 rejected=0 pads=4 steps=8 drags=16 pages=24 transport=0 bpm=0 skipped=59
+[M7 patterns] switches=8 loops=80 selections=29 copies=4 clears=4 lengths=16 solos=8 mutes=8 normal_frames=1448 dirty_avg=66770 dirty_max=476160 pattern_bytes=802 command_bytes=12
+[M7 applied] long_to_short=2 short_to_long=2 queue_replacements=4 copies=4 clears=4 lengths=16 solos=8 mutes=8 steps=8
+[M9 UI] entries=4 copies=4 randomize=8 cell_max=16 edit_full=0
+[M5 memory] ps_before=30885508 ps_after=30885508 internal_before=381812 internal_after=381812 largest_before=30408692 largest_after=30408692
