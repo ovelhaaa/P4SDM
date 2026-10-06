@@ -24,3 +24,6 @@ jobs:
       - run: g++ -std=c++17 -Wall -Wextra -Werror tests/app_model_test.cpp -o /tmp/app_model_test && /tmp/app_model_test
 
       - run: python tests/analyze_m5.py docs/GUITION_M5_STRESS_SERIAL.log --stress
+
+      - run: python tests/generate_m6_fixtures.py /tmp/m6-fixtures
+      - run: g++ -std=c++17 -Wall -Wextra -Werror -pthread tests/wav_sampler_test.cpp -o /tmp/wav_sampler_test && /tmp/wav_sampler_test /tmp/m6-fixtures

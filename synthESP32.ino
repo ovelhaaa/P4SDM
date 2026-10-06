@@ -92,6 +92,11 @@ static void render_buffer() {
         for (byte f = 0; f < 16; f++) {
           if (ROTvalue[f][16]==1) { //////////////////////////////////////////////////////////////////////////////////////////////////// synth
           
+#if P4SDM_APP
+            if (app_pcm(f, sample)) {
+              // Resident mono PCM follows the existing filter/pan/FX mixer.
+            } else
+#endif
             if (PITCH[f] != 255) {
 
                 EPCW[f] += EFTW[f];
@@ -122,7 +127,7 @@ static void render_buffer() {
                 if (interpolated_pitch > 127.0f) interpolated_pitch = 127.0f;
 
                 int low_pitch_index = (int)interpolated_pitch;
-                int high_pitch_index = low_pitch_index + 1;
+                int high_pitch_index = min(127, low_pitch_index + 1);
                 float fractional_part = interpolated_pitch - (float)low_pitch_index;
 
 

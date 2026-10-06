@@ -17,7 +17,8 @@ enum class Kind : uint8_t {
   Length,
   Wave,
   Delay,
-  Mute
+  Mute,
+  Source
 };
 struct Command {
   Kind kind;
@@ -49,7 +50,7 @@ template <unsigned N> struct Queue {
 struct Track {
   uint16_t steps = 0;
   int volume = 80, pan = 0, pitch = 48, length = 32, wave = 0;
-  bool muted = false;
+  bool muted = false, sample = false;
 };
 struct Engine {
   Track tracks[16];
@@ -102,6 +103,9 @@ struct Engine {
     case Kind::Mute:
       t.muted = c.value;
       break;
+    case Kind::Source:
+      t.sample = c.value;
+      break;
     case Kind::Trigger:
       break;
     }
@@ -129,13 +133,15 @@ struct Rect {
     return px >= x && py >= y && px < x + w && py < y + h;
   }
 };
-enum class Page { Sequence, Track, Fx };
+enum class Page { Sequence, Track, Fx, Sample };
 struct Ui {
   Page page = Page::Sequence;
   int selected = 0, bank = 0, selected_step = -1, capture = -1;
   bool down = false;
 };
 inline Rect widget(int id) {
+  if (id >= 38)
+    return {24 + ((id - 38) % 2) * 380, 100 + ((id - 38) / 2) * 90, 360, 72};
   if (id < 16)
     return {16 + (id % 8) * 96, 100 + (id / 8) * 66, 88, 58};
   if (id < 24)
@@ -168,8 +174,14 @@ inline int hit(Page p, int x, int y) {
     for (int i = 24; i < 29; ++i)
       if (widget(i).contains(x, y))
         return i;
+    if (Rect{24, 250, 200, 56}.contains(x, y))
+      return 42;
     if (widget(37).contains(x, y))
       return 37;
+  } else if (p == Page::Sample) {
+    for (int i = 38; i <= 41; ++i)
+      if (widget(i).contains(x, y))
+        return i;
   } else if (widget(36).contains(x, y))
     return 36;
   return -1;

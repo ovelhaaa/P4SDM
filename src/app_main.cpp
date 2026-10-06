@@ -1,4 +1,6 @@
 #include "app/model.h"
+#include "app/samples.h"
+static bool app_pcm(int track, int16_t &value);
 static void app_sample();
 // clang-format off
 #include <Arduino.h>
@@ -24,10 +26,11 @@ std::atomic<uint32_t> diagnostic_p99{0}, diagnostic_max{0},
     diagnostic_misses{0};
 std::atomic<uint32_t> flashes[16];
 bool delay_ready = false;
-bool dirty[38]{};
+int sample_index = 0;
+bool dirty[43]{};
 bool full = true;
 uint32_t rejected = 0, touch_errors = 0, frames = 0, full_frames = 0;
-uint32_t actions[38]{}, drags = 0;
+uint32_t actions[43]{}, drags = 0;
 uint64_t dirty_bytes = 0, normal_dirty_bytes = 0;
 unsigned normal_frames = 0;
 uint32_t normal_dirty_max = 0;
@@ -43,7 +46,13 @@ int old_head = -1;
 [[maybe_unused]] uint32_t diagnostic_due = 0;
 constexpr uint16_t bg = 0x1082, panel = 0x2104, accent = 0x07d3, white = 0xffff;
 void trigger(int t) {
-  synthESP32_TRIGGER_P(t, engine.tracks[t].pitch);
+  if (engine.tracks[t].sample && samples::voices[t].sample) {
+    PITCH[t] = 255;
+    AMP[t] = 0;
+    samples::voices[t].trigger(uint64_t(
+        midiFrequencies[engine.tracks[t].pitch] * BASE_FREQ_INV * 65536.f));
+  } else
+    synthESP32_TRIGGER_P(t, engine.tracks[t].pitch);
   flashes[t].fetch_add(1, std::memory_order_relaxed);
 }
 void update_track(int t) {
@@ -71,10 +80,16 @@ bool send(app::Command c) {
   return true;
 }
 void draw(int id) {
-  auto r = app::widget(id);
+  auto r = id == 42 ? app::Rect{24, 250, 200, 56} : app::widget(id);
   char s[48]{};
   uint16_t color = panel;
-  if (id < 16) {
+  if (id >= 38) {
+    const char *labels[] = {"PREVIOUS", "NEXT", "LOAD / ASSIGN",
+                            view.tracks[ui.selected].sample ? "USE SYNTH"
+                                                            : "USE SAMPLE",
+                            "SAMPLE PAGE"};
+    snprintf(s, sizeof(s), "%s", labels[id - 38]);
+  } else if (id < 16) {
     bool on = view.tracks[ui.selected].steps & (1u << id);
     color = on ? accent : panel;
     if (id == old_head)
@@ -88,7 +103,9 @@ void draw(int id) {
     if (millis() < flash_until[t])
       color = 0xffe0;
     snprintf(s, sizeof(s), "%02d %s", t + 1,
-             view.tracks[t].muted ? "MUTE" : "SYNTH");
+             view.tracks[t].muted    ? "MUTE"
+             : view.tracks[t].sample ? "SAMPLE"
+                                     : "SYNTH");
   } else if (id < 29) {
     auto &t = view.tracks[ui.selected];
     const char *names[] = {"VOLUME", "PAN", "PITCH", "LENGTH", "WAVE"};
@@ -108,6 +125,20 @@ void draw(int id) {
   }
   display::rect(r.x, r.y, r.w, r.h, color);
   display::text(r.x + 8, r.y + 16, s, white, 2);
+}
+void sample_status() {
+  char line[128];
+  display::rect(24, 290, 752, 120, bg);
+  samples::describe(sample_index, line, sizeof(line));
+  display::text(24, 296, line, white, 1);
+  samples::track_name(ui.selected, line, sizeof(line));
+  display::text(24, 325, line, accent, 1);
+  samples::message(line, sizeof(line));
+  display::text(24, 356, line, white, 1);
+  display::text(24, 380,
+                view.tracks[ui.selected].sample ? "SOURCE SAMPLE / C4=UNITY"
+                                                : "SOURCE SYNTH",
+                white, 1);
 }
 void overlay() {
 #if P4SDM_APP_DIAGNOSTICS
@@ -139,7 +170,23 @@ void interact(int id, int x, bool initial) {
     ++actions[id];
   else
     ++drags;
-  if (id < 16 && initial) {
+  if (id >= 38 && initial) {
+    if (id == 42) {
+      ui.page = app::Page::Sample;
+      full = true;
+    } else if (id == 38 || id == 39) {
+      sample_index = app::clamp(sample_index + (id == 38 ? -1 : 1), 0,
+                                int(samples::count()) - 1);
+      dirty[38] = true;
+    } else if (id == 40)
+      samples::request(ui.selected, sample_index);
+    else if (id == 41) {
+      if (samples::has_sample(ui.selected) && !samples::busy())
+        send({app::Kind::Source, uint8_t(ui.selected),
+              !view.tracks[ui.selected].sample});
+      dirty[38] = true;
+    }
+  } else if (id < 16 && initial) {
     if (send({app::Kind::Step, uint8_t(ui.selected), id})) {
       int old = ui.selected_step;
       ui.selected_step = id;
@@ -198,6 +245,8 @@ void interact(int id, int x, bool initial) {
   }
 }
 void ui_task(void *) {
+  while (!samples::initialized())
+    vTaskDelay(1);
   uint32_t next = 0, seen[16]{};
   touch::State touch_state;
   const uint32_t started = millis(),
@@ -208,6 +257,18 @@ void ui_task(void *) {
                largest_before =
                    heap_caps_get_largest_free_block(MALLOC_CAP_SPIRAM);
   for (;;) {
+    static unsigned sample_revision = 0;
+    unsigned revision = samples::revision();
+    if (revision != sample_revision) {
+      sample_revision = revision;
+      dirty[38] = true;
+      for (unsigned t = 0; t < 16; ++t)
+        if (samples::assigned(t)) {
+          view.tracks[t].sample = true;
+          if (int(t / 8) == ui.bank)
+            dirty[16 + t % 8] = true;
+        }
+    }
 #if P4SDM_APP_STRESS
     static uint32_t stress_due = 0, retrigger_due = 0;
     static unsigned action = 0;
@@ -318,6 +379,11 @@ void ui_task(void *) {
           for (int i = 24; i < 29; ++i)
             draw(i);
           draw(37);
+          draw(42);
+        } else if (ui.page == app::Page::Sample) {
+          for (int i = 38; i <= 41; ++i)
+            draw(i);
+          sample_status();
         } else {
           draw(36);
           display::text(24, 210, "INTERNAL DELAY / NO SD REQUIRED", white, 2);
@@ -329,13 +395,17 @@ void ui_task(void *) {
       } else {
         if (dirty[34])
           header();
-        for (int i = 0; i < 38; ++i)
+        for (int i = 0; i < 43; ++i)
           if (dirty[i] &&
               ((i < 24 && ui.page == app::Page::Sequence) ||
                (i >= 24 && i < 29 && ui.page == app::Page::Track) ||
                (i >= 29 && i < 34) || (i == 36 && ui.page == app::Page::Fx) ||
-               (i == 37 && ui.page == app::Page::Track)))
+               ((i == 37 || i == 42) && ui.page == app::Page::Track)))
             draw(i);
+      }
+      if (ui.page == app::Page::Sample && dirty[38]) {
+        draw(41);
+        sample_status();
       }
       if (diag)
         overlay();
@@ -426,9 +496,23 @@ void touch_worker(void *) {
 void audio_worker(void *) {
   for (;;) {
     const auto start = esp_timer_get_time();
+    int sample_track = samples::transfer.consume(samples::voices);
+    if (sample_track >= 0) {
+      unsigned t = unsigned(sample_track);
+      engine.tracks[t].sample = true;
+      PITCH[t] = 255;
+      AMP[t] = 0;
+      FILTROS[t].reset();
+    }
     app::Command c;
     for (unsigned n = 0; n < 16 && commands.pop(c); ++n) {
       engine.apply(c);
+      if (c.kind == app::Kind::Source) {
+        samples::voices[c.track].active = false;
+        FILTROS[c.track].reset();
+        PITCH[c.track] = 255;
+        AMP[c.track] = 0;
+      }
       if (c.kind == app::Kind::Trigger)
         trigger(c.track);
       else if (c.kind == app::Kind::Delay) {
@@ -436,6 +520,10 @@ void audio_worker(void *) {
         delays = is_delay ? 0xffff : 0;
       } else if (c.kind >= app::Kind::Volume && c.kind <= app::Kind::Wave)
         update_track(c.track);
+      if (c.kind == app::Kind::Pitch && engine.tracks[c.track].sample)
+        samples::voices[c.track].increment =
+            uint64_t(midiFrequencies[engine.tracks[c.track].pitch] *
+                     BASE_FREQ_INV * 65536.f);
     }
     for (unsigned n = 0; n < 16 && pad_triggers.pop(c); ++n)
       trigger(c.track);
@@ -445,7 +533,7 @@ void audio_worker(void *) {
     if (b < capture_blocks) {
       unsigned active = 0;
       for (unsigned t = 0; t < 16; ++t)
-        active += PITCH[t] != 255 && AMP[t] != 0;
+        active += (PITCH[t] != 255 && AMP[t] != 0) || samples::voices[t].active;
       active_min = std::min(active_min, active);
       active_max = std::max(active_max, active);
       render_times[b] = us;
@@ -471,10 +559,17 @@ void audio_worker(void *) {
   }
 }
 } // namespace
+static bool app_pcm(int t, int16_t &v) {
+  if (!engine.tracks[t].sample)
+    return false;
+  v = samples::voices[t].next();
+  return true;
+}
 static void app_sample() {
   engine.sample([](int t) { trigger(t); });
 }
 static void initialize(void *) {
+  Serial.setTxBufferSize(2048);
   Serial.begin(115200);
   is_reverb = is_delay = is_chorus = is_flanger = is_tremolo = is_ringmod =
       is_distortion = is_bitcrusher = false;
@@ -517,6 +612,7 @@ static void initialize(void *) {
   }
   xTaskCreatePinnedToCore(audio_worker, "app_audio", 8000, nullptr,
                           configMAX_PRIORITIES - 1, nullptr, 0);
+  samples::start();
   xTaskCreatePinnedToCore(touch_worker, "app_touch", 5000, nullptr, 3, nullptr,
                           1);
   xTaskCreatePinnedToCore(ui_task, "app_ui", 8000, nullptr, 2, nullptr, 0);
