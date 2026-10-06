@@ -571,3 +571,31 @@ Audible behavior, speaker output, physical I2S waveforms, actual clock rate,
 pops and subjective effect quality remain **unverified**. No speaker listening
 test was performed. No SD card, display, touch, USB MIDI, Wi-Fi, sequencer UI or
 sampler loading was implemented or tested. M3.2 stops here.
+
+### M4 — Guition display/touch and competing UI workload
+
+See [the M4 hardware report](GUITION_M4.md) for the implementation,
+buffer/task layout, all six timing distributions, PCM/UI/touch statistics,
+memory snapshots and reproduction details. Genuine captures are
+`GUITION_M4_DISPLAY_SERIAL.log` and `GUITION_M4_UI_AUDIO_SERIAL.log`;
+`tests/analyze_m4.py` validates all 3102 measured audio blocks.
+
+Display and GT911 initialize successfully on the real board, sharing I2C0
+with ES8311. The user physically confirmed correct landscape corner markers,
+colors/borders and touch tracking for the requested corner/center/drag test.
+The appended standalone serial capture records26 presses/26 releases with
+zero errors and matching native/logical coordinate transforms. Exact corner
+coverage relies on the user's physical confirmation; the combined run has
+no human touch packets.
+
+**Combined audio/UI qualification FAILS:** core1 light/heavy updates have
+3/181 render deadline misses; the transition into core0 static has two.
+Core0 light/heavy individually have zero misses and retain at least20%
+worst-render reserve, achieving19.993/8.644 FPS versus30 requested. This
+supports core0 low-priority UI as the next candidate, not a complete pass.
+Do not adopt core1 rendering for this16-voice plus Delay workload.
+Both heaps remain stable; all modes have zero UI/touch/transport API errors,
+zero silent blocks and zero rail frames. Audio listening and reliable DMA
+starvation counting remain unverified. Original synth and FX are preserved.
+All six local builds and hosted CI run37400942633 pass, including the
+existing PCM/FX checks and new display geometry test. No SD card is needed.

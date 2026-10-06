@@ -15,11 +15,13 @@ connection = serial.Serial()
 connection.port = args.port
 connection.baudrate = 115200
 connection.timeout = 0.2
-connection.dtr = False
-connection.rts = False
+connection.dtr = not args.no_reset
+connection.rts = not args.no_reset
 connection.open()
 with connection as port:
     if not args.no_reset:
+        # Windows propagates the native USB/JTAG DTR state on RTS changes.
+        port.dtr = False
         port.rts = True
         time.sleep(0.2)
         port.rts = False

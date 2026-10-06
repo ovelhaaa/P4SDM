@@ -1,0 +1,507 @@
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0x17 (CHIP_USB_UART_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4ff02cbe
+Core1 Saved PC:0x4ff02cbe
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+[M4 DISPLAY] CPU=360 MHz native=480x800 logical=800x480 PPA_CCW=270 RGB565 native_fbs=2 logical_fbs=1 bytes_each=768000
+[MEM] before display PSRAM total=33554432 free=33551856 largest=33030132 internal_free=568132
+[M4 DISPLAY] begin=ESP_OK
+[MEM] after display PSRAM total=33554432 free=31246628 largest=30932980 internal_free=566428
+[M4 DISPLAY] pattern=ESP_OK
+[M4 TOUCH] begin=ESP_OK address=0x5d id=911 native=480x800
+[MEM] after touch PSRAM total=33554432 free=31245360 largest=30932980 internal_free=566224
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M4 SHARED] audio_begin=ESP_OK codec_probe=ESP_OK touch_probe=ESP_OK same_bus=1
+[M4 SHARED] audio_end=ESP_OK
+[M4 READY] Verify TL1 TR2 BR3 BL4, colors, border and counter. Touch corners/center and drag. No audible test.
+[M4 LIVE] frames=1 refreshes=33 polls=1 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=22 refreshes=96 polls=22 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=43 refreshes=159 polls=43 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=64 refreshes=222 polls=64 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=85 refreshes=285 polls=85 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=106 refreshes=348 polls=106 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=127 refreshes=411 polls=127 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=148 refreshes=474 polls=148 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=169 refreshes=537 polls=169 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=190 refreshes=600 polls=190 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=211 refreshes=663 polls=211 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=232 refreshes=726 polls=232 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=253 refreshes=789 polls=253 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=274 refreshes=852 polls=274 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=295 refreshes=915 polls=295 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=316 refreshes=978 polls=316 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=337 refreshes=1041 polls=337 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=358 refreshes=1104 polls=358 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=379 refreshes=1167 polls=379 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=400 refreshes=1230 polls=400 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=421 refreshes=1293 polls=421 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=442 refreshes=1356 polls=442 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=463 refreshes=1419 polls=463 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=484 refreshes=1482 polls=484 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=505 refreshes=1545 polls=505 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=526 refreshes=1608 polls=526 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=547 refreshes=1671 polls=547 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=568 refreshes=1734 polls=568 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=589 refreshes=1797 polls=589 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=610 refreshes=1860 polls=610 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=631 refreshes=1923 polls=631 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=652 refreshes=1986 polls=652 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=673 refreshes=2049 polls=673 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=694 refreshes=2112 polls=694 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=715 refreshes=2175 polls=715 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=736 refreshes=2238 polls=736 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=757 refreshes=2301 polls=757 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=778 refreshes=2364 polls=778 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=799 refreshes=2427 polls=799 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=820 refreshes=2490 polls=820 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=841 refreshes=2553 polls=841 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=862 refreshes=2616 polls=862 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=883 refreshes=2679 polls=883 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=904 refreshes=2742 polls=904 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=925 refreshes=2805 polls=925 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=946 refreshes=2868 polls=946 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=967 refreshes=2931 polls=967 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=988 refreshes=2994 polls=988 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1009 refreshes=3057 polls=1009 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1030 refreshes=3120 polls=1030 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1051 refreshes=3183 polls=1051 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1072 refreshes=3246 polls=1072 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1093 refreshes=3309 polls=1093 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1114 refreshes=3372 polls=1114 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1135 refreshes=3435 polls=1135 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1156 refreshes=3498 polls=1156 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1177 refreshes=3561 polls=1177 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1198 refreshes=3624 polls=1198 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1219 refreshes=3687 polls=1219 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1240 refreshes=3750 polls=1240 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1261 refreshes=3813 polls=1261 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1282 refreshes=3876 polls=1282 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1303 refreshes=3939 polls=1303 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1324 refreshes=4002 polls=1324 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1345 refreshes=4065 polls=1345 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1366 refreshes=4128 polls=1366 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1387 refreshes=4191 polls=1387 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1408 refreshes=4254 polls=1408 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1429 refreshes=4317 polls=1429 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1450 refreshes=4380 polls=1450 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1471 refreshes=4443 polls=1471 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1492 refreshes=4506 polls=1492 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1513 refreshes=4569 polls=1513 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1534 refreshes=4632 polls=1534 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1555 refreshes=4695 polls=1555 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1576 refreshes=4758 polls=1576 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1597 refreshes=4821 polls=1597 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1618 refreshes=4884 polls=1618 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1639 refreshes=4947 polls=1639 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1660 refreshes=5010 polls=1660 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1681 refreshes=5073 polls=1681 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1702 refreshes=5136 polls=1702 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1723 refreshes=5199 polls=1723 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1744 refreshes=5262 polls=1744 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1765 refreshes=5325 polls=1765 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1786 refreshes=5388 polls=1786 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1807 refreshes=5451 polls=1807 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1828 refreshes=5514 polls=1828 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1849 refreshes=5577 polls=1849 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1870 refreshes=5640 polls=1870 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1891 refreshes=5703 polls=1891 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1912 refreshes=5766 polls=1912 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1933 refreshes=5829 polls=1933 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1954 refreshes=5892 polls=1954 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1975 refreshes=5955 polls=1975 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=1996 refreshes=6018 polls=1996 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2017 refreshes=6081 polls=2017 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2038 refreshes=6144 polls=2038 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2059 refreshes=6207 polls=2059 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2080 refreshes=6270 polls=2080 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2101 refreshes=6333 polls=2101 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2122 refreshes=6396 polls=2122 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2143 refreshes=6459 polls=2143 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2164 refreshes=6522 polls=2164 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2185 refreshes=6585 polls=2185 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2206 refreshes=6648 polls=2206 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2227 refreshes=6711 polls=2227 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2248 refreshes=6774 polls=2248 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2269 refreshes=6837 polls=2269 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2290 refreshes=6900 polls=2290 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2311 refreshes=6963 polls=2311 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2332 refreshes=7026 polls=2332 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2353 refreshes=7089 polls=2353 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2374 refreshes=7152 polls=2374 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2395 refreshes=7215 polls=2395 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2416 refreshes=7278 polls=2416 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2437 refreshes=7341 polls=2437 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2458 refreshes=7404 polls=2458 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2479 refreshes=7467 polls=2479 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2500 refreshes=7530 polls=2500 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2521 refreshes=7593 polls=2521 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2542 refreshes=7656 polls=2542 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2563 refreshes=7719 polls=2563 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2584 refreshes=7782 polls=2584 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2605 refreshes=7845 polls=2605 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2626 refreshes=7908 polls=2626 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2647 refreshes=7971 polls=2647 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2668 refreshes=8034 polls=2668 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2689 refreshes=8097 polls=2689 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2710 refreshes=8160 polls=2710 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2731 refreshes=8223 polls=2731 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2752 refreshes=8286 polls=2752 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2773 refreshes=8349 polls=2773 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2794 refreshes=8412 polls=2794 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2815 refreshes=8475 polls=2815 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2836 refreshes=8538 polls=2836 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2857 refreshes=8601 polls=2857 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2878 refreshes=8664 polls=2878 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2899 refreshes=8727 polls=2899 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2920 refreshes=8790 polls=2920 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2941 refreshes=8853 polls=2941 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2962 refreshes=8916 polls=2962 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=2983 refreshes=8979 polls=2983 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=3004 refreshes=9042 polls=3004 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=3025 refreshes=9105 polls=3025 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=3046 refreshes=9168 polls=3046 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=3067 refreshes=9231 polls=3067 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=3088 refreshes=9294 polls=3088 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=3109 refreshes=9357 polls=3109 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=3130 refreshes=9420 polls=3130 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=3151 refreshes=9483 polls=3151 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=3172 refreshes=9546 polls=3172 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=3193 refreshes=9609 polls=3193 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=3214 refreshes=9672 polls=3214 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=3235 refreshes=9735 polls=3235 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=3256 refreshes=9798 polls=3256 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=3277 refreshes=9861 polls=3277 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=3298 refreshes=9924 polls=3298 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=3319 refreshes=9987 polls=3319 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=3340 refreshes=10050 polls=3340 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=3361 refreshes=10113 polls=3361 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=3382 refreshes=10176 polls=3382 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=3403 refreshes=10239 polls=3403 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=3424 refreshes=10302 polls=3424 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=3445 refreshes=10365 polls=3445 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=3466 refreshes=10428 polls=3466 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=3487 refreshes=10491 polls=3487 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=3508 refreshes=10554 polls=3508 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=3529 refreshes=10617 polls=3529 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=3550 refreshes=10680 polls=3550 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=3571 refreshes=10743 polls=3571 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=3592 refreshes=10806 polls=3592 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=4495 refreshes=13515 polls=4495 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=4516 refreshes=13578 polls=4516 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=4537 refreshes=13641 polls=4537 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=4558 refreshes=13704 polls=4558 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=4579 refreshes=13767 polls=4579 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=4600 refreshes=13830 polls=4600 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=4621 refreshes=13893 polls=4621 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=4642 refreshes=13956 polls=4642 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=4663 refreshes=14019 polls=4663 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=4684 refreshes=14082 polls=4684 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=4705 refreshes=14145 polls=4705 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=4726 refreshes=14208 polls=4726 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=4747 refreshes=14271 polls=4747 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=4768 refreshes=14334 polls=4768 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=4789 refreshes=14397 polls=4789 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=4810 refreshes=14460 polls=4810 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=4831 refreshes=14523 polls=4831 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=4852 refreshes=14586 polls=4852 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=4873 refreshes=14649 polls=4873 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=4894 refreshes=14712 polls=4894 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=4915 refreshes=14775 polls=4915 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=4936 refreshes=14838 polls=4936 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=4957 refreshes=14901 polls=4957 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=4978 refreshes=14964 polls=4978 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=4999 refreshes=15027 polls=4999 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5020 refreshes=15090 polls=5020 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5041 refreshes=15153 polls=5041 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5062 refreshes=15216 polls=5062 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5083 refreshes=15279 polls=5083 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5104 refreshes=15342 polls=5104 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5125 refreshes=15405 polls=5125 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5146 refreshes=15468 polls=5146 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5167 refreshes=15531 polls=5167 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5188 refreshes=15594 polls=5188 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5209 refreshes=15657 polls=5209 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5230 refreshes=15720 polls=5230 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5251 refreshes=15783 polls=5251 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5272 refreshes=15846 polls=5272 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5293 refreshes=15909 polls=5293 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5314 refreshes=15972 polls=5314 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5335 refreshes=16035 polls=5335 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5356 refreshes=16098 polls=5356 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5377 refreshes=16161 polls=5377 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5398 refreshes=16224 polls=5398 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5419 refreshes=16287 polls=5419 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5440 refreshes=16350 polls=5440 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5461 refreshes=16413 polls=5461 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5482 refreshes=16476 polls=5482 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5503 refreshes=16539 polls=5503 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5524 refreshes=16602 polls=5524 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5545 refreshes=16665 polls=5545 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5566 refreshes=16728 polls=5566 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5587 refreshes=16791 polls=5587 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5608 refreshes=16854 polls=5608 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5629 refreshes=16917 polls=5629 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5650 refreshes=16980 polls=5650 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5671 refreshes=17043 polls=5671 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5692 refreshes=17106 polls=5692 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5713 refreshes=17169 polls=5713 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5734 refreshes=17232 polls=5734 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5755 refreshes=17295 polls=5755 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5776 refreshes=17358 polls=5776 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5797 refreshes=17421 polls=5797 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5818 refreshes=17484 polls=5818 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5839 refreshes=17547 polls=5839 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5860 refreshes=17610 polls=5860 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5881 refreshes=17673 polls=5881 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5902 refreshes=17736 polls=5902 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5923 refreshes=17799 polls=5923 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5944 refreshes=17862 polls=5944 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5965 refreshes=17925 polls=5965 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=5986 refreshes=17988 polls=5986 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6007 refreshes=18051 polls=6007 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6028 refreshes=18114 polls=6028 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6049 refreshes=18177 polls=6049 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6070 refreshes=18240 polls=6070 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6091 refreshes=18303 polls=6091 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6112 refreshes=18366 polls=6112 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6133 refreshes=18429 polls=6133 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6154 refreshes=18492 polls=6154 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6175 refreshes=18555 polls=6175 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6196 refreshes=18618 polls=6196 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6217 refreshes=18681 polls=6217 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6238 refreshes=18744 polls=6238 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6259 refreshes=18807 polls=6259 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6280 refreshes=18870 polls=6280 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6301 refreshes=18933 polls=6301 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6322 refreshes=18996 polls=6322 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6343 refreshes=19059 polls=6343 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6364 refreshes=19122 polls=6364 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6385 refreshes=19185 polls=6385 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6406 refreshes=19248 polls=6406 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6427 refreshes=19311 polls=6427 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6448 refreshes=19374 polls=6448 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6469 refreshes=19437 polls=6469 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6490 refreshes=19500 polls=6490 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6511 refreshes=19563 polls=6511 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6532 refreshes=19626 polls=6532 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6553 refreshes=19689 polls=6553 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6574 refreshes=19752 polls=6574 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6595 refreshes=19815 polls=6595 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6616 refreshes=19878 polls=6616 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6637 refreshes=19941 polls=6637 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6658 refreshes=20004 polls=6658 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6679 refreshes=20067 polls=6679 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6700 refreshes=20130 polls=6700 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6721 refreshes=20193 polls=6721 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6742 refreshes=20256 polls=6742 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6763 refreshes=20319 polls=6763 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6784 refreshes=20382 polls=6784 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6805 refreshes=20445 polls=6805 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6826 refreshes=20508 polls=6826 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6847 refreshes=20571 polls=6847 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6868 refreshes=20634 polls=6868 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6889 refreshes=20697 polls=6889 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6910 refreshes=20760 polls=6910 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6931 refreshes=20823 polls=6931 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6952 refreshes=20886 polls=6952 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6973 refreshes=20949 polls=6973 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=6994 refreshes=21012 polls=6994 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7015 refreshes=21075 polls=7015 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7036 refreshes=21138 polls=7036 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7057 refreshes=21201 polls=7057 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7078 refreshes=21264 polls=7078 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7099 refreshes=21327 polls=7099 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7120 refreshes=21390 polls=7120 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7141 refreshes=21453 polls=7141 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7162 refreshes=21516 polls=7162 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7183 refreshes=21579 polls=7183 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7204 refreshes=21642 polls=7204 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7225 refreshes=21705 polls=7225 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7246 refreshes=21768 polls=7246 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7267 refreshes=21831 polls=7267 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7288 refreshes=21894 polls=7288 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7309 refreshes=21957 polls=7309 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7330 refreshes=22020 polls=7330 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7351 refreshes=22083 polls=7351 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7372 refreshes=22146 polls=7372 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7393 refreshes=22209 polls=7393 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7414 refreshes=22272 polls=7414 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7435 refreshes=22335 polls=7435 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7456 refreshes=22398 polls=7456 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7477 refreshes=22461 polls=7477 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7498 refreshes=22524 polls=7498 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7519 refreshes=22587 polls=7519 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7540 refreshes=22650 polls=7540 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7561 refreshes=22713 polls=7561 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7582 refreshes=22776 polls=7582 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7603 refreshes=22839 polls=7603 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7624 refreshes=22902 polls=7624 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7645 refreshes=22965 polls=7645 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7666 refreshes=23028 polls=7666 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7687 refreshes=23091 polls=7687 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7708 refreshes=23154 polls=7708 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7729 refreshes=23217 polls=7729 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7750 refreshes=23280 polls=7750 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7771 refreshes=23343 polls=7771 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7792 refreshes=23406 polls=7792 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7813 refreshes=23469 polls=7813 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7834 refreshes=23532 polls=7834 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7855 refreshes=23595 polls=7855 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7876 refreshes=23658 polls=7876 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7897 refreshes=23721 polls=7897 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7918 refreshes=23784 polls=7918 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7939 refreshes=23847 polls=7939 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7960 refreshes=23910 polls=7960 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=7981 refreshes=23973 polls=7981 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=8002 refreshes=24036 polls=8002 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=8023 refreshes=24099 polls=8023 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=8044 refreshes=24162 polls=8044 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=8065 refreshes=24225 polls=8065 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=8086 refreshes=24288 polls=8086 errors=0 presses=0 releases=0 x=0 y=0 down=0
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0x17 (CHIP_USB_UART_RESET),boot:0x30c (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4ff02cbe
+Core1 Saved PC:0x4ff02cbe
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+[M4 DISPLAY] CPU=360 MHz native=480x800 logical=800x480 PPA_CCW=270 RGB565 native_fbs=2 logical_fbs=1 bytes_each=768000
+[MEM] before display PSRAM total=33554432 free=33551856 largest=33030132 internal_free=568132
+[M4 DISPLAY] begin=ESP_OK
+[MEM] after display PSRAM total=33554432 free=31246628 largest=30932980 internal_free=566428
+[M4 DISPLAY] pattern=ESP_OK
+[M4 TOUCH] begin=ESP_OK address=0x5d id=911 native=480x800
+[MEM] after touch PSRAM total=33554432 free=31245360 largest=30932980 internal_free=566224
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M4 SHARED] audio_begin=ESP_OK codec_probe=ESP_OK touch_probe=ESP_OK same_bus=1
+[M4 SHARED] audio_end=ESP_OK
+[M4 READY] Verify TL1 TR2 BR3 BL4, colors, border and counter. Touch corners/center and drag. No audible test.
+[M4 LIVE] frames=1 refreshes=33 polls=1 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=22 refreshes=96 polls=22 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=43 refreshes=159 polls=43 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=64 refreshes=222 polls=64 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=85 refreshes=285 polls=85 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=106 refreshes=348 polls=106 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=127 refreshes=411 polls=127 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=148 refreshes=474 polls=148 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=169 refreshes=537 polls=169 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=190 refreshes=600 polls=190 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=211 refreshes=663 polls=211 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=232 refreshes=726 polls=232 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=253 refreshes=789 polls=253 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=274 refreshes=852 polls=274 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=295 refreshes=915 polls=295 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=316 refreshes=978 polls=316 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=337 refreshes=1041 polls=337 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=358 refreshes=1104 polls=358 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=379 refreshes=1167 polls=379 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=400 refreshes=1230 polls=400 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=421 refreshes=1293 polls=421 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=442 refreshes=1356 polls=442 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=463 refreshes=1419 polls=463 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=484 refreshes=1482 polls=484 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=505 refreshes=1545 polls=505 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=526 refreshes=1608 polls=526 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=547 refreshes=1671 polls=547 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=568 refreshes=1734 polls=568 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=589 refreshes=1797 polls=589 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=610 refreshes=1860 polls=610 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=631 refreshes=1923 polls=631 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=652 refreshes=1986 polls=652 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=673 refreshes=2049 polls=673 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=694 refreshes=2112 polls=694 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=715 refreshes=2175 polls=715 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=736 refreshes=2238 polls=736 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=757 refreshes=2301 polls=757 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=778 refreshes=2364 polls=778 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 LIVE] frames=799 refreshes=2427 polls=799 errors=0 presses=0 releases=0 x=0 y=0 down=0
+[M4 TOUCH] PRESS raw=202,292 logical=292,277 count=1
+[M4 LIVE] frames=820 refreshes=2490 polls=820 errors=0 presses=1 releases=0 x=306 y=252 down=1
+[M4 TOUCH] RELEASE raw=270,543 logical=543,209 count=0
+[M4 LIVE] frames=841 refreshes=2553 polls=841 errors=0 presses=1 releases=1 x=543 y=209 down=0
+[M4 TOUCH] PRESS raw=261,635 logical=635,218 count=1
+[M4 TOUCH] RELEASE raw=261,635 logical=635,218 count=0
+[M4 TOUCH] PRESS raw=271,655 logical=655,208 count=1
+[M4 TOUCH] RELEASE raw=271,655 logical=655,208 count=0
+[M4 TOUCH] PRESS raw=349,687 logical=687,130 count=1
+[M4 TOUCH] RELEASE raw=349,687 logical=687,130 count=0
+[M4 TOUCH] PRESS raw=388,690 logical=690,91 count=1
+[M4 TOUCH] RELEASE raw=388,690 logical=690,91 count=0
+[M4 TOUCH] PRESS raw=382,671 logical=671,97 count=1
+[M4 TOUCH] RELEASE raw=382,671 logical=671,97 count=0
+[M4 LIVE] frames=862 refreshes=2616 polls=862 errors=0 presses=6 releases=6 x=671 y=97 down=0
+[M4 TOUCH] PRESS raw=401,643 logical=643,78 count=1
+[M4 TOUCH] RELEASE raw=401,643 logical=643,78 count=0
+[M4 TOUCH] PRESS raw=458,568 logical=568,21 count=1
+[M4 TOUCH] RELEASE raw=458,568 logical=568,21 count=0
+[M4 TOUCH] PRESS raw=404,524 logical=524,75 count=1
+[M4 TOUCH] RELEASE raw=404,524 logical=524,75 count=0
+[M4 TOUCH] PRESS raw=459,497 logical=497,20 count=1
+[M4 TOUCH] RELEASE raw=459,497 logical=497,20 count=0
+[M4 TOUCH] PRESS raw=467,481 logical=481,12 count=1
+[M4 TOUCH] RELEASE raw=467,481 logical=481,12 count=0
+[M4 TOUCH] PRESS raw=466,481 logical=481,13 count=1
+[M4 TOUCH] RELEASE raw=462,476 logical=476,17 count=0
+[M4 LIVE] frames=883 refreshes=2679 polls=883 errors=0 presses=12 releases=12 x=476 y=17 down=0
+[M4 TOUCH] PRESS raw=438,395 logical=395,41 count=1
+[M4 TOUCH] RELEASE raw=438,395 logical=395,41 count=0
+[M4 TOUCH] PRESS raw=0,0 logical=0,479 count=1
+[M4 TOUCH] RELEASE raw=0,0 logical=0,479 count=0
+[M4 TOUCH] PRESS raw=457,301 logical=301,22 count=1
+[M4 TOUCH] RELEASE raw=457,301 logical=301,22 count=0
+[M4 TOUCH] PRESS raw=454,246 logical=246,25 count=1
+[M4 TOUCH] RELEASE raw=451,243 logical=243,28 count=0
+[M4 TOUCH] PRESS raw=433,175 logical=175,46 count=1
+[M4 TOUCH] RELEASE raw=433,175 logical=175,46 count=0
+[M4 TOUCH] PRESS raw=417,138 logical=138,62 count=1
+[M4 TOUCH] RELEASE raw=417,138 logical=138,62 count=0
+[M4 LIVE] frames=904 refreshes=2742 polls=904 errors=0 presses=18 releases=18 x=138 y=62 down=0
+[M4 TOUCH] PRESS raw=436,106 logical=106,43 count=1
+[M4 TOUCH] RELEASE raw=436,106 logical=106,43 count=0
+[M4 TOUCH] PRESS raw=170,190 logical=190,309 count=1
+[M4 TOUCH] RELEASE raw=170,190 logical=190,309 count=0
+[M4 TOUCH] PRESS raw=150,202 logical=202,329 count=1
+[M4 TOUCH] RELEASE raw=150,202 logical=202,329 count=0
+[M4 TOUCH] PRESS raw=123,288 logical=288,356 count=1
+[M4 LIVE] frames=925 refreshes=2805 polls=925 errors=0 presses=22 releases=21 x=288 y=356 down=1
+[M4 TOUCH] RELEASE raw=123,293 logical=293,356 count=0
+[M4 TOUCH] PRESS raw=155,482 logical=482,324 count=1
+[M4 TOUCH] RELEASE raw=155,482 logical=482,324 count=0
+[M4 TOUCH] PRESS raw=199,593 logical=593,280 count=1
+[M4 TOUCH] RELEASE raw=199,593 logical=593,280 count=0
+[M4 TOUCH] PRESS raw=242,652 logical=652,237 count=1
+[M4 TOUCH] RELEASE raw=242,652 logical=652,237 count=0
+[M4 TOUCH] PRESS raw=308,669 logical=669,171 count=1
+[M4 TOUCH] RELEASE raw=308,669 logical=669,171 count=0
+[M4 LIVE] frames=946 refreshes=2868 polls=946 errors=0 presses=26 releases=26 x=669 y=171 down=0
+[M4 LIVE] frames=967 refreshes=2931 polls=967 errors=0 presses=26 releases=26 x=669 y=171 down=0
+[M4 LIVE] frames=988 refreshes=2994 polls=988 errors=0 presses=26 releases=26 x=669 y=171 down=0
+[M4 LIVE] frames=1009 refreshes=3057 polls=1009 errors=0 presses=26 releases=26 x=669 y=171 down=0
+[M4 LIVE] frames=1030 refreshes=3120 polls=1030 errors=0 presses=26 releases=26 x=669 y=171 down=0
+[M4 LIVE] frames=1051 refreshes=3183 polls=1051 errors=0 presses=26 releases=26 x=669 y=171 down=0
+[M4 LIVE] frames=1072 refreshes=3246 polls=1072 errors=0 presses=26 releases=26 x=669 y=171 down=0
+[M4 LIVE] frames=1093 refreshes=3309 polls=1093 errors=0 presses=26 releases=26 x=669 y=171 down=0
+[M4 LIVE] frames=1114 refreshes=3372 polls=1114 errors=0 presses=26 releases=26 x=669 y=171 down=0
+[M4 LIVE] frames=1135 refreshes=3435 polls=1135 errors=0 presses=26 releases=26 x=669 y=171 down=0
+[M4 LIVE] frames=1156 refreshes=3498 polls=1156 errors=0 presses=26 releases=26 x=669 y=171 down=0
+[M4 LIVE] frames=1177 refreshes=3561 polls=1177 errors=0 presses=26 releases=26 x=669 y=171 down=0
+[M4 LIVE] frames=1198 refreshes=3624 polls=1198 errors=0 presses=26 releases=26 x=669 y=171 down=0
+[M4 LIVE] frames=1219 refreshes=3687 polls=1219 errors=0 presses=26 releases=26 x=669 y=171 down=0
+[M4 LIVE] frames=1240 refreshes=3750 polls=1240 errors=0 presses=26 releases=26 x=669 y=171 down=0
+[M4 LIVE] frames=1261 refreshes=3813 polls=1261 errors=0 presses=26 releases=26 x=669 y=171 down=0

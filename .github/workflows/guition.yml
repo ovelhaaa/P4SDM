@@ -17,3 +17,4 @@ jobs:
       - run: g++ -std=c++17 -Wall -Wextra -Werror -Itests/fx_stubs tests/fx_safety_test.cpp -o /tmp/fx_safety_test && /tmp/fx_safety_test
       - run: python tests/compare_fx_baseline.py
       - run: g++ -std=c++17 -Wall -Wextra -Werror tests/display_geometry_test.cpp -o /tmp/display_geometry_test && /tmp/display_geometry_test
+      - run: python tests/analyze_m4.py docs/GUITION_M4_UI_AUDIO_SERIAL.log --display-log docs/GUITION_M4_DISPLAY_SERIAL.log
