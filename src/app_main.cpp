@@ -1,6 +1,6 @@
 #include "app/model.h"
-#include "app/samples.h"
 #include "app/qualification.h"
+#include "app/samples.h"
 static bool app_pcm(int track, int16_t &value);
 static void app_sample();
 // clang-format off
@@ -23,20 +23,26 @@ std::atomic<uint32_t> input_errors{0}, input_overflow{0};
 app::Engine engine, view;
 app::Ui ui;
 std::atomic<int> playhead{-1};
+// Acknowledged command count and pattern transport published together. UI only
+// accepts snapshots after all its optimistic edits have reached audio.
+std::atomic<uint32_t> pattern_status{0}, pattern_switches{0}, pattern_loops{0};
+uint16_t sent_commands = 0;
+std::atomic<uint32_t> applied_actions[18]{}, long_to_short{0}, short_to_long{0},
+    queue_replacements{0};
 std::atomic<uint32_t> diagnostic_p99{0}, diagnostic_max{0},
     diagnostic_misses{0};
 std::atomic<uint32_t> flashes[16];
 bool delay_ready = false;
 int sample_index = 0;
-bool dirty[43]{};
+bool dirty[68]{};
 bool full = true;
 uint32_t rejected = 0, touch_errors = 0, frames = 0, full_frames = 0;
-uint32_t actions[43]{}, drags = 0;
+uint32_t actions[68]{}, drags = 0;
 uint64_t dirty_bytes = 0, normal_dirty_bytes = 0;
 unsigned normal_frames = 0;
 uint32_t normal_dirty_max = 0;
 uint32_t dirty_max = 0, prep_max = 0, skipped_frames = 0;
-constexpr unsigned capture_blocks = 10336;
+constexpr unsigned capture_blocks = 10337;
 #if P4SDM_SAMPLER_QUALIFICATION
 struct QualificationMetrics {
   uint32_t times[4096]{}, count = 0, misses = 0, failures = 0, timeouts = 0;
@@ -58,7 +64,8 @@ void trigger(int t) {
   if (engine.tracks[t].sample && samples::voices[t].sample) {
     PITCH[t] = 255;
     AMP[t] = 0;
-    samples::voices[t].trigger(sampler::pitch_increment(engine.tracks[t].pitch));
+    samples::voices[t].trigger(
+        sampler::pitch_increment(engine.tracks[t].pitch));
   } else
     synthESP32_TRIGGER_P(t, engine.tracks[t].pitch);
   flashes[t].fetch_add(1, std::memory_order_relaxed);
@@ -88,22 +95,62 @@ bool send(app::Command c) {
     ++rejected;
     return false;
   }
+  ++sent_commands;
   view.apply(c);
   return true;
 }
 void draw(int id) {
-  auto r = id == 42 ? app::Rect{24, 250, 200, 56} : app::widget(id);
+  auto r = app::widget(id);
   char s[48]{};
   uint16_t color = panel;
-  if (id >= 38) {
+  if (id == 44) {
+    color = bg;
+    if (view.queued_pattern >= 0)
+      snprintf(s, sizeof(s), "P%02d > P%02d / EDIT %02d",
+               view.playing_pattern + 1, view.queued_pattern + 1,
+               view.selected_pattern + 1);
+    else
+      snprintf(s, sizeof(s), "P%02d / EDIT %02d / PATTERN",
+               view.playing_pattern + 1, view.selected_pattern + 1);
+  } else if (id == 43) {
+    char title[40];
+    display::rect(24, 90, 216, 60, bg);
+    snprintf(title, sizeof(title), "TRACK %02d / %s", ui.selected + 1,
+             view.tracks[ui.selected].sample ? "SAMPLE" : "SYNTH");
+    display::text(24, 100, title, white, 1);
+    snprintf(s, sizeof(s), "%s",
+             view.solos & (1u << ui.selected) ? "UNSOLO" : "SOLO");
+  } else if (id >= 46 && id <= 61) {
+    int p = id - 46;
+    color = p == view.playing_pattern ? 0x03c0 : panel;
+    if (p == view.queued_pattern)
+      color = 0x820f;
+    snprintf(s, sizeof(s), "P%02d %s%s", p + 1,
+             p == view.playing_pattern ? "PLAY" : "",
+             p == view.queued_pattern ? "NEXT" : "");
+  } else if (id >= 62) {
+    const char *labels[] = {"-",
+                            "",
+                            "+",
+                            ui.copy_source >= 0 ? "CANCEL COPY" : "COPY",
+                            ui.clear_pattern >= 0 ? "CONFIRM CLEAR" : "CLEAR",
+                            ui.inspect ? "INSPECT" : "QUEUE / PLAY"};
+    snprintf(s, sizeof(s), "%s", labels[id - 62]);
+    if (id == 63)
+      snprintf(s, sizeof(s), "%02d",
+               view.patterns[view.selected_pattern].length);
+  } else if (id >= 38 && id <= 42) {
     const char *labels[] = {"PREVIOUS", "NEXT", "LOAD / ASSIGN",
                             view.tracks[ui.selected].sample ? "USE SYNTH"
                                                             : "USE SAMPLE",
                             "SAMPLE PAGE"};
     snprintf(s, sizeof(s), "%s", labels[id - 38]);
   } else if (id < 16) {
-    bool on = view.tracks[ui.selected].steps & (1u << id);
+    bool on = view.patterns[view.selected_pattern].track_steps[ui.selected] &
+              (1u << id);
     color = on ? accent : panel;
+    if (id >= view.patterns[view.selected_pattern].length)
+      color = 0x1082;
     if (id == old_head)
       color = 0xffe0;
     if (id == ui.selected_step && !on)
@@ -114,10 +161,11 @@ void draw(int id) {
     color = t == ui.selected ? accent : panel;
     if (millis() < flash_until[t])
       color = 0xffe0;
-    snprintf(s, sizeof(s), "%02d %s", t + 1,
+    snprintf(s, sizeof(s), "%02d %s%s", t + 1,
              view.tracks[t].muted    ? "MUTE"
              : view.tracks[t].sample ? "SAMPLE"
-                                     : "SYNTH");
+                                     : "SYNTH",
+             view.solos & (1u << t) ? " SOLO" : "");
   } else if (id < 29) {
     auto &t = view.tracks[ui.selected];
     const char *names[] = {"VOLUME", "PAN", "PITCH", "LENGTH", "WAVE"};
@@ -125,7 +173,8 @@ void draw(int id) {
     if (!app::track_control_enabled(t, id))
       snprintf(s, sizeof(s), "%s  SYNTH ONLY", names[id - 24]);
     else if (t.sample && id == 26)
-      snprintf(s, sizeof(s), "TUNE %+d st%s", t.pitch - 60, t.pitch == 60 ? " UNITY" : "");
+      snprintf(s, sizeof(s), "TUNE %+d st%s", t.pitch - 60,
+               t.pitch == 60 ? " UNITY" : "");
     else
       snprintf(s, sizeof(s), "%s  %d", names[id - 24], vals[id - 24]);
   } else {
@@ -142,6 +191,15 @@ void draw(int id) {
   }
   display::rect(r.x, r.y, r.w, r.h, color);
   display::text(r.x + 8, r.y + 16, s, white, 2);
+  if (id == 65 && ui.copy_source >= 0) {
+    snprintf(s, sizeof(s), "FROM P%02d: TAP DEST", ui.copy_source + 1);
+    display::text(r.x + 8, r.y + 44, s, accent, 1);
+  }
+  if (id >= 46 && id <= 61 && id - 46 == view.selected_pattern) {
+    display::rect(r.x, r.y, r.w, 3, accent);
+    display::rect(r.x, r.y + r.h - 3, r.w, 3, accent);
+    display::text(r.x + 8, r.y + 44, "EDIT", accent, 1);
+  }
 }
 void sample_status() {
   char line[128];
@@ -170,15 +228,21 @@ void overlay() {
   display::text(8, 82, s, white, 1);
 #endif
 }
-void header() {
-  char s[64];
-  display::rect(0, 0, 800, 80, bg);
-  snprintf(s, sizeof(s), "P4SDM / PATTERN 01   T%02d", ui.selected + 1);
-  display::text(16, 24, s, white, 2);
+void tempo_header() {
+  char s[8];
+  display::rect(584, 16, 120, 56, bg);
   snprintf(s, sizeof(s), "%03d", view.bpm);
   display::text(600, 24, s, accent, 3);
   draw(34);
   draw(35);
+}
+void header() {
+  char s[32];
+  display::rect(0, 0, 800, 80, bg);
+  snprintf(s, sizeof(s), "P4SDM T%02d", ui.selected + 1);
+  display::text(16, 24, s, white, 2);
+  draw(44);
+  tempo_header();
 }
 void interact(int id, int x, bool initial) {
   if (id < 0)
@@ -187,7 +251,55 @@ void interact(int id, int x, bool initial) {
     ++actions[id];
   else
     ++drags;
-  if (id >= 38 && initial) {
+  if (initial && ui.page == app::Page::Pattern && id >= 46) {
+    int selected = view.selected_pattern, queued = view.queued_pattern,
+        playing = view.playing_pattern;
+    int copy = ui.copy_source, clear = ui.clear_pattern;
+    app::Ui previous = ui;
+    app::Command c{};
+    bool has_command = ui.pattern_action(id, view, c);
+    if (has_command && !send(c)) {
+      ui = previous;
+      return;
+    }
+    if (has_command) {
+      if (c.kind == app::Kind::SelectPattern ||
+          c.kind == app::Kind::InspectPattern) {
+        dirty[46 + selected] = dirty[46 + view.selected_pattern] = true;
+        if (queued >= 0)
+          dirty[46 + queued] = true;
+        if (view.queued_pattern >= 0)
+          dirty[46 + view.queued_pattern] = true;
+        dirty[46 + playing] = dirty[46 + view.playing_pattern] = dirty[44] =
+            true;
+        dirty[63] = true;
+      } else if (c.kind == app::Kind::CopyPattern) {
+        dirty[46 + c.value] = true;
+        if (c.value == view.selected_pattern)
+          dirty[63] = true;
+      } else if (c.kind == app::Kind::ClearPattern)
+        dirty[46 + c.pattern] = true;
+      else if (c.kind == app::Kind::PatternLength)
+        dirty[63] = true;
+    }
+    if (copy != ui.copy_source)
+      dirty[65] = true;
+    if (clear != ui.clear_pattern)
+      dirty[66] = true;
+    if (id == 67)
+      dirty[67] = true;
+  } else if (id == 44 && initial) {
+    if (ui.page != app::Page::Pattern) {
+      ui.cancel_pattern_action();
+      ui.page = app::Page::Pattern;
+      full = true;
+    }
+  } else if (id == 43 && initial) {
+    send({app::Kind::Solo, uint8_t(ui.selected),
+          !(view.solos & (1u << ui.selected))});
+    dirty[43] = true;
+    dirty[16 + ui.selected % 8] = true;
+  } else if (id >= 38 && id <= 42 && initial) {
     if (id == 42) {
       ui.page = app::Page::Sample;
       full = true;
@@ -204,7 +316,9 @@ void interact(int id, int x, bool initial) {
       dirty[38] = true;
     }
   } else if (id < 16 && initial) {
-    if (send({app::Kind::Step, uint8_t(ui.selected), id})) {
+    app::Command c{app::Kind::Step, uint8_t(ui.selected), id};
+    c.pattern = uint8_t(view.selected_pattern);
+    if (send(c)) {
       int old = ui.selected_step;
       ui.selected_step = id;
       dirty[id] = true;
@@ -220,7 +334,7 @@ void interact(int id, int x, bool initial) {
       dirty[16 + old % 8] = true;
     for (int i = 0; i < 16; ++i)
       dirty[i] = true;
-    dirty[34] = true;
+    dirty[45] = true;
   } else if (id < 29) {
     app::Kind kinds[] = {app::Kind::Volume, app::Kind::Pan, app::Kind::Pitch,
                          app::Kind::Length, app::Kind::Wave};
@@ -228,7 +342,8 @@ void interact(int id, int x, bool initial) {
     if (id == 28)
       val = val * 15 / 127;
     auto &t = view.tracks[ui.selected];
-    if (!app::track_control_enabled(t, id)) return;
+    if (!app::track_control_enabled(t, id))
+      return;
     int current[] = {t.volume, t.pan, t.pitch, t.length, t.wave};
     if (val != current[id - 24] &&
         send({kinds[id - 24], uint8_t(ui.selected), val}))
@@ -240,6 +355,7 @@ void interact(int id, int x, bool initial) {
     } else if (id >= 30 && id <= 32) {
       auto page = static_cast<app::Page>(id - 30);
       if (page != ui.page) {
+        ui.cancel_pattern_action();
         ui.page = page;
         full = true;
       }
@@ -259,6 +375,7 @@ void interact(int id, int x, bool initial) {
       send({app::Kind::Mute, uint8_t(ui.selected),
             !view.tracks[ui.selected].muted});
       dirty[37] = true;
+      dirty[16 + ui.selected % 8] = true;
     }
   }
 }
@@ -284,7 +401,10 @@ void ui_task(void *) {
         if (samples::assigned(t)) {
           view.tracks[t].assigned();
           if (int(t) == ui.selected)
-            for (int id = 24; id < 29; ++id) dirty[id] = true;
+            dirty[43] = true;
+          if (int(t) == ui.selected)
+            for (int id = 24; id < 29; ++id)
+              dirty[id] = true;
           if (int(t / 8) == ui.bank)
             dirty[16 + t % 8] = true;
         }
@@ -298,41 +418,58 @@ void ui_task(void *) {
         send({app::Kind::Trigger, uint8_t(t), 0});
     }
     if (millis() >= stress_due) {
-      stress_due = millis() + 100;
-      ++action;
-      switch (action % 10) {
-      case 0:
-        interact(29, 0, true);
-        break;
-      case 1:
-        interact(30, 0, true);
-        break;
-      case 2:
-        interact(33, 0, true);
-        break;
-      case 3:
-        interact(16 + action % 8, 0, true);
-        send({app::Kind::Trigger, uint8_t(ui.selected), 0});
-        break;
-      case 4:
-        interact(action % 16, 0, true);
-        break;
-      case 5:
-        interact(35, 0, true);
-        break;
-      case 6:
+      stress_due = millis() + 250;
+      const unsigned slot = action++ % 48;
+      // Continuous transport. Both real loop transitions and queue replacement
+      // occur, with a long and a short pattern, under normal UI/command load.
+      if (slot == 0) {
+        interact(44, 0, true);
+        interact(46, 0, true);
+      } else if (slot == 8) {
+        interact(44, 0, true);
+        interact(48, 0, true);
+        interact(47, 0, true);
+      } else if (slot == 20) {
+        interact(44, 0, true);
+        interact(46, 0, true);
+      } else if (slot == 24 || slot == 25)
+        interact(62, 0, true);
+      else if (slot == 26 || slot == 27)
+        interact(64, 0, true);
+      else if (slot == 28) {
+        interact(44, 0, true);
+        interact(65, 0, true);
+        interact(49, 0, true);
+      } else if (slot == 29) {
+        interact(67, 0, true);
+        interact(49, 0, true);
+      } else if (slot == 30) {
+        interact(66, 0, true);
+        interact(66, 0, true);
+      } else if (slot == 31) {
+        interact(67, 0, true);
+        interact(46, 0, true);
+      } else if (slot == 32)
         interact(31, 0, true);
-        break;
-      case 7:
-        interact(24 + action % 3, 260 + int(action % 128) * 4, false);
-        break;
-      case 8:
+      else if (slot == 33 || slot == 34)
+        interact(37, 0, true);
+      else if (slot == 35 || slot == 36)
+        interact(43, 0, true);
+      else if (slot == 37)
         interact(32, 0, true);
-        break;
-      case 9:
+      else if (slot == 38)
         interact(30, 0, true);
-        break;
-      }
+      else if (slot == 39 || slot == 40)
+        interact(5, 0, true);
+      else if (slot == 41)
+        interact(33, 0, true);
+      else if (slot == 42) {
+        interact(16, 0, true);
+        send({app::Kind::Trigger, uint8_t(ui.selected), 0});
+      } else if (slot == 43)
+        interact(31, 0, true);
+      else if (slot == 44)
+        interact(24, 700, false);
     }
 #endif
     app::Command event;
@@ -342,7 +479,8 @@ void ui_task(void *) {
       touch_state.y = unsigned(event.value) >> 16;
       if (touch_state.pressed && !ui.down) {
         ui.capture = app::hit(ui.page, touch_state.x, touch_state.y);
-        if (ui.page == app::Page::Track && ui.capture >= 24 && ui.capture < 29 &&
+        if (ui.page == app::Page::Track && ui.capture >= 24 &&
+            ui.capture < 29 &&
             !app::track_control_enabled(view.tracks[ui.selected], ui.capture))
           ui.capture = -1;
         interact(ui.capture, touch_state.x, true);
@@ -353,7 +491,23 @@ void ui_task(void *) {
         ui.capture = -1;
     }
     touch_errors = input_errors.load(std::memory_order_relaxed);
-    int head = playhead.load(std::memory_order_relaxed);
+    uint32_t status = pattern_status.load(std::memory_order_acquire);
+    if (uint16_t(status >> 16) == sent_commands) {
+      int playing = status & 15, queued = int((status >> 4) & 31) - 1;
+      if (playing != view.playing_pattern || queued != view.queued_pattern) {
+        dirty[46 + view.playing_pattern] = dirty[46 + playing] = true;
+        if (view.queued_pattern >= 0)
+          dirty[46 + view.queued_pattern] = true;
+        if (queued >= 0)
+          dirty[46 + queued] = true;
+        dirty[44] = true;
+        view.playing_pattern = playing;
+        view.queued_pattern = queued;
+      }
+    }
+    int head = view.selected_pattern == view.playing_pattern
+                   ? playhead.load(std::memory_order_relaxed)
+                   : -1;
     if (head != old_head) {
       if (old_head >= 0)
         dirty[old_head] = true;
@@ -401,8 +555,16 @@ void ui_task(void *) {
         } else if (ui.page == app::Page::Track) {
           for (int i = 24; i < 29; ++i)
             draw(i);
+          char title[40];
+          snprintf(title, sizeof(title), "TRACK %02d / %s", ui.selected + 1,
+                   view.tracks[ui.selected].sample ? "SAMPLE" : "SYNTH");
+          display::text(24, 100, title, white, 1);
           draw(37);
+          draw(43);
           draw(42);
+        } else if (ui.page == app::Page::Pattern) {
+          for (int i = 46; i <= 67; ++i)
+            draw(i);
         } else if (ui.page == app::Page::Sample) {
           for (int i = 38; i <= 41; ++i)
             draw(i);
@@ -417,13 +579,23 @@ void ui_task(void *) {
         full = false;
       } else {
         if (dirty[34])
-          header();
-        for (int i = 0; i < 43; ++i)
+          tempo_header();
+        if (dirty[44])
+          draw(44);
+        if (dirty[45]) {
+          char title[24];
+          display::rect(0, 16, 176, 56, bg);
+          snprintf(title, sizeof(title), "P4SDM T%02d", ui.selected + 1);
+          display::text(16, 24, title, white, 2);
+        }
+        for (int i = 0; i < 68; ++i)
           if (dirty[i] &&
               ((i < 24 && ui.page == app::Page::Sequence) ||
                (i >= 24 && i < 29 && ui.page == app::Page::Track) ||
                (i >= 29 && i < 34) || (i == 36 && ui.page == app::Page::Fx) ||
-               ((i == 37 || i == 42) && ui.page == app::Page::Track)))
+               ((i == 37 || i == 42 || i == 43) &&
+                ui.page == app::Page::Track) ||
+               (i >= 46 && ui.page == app::Page::Pattern)))
             draw(i);
       }
       if (ui.page == app::Page::Sample && dirty[38]) {
@@ -477,6 +649,28 @@ void ui_task(void *) {
                     full_frames, prep_max, touch_errors,
                     rejected + input_overflow.load(), pads, steps, drags, pages,
                     actions[29], actions[34] + actions[35], skipped_frames);
+      Serial.printf(
+          "[M7 patterns] switches=%u loops=%u selections=%u copies=%u "
+          "clears=%u lengths=%u solos=%u mutes=%u normal_frames=%u "
+          "dirty_avg=%u dirty_max=%u pattern_bytes=%u command_bytes=%u\n",
+          pattern_switches.load(), pattern_loops.load(),
+          actions[46] + actions[47] + actions[48] + actions[49], actions[65],
+          actions[66] / 2, actions[62] + actions[64], actions[43], actions[37],
+          normal_frames,
+          unsigned(normal_frames ? normal_dirty_bytes / normal_frames : 0),
+          normal_dirty_max, unsigned(sizeof(app::Pattern)),
+          unsigned(sizeof(app::Command)));
+      Serial.printf("[M7 applied] long_to_short=%u short_to_long=%u "
+                    "queue_replacements=%u copies=%u clears=%u lengths=%u "
+                    "solos=%u mutes=%u steps=%u\n",
+                    long_to_short.load(), short_to_long.load(),
+                    queue_replacements.load(),
+                    applied_actions[unsigned(app::Kind::CopyPattern)].load(),
+                    applied_actions[unsigned(app::Kind::ClearPattern)].load(),
+                    applied_actions[unsigned(app::Kind::PatternLength)].load(),
+                    applied_actions[unsigned(app::Kind::Solo)].load(),
+                    applied_actions[unsigned(app::Kind::Mute)].load(),
+                    applied_actions[unsigned(app::Kind::Step)].load());
       Serial.printf("[M5 memory] ps_before=%u ps_after=%u internal_before=%u "
                     "internal_after=%u largest_before=%u largest_after=%u\n",
                     unsigned(ps_before), unsigned(ps_after),
@@ -521,7 +715,8 @@ void audio_worker(void *) {
     const auto start = esp_timer_get_time();
 #if P4SDM_SAMPLER_QUALIFICATION
     static unsigned previous_phase = 0, blocks = 0;
-    unsigned phase = samples::qualification_phase.load(std::memory_order_acquire);
+    unsigned phase =
+        samples::qualification_phase.load(std::memory_order_acquire);
     if (phase != previous_phase) {
       qualification_finished.store(previous_phase, std::memory_order_release);
       previous_phase = phase;
@@ -529,15 +724,18 @@ void audio_worker(void *) {
       if (phase) {
         engine.apply({app::Kind::Play, 0, 1});
         for (unsigned t = 0; t < 16; ++t) {
-          engine.tracks[t].steps = 0xffff;
-          engine.apply({app::Kind::Pitch, uint8_t(t), sampler::qualification_pitch(phase)});
+          engine.patterns[0].track_steps[t] = 0xffff;
+          engine.apply({app::Kind::Pitch, uint8_t(t),
+                        sampler::qualification_pitch(phase)});
           trigger(t);
         }
       }
     }
     if (phase == 4 && ++blocks % 8 == 0)
-      for (int t = 0; t < 16; ++t) trigger(t);
-    const unsigned metric = phase == 6 && samples::load_active.load() ? 7 : phase;
+      for (int t = 0; t < 16; ++t)
+        trigger(t);
+    const unsigned metric =
+        phase == 6 && samples::load_active.load() ? 7 : phase;
 #endif
     int sample_track = samples::transfer.consume(samples::voices);
     if (sample_track >= 0) {
@@ -548,8 +746,11 @@ void audio_worker(void *) {
       FILTROS[t].reset();
     }
     app::Command c;
+    static uint16_t applied_commands = 0;
     for (unsigned n = 0; n < 16 && commands.pop(c); ++n) {
       engine.apply(c);
+      ++applied_commands;
+      applied_actions[unsigned(c.kind)].fetch_add(1, std::memory_order_relaxed);
       if (c.kind == app::Kind::Source) {
         samples::voices[c.track].stop();
         FILTROS[c.track].reset();
@@ -557,7 +758,7 @@ void audio_worker(void *) {
         AMP[c.track] = 0;
       }
       if (c.kind == app::Kind::Trigger)
-        trigger(c.track);
+        engine.audition(c.track, trigger);
       else if (c.kind == app::Kind::Delay) {
         is_delay = delay_ready && engine.delay;
         delays = is_delay ? 0xffff : 0;
@@ -568,7 +769,7 @@ void audio_worker(void *) {
             sampler::pitch_increment(engine.tracks[c.track].pitch);
     }
     for (unsigned n = 0; n < 16 && pad_triggers.pop(c); ++n)
-      trigger(c.track);
+      engine.audition(c.track, trigger);
     render_buffer();
     auto us = uint32_t(esp_timer_get_time() - start);
     unsigned b = captured.load(std::memory_order_relaxed);
@@ -590,6 +791,15 @@ void audio_worker(void *) {
     }
     playhead.store(engine.playing ? engine.step : -1,
                    std::memory_order_relaxed);
+    pattern_status.store((uint32_t(applied_commands) << 16) |
+                             unsigned(engine.playing_pattern) |
+                             (unsigned(engine.queued_pattern + 1) << 4),
+                         std::memory_order_release);
+    pattern_switches.store(engine.switches);
+    pattern_loops.store(engine.loops);
+    long_to_short.store(engine.long_to_short);
+    short_to_long.store(engine.short_to_long);
+    queue_replacements.store(engine.queue_replacements);
     auto err = audio::write(out_buf, DMA_BUF_LEN);
 #if P4SDM_SAMPLER_QUALIFICATION
     if (metric && qualification[metric].count < 4096) {
@@ -599,7 +809,8 @@ void audio_worker(void *) {
       m.failures += err != ESP_OK;
       m.timeouts += err == ESP_ERR_TIMEOUT;
       unsigned active = 0;
-      for (auto &v : samples::voices) active += v.active;
+      for (auto &v : samples::voices)
+        active += v.active;
       m.active_max = std::max(m.active_max, uint32_t(active));
       for (int i = 0; i < DMA_BUF_LEN * 2; ++i) {
         m.nonzero += out_buf[i] != 0;
@@ -673,6 +884,19 @@ static void initialize(void *) {
     vTaskDelete(nullptr);
     return;
   }
+#if P4SDM_APP_STRESS
+  for (int t = 0; t < 16; ++t) {
+    engine.patterns[0].track_steps[t] = view.patterns[0].track_steps[t] =
+        0xffff;
+    engine.patterns[1].track_steps[t] = view.patterns[1].track_steps[t] =
+        0xffff;
+  }
+  engine.patterns[1].length = view.patterns[1].length = 7;
+  engine.apply({app::Kind::Bpm, 0, 240});
+  view.apply({app::Kind::Bpm, 0, 240});
+  engine.apply({app::Kind::Play, 0, 1});
+  view.apply({app::Kind::Play, 0, 1});
+#endif
   xTaskCreatePinnedToCore(audio_worker, "app_audio", 8000, nullptr,
                           configMAX_PRIORITIES - 1, nullptr, 0);
   samples::start();
@@ -688,17 +912,28 @@ void loop() {
 #if P4SDM_SAMPLER_QUALIFICATION
   static unsigned reported_modes = 0;
   unsigned finished = qualification_finished.load(std::memory_order_acquire);
-  const char *modes[] = {"", "UNITY", "DOWN", "UP", "RETRIGGER", "BASELINE", "LOAD_WINDOW_IDLE", "SD_LOAD_INTERVAL"};
+  const char *modes[] = {"",
+                         "UNITY",
+                         "DOWN",
+                         "UP",
+                         "RETRIGGER",
+                         "BASELINE",
+                         "LOAD_WINDOW_IDLE",
+                         "SD_LOAD_INTERVAL"};
   for (unsigned mode = 1; mode <= 7; ++mode) {
     if (!(reported_modes & (1u << mode)) &&
         (mode <= finished || (mode == 7 && finished == 6))) {
       auto &m = qualification[mode];
-      if (!m.count) continue;
+      if (!m.count)
+        continue;
       std::sort(m.times, m.times + m.count);
-      Serial.printf("[M6.1 audio] mode=%s blocks=%u p50=%u p95=%u p99=%u max=%u misses=%u failures=%u timeouts=%u nonzero=%u rails=%u active_max=%u\n",
-                    modes[mode], m.count, m.times[m.count / 2], m.times[m.count * 95 / 100],
-                    m.times[m.count * 99 / 100], m.times[m.count - 1], m.misses,
-                    m.failures, m.timeouts, m.nonzero, m.rails, m.active_max);
+      Serial.printf("[M6.1 audio] mode=%s blocks=%u p50=%u p95=%u p99=%u "
+                    "max=%u misses=%u failures=%u timeouts=%u nonzero=%u "
+                    "rails=%u active_max=%u\n",
+                    modes[mode], m.count, m.times[m.count / 2],
+                    m.times[m.count * 95 / 100], m.times[m.count * 99 / 100],
+                    m.times[m.count - 1], m.misses, m.failures, m.timeouts,
+                    m.nonzero, m.rails, m.active_max);
       reported_modes |= 1u << mode;
     }
   }

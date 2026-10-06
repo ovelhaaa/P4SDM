@@ -350,3 +350,20 @@ See [M6 architecture, audit and qualification](docs/GUITION_M6.md).
 **PHYSICAL SD VALIDATION PENDING** until a microSD card is available.
 
 M6.1 sample pitch/source semantics and optional physical-card runner: [qualification report](docs/GUITION_M61.md).
+
+## M7 — padrões e performance em RAM
+
+O app agora tem 16 padrões independentes, 16 pistas por padrão e comprimento 1–16.
+Toque no campo de padrão no cabeçalho para abrir PATTERN: fila quantizada no fim
+do loop, modo INSPECT para editar sem enfileirar, COPY com escolha de destino e
+CLEAR com segundo toque de confirmação. TRACK oferece MUTE/SOLO; pads continuam
+audicionando mesmo quando a pista está mutada ou fora do solo. Os padrões não
+são persistidos e não exigem cartão. A qualificação física SD/sample do M6 segue
+pendente, sem bloquear M7.
+
+[Modelo, semântica, testes e qualificação M7](docs/GUITION_M7.md) ·
+[Auditoria do sequenciador Tab5](docs/GUITION_M7_TAB5_AUDIT.md).
+
+Build normal: `pio run -e guition_app`; stress contínuo com 16 vozes synth/Delay e
+transições reais: `pio run -e guition_app_stress`. Após qualificar, restaure
+`guition_app`. Validação do log: `python tests/analyze_m7.py <log>`.

@@ -31,3 +31,7 @@ jobs:
       - run: python tests/analyze_m6.py docs/GUITION_M6_NO_CARD_STRESS_SERIAL.log
 
       - run: python tests/analyze_m6.py docs/GUITION_M61_NO_CARD_STRESS_SERIAL.log
+
+      - run: g++ -std=c++17 -Wall -Wextra -Werror tests/pattern_engine_test.cpp -o /tmp/pattern_engine_test && /tmp/pattern_engine_test
+
+      - run: python tests/analyze_m7.py docs/GUITION_M7_STRESS_SERIAL.log
