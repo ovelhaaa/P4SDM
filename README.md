@@ -117,8 +117,9 @@ Essa organização é uma ponte para a futura separação da aplicação/UI em m
 
 `render_buffer()` contém o loop PCM original; o transporte foi separado dele.
 O teste envia `audio::write(out_buf, DMA_BUF_LEN)`. Inicializa todas as vozes
-antes de criar a task de áudio e dispara 20 notas em 10 segundos, alternando
-PAN extremo L/R em 16 vozes/wavetables. As mudanças de voz pertencem à mesma
+antes de criar a task de áudio. M3.1 mede etapas determinísticas de 1/4/8/16
+vozes simultâneas por 3 segundos cada, com notas/wavetables/PAN distintos e
+envelope original de 5 segundos (tabela 3). As mudanças de voz pertencem à mesma
 task de áudio, evitando escrita concorrente nos globais neste diagnóstico.
 Ao final envia silêncio, desliga o PA e imprime métricas em prioridade baixa.
 
@@ -126,7 +127,10 @@ FX ficam **desativados**, sem alocação, neste teste incremental; os algoritmos
 em `fx.h` permanecem intactos. Não há SD, sampler carregado, sequencer,
 persistência, display, touch ou USB Host nesta variante.
 
-Na execução registrada em [GUITION_SYNTH_SERIAL.log](docs/GUITION_SYNTH_SERIAL.log):
+Resultados M3.1 e limitações em [VALIDATION.md](docs/VALIDATION.md), com captura
+real em [GUITION_M31_SERIAL.log](docs/GUITION_M31_SERIAL.log).
+
+Na execução **anterior ao M3.1** registrada em [GUITION_SYNTH_SERIAL.log](docs/GUITION_SYNTH_SERIAL.log):
 1.723 blocos, 20 notas, 421.015 frames mono não nulos, picos L/R 605/606,
 mono 304, render máximo **1.756 µs**, prazo **5.804 µs**, zero overruns de
 render, write/shutdown `ESP_OK`. Isso confirma PCM e tempo do teste dry;

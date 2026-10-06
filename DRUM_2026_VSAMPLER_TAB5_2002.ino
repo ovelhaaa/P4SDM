@@ -261,7 +261,8 @@ LowPassFilter FILTROS[18] = {
 };
 
 const int cutoff = 255;
-const int reso = 511;
+// Filter API range is 0..255. Previously 511 converted to uint8_t(255).
+const uint8_t reso = 255;
 
 static int VOL_R[16] = { 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 };
 static int VOL_L[16] = { 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 };

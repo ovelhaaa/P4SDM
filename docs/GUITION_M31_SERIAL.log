@@ -1,0 +1,46 @@
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0x17 (CHIP_USB_UART_RESET),boot:0xc (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4ff02c5e
+Core1 Saved PC:0x4ff02c5e
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+
+[BOOT] Original P4SDM synth diagnostic, CPU=360 MHz
+[MEM] boot PSRAM total=33554432 free=33551856 largest=33030132 internal_free=535272
+[MEM] engine init (FX disabled) PSRAM total=33554432 free=33551856 largest=33030132 internal_free=535272
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[MEM] before stress (transport ready) PSRAM total=33554432 free=33550588 largest=33030132 internal_free=529492
+[M3.1] Dry original mixer: 1/4/8/16 voices, 3 s each, length=127 (5 s), MIDI 48..63, wave 0..15, pan -120..120.
+[MEM] before stress (task allocated) PSRAM total=33554432 free=33550588 largest=33030132 internal_free=520924
+[MEM] after stress (before transport shutdown) PSRAM total=33554432 free=33550588 largest=33030132 internal_free=520924
+[M3.1] voices=1 blocks=517 active_min=1 active_max=1 budget_us=5804.989 render_misses=0 cycle_misses=71 write_failures=0 timeouts=0
+[M3.1] render us min=1625 avg=1631.58 p50=1633 p95=1634 p99=1634 max=1729
+[M3.1] write us min=22 avg=4096.30 p50=4133 p95=4140 p99=4145 max=4147
+[M3.1] cycle us min=1685 avg=5765.41 p50=5804 p95=5805 p99=5809 max=5812
+[M3.1] PCM peak_L=596 peak_R=38 peak_mono=317 nonzero_frames=132094 silent_blocks=0 rail_frames=0
+[M3.1] voices=4 blocks=517 active_min=4 active_max=4 budget_us=5804.989 render_misses=0 cycle_misses=58 write_failures=0 timeouts=0
+[M3.1] render us min=1862 avg=1875.12 p50=1876 p95=1876 p99=1876 max=1981
+[M3.1] write us min=3780 avg=3891.17 p50=3891 p95=3897 p99=3897 max=3905
+[M3.1] cycle us min=5798 avg=5804.02 p50=5804 p95=5805 p99=5810 max=5810
+[M3.1] PCM peak_L=2373 peak_R=595 peak_mono=1484 nonzero_frames=132254 silent_blocks=0 rail_frames=0
+[M3.1] voices=8 blocks=517 active_min=8 active_max=8 budget_us=5804.989 render_misses=0 cycle_misses=111 write_failures=0 timeouts=0
+[M3.1] render us min=2154 avg=2184.37 p50=2183 p95=2190 p99=2190 max=2335
+[M3.1] write us min=3427 avg=3581.56 p50=3583 p95=3584 p99=3589 max=3612
+[M3.1] cycle us min=5796 avg=5804.02 p50=5804 p95=5805 p99=5809 max=5811
+[M3.1] PCM peak_L=4325 peak_R=2163 peak_mono=3232 nonzero_frames=132284 silent_blocks=0 rail_frames=0
+[M3.1] voices=16 blocks=517 active_min=16 active_max=16 budget_us=5804.989 render_misses=0 cycle_misses=101 write_failures=0 timeouts=0
+[M3.1] render us min=2731 avg=2793.07 p50=2794 p95=2795 p99=2795 max=3102
+[M3.1] write us min=2658 avg=2972.68 p50=2972 p95=2979 p99=2979 max=3039
+[M3.1] cycle us min=5796 avg=5804.02 p50=5804 p95=5805 p99=5809 max=5812
+[M3.1] PCM peak_L=5146 peak_R=4994 peak_mono=4923 nonzero_frames=132285 silent_blocks=0 rail_frames=0
+[M3.1] DMA underrun/starvation metric unavailable: I2S TX sent/queue-overflow events do not reliably identify playback starvation.
+[M3.1] write=ESP_OK drain_errors=0 shutdown=ESP_OK result=PASS (PCM/render timing + transport API only; audible unverified)
+[MEM] after shutdown PSRAM total=33554432 free=33550636 largest=33030132 internal_free=526204
