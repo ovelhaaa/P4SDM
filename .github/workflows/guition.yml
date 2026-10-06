@@ -43,3 +43,8 @@ jobs:
       - run: g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/pattern_tools_test.cpp -o /tmp/pattern_tools_test && /tmp/pattern_tools_test
 
       - run: python tests/analyze_m9.py docs/GUITION_M9_STRESS_SERIAL.log
+
+      - run: g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/parameter_locks_test.cpp -o /tmp/parameter_locks_test && /tmp/parameter_locks_test
+      - run: python tests/no_lock_equivalence.py
+      - run: python tests/analyze_m10.py docs/GUITION_M10_STRESS_SERIAL.log
+      - run: python tests/analyze_m10.py docs/GUITION_M10_NORMAL_SERIAL.log --normal

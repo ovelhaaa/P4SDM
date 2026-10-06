@@ -52,15 +52,16 @@ std::atomic<uint32_t> diagnostic_p99{0}, diagnostic_max{0},
 std::atomic<uint32_t> flashes[16];
 bool delay_ready = false;
 int sample_index = 0;
-bool dirty[95]{};
+bool dirty[106]{};
 bool full = true;
 uint32_t rejected = 0, touch_errors = 0, frames = 0, full_frames = 0;
-uint32_t actions[95]{}, drags = 0;
+uint32_t actions[106]{}, drags = 0;
 uint64_t dirty_bytes = 0, normal_dirty_bytes = 0;
 unsigned normal_frames = 0;
 uint32_t normal_dirty_max = 0;
 uint32_t dirty_max = 0, prep_max = 0, skipped_frames = 0;
 uint32_t tool_cell_max = 0, tool_edit_full = 0;
+uint32_t lock_ui_edits = 0, lock_ui_full = 0, lock_ui_widgets_max = 0;
 constexpr unsigned capture_blocks = 10337;
 #if P4SDM_SAMPLER_QUALIFICATION
 struct QualificationMetrics {
@@ -76,8 +77,10 @@ struct GrooveMetrics {
   unsigned velocity_min, velocity_max;
 };
 GrooveMetrics groove_result{};
+uint32_t lock_result[6]{};
 constexpr unsigned worst_blocks = 2068;
 uint32_t worst_max = 0, worst_triggers = 0;
+uint32_t locked_dense_max = 0, locked_dense_blocks = 0;
 std::atomic<uint32_t> transform_max{0}, transform_blocks{0},
     dense_transform_blocks{0};
 
@@ -92,19 +95,23 @@ int old_head = -1;
 [[maybe_unused]] uint32_t diagnostic_due = 0;
 constexpr uint16_t bg = 0x1082, panel = 0x2104, accent = 0x07d3, white = 0xffff;
 uint16_t event_gain[16]{};
+app::TriggerEvent voice_event[16]{};
 void trigger(app::TriggerEvent event) {
   int t = event.track;
+  voice_event[t] = event;
   event_gain[t] = app::velocity_gain(event.velocity);
+  VOL_L[t] = app::event_channel_gain(event.volume, event.pan, false);
+  VOL_R[t] = app::event_channel_gain(event.volume, event.pan, true);
+  synthESP32_setWave(t, event.wave);
   if (engine.tracks[t].sample && samples::voices[t].sample) {
     PITCH[t] = 255;
     AMP[t] = 0;
-    samples::voices[t].trigger(
-        sampler::pitch_increment(engine.tracks[t].pitch));
+    samples::voices[t].trigger(sampler::pitch_increment(event.pitch));
   } else
-    synthESP32_TRIGGER_P(t, engine.tracks[t].pitch);
+    synthESP32_TRIGGER_P(t, event.pitch);
   flashes[t].fetch_add(1, std::memory_order_relaxed);
 }
-void trigger(int t) { trigger(app::TriggerEvent{uint8_t(t), 127}); }
+void trigger(int t) { trigger(app::resolve_event(t, engine.tracks[t], 127)); }
 void update_track(int t) {
   auto &v = engine.tracks[t];
   ROTvalue[t][14] = v.volume;
@@ -112,14 +119,23 @@ void update_track(int t) {
   ROTvalue[t][12] = v.pitch;
   ROTvalue[t][10] = v.length;
   ROTvalue[t][1] = v.wave;
-  synthESP32_setWave(t, v.wave);
+  // Base edits retain any active voice overrides; unlocked controls remain
+  // live.
+  const auto &event = voice_event[t];
+  const app::StepLocks locks{event.locked_mask, event.pitch, event.volume,
+                             event.pan, event.wave};
+  const auto effective = app::resolve_event(t, v, event.velocity, locks);
+  synthESP32_setWave(t, effective.wave);
   synthESP32_setEnvelope(t, 3);
   synthESP32_setLength(t, v.length);
   synthESP32_setMod(t, 64);
-  synthESP32_updateVolPan(t);
+  VOL_L[t] = app::event_channel_gain(effective.volume, effective.pan, false);
+  VOL_R[t] = app::event_channel_gain(effective.volume, effective.pan, true);
   synthESP32_setFilter(t, 0);
   if (PITCH[t] != 255)
-    synthESP32_setPitch(t, v.pitch);
+    synthESP32_setPitch(t, effective.pitch);
+  if (v.sample)
+    samples::voices[t].increment = sampler::pitch_increment(effective.pitch);
 }
 bool send(app::Command c) {
   if (c.kind == app::Kind::Pitch)
@@ -138,7 +154,31 @@ void draw(int id) {
   auto r = app::widget(id);
   char s[48]{};
   uint16_t color = panel;
-  if (id >= 78) {
+  if (id >= 95) {
+    if (id == 95)
+      snprintf(s, sizeof(s), "LOCKS");
+    else if (id == 104)
+      snprintf(s, sizeof(s), "CLEAR LOCKS");
+    else if (id == 105)
+      snprintf(s, sizeof(s), "BACK TO STEP");
+    else {
+      int param = (id - 96) / 2;
+      const char *names[] = {"PITCH", "VOLUME", "PAN", "WAVE"};
+      const auto &l = view.patterns[view.selected_pattern]
+                          .locks[ui.selected][std::max(0, ui.selected_step)];
+      const int values[] = {l.pitch, l.volume, l.pan, l.wave};
+      if (param == 3 && view.tracks[ui.selected].sample)
+        snprintf(s, sizeof(s), "%s",
+                 id % 2 ? "UNAVAILABLE" : "WAVE - SYNTH ONLY");
+      else if (id % 2)
+        snprintf(s, sizeof(s), "%s",
+                 l.mask & (1 << param) ? "UNLOCK" : "ENABLE LOCK");
+      else if (l.mask & (1 << param))
+        snprintf(s, sizeof(s), "%s %d LOCKED", names[param], values[param]);
+      else
+        snprintf(s, sizeof(s), "%s -- UNLOCKED", names[param]);
+    }
+  } else if (id >= 78) {
     if (id == 78)
       snprintf(s, sizeof(s), "TOOLS");
     else if (id == 79) {
@@ -364,7 +404,33 @@ void interact(int id, int x, bool initial) {
     ++actions[id];
   else
     ++drags;
-  if (id == 78 && initial) {
+  if (id >= 95) {
+    if (id == 95 || id == 105) {
+      if (!initial)
+        return;
+      ui.page = id == 95 ? app::Page::Locks : app::Page::Step;
+      full = true;
+      return;
+    }
+    app::Command c{};
+    if (!ui.lock_action(id, x, initial, view, c))
+      return;
+    const bool was_full = full;
+    if (send(c)) {
+      ++lock_ui_edits;
+      lock_ui_full += full && !was_full;
+      lock_ui_widgets_max =
+          std::max(lock_ui_widgets_max, uint32_t(id == 104 ? 8 : 2));
+      if (id == 104)
+        for (int i = 96; i <= 103; ++i)
+          dirty[i] = true;
+      else {
+        int row = 96 + ((id - 96) / 2) * 2;
+        dirty[row] = dirty[row + 1] = true;
+      }
+    }
+    return;
+  } else if (id == 78 && initial) {
     ui.cancel_pattern_action();
     ui.cancel_tool();
     ui.page = app::Page::Tools;
@@ -624,6 +690,30 @@ void ui_task(void *) {
         }
     }
 #if P4SDM_APP_STRESS
+    static uint32_t lock_due = 0;
+    static unsigned lock_edit = 0;
+    if (millis() - started >= 12000 && millis() >= lock_due) {
+      lock_due = millis() + 120;
+      unsigned n = lock_edit++;
+      app::Command c{app::Kind(int(app::Kind::LockPitch) + n % 4),
+                     uint8_t(n % 16), int(n % 128)};
+      c.pattern = uint8_t(n % 2);
+      c.step = uint8_t((n / 2) % 16);
+      if (n % 5 == 0)
+        c.kind = app::Kind::ClearStepLocks;
+      send(c);
+      if (n % 32 == 0) {
+        ui.page = app::Page::Step;
+        ui.selected_step = int((n / 2) % 16);
+        interact(95, 0, true);
+      } else if (ui.page == app::Page::Locks && n % 32 < 10 && !full) {
+        int id = 97 + int(n % 4) * 2;
+        interact(id, 0, true);
+        interact(id - 1, app::widget(id - 1).x + 270, true);
+        if (n % 32 == 9)
+          interact(104, 0, true);
+      }
+    }
     static uint32_t stress_due = 0, retrigger_due = 0;
     static unsigned action = 0;
     static uint32_t tools_due = 0;
@@ -635,9 +725,16 @@ void ui_task(void *) {
       edit.pattern = 0;
       if (millis() - started < 12000) {
         edit.step = 1;
-        edit.kind =
-            tool_action++ % 3 == 0 ? app::Kind::Reverse : app::Kind::Rotate;
+        unsigned op = tool_action++ % 5;
+        edit.kind = op == 0   ? app::Kind::Reverse
+                    : op == 1 ? app::Kind::Duplicate
+                    : op == 2 ? app::Kind::CopyTrack
+                              : app::Kind::Rotate;
         edit.value = tool_action & 1 ? -1 : 1;
+        if (edit.kind == app::Kind::Duplicate)
+          edit.value = 4;
+        if (edit.kind == app::Kind::CopyTrack)
+          edit.value = 1;
       } else {
         const app::Kind kinds[] = {
             app::Kind::Rotate,     app::Kind::Reverse,   app::Kind::CopyTrack,
@@ -833,7 +930,11 @@ void ui_task(void *) {
         } else if (ui.page == app::Page::Tools) {
           for (int i = 79; i <= 94; ++i)
             draw(i);
+        } else if (ui.page == app::Page::Locks) {
+          for (int i = 96; i <= 105; ++i)
+            draw(i);
         } else if (ui.page == app::Page::Step) {
+          draw(95);
           for (int i = 70; i <= 77; ++i)
             draw(i);
         } else if (ui.page == app::Page::Track) {
@@ -872,7 +973,7 @@ void ui_task(void *) {
           snprintf(title, sizeof(title), "P4SDM T%02d", ui.selected + 1);
           display::text(16, 24, title, white, 2);
         }
-        for (int i = 0; i < 95; ++i)
+        for (int i = 0; i < 106; ++i)
           if (dirty[i] &&
               ((i < 24 && ui.page == app::Page::Sequence) ||
                (i >= 24 && i < 29 && ui.page == app::Page::Track) ||
@@ -882,8 +983,10 @@ void ui_task(void *) {
                (i >= 46 && i <= 67 && ui.page == app::Page::Pattern) ||
                ((i == 68 || i == 69 || i == 78) &&
                 ui.page == app::Page::Sequence) ||
-               (i >= 70 && i <= 77 && ui.page == app::Page::Step) ||
-               (i >= 79 && ui.page == app::Page::Tools)))
+               ((i == 95 || (i >= 70 && i <= 77)) &&
+                ui.page == app::Page::Step) ||
+               (i >= 96 && ui.page == app::Page::Locks) ||
+               (i >= 79 && i <= 94 && ui.page == app::Page::Tools)))
             draw(i);
       }
       if (ui.page == app::Page::Sample && dirty[38]) {
@@ -969,6 +1072,9 @@ void ui_task(void *) {
                      "edit_full=%u\n",
                      actions[78], actions[86], actions[90], tool_cell_max,
                      tool_edit_full);
+      summary_printf(
+          "[M10 UI] entries=%u edits=%u widgets_max=%u edit_full=%u\n",
+          actions[95], lock_ui_edits, lock_ui_widgets_max, lock_ui_full);
 
       summary_printf("[M5 memory] ps_before=%u ps_after=%u internal_before=%u "
                      "internal_after=%u largest_before=%u largest_after=%u\n",
@@ -1053,6 +1159,7 @@ void audio_worker(void *) {
       ++applied_commands;
       applied_actions[unsigned(c.kind)].fetch_add(1, std::memory_order_relaxed);
       if (c.kind == app::Kind::Source) {
+        voice_event[c.track] = {};
         samples::voices[c.track].stop();
         FILTROS[c.track].reset();
         PITCH[c.track] = 255;
@@ -1065,9 +1172,6 @@ void audio_worker(void *) {
         delays = is_delay ? 0xffff : 0;
       } else if (c.kind >= app::Kind::Volume && c.kind <= app::Kind::Wave)
         update_track(c.track);
-      if (c.kind == app::Kind::Pitch && engine.tracks[c.track].sample)
-        samples::voices[c.track].increment =
-            sampler::pitch_increment(engine.tracks[c.track].pitch);
     }
     for (unsigned n = 0; n < 16 && pad_triggers.pop(c); ++n)
       engine.audition(c.track, [](app::TriggerEvent e) { trigger(e); });
@@ -1097,6 +1201,24 @@ void audio_worker(void *) {
       if (b < worst_blocks) {
         worst_max = std::max(worst_max, us);
         worst_triggers = engine.probability_passed + engine.ratchet_events;
+        bool locked =
+            engine.playing_pattern == 0 && engine.bpm == 240 && engine.delay;
+        for (int t = 0; t < 16 && locked; ++t) {
+          const auto &p = engine.patterns[0];
+          locked &= p.track_steps[t] == 0xffff;
+          for (int i = 0; i < 16; ++i)
+            locked &= p.meta[t][i].ratchets == 4 && p.locks[t][i].mask == 15;
+        }
+        if (locked) {
+          ++locked_dense_blocks;
+          locked_dense_max = std::max(locked_dense_max, us);
+        }
+      }
+      if (b + 1 == capture_blocks) {
+        lock_result[0] = engine.locked_parents;
+        lock_result[1] = engine.unlocked_parents;
+        for (int i = 0; i < 4; ++i)
+          lock_result[i + 2] = engine.lock_events[i];
       }
       if (b + 1 == capture_blocks)
         groove_result = {engine.step_events,         engine.probability_passed,
@@ -1219,6 +1341,11 @@ static void initialize(void *) {
     for (int step = 0; step < 16; ++step) {
       engine.patterns[0].meta[t][step] =
           view.patterns[0].meta[t][step] = {127, 100, 4};
+      engine.patterns[0].locks[t][step] = view.patterns[0].locks[t][step] = {
+          15, uint8_t(36 + (t + step) % 48), uint8_t(40 + (t * 7 + step) % 88),
+          int8_t((t * 17 + step * 13) % 255 - 127), uint8_t((t + step) % 16)};
+      engine.patterns[1].locks[t][step] = view.patterns[1].locks[t][step] =
+          engine.patterns[0].locks[t][step];
       app::StepMeta mixed{uint8_t(1 + (t * 17 + step * 23) % 127),
                           uint8_t((t + step) % 3 == 0   ? 0
                                   : (t + step) % 3 == 1 ? 65
@@ -1311,6 +1438,14 @@ void loop() {
 #endif
     guition::memory_report("M8 after 60s");
 
+    summary_printf(
+        "[M10 locks] locked=%u unlocked=%u pitch=%u volume=%u pan=%u wave=%u "
+        "pattern_bytes=%u bank_bytes=%u engine_bytes=%u\n",
+        lock_result[0], lock_result[1], lock_result[2], lock_result[3],
+        lock_result[4], lock_result[5], unsigned(sizeof(app::Pattern)),
+        unsigned(sizeof(engine.patterns)), unsigned(sizeof(engine)));
+    summary_printf("[M10 worst] blocks=%u max=%u\n", locked_dense_blocks,
+                   locked_dense_max);
     summary_printf(
         "[M9 tools] rotate=%u reverse=%u copy_track=%u clear_track=%u "
         "duplicate=%u euclidean=%u randomize=%u mutate=%u reroll=%u "
