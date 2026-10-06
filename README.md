@@ -398,3 +398,19 @@ Duplique antes de mutar para conservar o original. Todos os dados continuam em R
 Valide a captura com `python tests/analyze_m9.py <log>` e restaure `guition_app`
 após usar o firmware de stress. M9 encerra aqui; locks, persistência, song mode
 e MIDI permanecem fora do escopo.
+
+## M10 — Parameter Locks v1
+
+STEP → LOCKS permite pitch absoluto 0–127 (SAMPLE: 60 = unity), volume 0–127,
+pan -127…127 e wave 0–15 apenas para SYNTH. ENABLE LOCK começa com o valor base
+da pista; UNLOCK desativa cada parâmetro, CLEAR LOCKS limpa só o passo escolhido.
+Valores mostram LOCKED / UNLOCKED explicitamente. Pads usam sempre os valores
+base e velocity 127. Ratchets guardam os parâmetros do parent já aceito.
+
+Copy/duplicate/rotate/reverse transportam locks com os passos. Euclid, randomize,
+mutate e CLEAR de triggers preservam locks. Track mantém os valores base;
+o próximo evento sem locks resolve esses valores novamente. Dados continuam em RAM.
+
+[Arquitetura, testes e qualificação M10](docs/GUITION_M10.md).
+Valide com `python tests/analyze_m10.py <log>` e restaure `guition_app` após stress.
+M10 encerra aqui: filter/FX locks, microtiming, persistência e song mode ficam adiados.

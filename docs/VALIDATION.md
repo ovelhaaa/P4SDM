@@ -675,3 +675,17 @@ M9 pattern tools, deterministic editing RNG, Euclidean generation, TOOLS UI and
 device stress are documented in [the M9 qualification report](GUITION_M9.md).
 Run `tests/pattern_tools_test.cpp` with the existing C++17 host test flags and
 validate genuine captures using `python tests/analyze_m9.py <log>`.
+
+M10 bounded parameter locks and event snapshots are documented in
+[the M10 qualification report](GUITION_M10.md). Run `tests/parameter_locks_test.cpp`
+with C++17 host flags and `python tests/no_lock_equivalence.py` for comparison
+against the actual accepted M9 source. Validate the committed device evidence:
+
+```text
+python tests/analyze_m10.py docs/GUITION_M10_STRESS_SERIAL.log
+python tests/analyze_m10.py docs/GUITION_M10_NORMAL_SERIAL.log --normal
+```
+
+Both captures last 60.006 seconds of audio; the first qualifies all-lock dense
+playback and bounded edits, the second verifies restored normal idle firmware.
+All prior host/build/analyzer checks remain. Physical SD qualification is separate.
