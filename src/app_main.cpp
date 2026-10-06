@@ -1,6 +1,7 @@
 #include "app/model.h"
 #include "app/qualification.h"
 #include "app/samples.h"
+#include <cstdarg>
 static bool app_pcm(int track, int16_t &value);
 static void app_sample();
 static int16_t app_velocity(int track, int16_t value);
@@ -16,6 +17,22 @@ static int16_t app_velocity(int track, int16_t value);
 #include "../synthESP32.ino"
 // clang-format on
 namespace {
+// Native USB/JTAG can lose 64-byte fragments during burst summaries on this
+// device. Pace only the final report, never command handling or audio
+// rendering.
+void summary_printf(const char *format, ...) {
+  char line[512];
+  va_list args;
+  va_start(args, format);
+  const int count = vsnprintf(line, sizeof(line), format, args);
+  va_end(args);
+  const int length = std::min(count, int(sizeof(line) - 1));
+  for (int offset = 0; offset < length; offset += 32) {
+    Serial.write(reinterpret_cast<const uint8_t *>(line + offset),
+                 std::min(32, length - offset));
+    delay(4);
+  }
+}
 app::Queue<64> commands;
 app::Queue<128> input_events;
 app::Queue<32> pad_triggers;
@@ -28,21 +45,22 @@ std::atomic<int> playhead{-1};
 // accepts snapshots after all its optimistic edits have reached audio.
 std::atomic<uint32_t> pattern_status{0}, pattern_switches{0}, pattern_loops{0};
 uint16_t sent_commands = 0;
-std::atomic<uint32_t> applied_actions[22]{}, long_to_short{0}, short_to_long{0},
-    queue_replacements{0};
+std::atomic<uint32_t> applied_actions[unsigned(app::Kind::Count)]{},
+    long_to_short{0}, short_to_long{0}, queue_replacements{0};
 std::atomic<uint32_t> diagnostic_p99{0}, diagnostic_max{0},
     diagnostic_misses{0};
 std::atomic<uint32_t> flashes[16];
 bool delay_ready = false;
 int sample_index = 0;
-bool dirty[78]{};
+bool dirty[95]{};
 bool full = true;
 uint32_t rejected = 0, touch_errors = 0, frames = 0, full_frames = 0;
-uint32_t actions[78]{}, drags = 0;
+uint32_t actions[95]{}, drags = 0;
 uint64_t dirty_bytes = 0, normal_dirty_bytes = 0;
 unsigned normal_frames = 0;
 uint32_t normal_dirty_max = 0;
 uint32_t dirty_max = 0, prep_max = 0, skipped_frames = 0;
+uint32_t tool_cell_max = 0, tool_edit_full = 0;
 constexpr unsigned capture_blocks = 10337;
 #if P4SDM_SAMPLER_QUALIFICATION
 struct QualificationMetrics {
@@ -60,8 +78,12 @@ struct GrooveMetrics {
 GrooveMetrics groove_result{};
 constexpr unsigned worst_blocks = 2068;
 uint32_t worst_max = 0, worst_triggers = 0;
+std::atomic<uint32_t> transform_max{0}, transform_blocks{0},
+    dense_transform_blocks{0};
 
 std::atomic<unsigned> captured{0};
+// Serialize end-of-run reports from loop/UI without blocking the audio task.
+std::atomic<bool> audio_summary_ready{false};
 unsigned active_min = 16, active_max = 0;
 uint32_t misses = 0, write_errors = 0, timeouts = 0, rails = 0, nonzero = 0,
          peak = 0;
@@ -116,7 +138,54 @@ void draw(int id) {
   auto r = app::widget(id);
   char s[48]{};
   uint16_t color = panel;
-  if (id >= 68) {
+  if (id >= 78) {
+    if (id == 78)
+      snprintf(s, sizeof(s), "TOOLS");
+    else if (id == 79) {
+      if (ui.tool_pending) {
+        const auto &c = ui.pending_tool;
+        const char *operation = c.kind == app::Kind::ClearTrack  ? "CLEAR"
+                                : c.kind == app::Kind::Duplicate ? "DUP"
+                                                                 : "COPY";
+        snprintf(s, sizeof(s), "P%02d T%02d LEN %d %s -> %s%02d?",
+                 c.pattern + 1, c.track + 1, view.patterns[c.pattern].length,
+                 operation, c.kind == app::Kind::Duplicate ? "P" : "T",
+                 c.value + 1);
+      } else
+        snprintf(s, sizeof(s), "P%02d / T%02d / LEN %d / SEED %08X",
+                 view.selected_pattern + 1, ui.selected + 1,
+                 view.patterns[view.selected_pattern].length,
+                 unsigned(view.edit_seed));
+    } else if (id <= 82) {
+      const char *sections[] = {"TRACK", "GENERATE", "PATTERN"};
+      snprintf(s, sizeof(s), "%s", sections[id - 80]);
+      color = ui.tool_section == id - 80 ? accent : panel;
+    } else {
+      const char *track[] = {"ROTATE <",    "ROTATE >", "REVERSE", "COPY TRACK",
+                             "CLEAR TRACK", "DEST <",   "DEST >",  "CONFIRM",
+                             "CANCEL",      "",         "TRACK <", "TRACK >"};
+      const char *pattern[] = {"DUPLICATE", "ALL <", "ALL >",   "REVERSE ALL",
+                               "",          "",      "",        "CONFIRM",
+                               "CANCEL",    "",      "TRACK <", "TRACK >"};
+      if (ui.tool_section != 1)
+        snprintf(s, sizeof(s), "%s",
+                 (ui.tool_section == 0 ? track : pattern)[id - 83]);
+      else {
+        const char *names[] = {"PULSES",       "ROTATION",     "DENSITY",
+                               "VEL VAR",      "PROB VAR",     "RATCHET",
+                               "EUCLID APPLY", "RANDOM APPLY", "MUTATE APPLY",
+                               "REROLL",       "AMOUNT",       ""};
+        int values[] = {ui.pulses,  ui.rotation, ui.density,
+                        ui.vel_var, ui.prob_var, ui.ratchet_chance};
+        if (id <= 88)
+          snprintf(s, sizeof(s), "%s %d", names[id - 83], values[id - 83]);
+        else if (id == 93)
+          snprintf(s, sizeof(s), "AMOUNT %d%%", ui.mutate_amount);
+        else
+          snprintf(s, sizeof(s), "%s", names[id - 83]);
+      }
+    }
+  } else if (id >= 68) {
     int step = std::max(0, ui.selected_step);
     auto &m = view.patterns[view.selected_pattern].meta[ui.selected][step];
     if (id == 68)
@@ -139,7 +208,7 @@ void draw(int id) {
     }
     if (id == 73)
       snprintf(s, sizeof(s), "PROB %d%%", m.probability);
-    if (id >= 74) {
+    if (id >= 74 && id <= 77) {
       snprintf(s, sizeof(s), "RATCHET %dx", id - 73);
       color = m.ratchets == id - 73 ? accent : panel;
     }
@@ -295,7 +364,65 @@ void interact(int id, int x, bool initial) {
     ++actions[id];
   else
     ++drags;
-  if (id >= 68) {
+  if (id == 78 && initial) {
+    ui.cancel_pattern_action();
+    ui.cancel_tool();
+    ui.page = app::Page::Tools;
+    ui.pulses =
+        app::clamp(ui.pulses, 0, view.patterns[view.selected_pattern].length);
+    ui.rotation %= view.patterns[view.selected_pattern].length;
+    full = true;
+    return;
+  } else if (id >= 80 && ui.page == app::Page::Tools) {
+    app::Ui previous = ui;
+    const bool was_full = full;
+    if (ui.tool_section == 1 && id >= 83 && id <= 88) {
+      int value = app::drag(id, x) * 100 / 127;
+      int *values[] = {&ui.pulses,  &ui.rotation, &ui.density,
+                       &ui.vel_var, &ui.prob_var, &ui.ratchet_chance};
+      if (id <= 84)
+        value = app::drag(id, x) *
+                (view.patterns[view.selected_pattern].length - (id == 84)) /
+                127;
+      *values[id - 83] = value;
+      dirty[id] = true;
+      return;
+    }
+    if (ui.tool_section == 1 && id == 93) {
+      ui.mutate_amount = app::drag(id, x) * 100 / 127;
+      dirty[id] = true;
+      return;
+    }
+    if (ui.tool_section == 1 && id == 94)
+      return;
+    if (!initial)
+      return;
+    app::Command c{};
+    bool execute = ui.tool_action(id, view, c);
+    if (execute && !send(c)) {
+      ui = previous;
+      return;
+    }
+    dirty[79] = true;
+    if (previous.selected != ui.selected)
+      dirty[45] = true;
+    if (previous.tool_section != ui.tool_section)
+      for (int i = 80; i <= 94; ++i)
+        dirty[i] = true;
+    if (execute)
+      for (int i = 0; i < 16; ++i)
+        dirty[i] = true;
+    if (execute) {
+      unsigned cells = 0;
+      for (int i = 0; i < 16; ++i)
+        cells += dirty[i];
+      tool_cell_max = std::max(tool_cell_max, uint32_t(cells));
+      tool_edit_full += full && !was_full;
+    }
+    if (execute && c.kind == app::Kind::Duplicate)
+      dirty[44] = true;
+    return;
+  } else if (id >= 68) {
     if (id == 68 && initial) {
       if (ui.selected_step < 0)
         ui.selected_step = 0;
@@ -376,6 +503,7 @@ void interact(int id, int x, bool initial) {
   } else if (id == 44 && initial) {
     if (ui.page != app::Page::Pattern) {
       ui.cancel_pattern_action();
+      ui.cancel_tool();
       ui.page = app::Page::Pattern;
       full = true;
     }
@@ -441,6 +569,7 @@ void interact(int id, int x, bool initial) {
       auto page = static_cast<app::Page>(id - 30);
       if (page != ui.page) {
         ui.cancel_pattern_action();
+        ui.cancel_tool();
         ui.page = page;
         full = true;
       }
@@ -497,6 +626,41 @@ void ui_task(void *) {
 #if P4SDM_APP_STRESS
     static uint32_t stress_due = 0, retrigger_due = 0;
     static unsigned action = 0;
+    static uint32_t tools_due = 0;
+    static unsigned tool_action = 0;
+    if (millis() >= tools_due) {
+      tools_due = millis() + 350;
+      // During the initial dense 4x phase, operate on all playing lanes.
+      app::Command edit{app::Kind::Rotate, 0, 1};
+      edit.pattern = 0;
+      if (millis() - started < 12000) {
+        edit.step = 1;
+        edit.kind =
+            tool_action++ % 3 == 0 ? app::Kind::Reverse : app::Kind::Rotate;
+        edit.value = tool_action & 1 ? -1 : 1;
+      } else {
+        const app::Kind kinds[] = {
+            app::Kind::Rotate,     app::Kind::Reverse,   app::Kind::CopyTrack,
+            app::Kind::ClearTrack, app::Kind::Duplicate, app::Kind::Euclidean,
+            app::Kind::Randomize,  app::Kind::Mutate,    app::Kind::Reroll};
+        edit.kind = kinds[tool_action++ % 9];
+        edit.pattern = 4; // Preserve M8's dense and mixed reference patterns.
+        edit.track = 2;
+        if (edit.kind == app::Kind::Duplicate)
+          edit.value = 5;
+        else if (edit.kind == app::Kind::Euclidean) {
+          edit.value = 7;
+          edit.step = 2;
+        } else if (edit.kind == app::Kind::Randomize)
+          edit.value = app::generation_parameters(45, 20, 15, 5);
+        else if (edit.kind == app::Kind::Mutate)
+          edit.value = 20;
+      }
+      send(edit);
+      for (int i = 0; i < 16; ++i)
+        dirty[i] = true;
+      dirty[44] = dirty[79] = true;
+    }
     if (millis() - started >= 12000 && millis() >= retrigger_due) {
       retrigger_due = millis() + 3000;
       for (int t = 0; t < 16; ++t)
@@ -566,6 +730,15 @@ void ui_task(void *) {
       } else if (slot == 47) {
         interact(72, 0, true);
         interact(77, 0, true);
+        interact(30, 0, true);
+        interact(78, 0, true);
+        interact(81, 0, true);
+        interact(85, 100, false);
+        interact(90, 0, true);
+        interact(80, 0, true);
+        interact(86, 0, true);
+        interact(89, 0, true);
+        interact(90, 0, true);
       }
     }
 #endif
@@ -583,7 +756,10 @@ void ui_task(void *) {
         interact(ui.capture, touch_state.x, true);
       } else if (touch_state.pressed &&
                  ((ui.capture >= 24 && ui.capture < 29) || ui.capture == 69 ||
-                  ui.capture == 71 || ui.capture == 73))
+                  ui.capture == 71 || ui.capture == 73 ||
+                  (ui.page == app::Page::Tools && ui.tool_section == 1 &&
+                   ((ui.capture >= 83 && ui.capture <= 88) ||
+                    ui.capture == 93))))
         interact(ui.capture, touch_state.x, false);
       ui.down = touch_state.pressed;
       if (!ui.down)
@@ -653,6 +829,10 @@ void ui_task(void *) {
             draw(i);
           draw(68);
           draw(69);
+          draw(78);
+        } else if (ui.page == app::Page::Tools) {
+          for (int i = 79; i <= 94; ++i)
+            draw(i);
         } else if (ui.page == app::Page::Step) {
           for (int i = 70; i <= 77; ++i)
             draw(i);
@@ -692,7 +872,7 @@ void ui_task(void *) {
           snprintf(title, sizeof(title), "P4SDM T%02d", ui.selected + 1);
           display::text(16, 24, title, white, 2);
         }
-        for (int i = 0; i < 78; ++i)
+        for (int i = 0; i < 95; ++i)
           if (dirty[i] &&
               ((i < 24 && ui.page == app::Page::Sequence) ||
                (i >= 24 && i < 29 && ui.page == app::Page::Track) ||
@@ -700,8 +880,10 @@ void ui_task(void *) {
                ((i == 37 || i == 42 || i == 43) &&
                 ui.page == app::Page::Track) ||
                (i >= 46 && i <= 67 && ui.page == app::Page::Pattern) ||
-               ((i == 68 || i == 69) && ui.page == app::Page::Sequence) ||
-               (i >= 70 && ui.page == app::Page::Step)))
+               ((i == 68 || i == 69 || i == 78) &&
+                ui.page == app::Page::Sequence) ||
+               (i >= 70 && i <= 77 && ui.page == app::Page::Step) ||
+               (i >= 79 && ui.page == app::Page::Tools)))
             draw(i);
       }
       if (ui.page == app::Page::Sample && dirty[38]) {
@@ -732,7 +914,8 @@ void ui_task(void *) {
     }
     if (!changed && !display::idle() && display::wait_idle() != ESP_OK)
       vTaskSuspend(nullptr);
-    if (!reported && millis() - started >= 63000) {
+    if (!reported && millis() - started >= 63000 &&
+        audio_summary_ready.load(std::memory_order_acquire)) {
       reported = true;
       if (display::wait_idle() != ESP_OK)
         vTaskSuspend(nullptr);
@@ -747,17 +930,18 @@ void ui_task(void *) {
         pads += actions[i];
       for (int i = 30; i <= 32; ++i)
         pages += actions[i];
-      Serial.printf("[M5 UI] seconds=%.3f submitted=%u completed=%u "
-                    "dirty_avg=%u dirty_max=%u full=%u preparation_max_us=%u "
-                    "touch_errors=%u rejected=%u pads=%u steps=%u drags=%u "
-                    "pages=%u transport=%u bpm=%u skipped=%u\n",
-                    (millis() - started) / 1000., frames,
-                    display::completed_presentations() - completed_start,
-                    unsigned(frames ? dirty_bytes / frames : 0), dirty_max,
-                    full_frames, prep_max, touch_errors,
-                    rejected + input_overflow.load(), pads, steps, drags, pages,
-                    actions[29], actions[34] + actions[35], skipped_frames);
-      Serial.printf(
+      summary_printf(
+          "[M5 UI] seconds=%.3f submitted=%u completed=%u "
+          "dirty_avg=%u dirty_max=%u full=%u preparation_max_us=%u "
+          "touch_errors=%u rejected=%u pads=%u steps=%u drags=%u "
+          "pages=%u transport=%u bpm=%u skipped=%u\n",
+          (millis() - started) / 1000., frames,
+          display::completed_presentations() - completed_start,
+          unsigned(frames ? dirty_bytes / frames : 0), dirty_max, full_frames,
+          prep_max, touch_errors, rejected + input_overflow.load(), pads, steps,
+          drags, pages, actions[29], actions[34] + actions[35], skipped_frames);
+
+      summary_printf(
           "[M7 patterns] switches=%u loops=%u selections=%u copies=%u "
           "clears=%u lengths=%u solos=%u mutes=%u normal_frames=%u "
           "dirty_avg=%u dirty_max=%u pattern_bytes=%u command_bytes=%u\n",
@@ -768,22 +952,29 @@ void ui_task(void *) {
           unsigned(normal_frames ? normal_dirty_bytes / normal_frames : 0),
           normal_dirty_max, unsigned(sizeof(app::Pattern)),
           unsigned(sizeof(app::Command)));
-      Serial.printf("[M7 applied] long_to_short=%u short_to_long=%u "
-                    "queue_replacements=%u copies=%u clears=%u lengths=%u "
-                    "solos=%u mutes=%u steps=%u\n",
-                    long_to_short.load(), short_to_long.load(),
-                    queue_replacements.load(),
-                    applied_actions[unsigned(app::Kind::CopyPattern)].load(),
-                    applied_actions[unsigned(app::Kind::ClearPattern)].load(),
-                    applied_actions[unsigned(app::Kind::PatternLength)].load(),
-                    applied_actions[unsigned(app::Kind::Solo)].load(),
-                    applied_actions[unsigned(app::Kind::Mute)].load(),
-                    applied_actions[unsigned(app::Kind::Step)].load());
-      Serial.printf("[M5 memory] ps_before=%u ps_after=%u internal_before=%u "
-                    "internal_after=%u largest_before=%u largest_after=%u\n",
-                    unsigned(ps_before), unsigned(ps_after),
-                    unsigned(in_before), unsigned(in_after),
-                    unsigned(largest_before), unsigned(largest_after));
+
+      summary_printf("[M7 applied] long_to_short=%u short_to_long=%u "
+                     "queue_replacements=%u copies=%u clears=%u lengths=%u "
+                     "solos=%u mutes=%u steps=%u\n",
+                     long_to_short.load(), short_to_long.load(),
+                     queue_replacements.load(),
+                     applied_actions[unsigned(app::Kind::CopyPattern)].load(),
+                     applied_actions[unsigned(app::Kind::ClearPattern)].load(),
+                     applied_actions[unsigned(app::Kind::PatternLength)].load(),
+                     applied_actions[unsigned(app::Kind::Solo)].load(),
+                     applied_actions[unsigned(app::Kind::Mute)].load(),
+                     applied_actions[unsigned(app::Kind::Step)].load());
+
+      summary_printf("[M9 UI] entries=%u copies=%u randomize=%u cell_max=%u "
+                     "edit_full=%u\n",
+                     actions[78], actions[86], actions[90], tool_cell_max,
+                     tool_edit_full);
+
+      summary_printf("[M5 memory] ps_before=%u ps_after=%u internal_before=%u "
+                     "internal_after=%u largest_before=%u largest_after=%u\n",
+                     unsigned(ps_before), unsigned(ps_after),
+                     unsigned(in_before), unsigned(in_after),
+                     unsigned(largest_before), unsigned(largest_after));
     }
     delay(8);
   }
@@ -855,8 +1046,10 @@ void audio_worker(void *) {
     }
     app::Command c;
     static uint16_t applied_commands = 0;
+    bool transformed = false;
     for (unsigned n = 0; n < 16 && commands.pop(c); ++n) {
       engine.apply(c);
+      transformed |= c.kind >= app::Kind::Rotate && c.kind <= app::Kind::Mutate;
       ++applied_commands;
       applied_actions[unsigned(c.kind)].fetch_add(1, std::memory_order_relaxed);
       if (c.kind == app::Kind::Source) {
@@ -882,6 +1075,19 @@ void audio_worker(void *) {
     auto us = uint32_t(esp_timer_get_time() - start);
     unsigned b = captured.load(std::memory_order_relaxed);
     if (b < capture_blocks) {
+      if (transformed) {
+        transform_max.store(std::max(transform_max.load(), us));
+        transform_blocks.fetch_add(1);
+        bool dense = engine.bpm == 240 && engine.delay;
+        for (int t = 0; t < 16 && dense; ++t) {
+          const auto &p = engine.patterns[engine.playing_pattern];
+          dense = p.track_steps[t] == 0xffff;
+          for (const auto &m : p.meta[t])
+            dense &= m.ratchets == 4;
+        }
+        if (dense)
+          dense_transform_blocks.fetch_add(1);
+      }
       unsigned active = 0;
       for (unsigned t = 0; t < 16; ++t)
         active += (PITCH[t] != 255 && AMP[t] != 0) || samples::voices[t].active;
@@ -1078,29 +1284,50 @@ void loop() {
     diagnostic_p99.store(sorted[capture_blocks * 99 / 100]);
     diagnostic_max.store(sorted[capture_blocks - 1]);
     diagnostic_misses.store(misses);
-    Serial.printf("[M5] blocks=%u p50=%u p95=%u p99=%u max=%u misses=%u "
-                  "failures=%u timeouts=%u peak=%u nonzero=%u rails=%u "
-                  "active_min=%u active_max=%u\n",
-                  capture_blocks, sorted[capture_blocks / 2],
-                  sorted[capture_blocks * 95 / 100],
-                  sorted[capture_blocks * 99 / 100], sorted[capture_blocks - 1],
-                  misses, write_errors, timeouts, peak, nonzero, rails,
-                  active_min, active_max);
-    Serial.printf(
+    summary_printf("[M5] blocks=%u p50=%u p95=%u p99=%u max=%u misses=%u "
+                   "failures=%u timeouts=%u peak=%u nonzero=%u rails=%u "
+                   "active_min=%u active_max=%u\n",
+                   capture_blocks, sorted[capture_blocks / 2],
+                   sorted[capture_blocks * 95 / 100],
+                   sorted[capture_blocks * 99 / 100],
+                   sorted[capture_blocks - 1], misses, write_errors, timeouts,
+                   peak, nonzero, rails, active_min, active_max);
+
+    summary_printf(
         "[M8 groove] parents=%u passed=%u skipped=%u ratchets=%u "
         "pending_max=%u velocity_min=%u velocity_max=%u swing_changes=%u\n",
         groove_result.parents, groove_result.passed, groove_result.skipped,
         groove_result.ratchets, groove_result.pending_max,
         groove_result.velocity_min, groove_result.velocity_max,
         groove_result.swing_changes);
+
 #if P4SDM_APP_STRESS
-    Serial.printf(
+    summary_printf(
         "[M8 worst] blocks=%u bpm=240 voices=16 ratchet=4 swing=50 delay=1 "
         "max=%u triggers=%u triggers_per_second=%u\n",
         worst_blocks, worst_max, worst_triggers,
         unsigned(uint64_t(worst_triggers) * 44100 / (worst_blocks * 256)));
+
 #endif
     guition::memory_report("M8 after 60s");
+
+    summary_printf(
+        "[M9 tools] rotate=%u reverse=%u copy_track=%u clear_track=%u "
+        "duplicate=%u euclidean=%u randomize=%u mutate=%u reroll=%u "
+        "blocks=%u dense_blocks=%u max=%u\n",
+        applied_actions[unsigned(app::Kind::Rotate)].load(),
+        applied_actions[unsigned(app::Kind::Reverse)].load(),
+        applied_actions[unsigned(app::Kind::CopyTrack)].load(),
+        applied_actions[unsigned(app::Kind::ClearTrack)].load(),
+        applied_actions[unsigned(app::Kind::Duplicate)].load(),
+        applied_actions[unsigned(app::Kind::Euclidean)].load(),
+        applied_actions[unsigned(app::Kind::Randomize)].load(),
+        applied_actions[unsigned(app::Kind::Mutate)].load(),
+        applied_actions[unsigned(app::Kind::Reroll)].load(),
+        transform_blocks.load(), dense_transform_blocks.load(),
+        transform_max.load());
+
+    audio_summary_ready.store(true, std::memory_order_release);
   }
   delay(1000);
 }

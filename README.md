@@ -384,3 +384,17 @@ PLAY reinicia swing e PRNG; STOP cancela ratchets futuros e mantém tails.
 depois exercita groove e operações M7/UI durante a captura de 60 segundos,
 com display/touch ativos e sem exigir SD. Veja [relatório M8](docs/GUITION_M8.md)
 e `tests/analyze_m8.py`. Persistência, locks, song mode e MIDI ficam fora do escopo.
+
+## M9 — Pattern tools e geração
+
+Na SEQ, TOOLS abre TRACK / GENERATE / PATTERN. Rotate e reverse movem triggers
+e metadata juntos dentro do comprimento ativo; copy/clear de pista têm confirmação.
+Duplicate usa o próximo slot (P16 volta a P01), confirma sobrescrita e seleciona
+o destino para edição sem mudar playback. GENERATE oferece Euclid, randomize
+controlado, mutate com amount e REROLL, usando um seed separado do RNG de playback.
+Duplique antes de mutar para conservar o original. Todos os dados continuam em RAM.
+
+[Semântica, testes e qualificação M9](docs/GUITION_M9.md).
+Valide a captura com `python tests/analyze_m9.py <log>` e restaure `guition_app`
+após usar o firmware de stress. M9 encerra aqui; locks, persistência, song mode
+e MIDI permanecem fora do escopo.

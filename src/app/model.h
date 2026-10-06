@@ -29,7 +29,17 @@ enum class Kind : uint8_t {
   Velocity,
   Probability,
   Ratchet,
-  Swing
+  Swing,
+  Rotate,
+  Reverse,
+  CopyTrack,
+  ClearTrack,
+  Duplicate,
+  Euclidean,
+  Randomize,
+  Mutate,
+  Reroll,
+  Count
 };
 struct Command {
   Kind kind;
@@ -109,6 +119,59 @@ struct Pattern {
   uint8_t length = 16;
   StepMeta meta[16][16]{};
 };
+// Generation uses a local stream restarted from edit_seed for each operation.
+// Never shares state with the playback probability stream.
+struct EditRandom {
+  uint32_t state;
+  explicit EditRandom(uint32_t seed) : state(seed ? seed : 0x4d395031) {}
+  uint32_t next() {
+    state ^= state << 13;
+    state ^= state >> 17;
+    state ^= state << 5;
+    return state;
+  }
+  unsigned range(unsigned n) { return uint64_t(next()) * n >> 32; }
+};
+inline int generation_parameters(int density, int velocity, int probability,
+                                 int ratchet) {
+  return clamp(density, 0, 100) | (clamp(velocity, 0, 100) << 7) |
+         (clamp(probability, 0, 100) << 14) | (clamp(ratchet, 0, 100) << 21);
+}
+// Positive displacement rotates right. Only the active region moves.
+inline void rotate_lane(Pattern &p, int track, int displacement) {
+  const int n = p.length;
+  StepMeta original[16];
+  for (int i = 0; i < n; ++i)
+    original[i] = p.meta[track][i];
+  const uint16_t mask = p.track_steps[track];
+  for (int i = 0; i < n; ++i) {
+    int destination = (i + displacement + n) % n;
+    const uint16_t bit = uint16_t(1u << destination);
+    p.track_steps[track] = uint16_t((p.track_steps[track] & ~bit) |
+                                    ((mask & (1u << i)) ? bit : 0));
+    p.meta[track][destination] = original[i];
+  }
+}
+inline void reverse_lane(Pattern &p, int track) {
+  for (int i = 0; i < p.length / 2; ++i) {
+    int j = p.length - 1 - i;
+    std::swap(p.meta[track][i], p.meta[track][j]);
+    if (((p.track_steps[track] >> i) ^ (p.track_steps[track] >> j)) & 1)
+      p.track_steps[track] ^= uint16_t((1u << i) | (1u << j));
+  }
+}
+inline bool pattern_occupied(const Pattern &p) {
+  if (p.length != 16)
+    return true;
+  for (int t = 0; t < 16; ++t) {
+    if (p.track_steps[t])
+      return true;
+    for (const auto &m : p.meta[t])
+      if (m.velocity != 100 || m.probability != 100 || m.ratchets != 1)
+        return true;
+  }
+  return false;
+}
 static_assert(std::is_trivially_copyable<Pattern>::value);
 static_assert(sizeof(Pattern) <= 802);
 static_assert(sizeof(Command) <= 12);
@@ -126,6 +189,7 @@ struct Engine {
   static constexpr uint64_t straight = 44100ull * 60;
   static constexpr uint32_t default_seed = 0x4d385031;
   uint32_t seed = default_seed, rng = default_seed;
+  uint32_t edit_seed = 0x4d395031;
   int swing = 50, pair_swing = 50;
   uint64_t duration = straight, next_ratchet = UINT64_MAX;
   struct Pending {
@@ -268,6 +332,99 @@ struct Engine {
         ++swing_changes;
       swing = clamp(c.value, 50, 75);
       break;
+    case Kind::Reroll: {
+      EditRandom edit(edit_seed);
+      edit_seed = edit.next();
+      break;
+    }
+    case Kind::Rotate:
+    case Kind::Reverse:
+    case Kind::CopyTrack:
+    case Kind::ClearTrack:
+    case Kind::Duplicate:
+    case Kind::Euclidean:
+    case Kind::Randomize:
+    case Kind::Mutate: {
+      if (c.pattern >= 16)
+        break;
+      auto &p = patterns[c.pattern];
+      if (c.kind == Kind::Rotate || c.kind == Kind::Reverse) {
+        // step=1 explicitly requests all tracks; value is direction.
+        for (int lane = c.step ? 0 : c.track;
+             lane < (c.step ? 16 : c.track + 1); ++lane)
+          if (c.kind == Kind::Rotate)
+            rotate_lane(p, lane, c.value < 0 ? -1 : 1);
+          else
+            reverse_lane(p, lane);
+      } else if (c.kind == Kind::CopyTrack) {
+        if (c.value >= 0 && c.value < 16) {
+          p.track_steps[c.value] = p.track_steps[c.track];
+          for (int i = 0; i < 16; ++i)
+            p.meta[c.value][i] = p.meta[c.track][i];
+        }
+      } else if (c.kind == Kind::ClearTrack)
+        p.track_steps[c.track] = 0; // Retain all metadata, like pattern CLEAR.
+      else if (c.kind == Kind::Duplicate) {
+        if (c.value >= 0 && c.value < 16 && c.value != c.pattern) {
+          patterns[c.value] = p;
+          selected_pattern = c.value; // Edit destination; no playback request.
+        }
+      } else if (c.kind == Kind::Euclidean) {
+        const int pulses = clamp(c.value, 0, p.length);
+        const int rotation = c.step % p.length;
+        // Mechanical Euclidean word, anchored at step zero, rotated right.
+        for (int i = 0; i < p.length; ++i) {
+          uint16_t bit = uint16_t(1u << ((i + rotation) % p.length));
+          bool on = (i * pulses) % p.length < pulses;
+          p.track_steps[c.track] =
+              uint16_t((p.track_steps[c.track] & ~bit) | (on ? bit : 0));
+        }
+      } else {
+        EditRandom edit(edit_seed);
+        const bool mutate = c.kind == Kind::Mutate;
+        const int amount = clamp(c.value, 0, 100);
+        const int density = clamp(c.value & 127, 0, 100);
+        const int velocity = clamp((c.value >> 7) & 127, 0, 100);
+        const int probability = clamp((c.value >> 14) & 127, 0, 100);
+        const int ratchet = clamp((c.value >> 21) & 127, 0, 100);
+        for (int i = 0; !mutate && i < p.length; ++i) {
+          auto &m = p.meta[c.track][i];
+          uint16_t bit = uint16_t(1u << i);
+          {
+            bool on = edit.range(100) < unsigned(density);
+            p.track_steps[c.track] =
+                uint16_t((p.track_steps[c.track] & ~bit) | (on ? bit : 0));
+            if (!on)
+              continue; // Inactive metadata remains intact.
+            // Explicit accents survive; otherwise use a center of 100.
+            if (m.velocity != 127)
+              m.velocity = clamp(
+                  100 + int(edit.range(2 * velocity + 1)) - velocity, 1, 126);
+            m.probability = 100 - edit.range(probability + 1);
+            m.ratchets =
+                edit.range(100) < unsigned(ratchet) ? 2 + edit.range(3) : 1;
+          }
+        }
+        if (mutate && amount) {
+          // Partial Fisher-Yates: bounded exact number of edited positions.
+          uint8_t positions[16];
+          for (int i = 0; i < p.length; ++i)
+            positions[i] = uint8_t(i);
+          const int count = (p.length * amount + 99) / 100;
+          for (int i = 0; i < count; ++i) {
+            int j = i + edit.range(p.length - i);
+            std::swap(positions[i], positions[j]);
+            int pos = positions[i];
+            p.track_steps[c.track] ^= uint16_t(1u << pos);
+            auto &m = p.meta[c.track][pos];
+            if (m.velocity != 127)
+              m.velocity = clamp(m.velocity + int(edit.range(11)) - 5, 1, 126);
+          }
+        }
+      }
+      break;
+    }
+    case Kind::Count:
     case Kind::Trigger:
       break;
     }
@@ -363,12 +520,93 @@ struct Rect {
     return px >= x && py >= y && px < x + w && py < y + h;
   }
 };
-enum class Page { Sequence, Track, Fx, Sample, Pattern, Step };
+enum class Page { Sequence, Track, Fx, Sample, Pattern, Step, Tools };
 struct Ui {
   Page page = Page::Sequence;
   int selected = 0, bank = 0, selected_step = -1, capture = -1;
   bool down = false, inspect = false;
   int copy_source = -1, clear_pattern = -1;
+  int tool_section = 0, tool_destination = 0;
+  int pulses = 5, rotation = 0, density = 45, vel_var = 20, prob_var = 15,
+      ratchet_chance = 5, mutate_amount = 20;
+  bool tool_pending = false;
+  Command pending_tool{};
+  void cancel_tool() { tool_pending = false; }
+  bool tool_action(int id, const Engine &e, Command &c) {
+    if (id >= 80 && id <= 82) {
+      tool_section = id - 80;
+      cancel_tool();
+      return false;
+    }
+    if (id == 91 && tool_section != 1) {
+      cancel_tool();
+      return false;
+    }
+    if (tool_pending) {
+      if (pending_tool.kind == Kind::CopyTrack && (id == 88 || id == 89)) {
+        pending_tool.value =
+            clamp(pending_tool.value + (id == 88 ? -1 : 1), 0, 15);
+      } else if (id == 90) {
+        c = pending_tool;
+        cancel_tool();
+        return true;
+      }
+      return false;
+    }
+    if (id == 93 || id == 94) {
+      selected = clamp(selected + (id == 93 ? -1 : 1), 0, 15);
+      return false;
+    }
+    c = {Kind::Rotate, uint8_t(selected), 0};
+    c.pattern = uint8_t(e.selected_pattern);
+    if (tool_section == 0) {
+      if (id == 83 || id == 84)
+        c.value = id == 83 ? -1 : 1;
+      else if (id == 85)
+        c.kind = Kind::Reverse;
+      else if (id == 86 || id == 87) {
+        c.kind = id == 86 ? Kind::CopyTrack : Kind::ClearTrack;
+        c.value = selected;
+        pending_tool = c;
+        tool_pending = true;
+        return false;
+      } else
+        return false;
+    } else if (tool_section == 1) {
+      if (id == 89) {
+        c.kind = Kind::Euclidean;
+        c.value = clamp(pulses, 0, e.patterns[c.pattern].length);
+        c.step = uint8_t(rotation % e.patterns[c.pattern].length);
+      } else if (id == 90) {
+        c.kind = Kind::Randomize;
+        c.value =
+            generation_parameters(density, vel_var, prob_var, ratchet_chance);
+      } else if (id == 91) {
+        c.kind = Kind::Mutate;
+        c.value = mutate_amount;
+      } else if (id == 92)
+        c.kind = Kind::Reroll;
+      else
+        return false;
+    } else {
+      c.step = 1;
+      if (id == 83) {
+        c.kind = Kind::Duplicate;
+        c.value = (c.pattern + 1) % 16;
+        if (pattern_occupied(e.patterns[c.value])) {
+          pending_tool = c;
+          tool_pending = true;
+          return false;
+        }
+      } else if (id == 84 || id == 85)
+        c.value = id == 84 ? -1 : 1;
+      else if (id == 86)
+        c.kind = Kind::Reverse;
+      else
+        return false;
+    }
+    return true;
+  }
   void cancel_pattern_action() { copy_source = clear_pattern = -1; }
   // Return a concrete command only after the deliberate workflow completes.
   bool pattern_action(int id, const Engine &e, Command &c) {
@@ -411,6 +649,14 @@ struct Ui {
   }
 };
 inline Rect widget(int id) {
+  if (id == 78)
+    return {488, 224, 288, 52};
+  if (id == 79)
+    return {16, 90, 768, 56};
+  if (id >= 80 && id <= 82)
+    return {16 + (id - 80) * 256, 150, 248, 52};
+  if (id >= 83 && id <= 94)
+    return {16 + (id - 83) % 4 * 192, 210 + (id - 83) / 4 * 68, 184, 60};
   if (id == 68)
     return {16, 224, 160, 52}; // STEP, between grid and pads
   if (id == 69)
@@ -474,12 +720,16 @@ inline int hit(Page p, int x, int y) {
     for (int i = 70; i <= 77; ++i)
       if (widget(i).contains(x, y))
         return i;
+  } else if (p == Page::Tools) {
+    for (int i = 80; i <= 94; ++i)
+      if (widget(i).contains(x, y))
+        return i;
   } else if (p == Page::Pattern) {
     for (int i = 46; i <= 67; ++i)
       if (i != 63 && widget(i).contains(x, y))
         return i;
   } else if (p == Page::Sequence) {
-    for (int i : {68, 69})
+    for (int i : {68, 69, 78})
       if (widget(i).contains(x, y))
         return i;
     for (int i = 0; i < 24; ++i)

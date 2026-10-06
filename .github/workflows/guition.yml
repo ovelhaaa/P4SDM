@@ -39,3 +39,7 @@ jobs:
       - run: g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/groove_engine_test.cpp -o /tmp/groove_engine_test && /tmp/groove_engine_test
 
       - run: python tests/analyze_m8.py docs/GUITION_M8_STRESS_SERIAL.log
+
+      - run: g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/pattern_tools_test.cpp -o /tmp/pattern_tools_test && /tmp/pattern_tools_test
+
+      - run: python tests/analyze_m9.py docs/GUITION_M9_STRESS_SERIAL.log
