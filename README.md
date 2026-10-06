@@ -341,3 +341,10 @@ The system features **16 Tracks**: 8 Synthesizer tracks (Left) and 8 Sampler tra
 Automatically chains patterns together.
 * Operates within the active "Memory."
 * Allows selecting a START pattern and an END pattern to create a playback loop.
+
+M6 adds native 4-bit SDMMC, checked PCM16/44.1 kHz WAV loading to PSRAM,
+resident sample voices and a TRACK → SAMPLE assignment page. Put WAV files in
+`/P4SDM/SAMPLES/`; mono and stereo (downmixed during load) are supported.
+Synth fallback still boots without a card. No formatting is performed.
+See [M6 architecture, audit and qualification](docs/GUITION_M6.md).
+**PHYSICAL SD VALIDATION PENDING** until a microSD card is available.
