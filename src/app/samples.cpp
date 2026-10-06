@@ -1,10 +1,13 @@
 #include "samples.h"
+#include "qualification.h"
 #include "../hal/storage_hal.h"
 #include "esp_heap_caps.h"
 #include "esp_timer.h"
 namespace samples {
 sampler::Voice voices[16];
 sampler::Transfer transfer;
+std::atomic<unsigned> qualification_phase{0};
+std::atomic<bool> load_active{false};
 namespace {
 constexpr unsigned max_files = 128, max_entries = 512,
                    reserve = 4 * 1024 * 1024;
@@ -64,10 +67,17 @@ void scan() {
   snprintf(s, sizeof(s), "%u WAV files%s", indexed.load(),
            limited ? " (INDEX LIMIT)" : "");
   report(s);
-  Serial.printf("[M6 index] files=%u entries=%u limited=%d scan_us=%lld\n",
-                indexed.load(), entries, limited, esp_timer_get_time() - start);
+  Serial.printf("[M6 index] files=%u entries=%u limited=%d scan_us=%lld ps_free=%u largest=%u internal=%u\n",
+                indexed.load(), entries, limited, esp_timer_get_time() - start,
+                unsigned(heap_caps_get_free_size(MALLOC_CAP_SPIRAM)),
+                unsigned(heap_caps_get_largest_free_block(MALLOC_CAP_SPIRAM)),
+                unsigned(heap_caps_get_free_size(MALLOC_CAP_INTERNAL)));
 }
 void load(int index) {
+  struct Interval {
+    Interval() { load_active.store(true); }
+    ~Interval() { load_active.store(false); }
+  } interval;
   if (!storage::probe()) {
     report(storage::status());
     return;
@@ -168,7 +178,70 @@ void load(int index) {
       unsigned(heap_caps_get_free_size(MALLOC_CAP_SPIRAM)),
       unsigned(heap_caps_get_largest_free_block(MALLOC_CAP_SPIRAM)),
       unsigned(heap_caps_get_free_size(MALLOC_CAP_INTERNAL)), reserve);
+  Serial.printf("[M6.1 replacement] retired_clear=%d ps_delta=%lld status=READY\n",
+                transfer.retired.load() == nullptr,
+                (long long)free - (long long)heap_caps_get_free_size(MALLOC_CAP_SPIRAM));
 }
+#if P4SDM_SAMPLER_QUALIFICATION
+int fixture(const char *name) {
+  for (unsigned i = 0; i < indexed; ++i)
+    if (!strcmp(names[i], name)) return int(i);
+  return -1;
+}
+void qualify() {
+  const char *required[] = {"short_mono.wav", "stereo.wav", "long_mono.wav",
+                            "unsupported_depth.wav", "truncated.wav"};
+  for (auto name : required)
+    if (fixture(name) < 0) {
+      Serial.printf("[M6.1 qualification] SKIP missing=%s PHYSICAL SD VALIDATION PENDING\n", name);
+      return;
+    }
+  size_t baseline_free = 0, baseline_largest = 0;
+  for (unsigned i = 0; i < 6; ++i) {
+    target = 0;
+    auto *before = transfer.active[0];
+    const char *name = sampler::qualification_fixture(i);
+    load(fixture(name));
+    bool accepted = transfer.active[0] && !strcmp(transfer.active[0]->name, name);
+    bool preserved = transfer.active[0] == before;
+    size_t free = heap_caps_get_free_size(MALLOC_CAP_SPIRAM),
+           largest = heap_caps_get_largest_free_block(MALLOC_CAP_SPIRAM);
+    Serial.printf("[M6.1 fixture] name=%s accepted=%d preserved=%d retired_clear=%d payload=%u free=%u largest=%u\n",
+                  name, accepted, preserved, transfer.retired.load() == nullptr,
+                  unsigned(payload), unsigned(free), unsigned(largest));
+    if (i == 0) { baseline_free = free; baseline_largest = largest; }
+    if (i == 3)
+      Serial.printf("[M6.1 equal_payload] free_loss=%lld largest_loss=%lld suspect=%d tolerance=4096\n",
+                    (long long)baseline_free - (long long)free,
+                    (long long)baseline_largest - (long long)largest,
+                    sampler::memory_loss_suspect(baseline_free, free, baseline_largest, largest));
+    if ((i < 4 && !accepted) || (i >= 4 && (accepted || !preserved))) {
+      Serial.println("[M6.1 qualification] FAIL fixture / assignment");
+      return;
+    }
+  }
+  for (target = 0; target < 16; ++target) {
+    load(fixture("long_mono.wav"));
+    if (!transfer.active[target] || strcmp(transfer.active[target]->name, "long_mono.wav")) {
+      Serial.println("[M6.1 qualification] FAIL resident setup");
+      return;
+    }
+  }
+  for (unsigned phase = 1; phase <= 6; ++phase) {
+    qualification_phase.store(phase, std::memory_order_release);
+    // Baseline and SD-load windows use the same unity pattern.
+    if (phase == 6) {
+      vTaskDelay(pdMS_TO_TICKS(1000));
+      target = 0;
+      load(fixture("stereo.wav"));
+      load(fixture("long_mono.wav"));
+    }
+    vTaskDelay(pdMS_TO_TICKS(12000));
+  }
+  qualification_phase.store(0);
+  Serial.println("[M6.1 qualification] AUTOMATION COMPLETE; inspect metrics; audible/removal checks MANUAL");
+}
+#endif
 void worker(void *) {
   Serial.printf("[M6 budget] total=%u display=2304000 fx_delay=352800 "
                 "samples=0 reserve=%u free=%u largest=%u internal=%u\n",
@@ -181,6 +254,13 @@ void worker(void *) {
   else
     report(storage::status());
   booted.store(true, std::memory_order_release);
+#if P4SDM_SAMPLER_QUALIFICATION
+  if (storage::state() == storage::State::Ready) {
+    working.store(true);
+    qualify();
+    working.store(false);
+  } else Serial.println("[M6.1 qualification] PHYSICAL SD VALIDATION PENDING (no mounted card)");
+#endif
   for (;;) {
     int index = job.exchange(-1, std::memory_order_acquire);
     if (index >= 0) {

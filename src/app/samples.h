@@ -4,6 +4,8 @@
 namespace samples {
 extern sampler::Voice voices[16];
 extern sampler::Transfer transfer;
+extern std::atomic<unsigned> qualification_phase;
+extern std::atomic<bool> load_active;
 void start();
 bool initialized();
 bool request(unsigned track, int index);

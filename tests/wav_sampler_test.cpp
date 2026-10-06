@@ -1,5 +1,6 @@
 #include "../src/app/model.h"
 #include "../src/app/wav.h"
+#include "../src/app/qualification.h"
 #include <cassert>
 #include <filesystem>
 #include <fstream>
@@ -58,6 +59,59 @@ const char *parse(Bytes b, sampler::Wav &w) {
       w);
 }
 int main(int argc, char **argv) {
+  assert(!strcmp(sampler::qualification_fixture(0), sampler::qualification_fixture(3)));
+  assert(!strcmp(sampler::qualification_fixture(4), "unsupported_depth.wav"));
+  assert(!strcmp(sampler::qualification_fixture(5), "truncated.wav"));
+  assert(!sampler::qualification_fixture(6));
+  assert(sampler::qualification_pitch(1) == 60);
+  assert(sampler::qualification_pitch(2) == 48);
+  assert(sampler::qualification_pitch(3) == 72);
+  assert(sampler::qualification_pitch(5) == sampler::qualification_pitch(6));
+  assert(!sampler::memory_loss_suspect(10000, 5904, 20000, 15904));
+  assert(sampler::memory_loss_suspect(10000, 5903, 20000, 20000));
+  assert(sampler::memory_loss_suspect(10000, 10000, 20000, 15903));
+  app::Engine model;
+  auto &track = model.tracks[0];
+  assert(track.pitch == 36 && !track.sample_configured);
+  track.assigned();
+  assert(track.pitch == 60 && sampler::pitch_increment(track.pitch) == 65536);
+  model.apply({app::Kind::Pitch, 0, 48});
+  assert(track.sample_pitch == 48 && sampler::pitch_increment(track.pitch) == 32768);
+  track.assigned(); // replacement preserves intentional tune
+  assert(track.pitch == 48);
+  model.apply({app::Kind::Source, 0, 0});
+  assert(track.pitch == 36);
+  model.apply({app::Kind::Source, 0, 1});
+  assert(track.pitch == 48);
+  for (int id = 24; id < 29; ++id)
+    assert(app::track_control_enabled(track, id) == (id < 27));
+  model.apply({app::Kind::Source, 0, 0});
+  for (int id = 24; id < 29; ++id)
+    assert(app::track_control_enabled(track, id));
+  track.assigned();
+  assert(track.pitch == 48);
+  assert(sampler::pitch_increment(60) == 65536);
+  assert(sampler::pitch_increment(48) == 32768);
+  assert(sampler::pitch_increment(72) == 131072);
+  assert(sampler::pitch_increment(0) == 2048);
+  assert(sampler::pitch_increment(127) == 3142176);
+  assert(sampler::pitch_increment(-1) == sampler::pitch_increment(0));
+  assert(sampler::pitch_increment(128) == sampler::pitch_increment(127));
+  for (int pitch = 1; pitch < 128; ++pitch)
+    assert(sampler::pitch_increment(pitch) > sampler::pitch_increment(pitch - 1));
+  app::Track first;
+  first.source(true);
+  first.pitch = first.sample_pitch = 72;
+  first.assigned();
+  assert(first.pitch == 60); // no successful assignment before this
+  app::Engine publication;
+  publication.tracks[0].assigned();
+  // Synth edit queued before publication must not detune newly resident PCM.
+  publication.apply({app::Kind::Pitch, 0, 40, app::Command::PitchSource::Synth});
+  assert(publication.tracks[0].pitch == 60 && publication.tracks[0].synth_pitch == 40);
+  publication.apply({app::Kind::Source, 0, 0});
+  publication.apply({app::Kind::Pitch, 0, 48, app::Command::PitchSource::Sample});
+  assert(publication.tracks[0].pitch == 40 && publication.tracks[0].sample_pitch == 48);
   sampler::Wav w;
   for (unsigned c : {1u, 2u})
     for (bool order : {false, true}) {
@@ -92,6 +146,9 @@ int main(int argc, char **argv) {
   a.frames = 3;
   sampler::Voice v;
   v.assign(&a);
+  v.trigger(sampler::pitch_increment(60));
+  assert(v.next() == 10 && v.next() == 20 && v.next() == 30);
+  assert(!v.active && v.next() == 0);
   for (uint64_t step : {32768ull, 65536ull, 131072ull, 999999999ull}) {
     v.trigger(step);
     assert(v.next() == 10);
@@ -104,6 +161,8 @@ int main(int argc, char **argv) {
   v.next();
   v.trigger(65536);
   assert(v.next() == 10);
+  v.stop(); // Source switching uses this same voice operation.
+  assert(v.next() == 0 && !v.active && v.position == 0);
   sampler::Sample short_sample;
   short_sample.data = pcm;
   short_sample.frames = 1;

@@ -3,6 +3,19 @@
 #include <cstdint>
 #include <cstring>
 namespace sampler {
+// Rounded Q16 semitone ratios. Octaves are exact; clamp before lookup.
+inline uint64_t pitch_increment(int pitch) {
+  static constexpr uint32_t ratios[12] = {
+      65536, 69433, 73562, 77936, 82570, 87480,
+      92682, 98193, 104032, 110218, 116772, 123715};
+  if (pitch < 0) pitch = 0;
+  if (pitch > 127) pitch = 127;
+  int delta = pitch - 60;
+  int octave = delta / 12, note = delta % 12;
+  if (note < 0) { note += 12; --octave; }
+  return octave >= 0 ? uint64_t(ratios[note]) << octave
+                     : uint64_t(ratios[note]) >> -octave;
+}
 struct Wav {
   uint32_t offset = 0, bytes = 0, frames = 0, rate = 0;
   uint16_t channels = 0;
@@ -87,10 +100,13 @@ struct Voice {
   const Sample *sample = nullptr;
   uint64_t position = 0, increment = 65536;
   bool active = false;
-  void assign(const Sample *s) {
-    sample = s;
+  void stop() {
     active = false;
     position = 0;
+  }
+  void assign(const Sample *s) {
+    sample = s;
+    stop();
   }
   void trigger(uint64_t step) {
     position = 0;

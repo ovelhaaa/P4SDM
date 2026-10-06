@@ -1,5 +1,6 @@
 #include "app/model.h"
 #include "app/samples.h"
+#include "app/qualification.h"
 static bool app_pcm(int track, int16_t &value);
 static void app_sample();
 // clang-format off
@@ -36,6 +37,14 @@ unsigned normal_frames = 0;
 uint32_t normal_dirty_max = 0;
 uint32_t dirty_max = 0, prep_max = 0, skipped_frames = 0;
 constexpr unsigned capture_blocks = 10336;
+#if P4SDM_SAMPLER_QUALIFICATION
+struct QualificationMetrics {
+  uint32_t times[4096]{}, count = 0, misses = 0, failures = 0, timeouts = 0;
+  uint32_t nonzero = 0, rails = 0, active_max = 0;
+};
+QualificationMetrics qualification[8];
+std::atomic<unsigned> qualification_finished{0};
+#endif
 uint32_t render_times[capture_blocks]{};
 std::atomic<unsigned> captured{0};
 unsigned active_min = 16, active_max = 0;
@@ -49,8 +58,7 @@ void trigger(int t) {
   if (engine.tracks[t].sample && samples::voices[t].sample) {
     PITCH[t] = 255;
     AMP[t] = 0;
-    samples::voices[t].trigger(uint64_t(
-        midiFrequencies[engine.tracks[t].pitch] * BASE_FREQ_INV * 65536.f));
+    samples::voices[t].trigger(sampler::pitch_increment(engine.tracks[t].pitch));
   } else
     synthESP32_TRIGGER_P(t, engine.tracks[t].pitch);
   flashes[t].fetch_add(1, std::memory_order_relaxed);
@@ -72,6 +80,10 @@ void update_track(int t) {
     synthESP32_setPitch(t, v.pitch);
 }
 bool send(app::Command c) {
+  if (c.kind == app::Kind::Pitch)
+    c.pitch_source = view.tracks[c.track].sample
+                         ? app::Command::PitchSource::Sample
+                         : app::Command::PitchSource::Synth;
   if (!commands.push(c)) {
     ++rejected;
     return false;
@@ -110,7 +122,12 @@ void draw(int id) {
     auto &t = view.tracks[ui.selected];
     const char *names[] = {"VOLUME", "PAN", "PITCH", "LENGTH", "WAVE"};
     int vals[] = {t.volume, t.pan, t.pitch, t.length, t.wave};
-    snprintf(s, sizeof(s), "%s  %d", names[id - 24], vals[id - 24]);
+    if (!app::track_control_enabled(t, id))
+      snprintf(s, sizeof(s), "%s  SYNTH ONLY", names[id - 24]);
+    else if (t.sample && id == 26)
+      snprintf(s, sizeof(s), "TUNE %+d st%s", t.pitch - 60, t.pitch == 60 ? " UNITY" : "");
+    else
+      snprintf(s, sizeof(s), "%s  %d", names[id - 24], vals[id - 24]);
   } else {
     const char *names[] = {view.playing ? "STOP" : "PLAY",
                            "SEQ",
@@ -211,6 +228,7 @@ void interact(int id, int x, bool initial) {
     if (id == 28)
       val = val * 15 / 127;
     auto &t = view.tracks[ui.selected];
+    if (!app::track_control_enabled(t, id)) return;
     int current[] = {t.volume, t.pan, t.pitch, t.length, t.wave};
     if (val != current[id - 24] &&
         send({kinds[id - 24], uint8_t(ui.selected), val}))
@@ -264,7 +282,9 @@ void ui_task(void *) {
       dirty[38] = true;
       for (unsigned t = 0; t < 16; ++t)
         if (samples::assigned(t)) {
-          view.tracks[t].sample = true;
+          view.tracks[t].assigned();
+          if (int(t) == ui.selected)
+            for (int id = 24; id < 29; ++id) dirty[id] = true;
           if (int(t / 8) == ui.bank)
             dirty[16 + t % 8] = true;
         }
@@ -322,6 +342,9 @@ void ui_task(void *) {
       touch_state.y = unsigned(event.value) >> 16;
       if (touch_state.pressed && !ui.down) {
         ui.capture = app::hit(ui.page, touch_state.x, touch_state.y);
+        if (ui.page == app::Page::Track && ui.capture >= 24 && ui.capture < 29 &&
+            !app::track_control_enabled(view.tracks[ui.selected], ui.capture))
+          ui.capture = -1;
         interact(ui.capture, touch_state.x, true);
       } else if (touch_state.pressed && ui.capture >= 24 && ui.capture < 29)
         interact(ui.capture, touch_state.x, false);
@@ -496,10 +519,30 @@ void touch_worker(void *) {
 void audio_worker(void *) {
   for (;;) {
     const auto start = esp_timer_get_time();
+#if P4SDM_SAMPLER_QUALIFICATION
+    static unsigned previous_phase = 0, blocks = 0;
+    unsigned phase = samples::qualification_phase.load(std::memory_order_acquire);
+    if (phase != previous_phase) {
+      qualification_finished.store(previous_phase, std::memory_order_release);
+      previous_phase = phase;
+      blocks = 0;
+      if (phase) {
+        engine.apply({app::Kind::Play, 0, 1});
+        for (unsigned t = 0; t < 16; ++t) {
+          engine.tracks[t].steps = 0xffff;
+          engine.apply({app::Kind::Pitch, uint8_t(t), sampler::qualification_pitch(phase)});
+          trigger(t);
+        }
+      }
+    }
+    if (phase == 4 && ++blocks % 8 == 0)
+      for (int t = 0; t < 16; ++t) trigger(t);
+    const unsigned metric = phase == 6 && samples::load_active.load() ? 7 : phase;
+#endif
     int sample_track = samples::transfer.consume(samples::voices);
     if (sample_track >= 0) {
       unsigned t = unsigned(sample_track);
-      engine.tracks[t].sample = true;
+      engine.tracks[t].assigned();
       PITCH[t] = 255;
       AMP[t] = 0;
       FILTROS[t].reset();
@@ -508,7 +551,7 @@ void audio_worker(void *) {
     for (unsigned n = 0; n < 16 && commands.pop(c); ++n) {
       engine.apply(c);
       if (c.kind == app::Kind::Source) {
-        samples::voices[c.track].active = false;
+        samples::voices[c.track].stop();
         FILTROS[c.track].reset();
         PITCH[c.track] = 255;
         AMP[c.track] = 0;
@@ -522,8 +565,7 @@ void audio_worker(void *) {
         update_track(c.track);
       if (c.kind == app::Kind::Pitch && engine.tracks[c.track].sample)
         samples::voices[c.track].increment =
-            uint64_t(midiFrequencies[engine.tracks[c.track].pitch] *
-                     BASE_FREQ_INV * 65536.f);
+            sampler::pitch_increment(engine.tracks[c.track].pitch);
     }
     for (unsigned n = 0; n < 16 && pad_triggers.pop(c); ++n)
       trigger(c.track);
@@ -549,13 +591,34 @@ void audio_worker(void *) {
     playhead.store(engine.playing ? engine.step : -1,
                    std::memory_order_relaxed);
     auto err = audio::write(out_buf, DMA_BUF_LEN);
+#if P4SDM_SAMPLER_QUALIFICATION
+    if (metric && qualification[metric].count < 4096) {
+      auto &m = qualification[metric];
+      m.times[m.count++] = us;
+      m.misses += us >= double(DMA_BUF_LEN) * 1e6 / SAMPLE_RATE;
+      m.failures += err != ESP_OK;
+      m.timeouts += err == ESP_ERR_TIMEOUT;
+      unsigned active = 0;
+      for (auto &v : samples::voices) active += v.active;
+      m.active_max = std::max(m.active_max, uint32_t(active));
+      for (int i = 0; i < DMA_BUF_LEN * 2; ++i) {
+        m.nonzero += out_buf[i] != 0;
+        m.rails += out_buf[i] == -32768 || out_buf[i] == 32767;
+      }
+    }
+#endif
     if (b < capture_blocks) {
       write_errors += err != ESP_OK;
       timeouts += err == ESP_ERR_TIMEOUT;
       captured.store(b + 1, std::memory_order_release);
     }
-    if (err != ESP_OK)
+    if (err != ESP_OK) {
+#if P4SDM_SAMPLER_QUALIFICATION
+      qualification_finished.store(phase, std::memory_order_release);
+      Serial.printf("[M6.1 audio FAILED] phase=%u error=%d\n", phase, int(err));
+#endif
       vTaskSuspend(nullptr);
+    }
   }
 }
 } // namespace
@@ -622,6 +685,24 @@ void setup() {
   xTaskCreatePinnedToCore(initialize, "app_init", 8000, nullptr, 1, nullptr, 0);
 }
 void loop() {
+#if P4SDM_SAMPLER_QUALIFICATION
+  static unsigned reported_modes = 0;
+  unsigned finished = qualification_finished.load(std::memory_order_acquire);
+  const char *modes[] = {"", "UNITY", "DOWN", "UP", "RETRIGGER", "BASELINE", "LOAD_WINDOW_IDLE", "SD_LOAD_INTERVAL"};
+  for (unsigned mode = 1; mode <= 7; ++mode) {
+    if (!(reported_modes & (1u << mode)) &&
+        (mode <= finished || (mode == 7 && finished == 6))) {
+      auto &m = qualification[mode];
+      if (!m.count) continue;
+      std::sort(m.times, m.times + m.count);
+      Serial.printf("[M6.1 audio] mode=%s blocks=%u p50=%u p95=%u p99=%u max=%u misses=%u failures=%u timeouts=%u nonzero=%u rails=%u active_max=%u\n",
+                    modes[mode], m.count, m.times[m.count / 2], m.times[m.count * 95 / 100],
+                    m.times[m.count * 99 / 100], m.times[m.count - 1], m.misses,
+                    m.failures, m.timeouts, m.nonzero, m.rails, m.active_max);
+      reported_modes |= 1u << mode;
+    }
+  }
+#endif
   static bool reported = false;
   if (!reported && captured.load(std::memory_order_acquire) == capture_blocks) {
     reported = true;

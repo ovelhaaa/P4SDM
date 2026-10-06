@@ -24,6 +24,9 @@ struct Command {
   Kind kind;
   uint8_t track;
   int value;
+  // UI pitch edits retain their intended source across asynchronous publication.
+  enum class PitchSource : uint8_t { Current, Synth, Sample };
+  PitchSource pitch_source = PitchSource::Current;
 };
 // One producer (UI), one consumer (audio); reject rather than overwrite.
 template <unsigned N> struct Queue {
@@ -51,7 +54,26 @@ struct Track {
   uint16_t steps = 0;
   int volume = 80, pan = 0, pitch = 48, length = 32, wave = 0;
   bool muted = false, sample = false;
+  int synth_pitch = 48, sample_pitch = 60;
+  bool sample_configured = false;
+  void source(bool pcm) {
+    if (sample) sample_pitch = pitch;
+    else synth_pitch = pitch;
+    sample = pcm;
+    pitch = sample ? sample_pitch : synth_pitch;
+  }
+  void assigned() {
+    source(true);
+    if (!sample_configured) {
+      sample_pitch = 60;
+      pitch = 60;
+      sample_configured = true;
+    }
+  }
 };
+inline bool track_control_enabled(const Track &t, int id) {
+  return id >= 24 && id < (t.sample ? 27 : 29);
+}
 struct Engine {
   Track tracks[16];
   int bpm = 120, step = 15;
@@ -61,6 +83,7 @@ struct Engine {
   Engine() {
     for (int i = 0; i < 16; ++i) {
       tracks[i].pitch = 36 + i * 3;
+      tracks[i].synth_pitch = tracks[i].pitch;
       tracks[i].wave = i;
     }
   }
@@ -89,7 +112,12 @@ struct Engine {
       t.pan = clamp(c.value, -127, 127);
       break;
     case Kind::Pitch:
-      t.pitch = clamp(c.value, 0, 127);
+      if (c.pitch_source == Command::PitchSource::Sample ||
+          (c.pitch_source == Command::PitchSource::Current && t.sample))
+        t.sample_pitch = clamp(c.value, 0, 127);
+      else
+        t.synth_pitch = clamp(c.value, 0, 127);
+      t.pitch = t.sample ? t.sample_pitch : t.synth_pitch;
       break;
     case Kind::Length:
       t.length = clamp(c.value, 0, 127);
@@ -104,7 +132,7 @@ struct Engine {
       t.muted = c.value;
       break;
     case Kind::Source:
-      t.sample = c.value;
+      t.source(c.value);
       break;
     case Kind::Trigger:
       break;

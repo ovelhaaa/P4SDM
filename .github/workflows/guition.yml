@@ -12,7 +12,7 @@ jobs:
           python-version: '3.11.7'
       - run: pip install platformio==6.1.18
       # platformio.ini pins hardware-validated pioarduino 55.03.36-1.
-      - run: pio run -e guition_boot -e guition_audio -e guition_synth -e guition_fx -e guition_display -e guition_ui_audio -e guition_ui_audio_m41 -e guition_app -e guition_app_stress
+      - run: pio run -e guition_boot -e guition_audio -e guition_synth -e guition_fx -e guition_display -e guition_ui_audio -e guition_ui_audio_m41 -e guition_app -e guition_app_stress -e guition_sampler_stress
       - run: g++ -std=c++17 -Wall -Wextra -Werror tests/pcm_mono_test.cpp -o /tmp/pcm_mono_test && /tmp/pcm_mono_test
       - run: g++ -std=c++17 -Wall -Wextra -Werror -Itests/fx_stubs tests/fx_safety_test.cpp -o /tmp/fx_safety_test && /tmp/fx_safety_test
       - run: python tests/compare_fx_baseline.py
