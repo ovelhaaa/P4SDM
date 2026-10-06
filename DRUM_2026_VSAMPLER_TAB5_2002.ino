@@ -8,16 +8,19 @@
 
 // includes
 #include <Arduino.h>
+#if !P4SDM_HEADLESS
 #include <Wire.h>
+#endif
 
-#include <FreeRTOS.h>
-#include <task.h>
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 #include "freertos/semphr.h"
 
 #include "button.h"
 #include "rot.h"
 #include "wavetables.h"
 
+#if !P4SDM_HEADLESS
 // jack (varios días para conseguir apagar el **** altavoz interno cuando se inserta el jack!!!!)
 uint8_t old_jack = 2;
 uint8_t val = 0;
@@ -33,6 +36,8 @@ unsigned long lastCheck = 0;
 #define PIN_JACK 0x80  // Pin 7 (1 << 7)
 
 
+#endif // Tab5 jack hardware
+
 const int MAX_BUTTONS = 50;
 const int MAX_BARS = 45;
 
@@ -42,6 +47,7 @@ Bseq* mBseq[MAX_BUTTONS];
 
 
 // Display & Touch & Audio & SD
+#if !P4SDM_HEADLESS
 #include <SPI.h>
 #include <SD.h>
 #include <M5Unified.h>
@@ -53,6 +59,8 @@ Bseq* mBseq[MAX_BUTTONS];
 #define SD_SPI_MOSI_PIN 44
 #define SD_SPI_MISO_PIN 39
 
+#endif // Tab5 peripherals
+
 // SD
 #define MAX_SAMPLES_COUNT 128
 //#define RAM_LIMIT (16 * 1024 * 1024)  // 16 MB
@@ -62,7 +70,9 @@ size_t SAMPLES_SIZES[MAX_SAMPLES_COUNT];
 int samplesTotal = 0;
 String SAMPLE_NAMES[MAX_SAMPLES_COUNT];
 uint64_t ENDS[MAX_SAMPLES_COUNT];
+#if !P4SDM_HEADLESS
 M5Canvas waveSprite(&M5.Display);
+#endif
 
 // para dibujar mas rápido...
 // Arrays para guardar los valores pre-calculados
@@ -76,12 +86,15 @@ const int WAVE_HEIGHT = 140;
 const int WAVE_ORIGIN_X = 164;
 const int WAVE_ORIGIN_Y = 56;
 
+#if !P4SDM_HEADLESS
 lgfx::touch_point_t tp[1];  // hasta 5 puntos
+#endif
 #include "fx.h"
 
 TaskHandle_t usbTaskHandle = NULL;
 
 ///////////////////////////////////////////////////////////// MIDI USB HOST
+#if !P4SDM_HEADLESS
 #include <usb/usb_host.h>
 #include "show_desc.hpp"
 #include "usbhhelp.hpp"
@@ -90,6 +103,8 @@ bool isMIDIReady = false;
 const size_t MIDI_IN_BUFFERS = 8;
 usb_transfer_t* MIDIIn[MIDI_IN_BUFFERS] = { NULL };
 usb_transfer_t* MIDIOut = NULL;
+
+#endif // Tab5 USB Host
 
 // AKAI APC KEY25
 uint8_t pageRot = 0;  // maps 8 cc pot into pages
@@ -121,8 +136,10 @@ byte old_shiftR1 = true;
 int cox, coy, coz;
 
 ////////////////////////////// SPIFFS
+#if !P4SDM_HEADLESS
 #include <FS.h>
 #include <SPIFFS.h>
+#endif
 //const char* RUTA_ARCHIVO = "/backup_completo.bin";
 
 ////////////////////////////// SYNTH
@@ -557,6 +574,7 @@ uint8_t old_vol = 0;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
+#if !P4SDM_HEADLESS
 void usb_host_task_wrapper(void* pvParameters) {
 
   for (;;) {
@@ -954,3 +972,5 @@ int mapRounded(long x, long in_min, long in_max, long out_min, long out_max) {
   return (int)((numerator + (denominator / 2)) / denominator + out_min);
 }
 
+
+#endif // Original Tab5 startup / UI / storage

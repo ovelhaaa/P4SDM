@@ -1,9 +1,10 @@
-# P4SDM — Guition audio bring-up (milestones 1–2)
+# P4SDM — Guition audio bring-up (milestones 1–3)
 
 Fork de `zircothc/M5STACK-TAB5-SAMPLER-DRUM-MACHINE-2026` para Guition
 JC4880P443C_I_W / JC-ESP32P4-M3. Nesta etapa, o firmware novo é um diagnóstico
 de boot/PSRAM e áudio ES8311 → NS4150 → SPEAKER. O engine original foi
-preservado; sua integração será o milestone 3, depois da validação física do tom.
+preservado; o milestone 3 já oferece um teste do mixer/wavetable original sem
+interface. A confirmação auditiva ainda está pendente: o speaker não foi ligado.
 
 A [auditoria](docs/GUITION_AUDIT.md) registra os acoplamentos, inventário gráfico,
 riscos e plano mínimo. Nenhum display, SD, touch, MIDI Host ou Wi-Fi é
@@ -100,6 +101,42 @@ rampas de 20 ms. I2S recebe silêncio antes e depois do tom para reduzir pops.
 
 ## HAL e realtime
 
+### Synth original sem SD (milestone 3)
+
+```powershell
+pio run -e guition_synth
+pio run -e guition_synth -t upload --upload-port COM13
+pio device monitor --port COM13 --baud 115200
+```
+
+Na variante `guition_synth`, `P4SDM_HEADLESS=1` exclui inicialização/periféricos
+Tab5 do sketch principal. `src/synth_diagnostic.cpp` inclui os globais originais
+e `synthESP32.ino` na mesma unidade C++, com declarações em
+`src/engine/synth_api.h`. Não há cópia do mixer nem geração de código no build.
+Essa organização é uma ponte para a futura separação da aplicação/UI em módulos.
+
+`render_buffer()` contém o loop PCM original; o transporte foi separado dele.
+O teste envia `audio::write(out_buf, DMA_BUF_LEN)`. Inicializa todas as vozes
+antes de criar a task de áudio e dispara 20 notas em 10 segundos, alternando
+PAN extremo L/R em 16 vozes/wavetables. As mudanças de voz pertencem à mesma
+task de áudio, evitando escrita concorrente nos globais neste diagnóstico.
+Ao final envia silêncio, desliga o PA e imprime métricas em prioridade baixa.
+
+FX ficam **desativados**, sem alocação, neste teste incremental; os algoritmos
+em `fx.h` permanecem intactos. Não há SD, sampler carregado, sequencer,
+persistência, display, touch ou USB Host nesta variante.
+
+Na execução registrada em [GUITION_SYNTH_SERIAL.log](docs/GUITION_SYNTH_SERIAL.log):
+1.723 blocos, 20 notas, 421.015 frames mono não nulos, picos L/R 605/606,
+mono 304, render máximo **1.756 µs**, prazo **5.804 µs**, zero overruns de
+render, write/shutdown `ESP_OK`. Isso confirma PCM e tempo do teste dry;
+não mede underruns de DMA, todos os FX ou latência fim a fim.
+
+O build expõe um warning já existente: `reso=511` é convertido para `uint8_t`
+255 pelo filtro original. Preservado para não alterar o DSP nesta etapa.
+
+### Saída de áudio
+
 `src/hal/audio_hal.*`: `audio::begin(44100)`, `audio::write(pcm, frames)`,
 `audio::set_volume(0..100)`, `audio::end()`. PCM de entrada é estéreo
 intercalado 16-bit. `(int32_t(L)+int32_t(R))/2` é duplicado nos dois slots;
@@ -142,8 +179,10 @@ Nesta unidade, boot, PSRAM 32 MiB, ACK 0x18 e execução completa do teste foram
 confirmados por Serial em 2026-10-05; a confirmação auditiva continua pendente.
 Milestone 2 só fica **validado em hardware** após boot, 32 MiB, ACK 0x18 e tom
 audível pelo SPEAKER, sem falhas. Registrar revisão, fonte, speaker e logs.
-Depois ligar synth/wavetable sem SD ao HAL; não avançar display/touch/USB antes
-disso. A documentação original do Tab5 permanece abaixo como referência.
+O synth/wavetable dry já está ligado ao HAL e validado por PCM/timing. O usuário
+autorizou continuar sem o speaker; a validação auditiva permanece pendente.
+Próxima etapa: SDMMC/LDO4, sem streaming. A documentação original do Tab5
+permanece abaixo como referência.
 
 ---
 

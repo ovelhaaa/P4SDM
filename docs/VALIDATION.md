@@ -79,6 +79,34 @@ Criados:
 - `docs/VALIDATION.md`
 
 Os .ino e headers originais de engine/UI/sequencer não foram modificados.
+Essa afirmação se refere à entrega inicial de milestones 1–2.
 Artefatos de build ficam em `.pio/build/guition_audio` e
 `.pio/build/guition_boot`, ignorados pelo Git. Faça upload com PlatformIO,
 que envia também bootloader/partições nos offsets corretos.
+
+## Milestone 3 — synth original, sem interface
+
+`guition_synth` compilado e gravado na COM13 com hashes verificados.
+RAM estática: 34.084 bytes; flash: 471.142 bytes; firmware.bin: 484.576 bytes.
+Usuário informou speaker ainda desconectado e autorizou seguir; não há
+confirmação auditiva.
+
+Log real em `docs/GUITION_SYNTH_SERIAL.log`:
+
+```text
+[SYNTH] blocks=1723 notes=20 nonzero_mono=421015 peaks L=605 R=606 mono=304
+[SYNTH] max_render_us=1756 block_budget_us=5804 render_overruns=0
+[SYNTH] write=ESP_OK shutdown=ESP_OK result=PASS (PCM/timing only)
+```
+
+Usa loop PCM original e todas as vozes configuradas como synth; não carrega
+samples nem habilita FX. Mede somente render, sem varredura de picos/write.
+Zero overruns de render não significa zero underruns medidos no DMA.
+Os buffers e estado são preparados antes da criação da task.
+
+Arquivos modificados nesta etapa: `DRUM_2026_VSAMPLER_TAB5_2002.ino`
+(guards headless e includes FreeRTOS), `synthESP32.ino` (separação de render
+e transporte e criação da task delegada no headless), `platformio.ini`,
+`README.md`, este relatório. Criados `src/synth_diagnostic.cpp`,
+`src/engine/synth_api.h`, `docs/GUITION_SYNTH_SERIAL.log`.
+`fx.h`, filtros, tabelas e sequencer permanecem intactos.

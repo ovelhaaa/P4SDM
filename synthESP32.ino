@@ -44,6 +44,7 @@ void synthESP32_begin(){
     EPCW[ch] = 0;   
   }
 
+  #if !P4SDM_HEADLESS
   // Highest possible priority for realtime audio task
   xTaskCreatePinnedToCore(
                   audio_task,       //Function to implement the task 
@@ -54,12 +55,14 @@ void synthESP32_begin(){
                   NULL,       //Task handle.
                   0);         //Core where the task should run 
 
+  #endif // Headless caller starts audio after all voice initialization
+
   // Iniciar NEWENDS
   //memcpy(NEWENDS, ENDS, sizeof(ENDS));
 
 }
 
-static void write_buffer() {
+static void render_buffer() {
     for (int i = 0; i < DMA_BUF_LEN; i++) {
         
         // FX
@@ -368,6 +371,11 @@ static void write_buffer() {
         out_buf[i * 2 + 1] = (int16_t)finalMixR;
     }
 
+}
+
+#if !P4SDM_HEADLESS
+static void write_buffer() {
+    render_buffer();
     bool enviado = false;
     while (!enviado) {
         enviado = M5.Speaker.playRaw(out_buf, DMA_BUF_LEN * 2, SAMPLE_RATE, true, 1, 0); 
@@ -383,6 +391,8 @@ static void audio_task(void *userData){
       write_buffer();      
   }
 } 
+
+#endif // Tab5 audio transport; Guition caller uses render_buffer + audio HAL
 
 //*********************************************************************
 //  Setup ADSR 
