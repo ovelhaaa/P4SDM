@@ -6,7 +6,7 @@ inline int16_t soft_clip(int32_t sample) {
 }
 
 
-#include <vector>
+#include "fx_storage.h"
 #include <cmath>
 #include <math.h>
 
@@ -66,12 +66,13 @@ private:
     const int stereo_spread = 92;
 
     struct Buffer {
-        std::vector<float> data;
-        int size;
+        FxFloatStorage data;
+        int size = 0;
         int idx = 0;
         float store = 0;
     };
 
+    bool ready = false;
     Buffer combL[numcombs];
     Buffer combR[numcombs];
     Buffer allpassL[numallpasses];
@@ -90,28 +91,40 @@ public:
 
     }
 
-    void init() {
-        Serial.printf("PSRAM pre REVERB: %d\n", ESP.getFreePsram());
-        for(int i=0; i<numcombs; i++) {
-            combL[i].size = comb_lengths[i];
-            combL[i].data.resize(combL[i].size, 0);
-            combR[i].size = comb_lengths[i] + stereo_spread;
-            combR[i].data.resize(combR[i].size, 0);
+    bool isReady() const { return ready; }
+    void release() {
+        ready = false;
+        for (auto *bank : {combL, combR}) for (int i=0; i<numcombs; ++i) bank[i].data.release();
+        for (auto *bank : {allpassL, allpassR}) for (int i=0; i<numallpasses; ++i) bank[i].data.release();
+    }
+    void reset() {
+        for (auto *bank : {combL, combR}) for (int i=0; i<numcombs; ++i) {
+            bank[i].data.clear(bank[i].size); bank[i].idx=0; bank[i].store=0;
         }
-        for(int i=0; i<numallpasses; i++) {
-            allpassL[i].size = allpass_lengths[i];
-            allpassL[i].data.resize(allpassL[i].size, 0);
-            allpassR[i].size = allpass_lengths[i] + stereo_spread;
-            allpassR[i].data.resize(allpassR[i].size, 0);
+        for (auto *bank : {allpassL, allpassR}) for (int i=0; i<numallpasses; ++i) {
+            bank[i].data.clear(bank[i].size); bank[i].idx=0; bank[i].store=0;
         }
-        Serial.printf("PSRAM POST REVERB: %d\n", ESP.getFreePsram());
-
-        setPreset(8); 
+    }
+    bool init() {
+        release();
+        bool ok = true;
+        for (int i=0; i<numcombs; ++i) {
+            combL[i].size=comb_lengths[i]; combR[i].size=comb_lengths[i]+stereo_spread;
+            ok &= combL[i].data.allocate(combL[i].size);
+            ok &= combR[i].data.allocate(combR[i].size);
+        }
+        for (int i=0; i<numallpasses; ++i) {
+            allpassL[i].size=allpass_lengths[i]; allpassR[i].size=allpass_lengths[i]+stereo_spread;
+            ok &= allpassL[i].data.allocate(allpassL[i].size);
+            ok &= allpassR[i].data.allocate(allpassR[i].size);
+        }
+        if (!ok) { release(); Serial.println("[FX INIT_FAIL] Reverb"); return false; }
+        reset(); ready=true; setPreset(8); return true;
     }
 
     void process(int16_t inL, int16_t inR, int32_t &outL, int32_t &outR) {
 
-        if (wet <= 0.01f) {
+        if (!ready || wet <= 0.01f) {
             outL = inL; outR = inR; return;
         }
 
@@ -163,6 +176,10 @@ ProReverb myReverb;
 
 class SimpleDelay {
   public:
+    SimpleDelay() = default;
+    SimpleDelay(const SimpleDelay &) = delete;
+    SimpleDelay &operator=(const SimpleDelay &) = delete;
+    ~SimpleDelay() { release(); }
     // VARIABLES  
     int32_t delaySamples = 12000; 
     int32_t feedback = 120;
@@ -175,27 +192,34 @@ class SimpleDelay {
 
     volatile bool ready = false; 
 
-    void init(int32_t sizeSamples) {
+    bool isReady() const { return ready; }
+    void release() { ready=false; free(lBuffer); free(rBuffer); lBuffer=rBuffer=nullptr; len=0; }
+    void reset() {
+        if (ready) { memset(lBuffer, 0, len*sizeof(int16_t)); memset(rBuffer, 0, len*sizeof(int16_t)); }
+        writeIndex=0;
+    }
+    bool init(int32_t sizeSamples) {
         Serial.printf("PSRAM PRE DELAY: %d\n", ESP.getFreePsram());
-        ready = false;
+        release();
+        if (sizeSamples < 2) { Serial.println("[FX INIT_FAIL] invalid buffer length"); return false; }
         len = sizeSamples;
 
         // PSRAM
-        lBuffer = (int16_t *)heap_caps_calloc(len, sizeof(int16_t), MALLOC_CAP_SPIRAM); 
-        rBuffer = (int16_t *)heap_caps_calloc(len, sizeof(int16_t), MALLOC_CAP_SPIRAM);
+        lBuffer = (int16_t *)fx_calloc(len, sizeof(int16_t));
+        rBuffer = (int16_t *)fx_calloc(len, sizeof(int16_t));
         
-        if (lBuffer == NULL) lBuffer = (int16_t *)calloc(len, sizeof(int16_t));
-        if (rBuffer == NULL) rBuffer = (int16_t *)calloc(len, sizeof(int16_t));
 
         if (lBuffer != NULL && rBuffer != NULL) {
             writeIndex = 0;
             ready = true; 
         }
+        if (!ready) { release(); Serial.println("[FX INIT_FAIL] DELAY"); }
         Serial.printf("PSRAM POST DELAY: %d\n", ESP.getFreePsram());
+        return ready;
     }
 
     void process(int16_t inL, int16_t inR, int32_t &outL, int32_t &outR) {
-        if (!ready || lBuffer == NULL || rBuffer == NULL) {
+        if (!ready || lBuffer == NULL || rBuffer == NULL || delaySamples < 1 || delaySamples >= len) {
             outL = 0; outR = 0; return; 
         }
 
@@ -237,6 +261,10 @@ SimpleDelay myDelay;
 
 class PresetChorus {
 public:
+    PresetChorus() = default;
+    PresetChorus(const PresetChorus &) = delete;
+    PresetChorus &operator=(const PresetChorus &) = delete;
+    ~PresetChorus() { release(); }
     // VARIABLES
     float c_speed     = 0.5f;     // Velocidad en Hz (Humanamente legible)
     float c_depth     = 150.0f;   // Profundidad en muestras
@@ -303,16 +331,22 @@ public:
 
     }
 
-    void init(int32_t sizeSamples = 4096) {
+    bool isReady() const { return ready; }
+    void release() { ready=false; free(lBuffer); free(rBuffer); lBuffer=rBuffer=nullptr; len=0; }
+    void reset() {
+        if (ready) { memset(lBuffer, 0, len*sizeof(int16_t)); memset(rBuffer, 0, len*sizeof(int16_t)); }
+        writeIndex=0;
+        lfoPhase=0;
+    }
+    bool init(int32_t sizeSamples = 4096) {
         Serial.printf("PSRAM PRE CHORUS: %d\n", ESP.getFreePsram());
-        ready = false;
+        release();
+        if (sizeSamples < 2) { Serial.println("[FX INIT_FAIL] invalid buffer length"); return false; }
         len = sizeSamples;
         
-        lBuffer = (int16_t *)heap_caps_calloc(len, sizeof(int16_t), MALLOC_CAP_SPIRAM); 
-        rBuffer = (int16_t *)heap_caps_calloc(len, sizeof(int16_t), MALLOC_CAP_SPIRAM);
+        lBuffer = (int16_t *)fx_calloc(len, sizeof(int16_t));
+        rBuffer = (int16_t *)fx_calloc(len, sizeof(int16_t));
         
-        if (!lBuffer) lBuffer = (int16_t *)calloc(len, sizeof(int16_t));
-        if (!rBuffer) rBuffer = (int16_t *)calloc(len, sizeof(int16_t));
 
         if (lBuffer && rBuffer) {
             writeIndex = 0;
@@ -320,7 +354,9 @@ public:
             ready = true; 
             setPreset(1); 
         }
+        if (!ready) { release(); Serial.println("[FX INIT_FAIL] CHORUS"); }
         Serial.printf("PSRAM POST CHORUS: %d\n", ESP.getFreePsram());
+        return ready;
     }
 
     inline float readInterpolated(int16_t* buffer, float index) {
@@ -371,8 +407,10 @@ public:
         float nextR = (float)inR + (wetSignalR * c_feedback);
         
         // SOFT CLIP
-        if (nextL > 32000.0f) nextL = 32000.0f; if (nextL < -32000.0f) nextL = -32000.0f;
-        if (nextR > 32000.0f) nextR = 32000.0f; if (nextR < -32000.0f) nextR = -32000.0f;
+        if (nextL > 32000.0f) nextL = 32000.0f;
+        if (nextL < -32000.0f) nextL = -32000.0f;
+        if (nextR > 32000.0f) nextR = 32000.0f;
+        if (nextR < -32000.0f) nextR = -32000.0f;
 
         lBuffer[writeIndex] = (int16_t)nextL;
         rBuffer[writeIndex] = (int16_t)nextR;
@@ -403,6 +441,10 @@ PresetChorus myChorus;
 
 class PresetFlanger {
 public:
+    PresetFlanger() = default;
+    PresetFlanger(const PresetFlanger &) = delete;
+    PresetFlanger &operator=(const PresetFlanger &) = delete;
+    ~PresetFlanger() { release(); }
     // VARIABLES
     float rate      = 0.5f;     
     float depth     = 1.0f;     
@@ -467,16 +509,22 @@ public:
 
     }
 
-    void init(int32_t sizeSamples = 4096) {
+    bool isReady() const { return ready; }
+    void release() { ready=false; free(lBuffer); free(rBuffer); lBuffer=rBuffer=nullptr; len=0; }
+    void reset() {
+        if (ready) { memset(lBuffer, 0, len*sizeof(int16_t)); memset(rBuffer, 0, len*sizeof(int16_t)); }
+        writeIndex=0;
+        lfoPhase=0;
+    }
+    bool init(int32_t sizeSamples = 4096) {
         Serial.printf("PSRAM PRE FLANGER: %d\n", ESP.getFreePsram());
-        ready = false;
+        release();
+        if (sizeSamples < 2) { Serial.println("[FX INIT_FAIL] invalid buffer length"); return false; }
         len = sizeSamples;
 
-        lBuffer = (int16_t *)heap_caps_calloc(len, sizeof(int16_t), MALLOC_CAP_SPIRAM); 
-        rBuffer = (int16_t *)heap_caps_calloc(len, sizeof(int16_t), MALLOC_CAP_SPIRAM);
+        lBuffer = (int16_t *)fx_calloc(len, sizeof(int16_t));
+        rBuffer = (int16_t *)fx_calloc(len, sizeof(int16_t));
         
-        if (!lBuffer) lBuffer = (int16_t *)calloc(len, sizeof(int16_t));
-        if (!rBuffer) rBuffer = (int16_t *)calloc(len, sizeof(int16_t));
 
         if (lBuffer && rBuffer) {
             writeIndex = 0;
@@ -484,7 +532,9 @@ public:
             ready = true;
             setPreset(1); 
         }
+        if (!ready) { release(); Serial.println("[FX INIT_FAIL] FLANGER"); }
         Serial.printf("PSRAM POST FLANGER: %d\n", ESP.getFreePsram());
+        return ready;
     }
 
     inline float readInterpolated(int16_t* buffer, float index) {
@@ -537,8 +587,10 @@ public:
         float nextL = (float)inL + (wetL * feedback);
         float nextR = (float)inR + (wetR * feedback);
 
-        if (nextL > 32000.0f) nextL = 32000.0f; if (nextL < -32000.0f) nextL = -32000.0f;
-        if (nextR > 32000.0f) nextR = 32000.0f; if (nextR < -32000.0f) nextR = -32000.0f;
+        if (nextL > 32000.0f) nextL = 32000.0f;
+        if (nextL < -32000.0f) nextL = -32000.0f;
+        if (nextR > 32000.0f) nextR = 32000.0f;
+        if (nextR < -32000.0f) nextR = -32000.0f;
 
         lBuffer[writeIndex] = (int16_t)nextL;
         rBuffer[writeIndex] = (int16_t)nextR;
@@ -617,12 +669,18 @@ public:
         lfoPhase = 0.0f; 
     }
 
-    void init(float sr = 44100.0f) {
+    bool isReady() const { return ready; }
+    void reset() { lfoPhase=0; }
+    bool init(float sr = 44100.0f) {
         Serial.printf("PSRAM PRE REMOLO: %d\n", ESP.getFreePsram());
+        ready = false;
+        if (!std::isfinite(sr) || sr <= 0) { Serial.println("[FX INIT_FAIL] invalid sample rate"); return false; }
         sampleRate = sr;
+        reset();
         ready = true;
         Serial.printf("PSRAM POST TREMOLO: %d\n", ESP.getFreePsram());
         setPreset(3); 
+        return ready;
     }
 
     // Función auxiliar para generar onda cuadrada suave (Anti-Aliasing)
@@ -737,11 +795,17 @@ public:
         sampleCounter = 0.0f; 
     }
 
-    void init(float sr = 44100.0f) {
+    bool isReady() const { return ready; }
+    void reset() { sampleCounter=0; currentHoldL=currentHoldR=0; }
+    bool init(float sr = 44100.0f) {
         Serial.printf("PSRAM PRE CRUSHER: %d\n", ESP.getFreePsram());
+        ready = false;
+        if (!std::isfinite(sr) || sr <= 0) { Serial.println("[FX INIT_FAIL] invalid sample rate"); return false; }
         sampleRate = sr;
+        reset();
         ready = true;
         Serial.printf("PSRAM POST CRUSHER: %d\n", ESP.getFreePsram());
+        return ready;
     }
 
     // Función Inline para el proceso de reducción de bits
@@ -860,12 +924,18 @@ public:
         presetName = DistortionPresets[index].name;
     }
 
-    void init(float sr = 44100.0f) {
+    bool isReady() const { return ready; }
+    void reset() { filterStateL=filterStateR=0; }
+    bool init(float sr = 44100.0f) {
         Serial.printf("PSRAM PRE DIST: %d\n", ESP.getFreePsram());
+        ready = false;
+        if (!std::isfinite(sr) || sr <= 0) { Serial.println("[FX INIT_FAIL] invalid sample rate"); return false; }
         sampleRate = sr;
+        reset();
         ready = true;
         Serial.printf("PSRAM POST DIST: %d\n", ESP.getFreePsram());
         //setPreset(1); 
+        return ready;
     }
 
     inline float softClip(float sample) {
@@ -977,11 +1047,17 @@ public:
 
     }
 
-    void init(float sr = 44100.0f) {
+    bool isReady() const { return ready; }
+    void reset() { oscillatorPhase=0; }
+    bool init(float sr = 44100.0f) {
         Serial.printf("PSRAM PRE RINGMOD: %d\n", ESP.getFreePsram());
+        ready = false;
+        if (!std::isfinite(sr) || sr <= 0) { Serial.println("[FX INIT_FAIL] invalid sample rate"); return false; }
         sampleRate = sr;
+        reset();
         ready = true;
         Serial.printf("PSRAM POST RINGMOD: %d\n", ESP.getFreePsram());
+        return ready;
     }
 
     inline float getCarrier(float phase, float shape) {

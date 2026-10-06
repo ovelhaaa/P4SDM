@@ -24,7 +24,11 @@ struct Stage {
     int32_t peak_l = 0, peak_r = 0, peak_mono = 0;
     Timing render, write, cycle;
 };
+#if P4SDM_FX_DIAGNOSTIC
+static Stage stages[13];
+#else
 static Stage stages[4];
+#endif
 static unsigned active_voices() {
     unsigned n = 0;
     for (unsigned v = 0; v < 16; ++v) if (PITCH[v] != 255 && AMP[v] != 0) ++n;
@@ -49,29 +53,48 @@ static void reportf(const char *format, ...) {
         delay(10);
     }
 }
+#if P4SDM_FX_DIAGNOSTIC
+#include "engine/fx_diagnostic.h"
+#endif
+#if P4SDM_FX_DIAGNOSTIC
+static constexpr const char *MILESTONE="M3.2";
+#else
+static constexpr const char *MILESTONE="M3.1";
+#endif
 static void print_timing(const char *name, Timing &t, unsigned n) {
     if (!n) return;
     uint64_t sum = 0;
     for (unsigned i = 0; i < n; ++i) sum += t.values[i];
     std::sort(t.values, t.values + n);
     auto percentile = [&](unsigned p) { return t.values[(n * p + 99) / 100 - 1]; };
-    reportf("[M3.1] %s us min=%u avg=%.2f p50=%u p95=%u p99=%u max=%u\n",
+    reportf("[%s] %s us min=%u avg=%.2f p50=%u p95=%u p99=%u max=%u\n", MILESTONE,
         name, t.values[0], double(sum) / n, percentile(50), percentile(95),
         percentile(99), t.values[n-1]);
     delay(100); // allow deferred USB serial delivery without HWCDC flush/discard
     delay(10); // reporting only; measurement and transport already stopped
 }
 static void diagnostic_task(void *) {
+#if P4SDM_FX_DIAGNOSTIC
+    constexpr unsigned levels[] = {16,16,16,16,16,16,16,16,16,16,16,16,16};
+#else
     constexpr unsigned levels[] = {1, 4, 8, 16};
+#endif
     esp_err_t last_error = ESP_OK;
     bool pass = true;
     vTaskPrioritySet(nullptr, 1);
     guition::memory_report("before stress (task allocated)");
     delay(100); // allow deferred USB serial delivery without HWCDC flush/discard
-    vTaskPrioritySet(nullptr, configMAX_PRIORITIES - 1);
-    for (unsigned stage = 0; stage < 4; ++stage) {
+#if P4SDM_FX_DIAGNOSTIC
+    fx_psram_before=fx_psram(); fx_internal_before=fx_internal();
+#endif
+    for (unsigned stage = 0; stage < sizeof(levels)/sizeof(levels[0]); ++stage) {
         Stage &s = stages[stage];
         s.voices = levels[stage];
+#if P4SDM_FX_DIAGNOSTIC
+        if ((fx_specs[stage].mask & fx_ready_mask) != fx_specs[stage].mask) { pass=false; continue; }
+        fx_prepare(fx_specs[stage].mask);
+#endif
+        vTaskPrioritySet(nullptr, configMAX_PRIORITIES - 1);
         for (unsigned v = 0; v < 16; ++v) { PITCH[v] = 255; AMP[v] = 0; }
         // All triggers occur before the first sample: exact simultaneous onset
         // in engine sample time, distinct MIDI notes, wavetables and pans.
@@ -111,6 +134,7 @@ static void diagnostic_task(void *) {
                 break;
             }
         }
+        vTaskPrioritySet(nullptr, 1);
         pass &= s.blocks == STAGE_BLOCKS && s.active_min == s.voices &&
             s.active_max == s.voices && s.nonzero && !s.silent_blocks &&
             !s.rails && !s.failures && !s.render_misses;
@@ -124,28 +148,68 @@ static void diagnostic_task(void *) {
     }
     vTaskPrioritySet(nullptr, 1);
     guition::memory_report("after stress (before transport shutdown)");
+#if P4SDM_FX_DIAGNOSTIC
+    const long internal_loss=long(fx_internal_before)-long(fx_internal());
+    reportf("[M3.2] stress internal_loss=%ld\n",internal_loss);
+#endif
+#if P4SDM_FX_DIAGNOSTIC
+    const long ps_loss=long(fx_psram_before)-long(fx_psram());
+    // Compare while task and transport still allocated (shutdown restores DMA heap).
+    reportf("[M3.2] stress psram_loss=%ld init_heap_ok=%u\n",ps_loss,fx_heap_ok);
+#endif
     const esp_err_t shutdown = audio::end();
     for (Stage &s : stages) {
-        reportf("[M3.1] voices=%u blocks=%u active_min=%u active_max=%u budget_us=%.3f render_misses=%u cycle_misses=%u write_failures=%u timeouts=%u\n",
+#if P4SDM_FX_DIAGNOSTIC
+        const unsigned index=&s-stages;
+        reportf("[M3.2] stage=%s mask=%u init=%s\n",fx_specs[index].name,fx_specs[index].mask,
+            (fx_specs[index].mask & fx_ready_mask)==fx_specs[index].mask ? "OK":"INIT_FAIL");
+        if(s.blocks) {
+            // Preserve the full ordered series for offline spike/wrap analysis.
+            for(unsigned b=0;b<s.blocks;b+=16) {
+                char row[256]; int used=snprintf(row,sizeof(row),"[M3.2] raw stage=%s block=%u us=",fx_specs[index].name,b);
+                for(unsigned j=b;j<std::min(b+16,s.blocks);++j)
+                    used+=snprintf(row+used,sizeof(row)-used,"%s%u",j==b?"":",",s.render.values[j]);
+                reportf("%s\n",row);
+            }
+        }
+#endif
+        reportf("[%s] voices=%u blocks=%u active_min=%u active_max=%u budget_us=%.3f render_misses=%u cycle_misses=%u write_failures=%u timeouts=%u\n", MILESTONE,
             s.voices, s.blocks, s.active_min, s.active_max, BUDGET_US,
             s.render_misses, s.cycle_misses, s.failures, s.timeouts);
         delay(100); // allow deferred USB serial delivery without HWCDC flush/discard
         delay(10);
         print_timing("render", s.render, s.blocks);
+#if P4SDM_FX_DIAGNOSTIC
+        if(s.blocks && stages[0].blocks) {
+            const unsigned p99=s.render.values[(s.blocks*99+99)/100-1];
+            const unsigned maximum=s.render.values[s.blocks-1];
+            const auto &dry=stages[0];
+            const char *category=s.render_misses ? "FAIL" : maximum <= BUDGET_US*0.8 ? "SAFE" : "TIGHT";
+            reportf("[M3.2] qualify stage=%s category=%s p99_delta=%ld max_delta=%ld p99_budget_pct=%.2f max_budget_pct=%.2f\n",
+                fx_specs[index].name,category,long(p99)-dry.render.values[(dry.blocks*99+99)/100-1],
+                long(maximum)-dry.render.values[dry.blocks-1],100*p99/BUDGET_US,100*maximum/BUDGET_US);
+            reportf("[M3.2] headroom stage=%s p99_us=%.3f worst_us=%.3f pcm_ok=%u\n",fx_specs[index].name,
+                BUDGET_US-p99,BUDGET_US-maximum,unsigned(s.nonzero && !s.silent_blocks && !s.rails && !s.failures));
+        }
+#endif
         print_timing("write", s.write, s.blocks);
         print_timing("cycle", s.cycle, s.blocks);
-        reportf("[M3.1] PCM peak_L=%ld peak_R=%ld peak_mono=%ld nonzero_frames=%u silent_blocks=%u rail_frames=%u\n",
+        reportf("[%s] PCM peak_L=%ld peak_R=%ld peak_mono=%ld nonzero_frames=%u silent_blocks=%u rail_frames=%u\n", MILESTONE,
             long(s.peak_l), long(s.peak_r), long(s.peak_mono), s.nonzero,
             s.silent_blocks, s.rails);
         delay(100); // allow deferred USB serial delivery without HWCDC flush/discard
         delay(10);
     }
-    reportf("[M3.1] DMA underrun/starvation metric unavailable: I2S TX sent/queue-overflow events do not reliably identify playback starvation.\n");
+    reportf("[%s] DMA underrun/starvation metric unavailable: I2S TX sent/queue-overflow events do not reliably identify playback starvation.\n", MILESTONE);
     delay(100); // allow deferred USB serial delivery without HWCDC flush/discard
     delay(10);
-    reportf("[M3.1] write=%s drain_errors=%u shutdown=%s result=%s (PCM/render timing + transport API only; audible unverified)\n",
+    reportf("[%s] write=%s drain_errors=%u shutdown=%s result=%s (PCM/render timing + transport API only; audible unverified)\n", MILESTONE,
         esp_err_to_name(last_error), drain_errors, esp_err_to_name(shutdown),
-        pass && !drain_errors && shutdown == ESP_OK ? "PASS" : "FAIL");
+        pass && !drain_errors && shutdown == ESP_OK
+#if P4SDM_FX_DIAGNOSTIC
+            && fx_heap_ok && ps_loss==0 && internal_loss==0
+#endif
+            ? "PASS" : "FAIL");
     guition::memory_report("after shutdown");
     delay(100); // allow deferred USB serial delivery without HWCDC flush/discard
     vTaskDelete(nullptr);
@@ -165,7 +229,7 @@ void setup() {
         Serial.println("[FAIL] Expected 32 MiB PSRAM; stopped.");
         return;
     }
-    // Incremental validation: dry wavetable first, no FX allocation or SD.
+    // Original wavetable workload, no SD or UI.
     is_reverb = is_delay = is_chorus = is_flanger = false;
     is_tremolo = is_ringmod = is_distortion = is_bitcrusher = false;
     synthESP32_begin(); // no task in headless mode
@@ -187,13 +251,20 @@ void setup() {
     synthESP32_setMVol(60);
     synthESP32_setMFilter(0);
     guition::memory_report("engine init (FX disabled)");
+#if P4SDM_FX_DIAGNOSTIC
+    fx_allocate_audit();
+#endif
     const esp_err_t err = audio::begin(SAMPLE_RATE);
     if (err != ESP_OK) {
         Serial.printf("[FAIL] audio begin: %s\n", esp_err_to_name(err));
         return;
     }
     guition::memory_report("before stress (transport ready)");
+#if P4SDM_FX_DIAGNOSTIC
+    reportf("[M3.2] 13 stages, 16 voices, 517 blocks each; MIDI 48..63 wave 0..15 pan -120..120 length=127 envelope=3 mod=64 volume=80 master=60 return=100.\n");
+#else
     Serial.println("[M3.1] Dry original mixer: 1/4/8/16 voices, 3 s each, length=127 (5 s), MIDI 48..63, wave 0..15, pan -120..120.");
+#endif
     delay(100); // allow deferred USB serial delivery without HWCDC flush/discard
     if (xTaskCreatePinnedToCore(diagnostic_task, "synth", 8000, nullptr,
             configMAX_PRIORITIES - 1, nullptr, 0) != pdPASS) {

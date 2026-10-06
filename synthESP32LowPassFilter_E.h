@@ -45,6 +45,9 @@ public:
 	LowPassFilter(){;
 	}
 
+	// Control context: clear history without changing filter coefficients.
+	void reset() { buf0 = buf1 = 0; }
+
 
 	/** Set the cut off frequency,
 	@param cutoff use the range 0-255 to represent 0-8192 Hz (AUDIO_RATE/2).
