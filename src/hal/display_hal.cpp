@@ -2,6 +2,7 @@
 // Hardware recipe adapted from ultramcu/guition-jc4880p4-bsp, MIT,
 // commit 324970bade0d1f4e52880fe8016580368bc1e06e. See vendor/SOURCE.md.
 #include "display_hal.h"
+#include "display_dirty.h"
 #include "guition_board.h"
 #include "driver/gpio.h"
 #include "driver/ppa.h"
@@ -12,6 +13,7 @@
 #include "esp_heap_caps.h"
 #include "esp_memory_utils.h"
 #include "esp_cache.h"
+#include "esp_timer.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/semphr.h"
 #include "freertos/task.h"
@@ -30,6 +32,19 @@ static ppa_client_handle_t ppa;
 static uint16_t *logical, *native[2];
 static int back=1;
 static bool initialized;
+static bool frame_open=false,faulted=false;
+static Pipeline pipeline;
+static DirtyHistory history;
+static DirtyMask changed,flushed;
+static int clip_x0=0,clip_y0=0,clip_x1=WIDTH,clip_y1=HEIGHT;
+void reset_clip() {clip_x0=clip_y0=0;clip_x1=WIDTH;clip_y1=HEIGHT;}
+void clip(int x,int y,int w,int h) {
+    clip_x0=std::max(x,0);clip_y0=std::max(y,0);
+    clip_x1=int(std::min<int64_t>(int64_t(x)+std::max(w,0),WIDTH));
+    clip_y1=int(std::min<int64_t>(int64_t(y)+std::max(h,0),HEIGHT));
+}
+static Telemetry last_telemetry;
+Telemetry telemetry() {return last_telemetry;}
 static StaticSemaphore_t refresh_storage;
 static SemaphoreHandle_t refresh_sem;
 static std::atomic<uint32_t> refreshes{0};
@@ -56,7 +71,7 @@ esp_err_t end() {
     free(logical); logical=nullptr; native[0]=native[1]=nullptr;
     return first;
 }
-esp_err_t begin() {
+esp_err_t begin(Pipeline requested) {
     if(initialized) return ESP_OK;
     gpio_set_direction(guition::LCD_BACKLIGHT,GPIO_MODE_OUTPUT);
     backlight(false);
@@ -92,18 +107,51 @@ esp_err_t begin() {
     void *a=nullptr,*b=nullptr;
     if(!check(esp_lcd_dpi_panel_get_frame_buffer(panel,2,&a,&b))) return error;
     native[0]=static_cast<uint16_t *>(a); native[1]=static_cast<uint16_t *>(b);
-    logical=static_cast<uint16_t *>(heap_caps_aligned_calloc(64,1,FRAME_BYTES,MALLOC_CAP_SPIRAM|MALLOC_CAP_8BIT));
-    if(!logical || !esp_ptr_external_ram(native[0]) || !esp_ptr_external_ram(native[1])) {
+    if(requested==Pipeline::FullPpa) logical=static_cast<uint16_t *>(heap_caps_aligned_calloc(64,1,FRAME_BYTES,MALLOC_CAP_SPIRAM|MALLOC_CAP_8BIT));
+    if((requested==Pipeline::FullPpa && !logical) || !esp_ptr_external_ram(native[0]) || !esp_ptr_external_ram(native[1])) {
         check(ESP_ERR_NO_MEM); return error;
     }
     ppa_client_config_t accelerator={}; accelerator.oper_type=PPA_OPERATION_SRM; accelerator.max_pending_trans_num=1;
-    if(!check(ppa_register_client(&accelerator,&ppa))) return error;
-    back=1; initialized=true;
+    if(requested==Pipeline::FullPpa && !check(ppa_register_client(&accelerator,&ppa))) return error;
+    back=1; initialized=true; faulted=false; frame_open=false; pipeline=requested; reset_clip();
+    history.reset();
     backlight(true);
     return ESP_OK;
 }
+bool idle() {return initialized && !frame_open && !faulted;}
+esp_err_t set_pipeline(Pipeline requested) {
+    if(!idle() || (requested==Pipeline::FullPpa && (!logical || !ppa))) return ESP_ERR_INVALID_STATE;
+    pipeline=requested;
+    history.stale[back].all(); // switching strategies must reconstruct the next backbuffer
+    return ESP_OK;
+}
+// All work is preemptible in the UI task. Only the selected safe backbuffer
+// is written. Front pixels are copied solely for tiles missed by that buffer.
+esp_err_t begin_frame() {
+    if(!initialized || faulted) return ESP_ERR_INVALID_STATE;
+    if(frame_open) return ESP_OK;
+    last_telemetry={}; changed.clear(); flushed.clear();
+    const int64_t start=esp_timer_get_time();
+    if(pipeline!=Pipeline::FullPpa) {
+        DirtyMask repair=history.stale[back];
+        if(pipeline==Pipeline::NativeFull) repair.all();
+        for(int r=0;r<TILE_ROWS;++r) for(int c=0;c<TILE_COLS;++c) if(repair.rows[r]&(1u<<c))
+            for(int y=r*TILE;y<(r+1)*TILE;++y) {
+                const unsigned offset=y*NATIVE_WIDTH+c*TILE;
+                memcpy(native[back]+offset,native[history.front]+offset,TILE*2);
+            }
+        flushed.merge(repair); last_telemetry.repair_bytes=repair.bytes();
+        history.repaired();
+    }
+    last_telemetry.repair_us=esp_timer_get_time()-start; frame_open=true;
+    return ESP_OK;
+}
 esp_err_t present() {
-    if(!initialized) return ESP_ERR_INVALID_STATE;
+    if(!initialized || faulted) return ESP_ERR_INVALID_STATE;
+    if(!frame_open) return ESP_OK;
+    const int64_t t0=esp_timer_get_time();
+    esp_err_t error=ESP_OK;
+    if(pipeline==Pipeline::FullPpa) {
     ppa_srm_oper_config_t rotation={};
     rotation.in.buffer=logical; rotation.in.pic_w=WIDTH; rotation.in.pic_h=HEIGHT;
     rotation.in.block_w=WIDTH; rotation.in.block_h=HEIGHT; rotation.in.srm_cm=PPA_SRM_COLOR_MODE_RGB565;
@@ -111,24 +159,63 @@ esp_err_t present() {
     rotation.out.pic_w=NATIVE_WIDTH; rotation.out.pic_h=NATIVE_HEIGHT; rotation.out.srm_cm=PPA_SRM_COLOR_MODE_RGB565;
     rotation.rotation_angle=PPA_SRM_ROTATION_ANGLE_270;
     rotation.scale_x=rotation.scale_y=1.0f; rotation.mode=PPA_TRANS_MODE_BLOCKING;
-    esp_err_t error=ppa_do_scale_rotate_mirror(ppa,&rotation);
-    if(error!=ESP_OK) return error;
-    error=esp_lcd_panel_draw_bitmap(panel,0,0,NATIVE_WIDTH,NATIVE_HEIGHT,native[back]);
-    if(error!=ESP_OK) return error;
-    // The DPI DMA samples cur_fb_index before its callback. Wait two refreshes
-    // to cover a switch racing that sample; only UI waits, audio never does.
+    error=ppa_do_scale_rotate_mirror(ppa,&rotation);
+    const int64_t t1=esp_timer_get_time(); last_telemetry.ppa_us=t1-t0;
+    if(error!=ESP_OK) {faulted=true;return error;}
+    last_telemetry.dirty_bytes=FRAME_BYTES;
+    } else {
+        flushed.merge(changed);
+        const int64_t cache_start=esp_timer_get_time();
+        // Flush only modified/repaired tile runs. Native scanout still reads
+        // the complete frame continuously; there is no partial DSI scanout.
+        for(int r=0;r<TILE_ROWS;++r) {
+            for(int c=0;c<TILE_COLS;) {
+                if(!(flushed.rows[r]&(1u<<c))) {++c;continue;}
+                const int first=c;
+                while(c<TILE_COLS && (flushed.rows[r]&(1u<<c))) ++c;
+                for(int y=r*TILE;y<(r+1)*TILE;++y) {
+                    error=esp_cache_msync(native[back]+y*NATIVE_WIDTH+first*TILE,(c-first)*TILE*2,
+                        ESP_CACHE_MSYNC_FLAG_DIR_C2M|ESP_CACHE_MSYNC_FLAG_UNALIGNED);
+                    if(error!=ESP_OK) {faulted=true;return error;}
+                }
+            }
+        }
+        last_telemetry.cache_us=esp_timer_get_time()-cache_start;
+        last_telemetry.dirty_bytes=changed.bytes();
+    }
+    const int64_t submit_start=esp_timer_get_time();
+    // The pinned IDF native-FB branch selects the entire buffer after flushing
+    // the supplied rows. Native paths already flushed every repaired/drawn tile;
+    // submit one valid row to select the buffer (an extra 960-byte cache range).
+    error=esp_lcd_panel_draw_bitmap(panel,0,0,NATIVE_WIDTH,pipeline==Pipeline::FullPpa?NATIVE_HEIGHT:1,native[back]);
+    const int64_t t2=esp_timer_get_time(); last_telemetry.submit_us=t2-submit_start;
+    if(error!=ESP_OK) {faulted=true;return error;}
+    // Bundled f56bea3d1f has independent DMA completion and bridge VSYNC ISRs,
+    // without buffer identity in refresh callbacks. One VSYNC cannot prove
+    // an old DMA list is retired. Retain two callbacks; only UI waits.
     const uint32_t start=refresh_count();
     while(uint32_t(refresh_count()-start)<2) {
-        if(xSemaphoreTake(refresh_sem,pdMS_TO_TICKS(100))!=pdTRUE) return ESP_ERR_TIMEOUT;
+        if(xSemaphoreTake(refresh_sem,pdMS_TO_TICKS(100))!=pdTRUE) {faulted=true;return ESP_ERR_TIMEOUT;}
     }
-    back^=1;
+    if(pipeline==Pipeline::FullPpa) changed.all();
+    history.committed(changed); back=history.back; frame_open=false;
+    last_telemetry.wait_us=esp_timer_get_time()-t2;
+    last_telemetry.present_us=esp_timer_get_time()-t0;
     return ESP_OK;
 }
 void rect(int x,int y,int w,int h,uint16_t color) {
-    if(!logical || w<=0 || h<=0) return;
-    const int x0=std::max(x,0),y0=std::max(y,0),x1=std::min(x+w,WIDTH),y1=std::min(y+h,HEIGHT);
+    if(!initialized || faulted || w<=0 || h<=0) return;
+    const int x0=std::max(x,clip_x0),y0=std::max(y,clip_y0);
+    const int x1=int(std::min<int64_t>(int64_t(x)+w,clip_x1)),y1=int(std::min<int64_t>(int64_t(y)+h,clip_y1));
     if(x1<=x0 || y1<=y0) return;
-    for(int row=y0;row<y1;++row) std::fill(logical+row*WIDTH+x0,logical+row*WIDTH+x1,color);
+    if(begin_frame()!=ESP_OK) return;
+    if(pipeline==Pipeline::FullPpa) {
+        for(int row=y0;row<y1;++row) std::fill(logical+row*WIDTH+x0,logical+row*WIDTH+x1,color);
+    } else {
+        const int nx0=NATIVE_WIDTH-y1,nx1=NATIVE_WIDTH-y0;
+        for(int row=x0;row<x1;++row) std::fill(native[back]+row*NATIVE_WIDTH+nx0,native[back]+row*NATIVE_WIDTH+nx1,color);
+        changed.logical_rect(x0,y0,x1-x0,y1-y0);
+    }
 }
 void fill(uint16_t color) { rect(0,0,WIDTH,HEIGHT,color); }
 void line(int x0,int y0,int x1,int y1,uint16_t color) {

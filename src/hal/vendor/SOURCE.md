@@ -12,6 +12,16 @@ DPI 34MHz and porch timings, reset delays, RGB565 double buffering and PPA
 It adds checked teardown, an explicit PSRAM logical buffer and conservative
 two-refresh framebuffer reuse fencing in the UI task.
 
+M4.1 audits the actual bundled IDF commit `f56bea3d1f`, rather than the
+upstream v5.5 tag. Its `components/esp_lcd/dsi/esp_lcd_panel_dpi.c` uses
+separate DMA completion and bridge VSYNC callbacks. Refresh events have no
+framebuffer identity, so the two-refresh fence is retained. For native dirty
+drawing, modified tiles are explicitly written back before the native-FB
+`draw_bitmap` branch selects the buffer; a valid one-row call triggers only
+an extra row's cache writeback, not a full-frame copy. This branch is coupled
+to the pinned SDK and must be re-audited on SDK upgrades. Hardware panel
+initialization, timings, resets and touch protocol remain as above.
+
 GT911 register protocol follows the Espressif Apache-2.0 driver bundled by the
 same pinned BSP (`examples/DisplayTouchTest/lib/esp_lcd_touch_gt911`). The small
 HAL uses the existing board-owned I2C bus directly rather than importing its

@@ -24,7 +24,9 @@ struct Stage {
     int32_t peak_l = 0, peak_r = 0, peak_mono = 0;
     Timing render, write, cycle;
 };
-#if P4SDM_UI_DIAGNOSTIC
+#if P4SDM_PIPELINE_DIAGNOSTIC
+// M4.1 allocates its longer timing capture once in PSRAM before audio starts.
+#elif P4SDM_UI_DIAGNOSTIC
 static Stage stages[6];
 #elif P4SDM_FX_DIAGNOSTIC
 static Stage stages[13];
@@ -77,7 +79,7 @@ static void print_timing(const char *name, Timing &t, unsigned n) {
     delay(100); // allow deferred USB serial delivery without HWCDC flush/discard
     delay(10); // reporting only; measurement and transport already stopped
 }
-#if !P4SDM_UI_DIAGNOSTIC
+#if !P4SDM_UI_DIAGNOSTIC && !P4SDM_PIPELINE_DIAGNOSTIC
 static void diagnostic_task(void *) {
 #if P4SDM_FX_DIAGNOSTIC
     constexpr unsigned levels[] = {16,16,16,16,16,16,16,16,16,16,16,16,16};
@@ -281,6 +283,8 @@ void setup() {
     }
 }
 void loop() { delay(1000); }
+#elif P4SDM_PIPELINE_DIAGNOSTIC
+#include "diagnostics/display_pipeline_diagnostic.h"
 #else
 #include "diagnostics/ui_audio_diagnostic.h"
 #endif

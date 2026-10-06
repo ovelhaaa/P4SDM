@@ -10,6 +10,7 @@ parser.add_argument('--output', required=True)
 parser.add_argument('--seconds', type=float, default=180)
 parser.add_argument('--no-reset', action='store_true')
 parser.add_argument('--append', action='store_true')
+parser.add_argument('--command', choices=['L','S'], help='M4.1 startup run selection')
 args = parser.parse_args()
 connection = serial.Serial()
 connection.port = args.port
@@ -25,6 +26,9 @@ with connection as port:
         port.rts = True
         time.sleep(0.2)
         port.rts = False
+    if args.command:
+        time.sleep(4)
+        port.write(args.command.encode('ascii'))
     deadline = time.monotonic() + args.seconds
     with Path(args.output).open('ab' if args.append else 'wb') as log:
         while time.monotonic() < deadline:

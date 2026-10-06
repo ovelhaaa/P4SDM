@@ -12,6 +12,8 @@ static_assert(std::atomic<uint32_t>::is_always_lock_free,"snapshot must be lock-
 struct UiStats {
     uint32_t frames=0,skipped=0,errors=0,polls=0,poll_errors=0,presses=0,releases=0,updates=0;
     uint64_t frame_sum=0; uint32_t frame_max=0;
+    uint64_t draw_sum=0,ppa_sum=0,submit_sum=0,wait_sum=0;
+    uint32_t draw_max=0,ppa_max=0,submit_max=0,wait_max=0;
     int64_t start=0,end=0;
     uint32_t core_observed=99;
     size_t psram_start=0,internal_start=0,largest_start=0,psram_end=0,internal_end=0,largest_end=0;
@@ -79,7 +81,13 @@ static void ui_worker(void *argument) {
         const uint32_t packed=touch_snapshot.load(std::memory_order_acquire);
         touch::State point; point.x=packed&1023; point.y=(packed>>10)&511; point.pressed=(packed>>19)&1; point.count=(packed>>20)&7;
         ui_pattern::update(++frame,point,phase%3==2);
+        const int64_t drawn=esp_timer_get_time();
         const esp_err_t error=display::present();
+        const auto parts=display::telemetry();
+        stats.draw_sum+=drawn-begin; stats.draw_max=std::max(stats.draw_max,uint32_t(drawn-begin));
+        stats.ppa_sum+=parts.ppa_us; stats.ppa_max=std::max(stats.ppa_max,parts.ppa_us);
+        stats.submit_sum+=parts.submit_us; stats.submit_max=std::max(stats.submit_max,parts.submit_us);
+        stats.wait_sum+=parts.wait_us; stats.wait_max=std::max(stats.wait_max,parts.wait_us);
         const int64_t end=esp_timer_get_time();
         stats.core_observed=xPortGetCoreID();
         ++stats.frames; stats.frame_sum+=end-begin; stats.frame_max=std::max(stats.frame_max,uint32_t(end-begin));
@@ -166,6 +174,7 @@ static void ui_audio_task(void *) {
         const double seconds=double(u.end-u.start)/1e6;
         reportf("[M4] UI requested_fps=%u frames=%u achieved_fps=%.3f update_avg_us=%.2f update_max_us=%u skipped=%u errors=%u core_observed=%u window_s=%.6f\n",phase%3?30:0,u.frames,seconds>0?u.frames/seconds:0.,u.frames?double(u.frame_sum)/u.frames:0.,u.frame_max,u.skipped,u.errors,u.core_observed,seconds);
         reportf("[M4] touch requested_hz=100 polls=%u achieved_hz=%.3f errors=%u fresh_updates=%u presses=%u releases=%u\n",u.polls,seconds>0?u.polls/seconds:0.,u.poll_errors,u.updates,u.presses,u.releases);
+        if(u.frames) reportf("[M4 AUDIT] draw_avg_max=%.2f,%u ppa_avg_max=%.2f,%u submit_avg_max=%.2f,%u wait_avg_max=%.2f,%u us\n",double(u.draw_sum)/u.frames,u.draw_max,double(u.ppa_sum)/u.frames,u.ppa_max,double(u.submit_sum)/u.frames,u.submit_max,double(u.wait_sum)/u.frames,u.wait_max);
         reportf("[M4] memory_start psram_free=%u largest=%u internal_free=%u\n",unsigned(u.psram_start),unsigned(u.largest_start),unsigned(u.internal_start));
         reportf("[M4] memory_end psram_free=%u largest=%u internal_free=%u\n",unsigned(u.psram_end),unsigned(u.largest_end),unsigned(u.internal_end));
         valid &= !u.errors && !u.poll_errors && (phase%3==0 || u.frames>0);
@@ -186,7 +195,7 @@ void setup() {
     reportf("[M4] UI audio CPU=%u MHz native=480x800 logical=800x480 PPA_CCW=270 RGB565 native_fbs=2 logical_fbs=1\n",ESP.getCpuFreqMHz());
     if(!psramFound() || esp_psram_get_size()!=32u*1024u*1024u) {reportf("[M4 INIT_FAIL] PSRAM\n");return;}
     guition::memory_report("before display"); delay(100);
-    esp_err_t error=display::begin(); if(error!=ESP_OK) {reportf("[M4 INIT_FAIL] display=%s\n",esp_err_to_name(error));return;}
+    esp_err_t error=display::begin(display::Pipeline::FullPpa); if(error!=ESP_OK) {reportf("[M4 INIT_FAIL] display=%s\n",esp_err_to_name(error));return;}
     guition::memory_report("after display"); delay(100);
     ui_pattern::base(); error=display::present(); if(error!=ESP_OK) {reportf("[M4 INIT_FAIL] present=%s\n",esp_err_to_name(error));return;}
     error=touch::begin();
