@@ -25,7 +25,11 @@ enum class Kind : uint8_t {
   InspectPattern,
   PatternLength,
   CopyPattern,
-  ClearPattern
+  ClearPattern,
+  Velocity,
+  Probability,
+  Ratchet,
+  Swing
 };
 struct Command {
   Kind kind;
@@ -37,6 +41,8 @@ struct Command {
   PitchSource pitch_source = PitchSource::Current;
   uint8_t pattern =
       0; // Step/length/clear target; copy source; value is destination.
+  uint8_t step =
+      0; // Explicit groove edit intent; fits existing command padding.
 };
 // One producer (UI), one consumer (audio); reject rather than overwrite.
 template <unsigned N> struct Queue {
@@ -85,12 +91,26 @@ struct Track {
 inline bool track_control_enabled(const Track &t, int id) {
   return id >= 24 && id < (t.sample ? 27 : 29);
 }
+struct StepMeta {
+  uint8_t velocity = 100, probability = 100, ratchets = 1;
+};
+struct TriggerEvent {
+  uint8_t track, velocity;
+};
+// Q15 attenuation: unity at 127; bounded signed multiply, no PCM mutation.
+inline uint16_t velocity_gain(int velocity) {
+  return uint16_t(clamp(velocity, 1, 127) * 32768 / 127);
+}
+inline int16_t scale_velocity(int16_t pcm, uint16_t gain) {
+  return int16_t(int32_t(pcm) * gain / 32768);
+}
 struct Pattern {
   uint16_t track_steps[16]{};
   uint8_t length = 16;
+  StepMeta meta[16][16]{};
 };
 static_assert(std::is_trivially_copyable<Pattern>::value);
-static_assert(sizeof(Pattern) <= 34);
+static_assert(sizeof(Pattern) <= 802);
 static_assert(sizeof(Command) <= 12);
 struct Engine {
   Pattern patterns[16];
@@ -103,6 +123,38 @@ struct Engine {
   bool playing = false, delay = true;
   uint64_t phase = 0;
   bool first = false;
+  static constexpr uint64_t straight = 44100ull * 60;
+  static constexpr uint32_t default_seed = 0x4d385031;
+  uint32_t seed = default_seed, rng = default_seed;
+  int swing = 50, pair_swing = 50;
+  uint64_t duration = straight, next_ratchet = UINT64_MAX;
+  struct Pending {
+    uint8_t velocity = 100, count = 1, next = 1;
+  };
+  Pending pending[16]{};
+  uint32_t step_events = 0, probability_passed = 0, probability_skipped = 0,
+           ratchet_events = 0, pending_max = 0, swing_changes = 0;
+  uint8_t velocity_min = 127, velocity_max = 0;
+  uint32_t random() {
+    rng ^= rng << 13;
+    rng ^= rng >> 17;
+    rng ^= rng << 5;
+    return rng;
+  }
+  void cancel_ratchets() {
+    next_ratchet = UINT64_MAX;
+    for (auto &p : pending)
+      p.next = p.count;
+  }
+  template <class Trigger> void emit(Trigger &trigger, int t, int velocity) {
+    velocity_min = std::min(velocity_min, uint8_t(velocity));
+    velocity_max = std::max(velocity_max, uint8_t(velocity));
+    if constexpr (std::is_invocable<Trigger, TriggerEvent>::value)
+      trigger(TriggerEvent{uint8_t(t), uint8_t(velocity)});
+    else
+      trigger(t); // Legacy host callback compatibility.
+  }
+
   Engine() {
     for (int i = 0; i < 16; ++i) {
       tracks[i].pitch = 36 + i * 3;
@@ -117,6 +169,9 @@ struct Engine {
     switch (c.kind) {
     case Kind::Play:
       playing = c.value;
+      cancel_ratchets();
+      rng = seed ? seed : default_seed;
+      duration = straight;
       phase = 0;
       step = -1;
       first = playing;
@@ -195,6 +250,24 @@ struct Engine {
         for (auto &mask : patterns[c.pattern].track_steps)
           mask = 0;
       break;
+    case Kind::Velocity:
+    case Kind::Probability:
+    case Kind::Ratchet:
+      if (c.pattern < 16 && c.step < 16) {
+        auto &m = patterns[c.pattern].meta[c.track][c.step];
+        if (c.kind == Kind::Velocity)
+          m.velocity = clamp(c.value, 1, 127);
+        if (c.kind == Kind::Probability)
+          m.probability = clamp(c.value, 0, 100);
+        if (c.kind == Kind::Ratchet)
+          m.ratchets = clamp(c.value, 1, 4);
+      }
+      break;
+    case Kind::Swing:
+      if (swing != clamp(c.value, 50, 75))
+        ++swing_changes;
+      swing = clamp(c.value, 50, 75);
+      break;
     case Kind::Trigger:
       break;
     }
@@ -203,18 +276,23 @@ struct Engine {
     return !tracks[t].muted && (!solos || (solos & (1u << t)));
   }
   template <class Trigger> void audition(int t, Trigger trigger) const {
-    if (t >= 0 && t < 16)
-      trigger(t); // Performance gates affect sequence only.
+    if (t >= 0 && t < 16) {
+      if constexpr (std::is_invocable<Trigger, TriggerEvent>::value)
+        trigger(TriggerEvent{uint8_t(t), 127});
+      else
+        trigger(t); // Performance gates affect sequence only.
+    }
   }
   // Exact rational sixteenth clock: accumulated BPM*4 per sample, no rounding
   // drift.
   template <class Trigger> void sample(Trigger trigger) {
     if (!playing)
       return;
-    if (first || phase >= 44100ull * 60) {
+    if (first || phase >= duration) {
       first = false;
-      if (phase >= 44100ull * 60)
-        phase -= 44100ull * 60;
+      if (phase >= duration)
+        phase -= duration;
+      cancel_ratchets();
       // Length edits never move a live head between musical boundaries.
       // Wrap once on the next onset, then switch before triggering step zero.
       if (step + 1 >= patterns[playing_pattern].length) {
@@ -231,10 +309,50 @@ struct Engine {
         step = 0;
       } else
         ++step;
-      for (int t = 0; t < 16; ++t)
-        if (sequence_enabled(t) &&
-            (patterns[playing_pattern].track_steps[t] & (1u << step)))
-          trigger(t);
+      // Capture swing per pair, so edits cannot change the pair's total.
+      if (!(step & 1))
+        pair_swing = swing;
+      duration = straight * 2 *
+                 unsigned((step & 1) ? 100 - pair_swing : pair_swing) / 100;
+      unsigned scheduled = 0;
+      for (int t = 0; t < 16; ++t) {
+        if (!sequence_enabled(t) ||
+            !(patterns[playing_pattern].track_steps[t] & (1u << step)))
+          continue;
+        const auto m = patterns[playing_pattern].meta[t][step];
+        ++step_events;
+        // Consume one draw for every eligible parent, including 0/100%.
+        const auto draw = random();
+        if (uint64_t(draw) * 100 >= uint64_t(m.probability) * (1ull << 32)) {
+          ++probability_skipped;
+          continue;
+        }
+        ++probability_passed;
+        emit(trigger, t, m.velocity);
+        pending[t] = {m.velocity, m.ratchets, 1};
+        scheduled += m.ratchets - 1;
+        if (m.ratchets > 1)
+          next_ratchet =
+              std::min(next_ratchet, (duration + m.ratchets - 1) / m.ratchets);
+      }
+      pending_max = std::max(pending_max, uint32_t(scheduled));
+    }
+    if (phase >= next_ratchet) {
+      next_ratchet = UINT64_MAX;
+      for (int t = 0; t < 16; ++t) {
+        auto &p = pending[t];
+        if (p.next >= p.count)
+          continue;
+        auto offset = (duration * p.next + p.count - 1) / p.count;
+        if (phase >= offset) {
+          emit(trigger, t, p.velocity);
+          ++ratchet_events;
+          ++p.next;
+        }
+        if (p.next < p.count)
+          next_ratchet = std::min(next_ratchet,
+                                  (duration * p.next + p.count - 1) / p.count);
+      }
     }
     phase += unsigned(bpm) * 4;
   }
@@ -245,7 +363,7 @@ struct Rect {
     return px >= x && py >= y && px < x + w && py < y + h;
   }
 };
-enum class Page { Sequence, Track, Fx, Sample, Pattern };
+enum class Page { Sequence, Track, Fx, Sample, Pattern, Step };
 struct Ui {
   Page page = Page::Sequence;
   int selected = 0, bank = 0, selected_step = -1, capture = -1;
@@ -293,6 +411,21 @@ struct Ui {
   }
 };
 inline Rect widget(int id) {
+  if (id == 68)
+    return {16, 224, 160, 52}; // STEP, between grid and pads
+  if (id == 69)
+    return {192, 224, 280, 52}; // persistent sequence swing
+  if (id == 70)
+    return {24, 100, 752, 56}; // step identity / active
+  if (id == 71)
+    return {24, 170, 520, 56}; // velocity
+  if (id == 72)
+    return {560, 170, 216, 56}; // accent
+  if (id == 73)
+    return {24, 240, 752, 56}; // probability
+  if (id >= 74 && id <= 77)
+    return {24 + (id - 74) * 192, 320, 176, 64};
+
   if (id >= 46 && id <= 61)
     return {16 + (id - 46) % 4 * 132, 100 + (id - 46) / 4 * 76, 124, 68};
   if (id == 62)
@@ -314,7 +447,7 @@ inline Rect widget(int id) {
   if (id < 16)
     return {16 + (id % 8) * 96, 100 + (id / 8) * 66, 88, 58};
   if (id < 24)
-    return {16 + (id - 16) % 4 * 192, 250 + (id - 16) / 4 * 70, 184, 62};
+    return {16 + (id - 16) % 4 * 192, 280 + (id - 16) / 4 * 70, 184, 62};
   if (id < 29)
     return {260, 90 + (id - 24) * 62, 520, 52};
   if (id == 29)
@@ -337,11 +470,18 @@ inline int hit(Page p, int x, int y) {
       return i;
   if (widget(44).contains(x, y))
     return 44;
-  if (p == Page::Pattern) {
+  if (p == Page::Step) {
+    for (int i = 70; i <= 77; ++i)
+      if (widget(i).contains(x, y))
+        return i;
+  } else if (p == Page::Pattern) {
     for (int i = 46; i <= 67; ++i)
       if (i != 63 && widget(i).contains(x, y))
         return i;
   } else if (p == Page::Sequence) {
+    for (int i : {68, 69})
+      if (widget(i).contains(x, y))
+        return i;
     for (int i = 0; i < 24; ++i)
       if (widget(i).contains(x, y))
         return i;

@@ -144,6 +144,9 @@ static void render_buffer() {
                 sample = 0;
             }
 
+#if P4SDM_APP
+              sample = app_velocity(f, sample);
+#endif
               int32_t sss = FILTROS[f].next(sample);
               int32_t sampleL = (sss * VOL_L[f] * 255) >> 16;
               int32_t sampleR = (sss * VOL_R[f] * 255) >> 16;
