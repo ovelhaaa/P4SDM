@@ -39,6 +39,12 @@ enum class Kind : uint8_t {
   Randomize,
   Mutate,
   Reroll,
+  LockPitch,
+  LockVolume,
+  LockPan,
+  LockWave,
+  UnlockParam,
+  ClearStepLocks,
   Count
 };
 struct Command {
@@ -104,9 +110,39 @@ inline bool track_control_enabled(const Track &t, int id) {
 struct StepMeta {
   uint8_t velocity = 100, probability = 100, ratchets = 1;
 };
-struct TriggerEvent {
-  uint8_t track, velocity;
+enum LockBit : uint8_t {
+  PITCH_LOCK = 1,
+  VOLUME_LOCK = 2,
+  PAN_LOCK = 4,
+  WAVE_LOCK = 8
 };
+struct StepLocks {
+  uint8_t mask = 0, pitch = 0, volume = 0;
+  int8_t pan = 0;
+  uint8_t wave = 0;
+};
+struct TriggerEvent {
+  uint8_t track, velocity, pitch = 0, volume = 0;
+  int8_t pan = 0;
+  uint8_t wave = 0, locked_mask = 0;
+};
+inline TriggerEvent resolve_event(int track, const Track &base, int velocity,
+                                  StepLocks locks = {}) {
+  return {uint8_t(track),
+          uint8_t(velocity),
+          uint8_t(locks.mask & PITCH_LOCK ? locks.pitch : base.pitch),
+          uint8_t(locks.mask & VOLUME_LOCK ? locks.volume : base.volume),
+          int8_t(locks.mask & PAN_LOCK ? locks.pan : base.pan),
+          uint8_t(!base.sample && (locks.mask & WAVE_LOCK) ? locks.wave
+                                                           : base.wave),
+          uint8_t(locks.mask & (base.sample ? 7 : 15))};
+}
+// Preserve the M9 linear attenuation pan law, including its endpoint rounding.
+inline int event_channel_gain(int volume, int pan, bool right) {
+  return volume * clamp(128 + (right ? pan : -pan), 0, 128) / 128;
+}
+static_assert(sizeof(StepLocks) == 5);
+static_assert(std::is_trivially_copyable<StepLocks>::value);
 // Q15 attenuation: unity at 127; bounded signed multiply, no PCM mutation.
 inline uint16_t velocity_gain(int velocity) {
   return uint16_t(clamp(velocity, 1, 127) * 32768 / 127);
@@ -118,6 +154,7 @@ struct Pattern {
   uint16_t track_steps[16]{};
   uint8_t length = 16;
   StepMeta meta[16][16]{};
+  StepLocks locks[16][16]{};
 };
 // Generation uses a local stream restarted from edit_seed for each operation.
 // Never shares state with the playback probability stream.
@@ -141,6 +178,9 @@ inline int generation_parameters(int density, int velocity, int probability,
 inline void rotate_lane(Pattern &p, int track, int displacement) {
   const int n = p.length;
   StepMeta original[16];
+  StepLocks original_locks[16];
+  for (int i = 0; i < n; ++i)
+    original_locks[i] = p.locks[track][i];
   for (int i = 0; i < n; ++i)
     original[i] = p.meta[track][i];
   const uint16_t mask = p.track_steps[track];
@@ -150,12 +190,14 @@ inline void rotate_lane(Pattern &p, int track, int displacement) {
     p.track_steps[track] = uint16_t((p.track_steps[track] & ~bit) |
                                     ((mask & (1u << i)) ? bit : 0));
     p.meta[track][destination] = original[i];
+    p.locks[track][destination] = original_locks[i];
   }
 }
 inline void reverse_lane(Pattern &p, int track) {
   for (int i = 0; i < p.length / 2; ++i) {
     int j = p.length - 1 - i;
     std::swap(p.meta[track][i], p.meta[track][j]);
+    std::swap(p.locks[track][i], p.locks[track][j]);
     if (((p.track_steps[track] >> i) ^ (p.track_steps[track] >> j)) & 1)
       p.track_steps[track] ^= uint16_t((1u << i) | (1u << j));
   }
@@ -166,6 +208,9 @@ inline bool pattern_occupied(const Pattern &p) {
   for (int t = 0; t < 16; ++t) {
     if (p.track_steps[t])
       return true;
+    for (const auto &l : p.locks[t])
+      if (l.mask)
+        return true;
     for (const auto &m : p.meta[t])
       if (m.velocity != 100 || m.probability != 100 || m.ratchets != 1)
         return true;
@@ -173,7 +218,7 @@ inline bool pattern_occupied(const Pattern &p) {
   return false;
 }
 static_assert(std::is_trivially_copyable<Pattern>::value);
-static_assert(sizeof(Pattern) <= 802);
+static_assert(sizeof(Pattern) == 2082);
 static_assert(sizeof(Command) <= 12);
 struct Engine {
   Pattern patterns[16];
@@ -193,12 +238,14 @@ struct Engine {
   int swing = 50, pair_swing = 50;
   uint64_t duration = straight, next_ratchet = UINT64_MAX;
   struct Pending {
-    uint8_t velocity = 100, count = 1, next = 1;
+    TriggerEvent event{};
+    uint8_t count = 1, next = 1;
   };
   Pending pending[16]{};
   uint32_t step_events = 0, probability_passed = 0, probability_skipped = 0,
            ratchet_events = 0, pending_max = 0, swing_changes = 0;
   uint8_t velocity_min = 127, velocity_max = 0;
+  uint32_t locked_parents = 0, unlocked_parents = 0, lock_events[4]{};
   uint32_t random() {
     rng ^= rng << 13;
     rng ^= rng >> 17;
@@ -210,13 +257,13 @@ struct Engine {
     for (auto &p : pending)
       p.next = p.count;
   }
-  template <class Trigger> void emit(Trigger &trigger, int t, int velocity) {
-    velocity_min = std::min(velocity_min, uint8_t(velocity));
-    velocity_max = std::max(velocity_max, uint8_t(velocity));
+  template <class Trigger> void emit(Trigger &trigger, TriggerEvent event) {
+    velocity_min = std::min(velocity_min, event.velocity);
+    velocity_max = std::max(velocity_max, event.velocity);
     if constexpr (std::is_invocable<Trigger, TriggerEvent>::value)
-      trigger(TriggerEvent{uint8_t(t), uint8_t(velocity)});
+      trigger(event);
     else
-      trigger(t); // Legacy host callback compatibility.
+      trigger(event.track); // Legacy host callback compatibility.
   }
 
   Engine() {
@@ -327,6 +374,32 @@ struct Engine {
           m.ratchets = clamp(c.value, 1, 4);
       }
       break;
+    case Kind::LockPitch:
+    case Kind::LockVolume:
+    case Kind::LockPan:
+    case Kind::LockWave:
+    case Kind::UnlockParam:
+    case Kind::ClearStepLocks:
+      if (c.pattern < 16 && c.step < 16) {
+        auto &l = patterns[c.pattern].locks[c.track][c.step];
+        if (c.kind == Kind::ClearStepLocks)
+          l = {};
+        else if (c.kind == Kind::UnlockParam)
+          l.mask &= uint8_t(~(c.value & 15));
+        else {
+          const int param = int(c.kind) - int(Kind::LockPitch);
+          l.mask |= uint8_t(1u << param);
+          if (param == 0)
+            l.pitch = clamp(c.value, 0, 127);
+          if (param == 1)
+            l.volume = clamp(c.value, 0, 127);
+          if (param == 2)
+            l.pan = clamp(c.value, -127, 127);
+          if (param == 3)
+            l.wave = clamp(c.value, 0, 15);
+        }
+      }
+      break;
     case Kind::Swing:
       if (swing != clamp(c.value, 50, 75))
         ++swing_changes;
@@ -359,8 +432,10 @@ struct Engine {
       } else if (c.kind == Kind::CopyTrack) {
         if (c.value >= 0 && c.value < 16) {
           p.track_steps[c.value] = p.track_steps[c.track];
-          for (int i = 0; i < 16; ++i)
+          for (int i = 0; i < 16; ++i) {
             p.meta[c.value][i] = p.meta[c.track][i];
+            p.locks[c.value][i] = p.locks[c.track][i];
+          }
         }
       } else if (c.kind == Kind::ClearTrack)
         p.track_steps[c.track] = 0; // Retain all metadata, like pattern CLEAR.
@@ -435,7 +510,7 @@ struct Engine {
   template <class Trigger> void audition(int t, Trigger trigger) const {
     if (t >= 0 && t < 16) {
       if constexpr (std::is_invocable<Trigger, TriggerEvent>::value)
-        trigger(TriggerEvent{uint8_t(t), 127});
+        trigger(resolve_event(t, tracks[t], 127));
       else
         trigger(t); // Performance gates affect sequence only.
     }
@@ -485,8 +560,14 @@ struct Engine {
           continue;
         }
         ++probability_passed;
-        emit(trigger, t, m.velocity);
-        pending[t] = {m.velocity, m.ratchets, 1};
+        const auto event = resolve_event(
+            t, tracks[t], m.velocity, patterns[playing_pattern].locks[t][step]);
+        locked_parents += event.locked_mask != 0;
+        unlocked_parents += event.locked_mask == 0;
+        for (int i = 0; i < 4; ++i)
+          lock_events[i] += (event.locked_mask >> i) & 1;
+        emit(trigger, event);
+        pending[t] = {event, m.ratchets, 1};
         scheduled += m.ratchets - 1;
         if (m.ratchets > 1)
           next_ratchet =
@@ -502,7 +583,7 @@ struct Engine {
           continue;
         auto offset = (duration * p.next + p.count - 1) / p.count;
         if (phase >= offset) {
-          emit(trigger, t, p.velocity);
+          emit(trigger, p.event);
           ++ratchet_events;
           ++p.next;
         }
@@ -520,7 +601,7 @@ struct Rect {
     return px >= x && py >= y && px < x + w && py < y + h;
   }
 };
-enum class Page { Sequence, Track, Fx, Sample, Pattern, Step, Tools };
+enum class Page { Sequence, Track, Fx, Sample, Pattern, Step, Tools, Locks };
 struct Ui {
   Page page = Page::Sequence;
   int selected = 0, bank = 0, selected_step = -1, capture = -1;
@@ -531,6 +612,8 @@ struct Ui {
       ratchet_chance = 5, mutate_amount = 20;
   bool tool_pending = false;
   Command pending_tool{};
+  bool lock_action(int id, int x, bool initial, const Engine &e,
+                   Command &c) const;
   void cancel_tool() { tool_pending = false; }
   bool tool_action(int id, const Engine &e, Command &c) {
     if (id >= 80 && id <= 82) {
@@ -649,6 +732,17 @@ struct Ui {
   }
 };
 inline Rect widget(int id) {
+  if (id == 95)
+    return {560, 390, 216, 52};
+  if (id >= 96 && id <= 103) {
+    int row = (id - 96) / 2;
+    return {id % 2 == 0 ? 24 : 560, 100 + row * 68, id % 2 == 0 ? 520 : 216,
+            56};
+  }
+  if (id == 104)
+    return {24, 372, 360, 52};
+  if (id == 105)
+    return {400, 372, 376, 52};
   if (id == 78)
     return {488, 224, 288, 52};
   if (id == 79)
@@ -716,7 +810,13 @@ inline int hit(Page p, int x, int y) {
       return i;
   if (widget(44).contains(x, y))
     return 44;
-  if (p == Page::Step) {
+  if (p == Page::Locks) {
+    for (int i = 96; i <= 105; ++i)
+      if (widget(i).contains(x, y))
+        return i;
+  } else if (p == Page::Step) {
+    if (widget(95).contains(x, y))
+      return 95;
     for (int i = 70; i <= 77; ++i)
       if (widget(i).contains(x, y))
         return i;
@@ -757,5 +857,41 @@ inline int drag(int id, int x) {
   auto r = widget(id);
   int v = clamp(x - r.x, 0, r.w - 1) * 127 / (r.w - 1);
   return id == 25 ? v * 2 - 127 : v;
+}
+inline bool Ui::lock_action(int id, int x, bool initial, const Engine &e,
+                            Command &c) const {
+  if (id < 96 || id > 104 || selected_step < 0 || selected_step >= 16)
+    return false;
+  c = {Kind::ClearStepLocks, uint8_t(selected), 0};
+  c.pattern = uint8_t(e.selected_pattern);
+  c.step = uint8_t(selected_step);
+  if (id == 104)
+    return initial;
+  const int param = (id - 96) / 2;
+  const auto &base = e.tracks[c.track];
+  const auto &locks = e.patterns[c.pattern].locks[c.track][c.step];
+  if (param == 3 && base.sample)
+    return false;
+  c.kind = Kind(int(Kind::LockPitch) + param);
+  if (id % 2) {
+    if (!initial)
+      return false;
+    if (locks.mask & (1 << param)) {
+      c.kind = Kind::UnlockParam;
+      c.value = 1 << param;
+    } else {
+      const int values[] = {base.pitch, base.volume, base.pan, base.wave};
+      c.value = values[param];
+    }
+  } else {
+    if (!(locks.mask & (1 << param)))
+      return false;
+    c.value = drag(id, x);
+    if (param == 2)
+      c.value = c.value * 2 - 127;
+    if (param == 3)
+      c.value = c.value * 15 / 127;
+  }
+  return true;
 }
 } // namespace app

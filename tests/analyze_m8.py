@@ -7,6 +7,7 @@ from pathlib import Path
 
 parser = argparse.ArgumentParser()
 parser.add_argument("log")
+parser.add_argument("--pattern-bytes", type=int, default=802)
 args = parser.parse_args()
 s = Path(args.log).read_text(errors="replace")
 
@@ -37,7 +38,7 @@ assert worst["swing"] == 50 and worst["delay"] == 1
 assert worst["triggers_per_second"] >= 500
 assert worst["max"] <= 256 / 44100 * 1e6 * .8
 assert patterns["switches"] >= 4 and patterns["dirty_max"] < 768000
-assert patterns["pattern_bytes"] == 802 and patterns["command_bytes"] <= 12
+assert patterns["pattern_bytes"] == args.pattern_bytes and patterns["command_bytes"] <= 12
 for key in ("long_to_short", "short_to_long", "queue_replacements", "copies", "clears", "lengths", "solos", "mutes", "steps"):
     assert applied[key] > 0, f"missing {key}"
 assert "Guru Meditation" not in s and "INIT FAIL" not in s

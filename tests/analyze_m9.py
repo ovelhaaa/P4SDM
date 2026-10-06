@@ -7,9 +7,11 @@ from pathlib import Path
 
 parser = argparse.ArgumentParser()
 parser.add_argument("log")
+parser.add_argument("--pattern-bytes", type=int, default=802)
 args = parser.parse_args()
 data = Path(args.log).read_text(errors="replace")
-subprocess.run([sys.executable, "tests/analyze_m8.py", args.log], check=True)
+subprocess.run([sys.executable, "tests/analyze_m8.py", args.log,
+                "--pattern-bytes", str(args.pattern_bytes)], check=True)
 
 def row(prefix):
     lines = [line for line in data.splitlines() if line.startswith(prefix)]

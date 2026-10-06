@@ -2,6 +2,7 @@
 #include "../src/hal/display_dirty.h"
 #include <cassert>
 #include <cstdlib>
+#include <cstring>
 #include <iostream>
 #include <new>
 
@@ -14,6 +15,9 @@ void *operator new(std::size_t n) {
 }
 void operator delete(void *p) noexcept { std::free(p); }
 void operator delete(void *p, std::size_t) noexcept { std::free(p); }
+static bool same(app::StepLocks a, app::StepLocks b) {
+  return std::memcmp(&a, &b, sizeof(a)) == 0;
+}
 static bool same(const app::StepMeta &a, const app::StepMeta &b) {
   return a.velocity == b.velocity && a.probability == b.probability &&
          a.ratchets == b.ratchets;
@@ -25,7 +29,8 @@ static bool same(const app::Pattern &a, const app::Pattern &b) {
     if (a.track_steps[t] != b.track_steps[t])
       return false;
     for (int i = 0; i < 16; ++i)
-      if (!same(a.meta[t][i], b.meta[t][i]))
+      if (!same(a.meta[t][i], b.meta[t][i]) ||
+          !same(a.locks[t][i], b.locks[t][i]))
         return false;
   }
   return true;
@@ -43,6 +48,9 @@ static app::Pattern fixture(int n) {
   for (int t = 0; t < 16; ++t) {
     p.track_steps[t] = uint16_t(0x9a65 ^ (t * 257));
     for (int i = 0; i < 16; ++i)
+      p.locks[t][i] = {uint8_t(i), uint8_t(30 + i), uint8_t(60 + i),
+                       int8_t(i - 8), uint8_t(i)};
+    for (int i = 0; i < 16; ++i)
       p.meta[t][i] = {uint8_t(10 + i * 7), uint8_t((i * 6 + t) % 101),
                       uint8_t(1 + i % 4)};
   }
@@ -51,6 +59,7 @@ static app::Pattern fixture(int n) {
 static void hidden(const app::Pattern &a, const app::Pattern &b, int t) {
   for (int i = a.length; i < 16; ++i) {
     assert(same(a.meta[t][i], b.meta[t][i]));
+    assert(same(a.locks[t][i], b.locks[t][i]));
     assert(((a.track_steps[t] ^ b.track_steps[t]) & (1u << i)) == 0);
   }
 }
@@ -75,6 +84,7 @@ int main() {
     for (int i = 0; i < n; ++i) {
       int j = (i + 1) % n;
       assert(same(original.meta[3][i], e.patterns[2].meta[3][j]));
+      assert(same(original.locks[3][i], e.patterns[2].locks[3][j]));
       assert(((original.track_steps[3] >> i) & 1) ==
              ((e.patterns[2].track_steps[3] >> j) & 1));
     }
@@ -87,6 +97,7 @@ int main() {
     e.apply(command(Kind::Reverse));
     for (int i = 0; i < n; ++i) {
       assert(same(original.meta[3][i], e.patterns[2].meta[3][n - 1 - i]));
+      assert(same(original.locks[3][i], e.patterns[2].locks[3][n - 1 - i]));
       assert(((original.track_steps[3] >> i) & 1) ==
              ((e.patterns[2].track_steps[3] >> (n - 1 - i)) & 1));
     }
@@ -270,7 +281,7 @@ int main() {
     assert(e.phase == phase && e.rng == rng && e.next_ratchet == next &&
            e.step == 0 && e.playing_pattern == 0 && e.queued_pattern == 7 &&
            e.playing);
-    assert(e.pending[3].velocity == 127 && e.pending[3].count == 4 &&
+    assert(e.pending[3].event.velocity == 127 && e.pending[3].count == 4 &&
            e.pending[3].next == 1);
     if (kind == Kind::Duplicate)
       assert(same(p, e.patterns[1]) && e.selected_pattern == 1);
