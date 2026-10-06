@@ -624,3 +624,49 @@ changes. Future UI complexity needs renewed measurement. Audio listening and
 reliable DMA starvation counts remain unverified. M4.1 stops here, without SD
 or full drum-machine UI. Source commit89bb050 passes all seven hosted builds
 and existing host checks; final evidence adds recorded M4.1 checks to CI.
+## M5 application shell — 2026-10-06
+
+M5 implementation and scripted integrated device checks pass. On 2026-10-06,
+the user confirmed that image and touch are functioning on the normal application.
+A recorded physical interaction workload, audible confirmation and sustained-animation
+FPS remain unqualified.
+M4.1 qualification is preserved independently; no SD/sample integration was begun.
+
+See [M5 report](GUITION_M5.md), [original Tab5 audit](GUITION_M5_TAB5_AUDIT.md),
+[source-derived layout](GUITION_M5_LAYOUT.svg) and genuine
+[scripted device capture](GUITION_M5_STRESS_SERIAL.log).
+
+Local compilation passed for `guition_boot`, `guition_audio`, `guition_synth`,
+`guition_fx`, `guition_display`, `guition_ui_audio`, `guition_ui_audio_m41`,
+`guition_app` and the optional `guition_app_stress` regression target. The first
+combined build's app artifact conflicted with a concurrent upload; the app was
+then compiled and uploaded successfully in isolation. Prior PCM, eight-FX output,
+display geometry/dirty-history and M4/M4.1 capture-analysis checks pass. New host
+state tests cover bounded FIFO rejection/wrap, step toggle, BPM clamp, slider
+mapping, page-dependent hit testing, dirty-region footprint and exact sample
+onsets at 30/97/120/123/400 BPM. `analyze_m5.py --stress` passes on the actual log.
+GitHub CI configuration includes all targets/tests; remote CI was not run.
+
+The 60-second real-board scripted workload captured 10,336 audio blocks with up
+to sixteen voices and Delay: p50 3530 / p95 3700 / p99 3728 / max 3780 us, zero
+misses/API write errors/timeouts/PCM rails and 34.88% worst engine headroom.
+GT911 polling remained active with zero errors. UI acknowledged 894 frames over
+63.062 seconds while making 169 full-page draws; ordinary-frame dirty traffic
+is approximately 84,986 bytes (11.1% of full screen), inferred from aggregate
+bytes after subtracting full-page bytes. PSRAM, largest PSRAM block and internal
+free memory were unchanged. These are **scripted application actions**, not
+physical pad/drag evidence, and this page-heavy workload does not qualify 30 FPS.
+
+Reproduce the scripted check with:
+
+```text
+pio run -e guition_app_stress -t upload --upload-port COM13
+python tests/capture_guition.py --port COM13 --output docs/GUITION_M5_STRESS_SERIAL.log --seconds 75
+python tests/analyze_m5.py docs/GUITION_M5_STRESS_SERIAL.log --stress
+pio run -e guition_app -t upload --upload-port COM13
+```
+
+For final physical qualification, restart normal `guition_app`, perform actual
+pads/steps/transport/BPM/track drags/page changes during a fresh 75-second capture,
+confirm sound and picture, and record the physical evidence separately. No
+microSD is required. The board is left on normal application firmware.

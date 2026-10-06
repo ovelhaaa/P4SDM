@@ -64,6 +64,9 @@ void synthESP32_begin(){
 
 static void render_buffer() {
     for (int i = 0; i < DMA_BUF_LEN; i++) {
+#if P4SDM_APP
+        app_sample();
+#endif
         
         // FX
         int32_t DRUMTOTAL_L = 0;   // Master Dry

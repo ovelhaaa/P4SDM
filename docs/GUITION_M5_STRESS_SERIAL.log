@@ -1,0 +1,21 @@
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0x17 (CHIP_USB_UART_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x40002a4e
+Core1 Saved PC:0x4ff02cca
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M5] blocks=10336 p50=3530 p95=3700 p99=3728 max=3780 misses=0 failures=0 timeouts=0 peak=6531 nonzero=5289925 rails=0 active_min=0 active_max=16
+[MEM] M5 after 60s PSRAM total=33554432 free=30885508 largest=30408692 internal_free=435676
+[M5 UI] seconds=63.062 submitted=895 completed=894 dirty_avg=213957 dirty_max=768000 full=169 preparation_max_us=114629 touch_errors=0 rejected=0 pads=56 steps=56 drags=56 pages=224 transport=55 bpm=56 skipped=199
+[M5 memory] ps_before=30885508 ps_after=30885508 internal_before=435676 internal_after=435676 largest_before=30408692 largest_after=30408692
