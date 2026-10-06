@@ -135,11 +135,15 @@ esp_err_t begin_frame() {
     if(pipeline!=Pipeline::FullPpa) {
         DirtyMask repair=history.stale[back];
         if(pipeline==Pipeline::NativeFull) repair.all();
-        for(int r=0;r<TILE_ROWS;++r) for(int c=0;c<TILE_COLS;++c) if(repair.rows[r]&(1u<<c))
+        for(int r=0;r<TILE_ROWS;++r) for(int c=0;c<TILE_COLS;) {
+            if(!(repair.rows[r]&(1u<<c))) {++c;continue;}
+            const int first=c;
+            while(c<TILE_COLS && (repair.rows[r]&(1u<<c))) ++c;
             for(int y=r*TILE;y<(r+1)*TILE;++y) {
-                const unsigned offset=y*NATIVE_WIDTH+c*TILE;
-                memcpy(native[back]+offset,native[history.front]+offset,TILE*2);
+                const unsigned offset=y*NATIVE_WIDTH+first*TILE;
+                memcpy(native[back]+offset,native[history.front]+offset,(c-first)*TILE*2);
             }
+        }
         flushed.merge(repair); last_telemetry.repair_bytes=repair.bytes();
         history.repaired();
     }
@@ -166,19 +170,20 @@ esp_err_t present() {
     } else {
         flushed.merge(changed);
         const int64_t cache_start=esp_timer_get_time();
-        // Flush only modified/repaired tile runs. Native scanout still reads
-        // the complete frame continuously; there is no partial DSI scanout.
+        // Coalesce cache address ranges per dirty tile band, including gaps
+        // between its rows. Clean cache lines in those gaps cause no image
+        // copy; only modified cache lines write back. Report span separately
+        // from dirty/repair payload so this cost is not hidden.
         for(int r=0;r<TILE_ROWS;++r) {
-            for(int c=0;c<TILE_COLS;) {
-                if(!(flushed.rows[r]&(1u<<c))) {++c;continue;}
-                const int first=c;
-                while(c<TILE_COLS && (flushed.rows[r]&(1u<<c))) ++c;
-                for(int y=r*TILE;y<(r+1)*TILE;++y) {
-                    error=esp_cache_msync(native[back]+y*NATIVE_WIDTH+first*TILE,(c-first)*TILE*2,
-                        ESP_CACHE_MSYNC_FLAG_DIR_C2M|ESP_CACHE_MSYNC_FLAG_UNALIGNED);
-                    if(error!=ESP_OK) {faulted=true;return error;}
-                }
-            }
+            if(!flushed.rows[r]) continue;
+            int first=0,last=TILE_COLS-1;
+            while(!(flushed.rows[r]&(1u<<first))) ++first;
+            while(!(flushed.rows[r]&(1u<<last))) --last;
+            const unsigned offset=r*TILE*NATIVE_WIDTH+first*TILE;
+            const unsigned bytes=((TILE-1)*NATIVE_WIDTH+(last-first+1)*TILE)*2;
+            error=esp_cache_msync(native[back]+offset,bytes,ESP_CACHE_MSYNC_FLAG_DIR_C2M|ESP_CACHE_MSYNC_FLAG_UNALIGNED);
+            if(error!=ESP_OK) {faulted=true;return error;}
+            last_telemetry.cache_span_bytes+=bytes;
         }
         last_telemetry.cache_us=esp_timer_get_time()-cache_start;
         last_telemetry.dirty_bytes=changed.bytes();

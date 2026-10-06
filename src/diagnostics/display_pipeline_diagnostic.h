@@ -22,7 +22,7 @@ struct Stats {
     uint32_t touch_blocks=0,touch_misses=0;
     uint32_t frames=0,skips=0,display_errors=0,polls=0,touch_errors=0,presses=0,releases=0,drags=0;
     uint32_t pages=0,idle_seen=0,inflight_at_request=0;
-    Metric repair,draw,ppa,cache,submit,wait,present,total,dirty_bytes,repair_bytes;
+    Metric repair,draw,ppa,cache,submit,wait,present,total,dirty_bytes,repair_bytes,cache_span_bytes;
     int64_t start=0,end=0,transition_us=0;
     unsigned transition_block=100;
     size_t ps_before=0,ps_after=0,in_before=0,in_after=0,largest_before=0,largest_after=0;
@@ -142,6 +142,7 @@ static void ui_task(void *) {
         s.repair.add(repaired-begin);s.draw.add(drawn-repaired);s.ppa.add(t.ppa_us);s.cache.add(t.cache_us);
         s.submit.add(t.submit_us);s.wait.add(t.wait_us);s.present.add(t.present_us);s.total.add(end-begin);
         s.dirty_bytes.add(t.dirty_bytes);s.repair_bytes.add(t.repair_bytes);
+        s.cache_span_bytes.add(t.cache_span_bytes);
         if(error!=ESP_OK) {++s.display_errors;break;}
         ++s.frames;previous=point;prior_mode=m;
         ui_busy.store(false,std::memory_order_release);
@@ -217,6 +218,7 @@ static void audio_task(void *) {
         metric_report("repair",s.repair,s.frames);metric_report("draw",s.draw,s.frames);metric_report("ppa",s.ppa,s.frames);metric_report("cache",s.cache,s.frames);
         metric_report("submit",s.submit,s.frames);metric_report("wait",s.wait,s.frames);metric_report("present",s.present,s.frames);metric_report("total",s.total,s.frames);
         metric_report("dirty_bytes",s.dirty_bytes,s.frames);metric_report("repair_bytes",s.repair_bytes,s.frames);
+        metric_report("cache_span_bytes",s.cache_span_bytes,s.frames);
         reportf("[M41] touch polls=%u hz=%.3f errors=%u presses=%u releases=%u drags=%u activity_blocks=%u activity_misses=%u\n",s.polls,seconds>0?s.polls/seconds:0.,s.touch_errors,s.presses,s.releases,s.drags,s.touch_blocks,s.touch_misses);
         reportf("[M41] memory ps_before=%u ps_after=%u largest_before=%u largest_after=%u internal_before=%u internal_after=%u\n",unsigned(s.ps_before),unsigned(s.ps_after),unsigned(s.largest_before),unsigned(s.largest_after),unsigned(s.in_before),unsigned(s.in_after));
         valid &= !s.display_errors && !s.touch_errors;

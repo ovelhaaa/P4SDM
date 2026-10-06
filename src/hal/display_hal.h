@@ -5,7 +5,7 @@
 namespace display {
 struct Telemetry {
     uint32_t repair_us=0,ppa_us=0,cache_us=0,submit_us=0,wait_us=0,present_us=0;
-    uint32_t dirty_bytes=0,repair_bytes=0;
+    uint32_t dirty_bytes=0,repair_bytes=0,cache_span_bytes=0;
 };
 Telemetry telemetry();
 enum class Pipeline {FullPpa,NativeFull,NativeDirty};

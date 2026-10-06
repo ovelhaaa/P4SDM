@@ -21,7 +21,7 @@ for path in args.logs:
         elif m:=re.match(r'\[M41\] raw phase=(\d+) block=(\d+) us=([\d,]+)$',line):
             raw=stages[int(m[1])]['raw'];assert len(raw)==int(m[2]);raw.extend(map(int,m[3].split(',')))
         elif stage is not None:
-            numbers={key:float(value) for key,value in re.findall(r'(\w+)=(-?[\d.]+)(?=\s|$)',line)}
+            numbers={key:float(value) for key,value in re.findall(r'(\w+)=(-?\d+(?:\.\d+)?)(?=\s|$)',line)}
             if line.startswith('[M41] blocks='): stage['audio']=numbers
             elif line.startswith('[M41] render '): stage['render']=numbers
             elif line.startswith('[M41] UI '): stage['ui']=numbers

@@ -6,8 +6,8 @@
 using namespace display;
 int main() {
     DirtyMask mask; assert(mask.empty()); mask.logical_rect(-10,-10,20,20);
-    assert(mask.bytes()==2048); assert(mask.rows[0]==(1u<<14));
-    mask.clear(); mask.logical_rect(799,479,10,10); assert(mask.rows[24]==1);
+    assert(mask.bytes()==TILE*TILE*2); assert(mask.rows[0]==(1u<<(TILE_COLS-1)));
+    mask.clear(); mask.logical_rect(799,479,10,10); assert(mask.rows[TILE_ROWS-1]==1);
     mask.clear(); mask.logical_rect(INT_MAX,0,INT_MAX,50); assert(mask.empty());
     mask.logical_rect(-50,-50,20,20); assert(mask.empty());
     mask.logical_rect(0,0,800,480); assert(mask.bytes()==FRAME_BYTES);
