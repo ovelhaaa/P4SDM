@@ -599,3 +599,28 @@ zero silent blocks and zero rail frames. Audio listening and reliable DMA
 starvation counting remain unverified. Original synth and FX are preserved.
 All six local builds and hosted CI run37400942633 pass, including the
 existing PCM/FX checks and new display geometry test. No SD card is needed.
+
+### M4.1 — native queued display pipeline
+
+See [the complete M4.1 report](GUITION_M41.md) for architecture, source audit,
+component timing, all strategies/transitions, memory and genuine raw captures.
+The original DSP and hardware initialization are preserved. Three native
+buffers replace two native plus one logical surface; dirty repair/cache work
+and preparation overlap retain conservative two-refresh retirement.
+
+Final physical interaction run: 10336 blocks with 16 voices plus Delay,
+29.474 acknowledged FPS including 12 page constructions, zero render misses,
+p99/max4005/4046 us and 30.30% worst reserve. Touch at100.010 Hz records all
+corners/center,221 presses/releases and1889 movements with zero API errors;
+the user confirms correct picture and tracking without visual faults.
+All live heap/largest-block measurements remain unchanged. Short cold LIGHT
+is28.323 FPS; constant30 FPS is not guaranteed. The bounded diagnostic trace
+retains512 events and truncates302 further entries while aggregate counters
+continue. The analyzer checks19125 raw timings and all retained mappings.
+
+This supports beginning the real UI within the measured dirty-rendering and
+core0 priority envelope, with skipped visual frames during expensive page
+changes. Future UI complexity needs renewed measurement. Audio listening and
+reliable DMA starvation counts remain unverified. M4.1 stops here, without SD
+or full drum-machine UI. Source commit89bb050 passes all seven hosted builds
+and existing host checks; final evidence adds recorded M4.1 checks to CI.

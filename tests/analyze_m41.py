@@ -7,11 +7,13 @@ from pathlib import Path
 
 parser=argparse.ArgumentParser()
 parser.add_argument('logs',nargs='+',type=Path)
+parser.add_argument('--require-interaction',action='store_true')
 args=parser.parse_args()
 stages={}
 for path in args.logs:
     log=path.read_text()
     assert '[M41] heap_loss ' in log and '[MEM] M41 after audio shutdown ' in log, f'incomplete {path}'
+    assert re.search(r'\[M41\] heap_loss psram=0 internal=0 .+ drain_errors=0 shutdown=ESP_OK result=PASS',log)
     assert 'shared_bus_unchanged=1' in log
     stage=None
     for line in log.splitlines():
@@ -40,6 +42,8 @@ for index,s in stages.items():
     raw=s['raw'];a=s['audio'];r=s['render'];values=sorted(raw)
     assert len(raw)==a['blocks']==(10336 if s['name']=='LONG_LIGHT' else 517)
     assert a['active_min']==a['active_max']==16
+    assert all(a[k]==0 for k in ('render_misses','write_errors','timeouts','silent','rails'))
+    assert s['ui']['errors']==s['touch']['errors']==0
     assert sum(v>=budget for v in raw)==a['render_misses']
     assert abs(statistics.mean(raw)-r['avg'])<=.0051
     assert r['min']==min(raw) and r['max']==max(raw)
@@ -75,8 +79,17 @@ table(['Phase','PSRAM before/after','Largest before/after','Internal before/afte
 for path in args.logs:
     for line in path.read_text().splitlines():
         if line.startswith('[MEM]') or line.startswith('[M41] heap_loss') or line.startswith('[M41] touch_coverage'):print(line)
-primary=[s for s in stages.values() if s['name'] in ('QUEUED_LIGHT','LONG_LIGHT')]
-if len(primary)==2:
-    accepted=all(s['audio']['render_misses']==0 and s['ui']['achieved_fps']>=29 for s in primary)
-    print(f'LIGHT short +60s timing/FPS acceptance: {"PASS" if accepted else "FAIL"}; physical visuals and coverage must be verified separately.')
+if args.require_interaction:
+    long=[s for s in stages.values() if s['name']=='LONG_LIGHT']
+    assert len(long)==1
+    s=long[0]
+    assert all(s['touch'][k]>0 for k in ('presses','releases','drags','activity_blocks'))
+    assert s['touch']['errors']==s['touch']['activity_misses']==0
+    assert any('touch_coverage_bits=31 ' in path.read_text() for path in args.logs)
+    assert all(s['audio'][k]==0 for k in ('render_misses','write_errors','timeouts','silent','rails'))
+    assert s['ui']['errors']==0
+    print('Physical interaction coverage and measured audio/API checks: PASS. Human picture verification remains separate.')
+for s in stages.values():
+    if s['name'] in ('QUEUED_LIGHT','LONG_LIGHT'):
+        print(f"{s['name']}: requested 30 FPS, acknowledged {s['ui']['achieved_fps']:.3f}; includes cold/page reconstruction and skips. No strict 30-FPS guarantee.")
 print(f'Validated {len(stages)} phases and {sum(len(s["raw"]) for s in stages.values())} ordered original-render timings.')

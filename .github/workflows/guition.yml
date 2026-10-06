@@ -19,3 +19,4 @@ jobs:
       - run: g++ -std=c++17 -Wall -Wextra -Werror tests/display_geometry_test.cpp -o /tmp/display_geometry_test && /tmp/display_geometry_test
       - run: g++ -std=c++17 -Wall -Wextra -Werror tests/display_dirty_test.cpp -o /tmp/display_dirty_test && /tmp/display_dirty_test
       - run: python tests/analyze_m4.py docs/GUITION_M4_UI_AUDIO_SERIAL.log --display-log docs/GUITION_M4_DISPLAY_SERIAL.log
+      - run: python tests/analyze_m41.py docs/GUITION_M41_SHORT_SERIAL.log docs/GUITION_M41_INTERACTION_SERIAL.log --require-interaction
