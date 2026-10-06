@@ -350,3 +350,37 @@ See [M6 architecture, audit and qualification](docs/GUITION_M6.md).
 **PHYSICAL SD VALIDATION PENDING** until a microSD card is available.
 
 M6.1 sample pitch/source semantics and optional physical-card runner: [qualification report](docs/GUITION_M61.md).
+
+## M7 — padrões e performance em RAM
+
+O app agora tem 16 padrões independentes, 16 pistas por padrão e comprimento 1–16.
+Toque no campo de padrão no cabeçalho para abrir PATTERN: fila quantizada no fim
+do loop, modo INSPECT para editar sem enfileirar, COPY com escolha de destino e
+CLEAR com segundo toque de confirmação. TRACK oferece MUTE/SOLO; pads continuam
+audicionando mesmo quando a pista está mutada ou fora do solo. Os padrões não
+são persistidos e não exigem cartão. A qualificação física SD/sample do M6 segue
+pendente, sem bloquear M7.
+
+[Modelo, semântica, testes e qualificação M7](docs/GUITION_M7.md) ·
+[Auditoria do sequenciador Tab5](docs/GUITION_M7_TAB5_AUDIT.md).
+
+Build normal: `pio run -e guition_app`; stress contínuo com 16 vozes synth/Delay e
+transições reais: `pio run -e guition_app_stress`. Após qualificar, restaure
+`guition_app`. Validação do log: `python tests/analyze_m7.py <log>`.
+
+
+## M8 — Groove engine
+
+`guition_app` inclui velocity 1–127, ACCENT (100 ↔ 127), probability 0–100%,
+ratchet 1–4x e swing global 50–75%. Na SEQ, toque um step para alternar ON/OFF
+e selecioná-lo; toque STEP para editar. O contorno branco identifica o step
+selecionado. SWING fica na SEQ. O editor mostra pattern/track/step, ON/OFF,
+VEL numérico, ACCENT, PROB e quatro botões RATCHET. Arraste VEL, PROB ou SWING.
+
+Metadados são retidos ao desligar steps, reduzir comprimento ou usar CLEAR.
+COPY copia máscaras, comprimento e groove. Pads manuais usam velocity 127.
+PLAY reinicia swing e PRNG; STOP cancela ratchets futuros e mantém tails.
+`guition_app_stress` começa com 12 segundos de 16 tracks, 4x, 240 BPM e Delay,
+depois exercita groove e operações M7/UI durante a captura de 60 segundos,
+com display/touch ativos e sem exigir SD. Veja [relatório M8](docs/GUITION_M8.md)
+e `tests/analyze_m8.py`. Persistência, locks, song mode e MIDI ficam fora do escopo.

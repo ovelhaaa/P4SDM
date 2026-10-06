@@ -1,0 +1,28 @@
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0x17 (CHIP_USB_UART_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x40006d6c
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M6 budget] total=33554432 display=2304000 fx_delay=352800 samples=0 reserve=4194304 free=30885508 largest=30408692 internal=407972
+E (2462) sdmmc_common: sdmmc_init_ocr: send_op_cond (1) returned 0x107
+E (2462) vfs_fat_sdmmc: sdmmc_card_init failed (0x107).
+[   793][E][SD_MMC.cpp:307] begin(): Failed to initialize the card (0x107). Make sure SD card lines have pull-up resistors in place.
+[M6 SD] mounted=0 width=4 clock_khz=20000 mount_us=259513 capacity=0 status=NO CARD / MOUNT ERROR
+[M5] blocks=10337 p50=3062 p95=3797 p99=3839 max=3908 misses=0 failures=0 timeouts=0 peak=7597 nonzero=5291160 rails=0 active_min=16 active_max=16
+[MEM] M5 after 60s PSRAM total=33554432 free=30885508 largest=30408692 internal_free=406964
+[M5 UI] seconds=63.008 submitted=1091 completed=1091 dirty_avg=47953 dirty_max=768000 full=26 preparation_max_us=123515 touch_errors=0 rejected=0 pads=5 steps=10 drags=5 pages=20 transport=0 bpm=0 skipped=26
+[M7 patterns] switches=10 loops=79 selections=36 copies=5 clears=5 lengths=20 solos=10 mutes=10 normal_frames=1065 dirty_avg=30375 dirty_max=440320 pattern_bytes=34 command_bytes=12
+[M7 applied] long_to_short=5 short_to_long=5 queue_replacements=5 copies=5 clears=5 lengths=20 solos=10 mutes=10 steps=10
+[M5 memory] ps_before=30885508 ps_after=30885508 internal_before=406964 internal_after=406964 largest_before=30408692 largest_after=30408692

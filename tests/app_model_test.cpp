@@ -8,9 +8,9 @@ int main() {
   e.apply({app::Kind::Bpm, 0, 0});
   assert(e.bpm == 30);
   e.apply({app::Kind::Step, 3, 15});
-  assert(e.tracks[3].steps == 0x8000);
+  assert(e.patterns[0].track_steps[3] == 0x8000);
   e.apply({app::Kind::Step, 3, 15});
-  assert(e.tracks[3].steps == 0);
+  assert(e.patterns[0].track_steps[3] == 0);
   app::Queue<4> q;
   assert(q.push({app::Kind::Trigger, 1, 0}));
   assert(q.push({app::Kind::Trigger, 2, 0}));
@@ -52,7 +52,7 @@ int main() {
   // Verify exact rational step onsets at non-divisor tempos over 32 steps.
   for (int bpm : {30, 97, 123, 400}) {
     app::Engine clock;
-    clock.tracks[0].steps = 0xffff;
+    clock.patterns[0].track_steps[0] = 0xffff;
     clock.apply({app::Kind::Bpm, 0, bpm});
     clock.apply({app::Kind::Play, 0, 1});
     uint64_t sample = 0;

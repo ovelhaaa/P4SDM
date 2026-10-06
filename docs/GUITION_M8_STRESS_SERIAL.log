@@ -1,0 +1,30 @@
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0x17 (CHIP_USB_UART_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x400079ee
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M6 budget] total=33554432 display=2304000 fx_delay=352800 samples=0 reserve=4194304 free=30885508 largest=30408692 internal=383028
+E (2464) sdmmc_common: sdmmc_init_ocr: send_op_cond (1) returned 0x107
+E (2464) vfs_fat_sdmmc: sdmmc_card_init failed (0x107).
+[   793][E][SD_MMC.cpp:307] begin(): Failed to initialize the card (0x107). Make sure SD card lines have pull-up resistors in place.
+[M6 SD] mounted=0 width=4 clock_khz=20000 mount_us=259401 capacity=0 status=NO CARD / MOUNT ERROR
+[M5] blocks=10337 p50=3210 p95=3962 p99=4008 max=4092 misses=0 failures=0 timeouts=0 peak=7598 nonzero=5290884 rails=0 active_min=16 active_max=16
+[M8 groove] parents=14992 passed=13785 skipped=1207 ratchets=39004 pending_max=48 velocity_min=1 velocity_max=127 swing_changes=8
+[M8 worst] blocks=2068 bpm=240 voices=16 ratchet=4 swing=50 delay=1 max=4054 triggers=12304 triggers_per_second=1024
+[MEM] M8 after 60s PSRAM total=33554432 free=30885508 largest=30408692 internal_free=382020
+[M5 UI] seconds=63.024 submitted=1559 completed=1559 dirty_avg=73340 dirty_max=768000 full=26 preparation_max_us=135150 touch_errors=0 rejected=0 pads=4 steps=8 drags=12 pages=20 transport=0 bpm=0 skipped=38
+[M7 patterns] switches=8 loops=76 selections=29 copies=4 clears=4 lengths=16 solos=8 mutes=8 normal_frames=1533 dirty_avg=61558 dirty_max=440320 pattern_bytes=802 command_bytes=12
+[M7 applied] long_to_short=4 short_to_long=4 queue_replacements=4 copies=4 clears=4 lengths=16 solos=8 mutes=8 steps=8
+[M5 memory] ps_before=30885508 ps_after=30885508 internal_before=382020 internal_after=382020 largest_before=30408692 largest_after=30408692
