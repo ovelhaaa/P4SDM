@@ -103,3 +103,11 @@ jobs:
       - run: python tests/analyze_m181.py docs/GUITION_M181_SAMPLE_STRESS_SERIAL.log
       - run: python tests/analyze_m181.py docs/GUITION_M181_SYNTH_STRESS_SERIAL.log --synth
       - run: python tests/analyze_m181.py docs/GUITION_M181_NORMAL_SERIAL.log --normal
+
+      - run: pio run -e guition_transient_stress -e guition_transient_synth_stress
+      - run: g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/transient_test.cpp -o /tmp/transient_test && /tmp/transient_test
+      - run: g++ -std=c++17 -O2 -Wall -Wextra -Werror -Itests/transient_stubs tests/transient_service_test.cpp -o /tmp/transient_service_test && /tmp/transient_service_test
+      - run: python tests/no_transient_equivalence.py
+      - run: python tests/analyze_m19.py docs/GUITION_M19_SAMPLE_STRESS_SERIAL.log
+      - run: python tests/analyze_m19.py docs/GUITION_M19_SYNTH_STRESS_SERIAL.log --synth
+      - run: python tests/analyze_m19.py docs/GUITION_M19_NORMAL_SERIAL.log --normal

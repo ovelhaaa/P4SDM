@@ -16,6 +16,7 @@ extern std::atomic<unsigned> waveform_builds, waveform_build_max,
 void analyze(sampler::Sample &s, bool responsive = true);
 void publish_preview(unsigned track, const sampler::Sample *s);
 void preview(unsigned track, Preview &out);
+bool resident(unsigned track, const sampler::Sample *sample);
 void start();
 bool initialized();
 bool request(unsigned track, int index);

@@ -10,6 +10,7 @@ uint8_t voice_delay_send[16]{};
 #include "app/projects.h"
 #include "app/qualification.h"
 #include "app/samples.h"
+#include "app/transient_service.h"
 #include <cstdarg>
 static bool app_pcm(int track, int16_t &value);
 static void app_sample();
@@ -88,7 +89,13 @@ std::atomic<uint32_t> diagnostic_p99{0}, diagnostic_max{0},
 std::atomic<uint32_t> flashes[16];
 bool delay_ready = false;
 int sample_index = 0;
-bool dirty[210]{};
+bool dirty[222]{};
+transients::Status transient_view;
+unsigned transient_mode = 0, transient_sensitivity = 1;
+bool transient_apply_pending = false;
+unsigned transient_apply_id = 0;
+uint32_t analysis_blocks = 0, analysis_worst = 0, analysis_misses = 0,
+         analysis_x8_blocks = 0, analysis_ui_interval_max = 0;
 bool full = true;
 uint32_t rejected = 0, touch_errors = 0, frames = 0, full_frames = 0;
 uint32_t actions[162]{}, drags = 0;
@@ -327,6 +334,16 @@ void draw_waveform() {
     if (i == bank.index())
       display::rect(x, 208, std::max(1, end - x), 6, accent);
   }
+  if (transient_view.state == transients::State::Ready &&
+      transient_view.proposal.owner.track == ui.selected) {
+    const auto &proposal = transient_view.proposal.bank;
+    for (unsigned i = 0; i < proposal.count; ++i) {
+      const int x = 40 + uint32_t(proposal.slices[i].start) * 719 / 65535;
+      // Magenta dashed, thick markers differ from solid current yellow/cyan.
+      for (int y = 116; y < 200; y += 12) display::rect(x, y, 3, 6, 0xf81f);
+      display::rect(x - 3, 112, 9, 4, 0xf81f);
+    }
+  }
   char name[96];
   strlcpy(name, wave_preview.frames ? wave_preview.name : "NO RESIDENT SAMPLE",
           sizeof(name));
@@ -338,6 +355,36 @@ void draw_waveform() {
       std::max(waveform_redraw_max, uint32_t(esp_timer_get_time() - started));
 }
 void draw(int id) {
+  if (id >= 210 && id <= 221) {
+    char label[64]{};
+    if (id == 221) {
+      display::rect(40, 82, 720, 16, bg);
+      const char *states[] = {"AUTO TRANSIENTS", "ANALYZING...", "ANALYZING...", "FOUND", "APPLIED", "CANCELLED", "STALE / ANALYZE AGAIN", "NO RESIDENT SAMPLE"};
+      if (transient_view.state == transients::State::Ready)
+        snprintf(label, sizeof(label), "FOUND %u/%u / MAGENTA PROPOSAL", transient_view.proposal.bank.count,
+                 transient_mode ? transient_mode : transient_view.proposal.bank.count);
+      else snprintf(label, sizeof(label), "%s %u%%", states[unsigned(transient_view.state)], transient_view.progress);
+      display::text(40, 82, label, white, 1); return;
+    }
+    auto r = app::widget(id);
+    const unsigned modes[] = {0, 4, 8, 16};
+    uint16_t color = panel;
+    if (id == 210) snprintf(label, sizeof(label), "TRANSIENTS");
+    else if (id >= 211 && id <= 214) {
+      if (id == 211) snprintf(label, sizeof(label), "NATURAL");
+      else snprintf(label, sizeof(label), "AUTO %u", modes[id - 211]);
+      if (transient_mode == modes[id - 211]) color = accent;
+    } else if (id == 215 || id == 216) {
+      const char *levels[] = {"LOW", "MED", "HIGH"};
+      snprintf(label, sizeof(label), "%c SENS %s", id == 215 ? '-' : '+', levels[transient_sensitivity]);
+    } else {
+      const char *labels[] = {"ANALYZE", "APPLY", "CANCEL", "BACK"};
+      snprintf(label, sizeof(label), "%s", labels[id - 217]);
+      if (id == 218 && transient_view.state != transients::State::Ready) color = bg;
+    }
+    display::rect(r.x, r.y, r.w, r.h, color);
+    display::text(r.x + 8, r.y + 18, label, white, 1); return;
+  }
   if (id >= 183 && id <= 209) {
     auto r = app::widget(id);
     char line[96]{};
@@ -884,6 +931,26 @@ void header() {
   tempo_header();
 }
 void interact(int id, int x, bool initial) {
+  if (id >= 210 && id <= 220) {
+    if (!initial || transient_apply_pending) return;
+    if (id == 210) { ui.page = app::Page::AutoSlice; full = true; return; }
+    if (id >= 211 && id <= 216) {
+      send({app::Kind::TransientCancel, uint8_t(ui.selected), 0});
+      if (id <= 214) { const unsigned modes[] = {0, 4, 8, 16}; transient_mode = modes[id - 211]; }
+      else transient_sensitivity = unsigned(app::clamp(int(transient_sensitivity) + (id == 215 ? -1 : 1), 0, 2));
+    } else if (id == 217)
+      send({app::Kind::TransientAnalyze, uint8_t(ui.selected), int(transient_mode | (transient_sensitivity << 8))});
+    else if (id == 218 && transient_view.state == transients::State::Ready && transient_view.proposal.owner.track == ui.selected) {
+      if (send({app::Kind::TransientApply, uint8_t(ui.selected), int(transient_view.request_id)})) {
+        transient_apply_pending = true; transient_apply_id = transient_view.request_id;
+      }
+    }
+    else if (id == 219 || id == 220) {
+      send({app::Kind::TransientCancel, uint8_t(ui.selected), 0});
+      if (id == 220) ui.page = app::Page::SampleSlice;
+    }
+    full = true; return;
+  }
   if (id == 183 && initial) {
     ui.page = app::Page::Performance;
     ui.perf_fill = false;
@@ -1586,6 +1653,67 @@ void ui_task(void *) {
                    heap_caps_get_largest_free_block(MALLOC_CAP_SPIRAM);
   for (;;) {
     static unsigned project_revision = 0, project_changes = 0;
+#if P4SDM_TRANSIENT_STRESS
+    static unsigned analysis_stage = 0;
+    static uint32_t analysis_ui_previous = 0;
+    const unsigned audio_blocks = captured.load();
+    // All old scripted interaction finishes first; these intervals overlap
+    // dense x8 captured playback without modifying its workload.
+    if (analysis_stage == 0 && audio_blocks >= 11150) {
+      transients::qualification_request(44100); ++analysis_stage;
+    } else if (analysis_stage == 1 && transients::qualification_done.load() >= 1) {
+      transients::qualification_request(176400); ++analysis_stage;
+    } else if (analysis_stage == 2 && transients::qualification_done.load() >= 2) {
+      transients::qualification_request(2097152); ++analysis_stage;
+    } else if (analysis_stage == 3 && transients::qualification_done.load() >= 3) {
+#if P4SDM_SAMPLE_PLAYBACK_STRESS
+      ui.selected = 0; ui.page = app::Page::AutoSlice; full = true;
+      send({app::Kind::TransientAnalyze, 0, 16 | 256});
+#endif
+      ++analysis_stage;
+    }
+    if (transients::active.load()) {
+      const uint32_t now = micros();
+      if (analysis_ui_previous) analysis_ui_interval_max = std::max(analysis_ui_interval_max, now - analysis_ui_previous);
+      analysis_ui_previous = now;
+    } else analysis_ui_previous = 0;
+#endif
+    transients::Status latest_transient;
+    transients::status(latest_transient);
+    if (latest_transient.revision != transient_view.revision) {
+      const bool applied = latest_transient.state == transients::State::Applied &&
+          transient_view.state != transients::State::Applied;
+      transient_view = latest_transient;
+      // Wait only for the bounded audio acknowledgement before allowing BACK
+      // and manual edits, so an old committed bank cannot overwrite a newer
+      // optimistic UI edit. UI/touch continue running normally.
+      if (transient_apply_pending && (transient_view.state != transients::State::Ready ||
+          transient_view.request_id != transient_apply_id)) transient_apply_pending = false;
+      if (applied) {
+        auto &track = view.tracks[transient_view.proposal.owner.track];
+        track.slices = transient_view.proposal.bank; track.slice_enabled = true;
+        ui.inspected_slice[transient_view.proposal.owner.track] = 0;
+      }
+      if (ui.page == app::Page::AutoSlice) { dirty[221] = true; dirty[132] = true; dirty[218] = true; }
+      else if (ui.page == app::Page::SampleSlice) dirty[132] = true;
+    }
+#if P4SDM_TRANSIENT_STRESS && P4SDM_SAMPLE_PLAYBACK_STRESS
+    if (analysis_stage == 4 && transient_view.state == transients::State::Ready) {
+      send({app::Kind::TransientApply, 0, int(transient_view.request_id)}); ++analysis_stage;
+    } else if (analysis_stage == 5 && transient_view.state == transients::State::Applied) {
+      send({app::Kind::TransientAnalyze, 0, 4 | 256}); ++analysis_stage;
+    } else if (analysis_stage == 6 && transient_view.state == transients::State::Ready) {
+      send({app::Kind::TransientCancel, 0, 0}); ++analysis_stage;
+    } else if (analysis_stage == 7 && transient_view.state == transients::State::Cancelled && !transients::active.load()) {
+      send({app::Kind::TransientAnalyze, 0, 8 | 256});
+      ++analysis_stage;
+    } else if (analysis_stage == 8 && transient_view.state == transients::State::Ready) {
+      // Invalidate a completed real proposal with a queued region edit.
+      send({app::Kind::SampleStart, 0, view.tracks[0].playback.start}); ++analysis_stage;
+    } else if (analysis_stage == 9 && transient_view.state == transients::State::Stale) {
+      send({app::Kind::TransientApply, 0, 0}); ++analysis_stage;
+    }
+#endif
     if (projects::handoff.load(std::memory_order_acquire) ==
             projects::Handoff::ApplyReady &&
         !projects::view_ready.load()) {
@@ -2274,10 +2402,14 @@ void ui_task(void *) {
           draw(95);
           for (int i = 70; i <= 77; ++i)
             draw(i);
+        } else if (ui.page == app::Page::AutoSlice) {
+          draw(221); draw(132);
+          for (int i = 211; i <= 220; ++i) draw(i);
         } else if (ui.page == app::Page::SampleSlice) {
           draw(147);
           for (int i = 132; i <= 146; ++i)
             draw(i);
+          draw(210);
         } else if (ui.page == app::Page::SamplePlayback) {
           display::text(24, 82, "SAMPLE PLAYBACK", white, 1);
           for (int i = 124; i <= 131; ++i)
@@ -2331,7 +2463,7 @@ void ui_task(void *) {
           draw(162);
           draw(183);
         }
-        if (ui.page != app::Page::SampleSlice && ui.page != app::Page::Project && ui.page != app::Page::Performance && ui.page != app::Page::PerformanceRepeat)
+        if (ui.page != app::Page::AutoSlice && ui.page != app::Page::SampleSlice && ui.page != app::Page::Project && ui.page != app::Page::Performance && ui.page != app::Page::PerformanceRepeat)
           for (int i = 29; i < (ui.page == app::Page::Chain ? 30 : 34); ++i)
             draw(i);
         ++full_frames;
@@ -2347,9 +2479,11 @@ void ui_task(void *) {
           snprintf(title, sizeof(title), "P4SDM T%02d", ui.selected + 1);
           display::text(16, 24, title, white, 2);
         }
-        for (int i = 0; i < 210; ++i)
+        for (int i = 0; i < 222; ++i)
           if (dirty[i] &&
-              (((i >= 200 && i <= 209 && ui.page == app::Page::PerformanceRepeat) ||
+              (((((i >= 211 && i <= 221) || i == 132) && ui.page == app::Page::AutoSlice) ||
+                (i == 210 && ui.page == app::Page::SampleSlice) ||
+                (i >= 200 && i <= 209 && ui.page == app::Page::PerformanceRepeat) ||
                 (i >= 184 && i <= 206 && ui.page == app::Page::Performance) ||
                 (i >= 163 && i <= 182 && ui.page == app::Page::Chain) ||
                 (i >= 132 && i <= 147 && ui.page == app::Page::SampleSlice) ||
@@ -2361,7 +2495,7 @@ void ui_task(void *) {
                (i < 24 && ui.page == app::Page::Sequence) ||
                (i >= 24 && i < 29 && ui.page == app::Page::Track) ||
                (i >= 29 && i < (ui.page == app::Page::Chain ? 30 : 34) &&
-                ui.page != app::Page::SampleSlice && ui.page != app::Page::Performance && ui.page != app::Page::PerformanceRepeat) ||
+                ui.page != app::Page::AutoSlice && ui.page != app::Page::SampleSlice && ui.page != app::Page::Performance && ui.page != app::Page::PerformanceRepeat) ||
                (i == 36 && ui.page == app::Page::Fx) ||
                ((i == 37 || i == 42 || i == 43) &&
                 ui.page == app::Page::Track) ||
@@ -2566,6 +2700,7 @@ unsigned project_boundary() {
     if (part <= 16) {
       project::apply_part(engine, *projects::staging, part);
       if (!part) {
+        transients::reset();
         is_delay = false;
         delays = 0;
         if (!projects::keep_resident.load())
@@ -2632,6 +2767,7 @@ void audio_worker(void *) {
     int sample_track = samples::transfer.consume(samples::voices);
     if (sample_track >= 0) {
       unsigned t = unsigned(sample_track);
+      transients::invalidate(t, true);
       if (!projects::restoring.load())
         engine.tracks[t].assigned();
       voice_routing.trigger(t, true);
@@ -2728,7 +2864,9 @@ void audio_worker(void *) {
            (c.kind == app::Kind::ClearStepLocks &&
             (engine.patterns[c.pattern].locks[c.track][c.step].mask &
              app::SLICE_LOCK)));
+      const bool transient_applied = transients::command(c, engine, samples::voices[c.track].sample);
       engine.apply(c);
+      if (transient_applied) projects::edited(app::Kind::SliceDivide);
       projects::edited(c.kind);
       if (slice_lock_edit)
         slice_lock_command_edits.fetch_add(1, std::memory_order_relaxed);
@@ -2797,8 +2935,14 @@ void audio_worker(void *) {
     const unsigned avoided_before = tone_lock_metrics.avoided;
     const bool repeat_active_before = engine.performance.repeat.active != 0;
     const bool x8_before = engine.performance.repeat.active == 8;
+    const bool analysis_before = transients::active.load(std::memory_order_acquire);
     render_buffer();
     auto us = uint32_t(esp_timer_get_time() - start);
+    if ((analysis_before || transients::active.load(std::memory_order_acquire)) && captured.load() < capture_blocks) {
+      ++analysis_blocks; analysis_worst = std::max(analysis_worst, us);
+      analysis_misses += us >= 5805;
+      analysis_x8_blocks += x8_before;
+    }
     if (engine.chain_advances + engine.chain_repeats != chain_wraps_before)
       chain_boundary_max = std::max(chain_boundary_max, us);
     if (repeat_active_before || engine.performance.repeat.active || engine.repeat_metrics.accepts != repeat_before.accepts)
@@ -3204,6 +3348,9 @@ static void initialize(void *) {
 #if P4SDM_SAMPLE_PLAYBACK_STRESS
   setup_playback_fixture();
 #endif
+#if P4SDM_TRANSIENT_STRESS
+  transients::qualification_setup();
+#endif
   tone_lock_metrics = {};
   projects::initialize();
   xTaskCreatePinnedToCore(audio_worker, "app_audio", 8000, nullptr,
@@ -3356,6 +3503,14 @@ void loop() {
         unsigned(perf_state_result.fill_pending + 1), unsigned(perf_state_result.fill_active + 1),
         unsigned(perf_state_result.return_pattern + 1), unsigned(perf_state_result.return_end),
         unsigned(perf_state_result.mutes), unsigned(perf_state_result.solos), unsigned(sizeof(app::Ui)));
+    transients::Metrics tm; transients::metrics(tm);
+    summary_printf("[M19 analysis] requests=%u completed=%u cancelled=%u stale_discarded=%u frames=%u candidates=%u selected=%u proposals=%u apply=%u cancel=%u min_count=%u max_count=%u sensitivity=%u target=%u duration_max_us=%u chunk_max_us=%u\n",
+        unsigned(tm.requests), unsigned(tm.completed), unsigned(tm.cancelled), unsigned(tm.stale_discarded), unsigned(tm.frames), unsigned(tm.candidates), unsigned(tm.selected), unsigned(tm.proposals), unsigned(tm.apply), unsigned(tm.cancel), tm.apply ? unsigned(tm.min_count) : 0, unsigned(tm.max_count), tm.requests ? tm.sensitivity : 0, tm.target, unsigned(tm.duration_max), unsigned(tm.chunk_max));
+    summary_printf("[M19 overlap] blocks=%u worst=%u misses=%u x8_blocks=%u ui_interval_max_us=%u detector_bytes=%u candidate_bytes=%u proposal_bytes=%u status_bytes=%u storage_stack=7000 stack_free_min=%u\n",
+        unsigned(analysis_blocks), unsigned(analysis_worst), unsigned(analysis_misses), unsigned(analysis_x8_blocks), unsigned(analysis_ui_interval_max), unsigned(sizeof(transient::Detector)), unsigned(sizeof(transient::Candidate) * transient::Parameters::capacity), unsigned(sizeof(transient::Proposal)), unsigned(sizeof(transients::Status)), unsigned(tm.storage_stack_min));
+#if P4SDM_TRANSIENT_STRESS
+    summary_printf("[M19 timing] one_second_us=%u loop_us=%u large_us=%u chunk_max_us=%u completed=%u pcm_bytes=4194304\n", unsigned(transients::qualification_us[0]), unsigned(transients::qualification_us[1]), unsigned(transients::qualification_us[2]), unsigned(transients::qualification_chunk_max), transients::qualification_done.load());
+#endif
     summary_printf("[M18 UI] entries=%u pads=%u fills=%u toggles=%u switches=%u\n",
         perf_ui_entries.load(), perf_ui_pads.load(), perf_ui_fills.load(), perf_ui_toggles.load(), perf_ui_switches.load());
     summary_printf("[M17 UI] entries=%u edits=%u rows=%u scrolls=%u\n",

@@ -88,6 +88,9 @@ enum class Kind : uint8_t {
   PerfRepeatStart,
   PerfRepeatRate,
   PerfRepeatStop,
+  TransientAnalyze,
+  TransientApply,
+  TransientCancel,
   Count
 };
 struct Command {
@@ -663,6 +666,9 @@ struct Engine {
         t.slices.reset(t.playback);
       break;
     case Kind::SliceAudition:
+    case Kind::TransientAnalyze:
+    case Kind::TransientApply:
+    case Kind::TransientCancel:
       break;
     case Kind::SampleStart:
       if (t.sample)
@@ -1153,7 +1159,8 @@ enum class Page {
   Project,
   Chain,
   Performance,
-  PerformanceRepeat
+  PerformanceRepeat,
+  AutoSlice
 };
 struct Ui {
   bool perf_mixer = false, perf_solo = false, perf_fill = false;
@@ -1310,6 +1317,11 @@ struct Ui {
   }
 };
 inline Rect widget(int id) {
+  if (id == 210) return {632, 404, 144, 56};
+  if (id >= 211 && id <= 214) return {24 + (id - 211) * 192, 222, 176, 48};
+  if (id == 215 || id == 216) return {24 + (id - 215) * 384, 278, 368, 56};
+  if (id == 217) return {24, 342, 752, 56};
+  if (id >= 218 && id <= 220) return {24 + (id - 218) * 256, 404, 240, 56};
   if (id >= 207 && id <= 209) return {16 + (id - 207) * 256, 152, 240, 152};
   if (id == 183) return {460, 250, 300, 56};
   if (id >= 184 && id <= 199)
@@ -1357,7 +1369,7 @@ inline Rect widget(int id) {
   if (id >= 139 && id <= 142)
     return {24 + (id - 139) * 192, 342, 176, 56};
   if (id >= 143 && id <= 146)
-    return {24 + (id - 143) * 192, 404, 176, 56};
+    return {24 + (id - 143) * 152, 404, 144, 56};
 
   if (id == 123)
     return {24, 270, 752, 52};
@@ -1498,6 +1510,11 @@ inline int hit(Page p, int x, int y) {
   }
   if (p == Page::Fx && widget(153).contains(x, y))
     return 153;
+  if (p == Page::AutoSlice) {
+    for (int i = 211; i <= 220; ++i) if (widget(i).contains(x, y)) return i;
+    return -1;
+  }
+  if (p == Page::SampleSlice && widget(210).contains(x, y)) return 210;
   for (int i = p == Page::SampleSlice ? 34 : 29; i <= 35; ++i)
     if (widget(i).contains(x, y))
       return i;
