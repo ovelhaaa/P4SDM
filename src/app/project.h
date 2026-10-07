@@ -2,22 +2,28 @@
 #include "model.h"
 #include <cstring>
 namespace project {
-constexpr uint16_t version = 1, header_bytes = 24;
+constexpr uint16_t version = 2, header_bytes = 24;
 constexpr unsigned name_bytes = 32, reference_bytes = 96;
 // Memory model only. Disk fields are encoded individually below.
 struct State {
   char name[name_bytes] = "UNTITLED";
   uint16_t bpm = 120;
   uint8_t swing = 50, delay = 1, selected = 0;
+  app::PatternChain chain{};
+  app::TransportMode mode = app::TransportMode::Pattern;
   app::Track tracks[16];
   char references[16][reference_bytes]{};
   app::Pattern patterns[16];
 };
 constexpr unsigned track_bytes = 21 + 64 + reference_bytes;
 constexpr unsigned pattern_bytes = 1 + 32 + 256 * 12;
-constexpr unsigned payload_bytes =
+constexpr unsigned v1_payload_bytes =
     name_bytes + 5 + 16 * track_bytes + 16 * pattern_bytes;
+constexpr unsigned payload_bytes = v1_payload_bytes + 67;
 constexpr unsigned file_bytes = header_bytes + payload_bytes;
+inline unsigned payload_size(unsigned v) {
+  return v == 1 ? v1_payload_bytes : payload_bytes;
+}
 enum class Error { Ok, Header, Version, Future, Size, Crc, Semantic, Io };
 inline const char *message(Error e) {
   switch (e) {
@@ -122,7 +128,7 @@ struct Codec {
     pos += n;
   }
 };
-inline bool fields(Codec &c, const State &s, State *out) {
+inline bool fields(Codec &c, const State &s, State *out, unsigned v = version) {
   c.string(out ? out->name : nullptr, s.name, name_bytes, true);
   auto bpm = c.word(s.bpm, 30, 400);
   auto swing = c.byte(s.swing, 50, 75), delay = c.byte(s.delay, 0, 1),
@@ -201,7 +207,25 @@ inline bool fields(Codec &c, const State &s, State *out) {
         }
       }
   }
-  return c.valid && c.pos == payload_bytes;
+  if (v >= 2) {
+    app::PatternChain chain;
+    chain.length = c.byte(s.chain.length, 0, 32);
+    chain.loop = c.byte(s.chain.loop, 0, 1);
+    auto mode = app::TransportMode(c.byte(unsigned(s.mode), 0, 1));
+    c.valid &= chain.length || mode == app::TransportMode::Pattern;
+    for (unsigned i = 0; i < 32; ++i) {
+      chain.entries[i].pattern = c.byte(s.chain.entries[i].pattern, 0, 15);
+      chain.entries[i].repeats = c.byte(s.chain.entries[i].repeats, 1, 16);
+    }
+    if (out) {
+      out->chain = chain;
+      out->mode = mode;
+    }
+  } else if (out) {
+    out->chain = {};
+    out->mode = app::TransportMode::Pattern;
+  }
+  return c.valid && c.pos == payload_size(v);
 }
 inline bool encode(const State &s, uint32_t generation, uint8_t *bytes,
                    unsigned n) {
@@ -225,17 +249,19 @@ inline Error inspect(const uint8_t *bytes, unsigned n, const State &scratch) {
     return Error::Header;
   if (u16(bytes + 4) > version)
     return Error::Future;
-  if (u16(bytes + 4) != version)
+  if (u16(bytes + 4) < 1)
     return Error::Version;
   if (u16(bytes + 6) != header_bytes || u32(bytes + 20))
     return Error::Header;
-  if (n != file_bytes || u32(bytes + 8) != payload_bytes)
+  const unsigned payload = payload_size(u16(bytes + 4));
+  if (n != header_bytes + payload || u32(bytes + 8) != payload)
     return Error::Size;
-  if (crc32(bytes + header_bytes, payload_bytes) != u32(bytes + 16))
+  if (crc32(bytes + header_bytes, payload) != u32(bytes + 16))
     return Error::Crc;
   Codec c;
   c.read = bytes + header_bytes;
-  return fields(c, scratch, nullptr) ? Error::Ok : Error::Semantic;
+  return fields(c, scratch, nullptr, u16(bytes + 4)) ? Error::Ok
+                                                     : Error::Semantic;
 }
 inline Error decode(const uint8_t *bytes, unsigned n, State &out) {
   auto error = inspect(bytes, n, out);
@@ -243,7 +269,7 @@ inline Error decode(const uint8_t *bytes, unsigned n, State &out) {
     return error;
   Codec c;
   c.read = bytes + header_bytes;
-  fields(c, out, &out);
+  fields(c, out, &out, u16(bytes + 4));
   return Error::Ok;
 }
 inline bool newer(uint32_t a, uint32_t b) {
@@ -275,6 +301,8 @@ inline void defaults(State &s) {
   s.swing = 50;
   s.delay = 1;
   s.selected = 0;
+  s.chain = {};
+  s.mode = app::TransportMode::Pattern;
   for (auto &t : s.tracks)
     t = app::Track{};
   memset(s.references, 0, sizeof(s.references));
@@ -286,6 +314,9 @@ inline void defaults(State &s) {
   }
 }
 inline void reset_runtime(app::Engine &e, const State &s) {
+  e.chain = s.chain;
+  e.mode = s.mode;
+  e.chain_entry = e.chain_repeat = 0;
   e.playing = false;
   e.cancel_ratchets();
   e.solos = 0;
@@ -305,6 +336,8 @@ inline void reset_runtime(app::Engine &e, const State &s) {
 // may continue during snapshot; no runtime fields are copied.
 inline void snapshot_part(const app::Engine &e, State &s, unsigned part) {
   if (!part) {
+    s.chain = e.chain;
+    s.mode = e.mode;
     s.bpm = e.bpm;
     s.swing = e.swing;
     s.delay = e.delay;

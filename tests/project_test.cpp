@@ -4,21 +4,30 @@
 #include <iostream>
 #include <vector>
 static bool realtime = false;
-void *operator new(std::size_t n) {
+__attribute__((noinline)) void *operator new(std::size_t n) {
   assert(!realtime);
   if (auto p = std::malloc(n))
     return p;
   throw std::bad_alloc();
 }
 void *operator new[](std::size_t n) { return ::operator new(n); }
-void operator delete(void *p) noexcept { std::free(p); }
+__attribute__((noinline)) void operator delete(void *p) noexcept {
+  std::free(p);
+}
 void operator delete[](void *p) noexcept { std::free(p); }
-void operator delete(void *p, std::size_t) noexcept { std::free(p); }
+__attribute__((noinline)) void operator delete(void *p, std::size_t) noexcept {
+  std::free(p);
+}
 void operator delete[](void *p, std::size_t) noexcept { std::free(p); }
 using namespace project;
 void equal(const State &a, const State &b) {
   assert(!strcmp(a.name, b.name) && a.bpm == b.bpm && a.swing == b.swing &&
          a.delay == b.delay && a.selected == b.selected);
+  assert(a.mode == b.mode && a.chain.length == b.chain.length &&
+         a.chain.loop == b.chain.loop);
+  for (int i = 0; i < 32; ++i)
+    assert(a.chain.entries[i].pattern == b.chain.entries[i].pattern &&
+           a.chain.entries[i].repeats == b.chain.entries[i].repeats);
   for (int t = 0; t < 16; ++t) {
     const auto &x = a.tracks[t], &y = b.tracks[t];
     assert(x.sample == y.sample && x.muted == y.muted && x.volume == y.volume &&
@@ -68,6 +77,11 @@ int main() {
   original.swing = 75;
   original.delay = 0;
   original.selected = 15;
+  original.chain.length = 32;
+  original.chain.loop = true;
+  original.mode = app::TransportMode::Chain;
+  for (unsigned i = 0; i < 32; ++i)
+    original.chain.entries[i] = {uint8_t(i % 16), uint8_t(i % 16 + 1)};
   for (int t = 0; t < 16; ++t) {
     auto &v = original.tracks[t];
     v.sample = t % 2;
@@ -117,14 +131,14 @@ int main() {
          bytes == other);
   assert(crc32(reinterpret_cast<const uint8_t *>("123456789"), 9) ==
          0xcbf43926);
-  assert(header_bytes == 24 && payload_bytes == 52613 && file_bytes == 52637);
+  assert(header_bytes == 24 && payload_bytes == 52680 && file_bytes == 52704);
   defaults(snapshot);
   assert(encode(snapshot, 1, other.data(), other.size()));
   // Golden defaults: fixed byte positions and stable complete payload CRC.
-  assert(other[4] == 1 && other[6] == 24 &&
+  assert(other[4] == 2 && other[6] == 24 &&
          u32(other.data() + 8) == payload_bytes &&
          u16(other.data() + 24 + 32) == 120);
-  assert(u32(other.data() + 16) == 170069039u);
+  assert(u32(other.data() + 16) == 2419985824u);
   std::cout << "default_crc=" << u32(other.data() + 16)
             << " state=" << sizeof(State) << " file=" << file_bytes << '\n';
   unchanged = decoded;
@@ -146,9 +160,19 @@ int main() {
     assert(actual == expected);
     equal(decoded, unchanged);
   };
+  constexpr unsigned chain = header_bytes + v1_payload_bytes;
+  corrupt(chain, 33, Error::Semantic);
+  corrupt(chain, 0, Error::Semantic);
+  corrupt(chain + 1, 2, Error::Semantic);
+  corrupt(chain + 2, 2, Error::Semantic);
+  for (unsigned i = 0; i < 32; ++i) {
+    corrupt(chain + 3 + i * 2, 16, Error::Semantic);
+    corrupt(chain + 4 + i * 2, 0, Error::Semantic);
+    corrupt(chain + 4 + i * 2, 17, Error::Semantic);
+  }
   corrupt(0, 'X', Error::Header, false);
   corrupt(4, 0, Error::Version, false);
-  corrupt(4, 2, Error::Future, false);
+  corrupt(4, 3, Error::Future, false);
   corrupt(8, 0, Error::Size, false);
   corrupt(16, 0, Error::Crc, false);
   corrupt(20, 1, Error::Header, false);
@@ -272,7 +296,7 @@ int main() {
     assert(r.h >= 48 &&
            app::hit(app::Page::Project, r.x + r.w / 2, r.y + r.h / 2) == id);
   }
-  std::cout << "Project V1 roundtrip, CRC-correct semantic rejection, all "
+  std::cout << "Project V2 roundtrip, CRC-correct semantic rejection, all "
                "truncations, dual-slot recovery, runtime reset, UI and "
                "no-allocation boundaries PASS\n";
 }
