@@ -3,15 +3,28 @@
 namespace app {
 // Immutable accepted event; base edits reconstruct only its unlocked controls.
 inline StepLocks event_locks(const TriggerEvent &e) {
-  return {e.locked_mask, e.pitch,         e.volume,           e.pan,
-          e.wave,        e.filter_cutoff, e.filter_resonance, e.delay_send};
+  return {uint8_t(e.locked_mask & ~SLICE_LOCK),
+          e.pitch,
+          e.volume,
+          e.pan,
+          e.wave,
+          e.filter_cutoff,
+          e.filter_resonance,
+          e.delay_send};
 }
 struct VoiceState {
   TriggerEvent event{};
   uint8_t cutoff = 0, resonance = 0, delay_send = 127;
   bool applied = false;
   TriggerEvent effective(const Track &base) const {
-    return resolve_event(event.track, base, event.velocity, event_locks(event));
+    auto effective =
+        resolve_event(event.track, base, event.velocity, event_locks(event));
+    // Base edits refresh live controls, never re-resolve the accepted Slice
+    // Lock.
+    effective.playback = event.playback;
+    effective.slice = base.sample ? event.slice : 0;
+    effective.locked_mask |= base.sample ? event.locked_mask & SLICE_LOCK : 0;
+    return effective;
   }
   // Return coefficient/send changes and redundant coefficient work avoided.
   // Compare canonical pairs before mapping: the resolved 0/0 exception stays

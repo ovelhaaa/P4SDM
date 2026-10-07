@@ -27,8 +27,8 @@ static bool same(TriggerEvent a, TriggerEvent b) {
   return std::memcmp(&a, &b, sizeof(a)) == 0;
 }
 int main() {
-  static_assert(sizeof(StepLocks) == 8 && sizeof(TriggerEvent) == 20);
-  static_assert(sizeof(Pattern) == 2850);
+  static_assert(sizeof(StepLocks) == 9 && sizeof(TriggerEvent) == 20);
+  static_assert(sizeof(Pattern) == 3106);
   for (int amount = 0; amount <= 127; ++amount)
     for (int sample : {-65535, -32768, -1, 0, 1, 32767, 65535})
       assert(p4tone::resolved_delay_send(sample, uint8_t(amount)) ==

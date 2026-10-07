@@ -11,6 +11,8 @@ parser.add_argument('--normal', action='store_true')
 parser.add_argument('--sample', action='store_true', help='resident PCM: WAVE locks must remain suppressed')
 parser.add_argument('--event-bytes', type=int, default=10)
 parser.add_argument('--voice-bytes', type=int, default=224)
+parser.add_argument('--step-bytes', type=int, default=8)
+parser.add_argument('--pattern-bytes', type=int, default=2850)
 parser.add_argument('--engine-bytes', type=int, default=46592)
 args = parser.parse_args()
 data = Path(args.log).read_text(errors='replace')
@@ -21,9 +23,9 @@ def row(prefix):
     return {k: int(v) for k, v in re.findall(r'(\w+)=(\d+)', lines[0])}
 
 subprocess.run([sys.executable, 'tests/analyze_m11.py', args.log,
-                '--pattern-bytes', '2850'] + (['--normal'] if args.normal else []) + (['--sample'] if args.sample else []), check=True)
+                '--pattern-bytes', str(args.pattern_bytes)] + (['--normal'] if args.normal else []) + (['--sample'] if args.sample else []), check=True)
 locks = row('[M12 locks]')
-assert locks['step_bytes'] == 8 and locks['event_bytes'] == args.event_bytes
+assert locks['step_bytes'] == args.step_bytes and locks['event_bytes'] == args.event_bytes
 assert locks['voice_bytes'] == args.voice_bytes
 assert row('[M10 locks]')['engine_bytes'] == args.engine_bytes
 audio = row('[M5]')
