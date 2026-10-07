@@ -340,7 +340,7 @@ void draw(int id) {
     if (id >= 140)
       snprintf(s, sizeof(s), "%s", labels[id - 140]);
     color = id == 135 && inspected == bank.index() ? accent : panel;
-  } else if (id >= 123) {
+  } else if (id >= 123 && id <= 131) {
     const auto &t = view.tracks[ui.selected];
     const auto &p = t.playback;
     if (id == 123)
