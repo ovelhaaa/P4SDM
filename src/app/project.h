@@ -362,7 +362,7 @@ inline void apply_part(app::Engine &e, const State &s, unsigned part) {
     e.patterns[part - 1] = s.patterns[part - 1];
 }
 inline bool musical(app::Kind k) {
-  return !(k >= app::Kind::PerfOverride && k <= app::Kind::PerfClearMix) &&
+  return !(k >= app::Kind::PerfOverride && k <= app::Kind::PerfRepeatStop) &&
          k != app::Kind::Play && k != app::Kind::Trigger &&
          k != app::Kind::Solo && k != app::Kind::GateRelease &&
          k != app::Kind::SliceAudition && k != app::Kind::Reroll &&

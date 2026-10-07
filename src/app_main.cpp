@@ -64,12 +64,20 @@ struct ChainResult {
 std::atomic<unsigned> chain_ui_entries{0}, chain_ui_edits{0}, chain_ui_rows{0},
     chain_ui_scrolls{0};
 std::atomic<uint32_t> pattern_status{0}, pattern_switches{0}, pattern_loops{0};
-// Bounded publication: a generation guards the three payload words and ack.
+// Bounded publication: a generation guards the four payload words and ack.
 // UI never spins waiting for audio, and rejects a snapshot during an update.
-std::atomic<uint32_t> perf_generation{0}, perf_patterns{0}, perf_mix{0}, perf_ack{0}, perf_transport{0};
+std::atomic<uint32_t> perf_generation{0}, perf_patterns{0}, perf_mix{0}, perf_ack{0}, perf_transport{0}, perf_repeat{0};
 uint32_t perf_boundary_max = 0;
 app::PerformanceMetrics perf_result{};
 app::PerformanceState perf_state_result{};
+app::RepeatGate repeat_gate;
+std::atomic<bool> repeat_touch_up{true};
+app::RepeatMetrics repeat_result{};
+uint32_t repeat_worst = 0, x8_worst = 0, x8_blocks = 0,
+         x8_active_min = 16, x8_active_max = 0, x8_coefficients = 0,
+         x8_avoided = 0, x8_chokes = 0, x8_full_blocks = 0;
+uint16_t voice_sample_mask = 0;
+std::atomic<unsigned> repeat_ui_presses{0}, repeat_ui_releases{0}, repeat_ui_edits{0};
 std::atomic<unsigned> perf_ui_entries{0}, perf_ui_pads{0}, perf_ui_fills{0},
     perf_ui_toggles{0}, perf_ui_switches{0};
 uint16_t sent_commands = 0;
@@ -80,7 +88,7 @@ std::atomic<uint32_t> diagnostic_p99{0}, diagnostic_max{0},
 std::atomic<uint32_t> flashes[16];
 bool delay_ready = false;
 int sample_index = 0;
-bool dirty[207]{};
+bool dirty[210]{};
 bool full = true;
 uint32_t rejected = 0, touch_errors = 0, frames = 0, full_frames = 0;
 uint32_t actions[162]{}, drags = 0;
@@ -93,7 +101,11 @@ uint32_t tool_cell_max = 0, tool_edit_full = 0;
 uint32_t tone_ui_edits = 0, tone_ui_full = 0, tone_ui_widgets_max = 0;
 uint32_t lock_ui_edits = 0, lock_ui_full = 0, lock_ui_widgets_max = 0;
 uint32_t tone_lock_ui_edits = 0, tone_lock_ui_entries = 0;
+#if P4SDM_REPEAT_STRESS
+constexpr unsigned capture_blocks = 13782; // 80 s; repeat follows every inherited fixture.
+#else
 constexpr unsigned capture_blocks = 10337;
+#endif
 #if P4SDM_SAMPLER_QUALIFICATION
 struct QualificationMetrics {
   uint32_t times[4096]{}, count = 0, misses = 0, failures = 0, timeouts = 0;
@@ -190,9 +202,12 @@ void flush_slice_release() {
     slice_audition_release = false;
   }
 }
-void trigger(app::TriggerEvent event, bool ratchet = false) {
+void trigger(app::TriggerEvent event, bool ratchet = false, int source = -1) {
   int t = event.track;
-  if (!ratchet && event.sequenced && engine.tracks[t].sample) {
+  const bool sample = source < 0 ? engine.tracks[t].sample : source != 0;
+  const uint16_t bit = uint16_t(1u << t);
+  voice_sample_mask = uint16_t((voice_sample_mask & ~bit) | (sample ? bit : 0));
+  if (!ratchet && event.sequenced && sample) {
     auto &m = slice_lock_metrics;
     if (event.locked_mask & app::SLICE_LOCK) {
       ++m.locked;
@@ -216,7 +231,7 @@ void trigger(app::TriggerEvent event, bool ratchet = false) {
   VOL_L[t] = app::event_channel_gain(event.volume, event.pan, false);
   VOL_R[t] = app::event_channel_gain(event.volume, event.pan, true);
   synthESP32_setWave(t, event.wave);
-  if (engine.tracks[t].sample && samples::voices[t].sample) {
+  if (sample && samples::voices[t].sample) {
     PITCH[t] = 255;
     AMP[t] = 0;
     const bool played = sampler::trigger_voice(
@@ -234,13 +249,15 @@ void trigger(app::TriggerEvent event, bool ratchet = false) {
       slice_metrics.max_frames =
           std::max(slice_metrics.max_frames, r.end - r.start);
     }
-  } else if (!engine.tracks[t].sample)
+  } else if (!sample)
     synthESP32_TRIGGER_P(t, event.pitch);
   flashes[t].fetch_add(1, std::memory_order_relaxed);
 }
 void trigger(int t) { trigger(app::resolve_event(t, engine.tracks[t], 127)); }
 void update_track(int t) {
   auto &v = engine.tracks[t];
+  const uint16_t bit = uint16_t(1u << t);
+  voice_sample_mask = uint16_t((voice_sample_mask & ~bit) | (v.sample ? bit : 0));
   ROTvalue[t][14] = v.volume;
   ROTvalue[t][13] = v.pan;
   ROTvalue[t][12] = v.pitch;
@@ -324,14 +341,29 @@ void draw_waveform() {
       std::max(waveform_redraw_max, uint32_t(esp_timer_get_time() - started));
 }
 void draw(int id) {
-  if (id >= 183 && id <= 206) {
+  if (id >= 183 && id <= 209) {
     auto r = app::widget(id);
     char line[96]{};
     const auto &p = view.performance;
     uint16_t color = white;
-    if (id == 206) strlcpy(line, view.playing ? "STOP" : "PLAY", sizeof(line));
+    if (id >= 207) {
+      const unsigned rate = 2u << (id - 207);
+      const auto &rpt = p.repeat;
+      snprintf(line, sizeof(line), "x%u (1/%u)%s", rate, rate,
+          rpt.active == rate ? (rpt.requested ? " ACTIVE" : " RELEASE") : rpt.requested == rate ? " PENDING" : " HOLD");
+      color = rpt.active == rate ? accent : rpt.requested == rate ? 0xffe0 : white;
+    } else if (id == 206) strlcpy(line, view.playing ? "STOP" : "PLAY", sizeof(line));
     else if (id == 183) strlcpy(line, "PERFORMANCE", sizeof(line));
     else if (id == 205) {
+      if (ui.page == app::Page::PerformanceRepeat) {
+        const auto &rpt = p.repeat;
+        snprintf(line, sizeof(line), "%s E%02u REP%u STEP%02d P%02d REPEAT x%u %s%s",
+            view.mode == app::TransportMode::Chain ? "CHAIN" : "PATTERN", view.chain_entry + 1,
+            view.chain_repeat + 1, view.step + 1, view.playing_pattern + 1,
+            rpt.active ? rpt.active : rpt.requested,
+            rpt.active ? (rpt.requested ? "ACTIVE" : "RELEASE") : rpt.requested ? "PENDING" : "OFF",
+            rpt.active && !rpt.capture.count ? " EMPTY" : "");
+      } else {
       const int arrangement = p.owns() ? p.return_pattern : view.playing_pattern;
       if (view.mode == app::TransportMode::Chain)
         snprintf(line, sizeof(line), "CHAIN E%02u %u/%u ARR P%02d  HEAR P%02d%s",
@@ -340,6 +372,7 @@ void draw(int id) {
                  arrangement + 1, view.playing_pattern + 1, p.return_end ? " END" : "");
       else snprintf(line, sizeof(line), "PATTERN ARR P%02d  HEAR P%02d  EDIT P%02d",
                     arrangement + 1, view.playing_pattern + 1, view.selected_pattern + 1);
+      }
     } else if (id <= 199) {
       const int n = id - 184;
       if (ui.perf_mixer) {
@@ -359,8 +392,8 @@ void draw(int id) {
         color = p.fill_active == n ? 0xffe0 : p.override_active == n ? accent : white;
       }
     } else {
-      const char *labels[] = {ui.perf_mixer ? "PATTERNS" : "MIXER",
-          ui.perf_mixer ? (ui.perf_solo ? "SOLO" : "MUTE") : (ui.perf_fill ? "FILL NEXT" : "OVERRIDE"),
+      const char *labels[] = {ui.page == app::Page::PerformanceRepeat ? "PATTERNS" : ui.perf_mixer ? "REPEAT" : "MIXER",
+          ui.page == app::Page::PerformanceRepeat ? "HOLD" : ui.perf_mixer ? (ui.perf_solo ? "SOLO" : "MUTE") : (ui.perf_fill ? "FILL NEXT" : "OVERRIDE"),
           ui.perf_mixer ? "CLEAR MIX" : "CANCEL O", "CANCEL F", "BACK"};
       strlcpy(line, labels[id-200], sizeof(line));
     }
@@ -846,8 +879,8 @@ void tempo_header() {
 void header() {
   char s[32];
   display::rect(0, 0, 800, 80, bg);
-  if (ui.page == app::Page::Performance)
-    snprintf(s, sizeof(s), "PERF %s", ui.perf_mixer ? "MIX" : "PATS");
+  if (ui.page == app::Page::Performance || ui.page == app::Page::PerformanceRepeat)
+    snprintf(s, sizeof(s), "PERF %s", ui.page == app::Page::PerformanceRepeat ? "REPEAT" : ui.perf_mixer ? "MIX" : "PATS");
   else snprintf(s, sizeof(s), "P4SDM T%02d", ui.selected + 1);
   display::text(16, 24, s, white, 2);
   draw(44);
@@ -861,15 +894,27 @@ void interact(int id, int x, bool initial) {
     full = true;
     return;
   }
-  if (ui.page == app::Page::Performance && id >= 184 && id <= 206 && id != 205) {
+  if (ui.page == app::Page::PerformanceRepeat && id >= 207 && id <= 209) {
+    if (initial && repeat_gate.press(2u << (id - 207), [](app::Command c) { return send(c); }))
+      repeat_ui_presses.fetch_add(1);
+    for (int i = 207; i <= 209; ++i) dirty[i] = true;
+    dirty[205] = true;
+    return;
+  }
+  if ((ui.page == app::Page::Performance || ui.page == app::Page::PerformanceRepeat) && id >= 184 && id <= 206 && id != 205) {
     if (!initial || projects::locked()) return;
     if (id == 206) { send({app::Kind::Play, 0, !view.playing}); ui.perf_fill = false; }
     else if (id == 204) { ui.page = app::Page::Fx; ui.perf_fill = false; full = true; return; }
     else if (id == 200) {
-      ui.perf_mixer = !ui.perf_mixer; ui.perf_fill = false;
+      if (ui.page == app::Page::PerformanceRepeat) {
+        ui.page = app::Page::Performance; ui.perf_mixer = false;
+      } else if (ui.perf_mixer) ui.page = app::Page::PerformanceRepeat;
+      else ui.perf_mixer = true;
+      ui.perf_fill = false;
       full = true;
       perf_ui_switches.fetch_add(1);
     } else if (id == 201) {
+      if (ui.page == app::Page::PerformanceRepeat) return;
       if (ui.perf_mixer) ui.perf_solo = !ui.perf_solo;
       else ui.perf_fill = !ui.perf_fill;
     } else if (id == 202) send({ui.perf_mixer ? app::Kind::PerfClearMix : app::Kind::PerfOverrideCancel, 0, 0});
@@ -1560,6 +1605,7 @@ void ui_task(void *) {
       ui.chain_row = ui.chain_scroll = 0;
       ui.chain_clear_pending = false;
       ui.perf_fill = false;
+      repeat_gate.release([](app::Command c) { return send(c); });
       sent_commands = uint16_t(pattern_status.load() >> 16);
       projects::view_ready.store(true, std::memory_order_release);
       full = true;
@@ -1626,6 +1672,20 @@ void ui_task(void *) {
       }
     }
 #endif
+#if P4SDM_REPEAT_STRESS
+    static bool repeat_view = false;
+    if (!repeat_view && millis() - started > 60000 && !projects::busy()) {
+      ui.page = app::Page::PerformanceRepeat;
+      full = true;
+      repeat_view = true;
+      // Exercise the actual bounded momentary owner/cancel-before-onset path.
+      if (repeat_gate.press(2, [](app::Command c) { return send(c); })) {
+        repeat_ui_presses.fetch_add(1);
+        repeat_gate.release([](app::Command c) { return send(c); });
+        repeat_ui_releases.fetch_add(1);
+      }
+    }
+#endif
 #if P4SDM_PROJECT_STRESS
     static unsigned project_runs = 0;
     if (millis() - started > 22000 + project_runs * 12000 && project_runs < 3 &&
@@ -1689,6 +1749,9 @@ void ui_task(void *) {
             dirty[16 + t % 8] = true;
         }
     }
+#if P4SDM_REPEAT_STRESS
+    if (millis() - started < 60000) { // Preserve the full legacy run before isolated Repeat measurement.
+#endif
 #if P4SDM_APP_STRESS
 #if P4SDM_SAMPLE_PLAYBACK_STRESS
     static uint32_t playback_due = 0;
@@ -2016,7 +2079,11 @@ void ui_task(void *) {
       }
     }
 #endif
+#if P4SDM_REPEAT_STRESS
+    }
+#endif
     flush_slice_release();
+    repeat_gate.flush([](app::Command c) { return send(c); });
     app::Command event;
     while (input_events.pop(event)) {
       touch_state.pressed = event.kind != app::Kind::Play;
@@ -2043,9 +2110,18 @@ void ui_task(void *) {
         slice_audition_release = true;
         flush_slice_release();
       }
+      if (!touch_state.pressed && repeat_gate.held) {
+        repeat_gate.release([](app::Command c) { return send(c); });
+        repeat_ui_releases.fetch_add(1);
+      }
       ui.down = touch_state.pressed;
       if (!ui.down)
         ui.capture = -1;
+    }
+    // Independent physical publication survives an overflowing input queue.
+    if (repeat_gate.held && repeat_touch_up.load(std::memory_order_acquire)) {
+      repeat_gate.release([](app::Command c) { return send(c); });
+      repeat_ui_releases.fetch_add(1);
     }
     touch_errors = input_errors.load(std::memory_order_relaxed);
     const uint32_t pg = perf_generation.load(std::memory_order_acquire);
@@ -2053,6 +2129,7 @@ void ui_task(void *) {
     const uint32_t pm = perf_mix.load(std::memory_order_relaxed);
     const uint32_t pa = perf_ack.load(std::memory_order_relaxed);
     const uint32_t pt = perf_transport.load(std::memory_order_relaxed);
+    const uint32_t pr = perf_repeat.load(std::memory_order_relaxed);
     std::atomic_thread_fence(std::memory_order_acquire);
     const bool perf_coherent = !(pg & 1) && pg == perf_generation.load(std::memory_order_acquire) && pa == sent_commands;
     if (perf_coherent) {
@@ -2065,9 +2142,27 @@ void ui_task(void *) {
       next.return_end = pp & (1u << 25);
       next.mutes = pm & 65535;
       next.solos = pm >> 16;
-      if (memcmp(&next, &view.performance, sizeof(next))) {
+      next.repeat.requested = pr & 15;
+      next.repeat.active = (pr >> 4) & 15;
+      next.repeat.next = (pr >> 8) & 15;
+      next.repeat.capture.count = (pr >> 12) & 31;
+      if (ui.page == app::Page::PerformanceRepeat &&
+          (next.repeat.requested != view.performance.repeat.requested ||
+           next.repeat.active != view.performance.repeat.active ||
+           next.repeat.capture.count != view.performance.repeat.capture.count)) {
+        for (int i = 207; i <= 209; ++i) dirty[i] = true;
+        dirty[205] = true;
+        repeat_ui_edits.fetch_add(1);
+      }
+      const auto &old = view.performance;
+      const bool perf_changed = next.mutes != old.mutes || next.solos != old.solos ||
+          next.override_target != old.override_target || next.override_active != old.override_active ||
+          next.fill_pending != old.fill_pending || next.fill_active != old.fill_active ||
+          next.return_pattern != old.return_pattern || next.return_end != old.return_end;
+      if (perf_changed || next.repeat.requested != old.repeat.requested || next.repeat.active != old.repeat.active ||
+          next.repeat.capture.count != old.repeat.capture.count) {
         view.performance = next;
-        if (ui.page == app::Page::Performance)
+        if (perf_changed && ui.page == app::Page::Performance)
           for (int i = 184; i <= 206; ++i) dirty[i] = true;
       }
     }
@@ -2091,6 +2186,10 @@ void ui_task(void *) {
         view.mode = app::TransportMode((cs >> 11) & 1);
         view.playing = cs & (1u << 12);
         dirty[29] = true;
+      }
+      if (view.step != int((pt >> 22) & 31) - 1) {
+        view.step = int((pt >> 22) & 31) - 1;
+        if (ui.page == app::Page::PerformanceRepeat) dirty[205] = true;
       }
       int playing = status & 15, queued = int((status >> 4) & 31) - 1;
       if (playing != view.playing_pattern || queued != view.queued_pattern) {
@@ -2206,6 +2305,11 @@ void ui_task(void *) {
             draw(i);
           draw(123);
           sample_status();
+        } else if (ui.page == app::Page::PerformanceRepeat) {
+          display::text(16, 328, "PRESS AND HOLD / RELEASE FINISHES THE WINDOW", white, 2);
+          display::text(16, 356, "ACCEPTED STEP EVENTS / NO AUDIO BUFFER", white, 1);
+          for (int i = 207; i <= 209; ++i) draw(i);
+          for (int i = 200; i <= 206; ++i) draw(i);
         } else if (ui.page == app::Page::Performance) {
           display::text(16, 464, ui.perf_mixer ? "B=BASE MUTE S=BASE SOLO M=PERF MUTE +S=PERF SOLO" : "E=EDITOR A=ARRANGEMENT O=OVERRIDE F=FILL ?=TARGET  BORDER=AUDIBLE", white, 1);
           for (int i = 184; i <= 206; ++i) draw(i);
@@ -2228,7 +2332,7 @@ void ui_task(void *) {
           draw(162);
           draw(183);
         }
-        if (ui.page != app::Page::SampleSlice && ui.page != app::Page::Project && ui.page != app::Page::Performance)
+        if (ui.page != app::Page::SampleSlice && ui.page != app::Page::Project && ui.page != app::Page::Performance && ui.page != app::Page::PerformanceRepeat)
           for (int i = 29; i < (ui.page == app::Page::Chain ? 30 : 34); ++i)
             draw(i);
         ++full_frames;
@@ -2244,9 +2348,10 @@ void ui_task(void *) {
           snprintf(title, sizeof(title), "P4SDM T%02d", ui.selected + 1);
           display::text(16, 24, title, white, 2);
         }
-        for (int i = 0; i < 207; ++i)
+        for (int i = 0; i < 210; ++i)
           if (dirty[i] &&
-              (((i >= 184 && i <= 206 && ui.page == app::Page::Performance) ||
+              (((i >= 200 && i <= 209 && ui.page == app::Page::PerformanceRepeat) ||
+                (i >= 184 && i <= 206 && ui.page == app::Page::Performance) ||
                 (i >= 163 && i <= 182 && ui.page == app::Page::Chain) ||
                 (i >= 132 && i <= 147 && ui.page == app::Page::SampleSlice) ||
                 (i >= 124 && i <= 131 &&
@@ -2257,7 +2362,7 @@ void ui_task(void *) {
                (i < 24 && ui.page == app::Page::Sequence) ||
                (i >= 24 && i < 29 && ui.page == app::Page::Track) ||
                (i >= 29 && i < (ui.page == app::Page::Chain ? 30 : 34) &&
-                ui.page != app::Page::SampleSlice && ui.page != app::Page::Performance) ||
+                ui.page != app::Page::SampleSlice && ui.page != app::Page::Performance && ui.page != app::Page::PerformanceRepeat) ||
                (i == 36 && ui.page == app::Page::Fx) ||
                ((i == 37 || i == 42 || i == 43) &&
                 ui.page == app::Page::Track) ||
@@ -2414,6 +2519,7 @@ void touch_worker(void *) {
     if (touch::poll(state) != ESP_OK)
       input_errors.fetch_add(1);
     else {
+      repeat_touch_up.store(!state.pressed, std::memory_order_release);
       if (state.pressed != down ||
           (state.pressed && (state.x != x || state.y != y))) {
         if (state.pressed && !down && visible_page.load() == 0 &&
@@ -2528,6 +2634,7 @@ void audio_worker(void *) {
       unsigned t = unsigned(sample_track);
       if (!projects::restoring.load())
         engine.tracks[t].assigned();
+      voice_sample_mask |= uint16_t(1u << t);
       projects::assigned(t, samples::voices[t].sample->name);
       PITCH[t] = 255;
       AMP[t] = 0;
@@ -2535,6 +2642,66 @@ void audio_worker(void *) {
       voice_state[t].event = {};
       apply_active_voice_tone(t);
     }
+#if P4SDM_REPEAT_STRESS
+    static unsigned repeat_stage = 0;
+    const unsigned repeat_block = captured.load(std::memory_order_relaxed);
+    if (repeat_stage == 0 && repeat_block >= 11000 && !projects::busy()) {
+      engine.apply({app::Kind::Play, 0, 0});
+      engine.apply({app::Kind::ChainMode, 0, 0});
+      engine.selected_pattern = engine.playing_pattern = 15;
+      engine.apply({app::Kind::Play, 0, 1});
+      engine.apply({app::Kind::PerfRepeatStart, 0, 2});
+      engine.apply({app::Kind::PerfRepeatStop, 0, 0});
+      engine.bpm = 240;
+      engine.swing = 50;
+      engine.delay = true;
+      is_delay = delay_ready;
+      delays = is_delay ? 0xffff : 0;
+      auto &pattern = engine.patterns[15];
+      pattern = {};
+      pattern.length = 1;
+      for (unsigned t = 0; t < 16; ++t) {
+        pattern.track_steps[t] = 1;
+        pattern.meta[t][0] = {100, 100, 4};
+        pattern.locks[t][0] = {255, 60, 60, int8_t(int(t)*8-60), uint8_t(t), 64, 40, 127, uint8_t(t)};
+        auto &track = engine.tracks[t];
+        track.muted = false;
+        track.playback = {};
+        track.playback.mode = t % 2 ? sampler::Mode::Gate : sampler::Mode::OneShot;
+        track.slices.divide(track.playback, 16);
+        track.slice_enabled = true;
+      }
+      engine.solos = 0;
+      engine.apply({app::Kind::PerfClearMix, 0, 0});
+      engine.apply({app::Kind::PerfOverride, 0, 15});
+      ++repeat_stage;
+    }
+    if (repeat_stage == 1 && engine.playing_pattern == 15 && engine.performance.override_active == 15) {
+      engine.apply({app::Kind::PerfRepeatStart, 0, 8});
+      ++repeat_stage;
+    }
+    if (repeat_stage == 2 && repeat_block >= 11650) {
+      engine.apply({app::Kind::PerfRepeatRate, 0, 2}); ++repeat_stage;
+    }
+    if (repeat_stage == 3 && repeat_block >= 11736) {
+      engine.apply({app::Kind::PerfRepeatRate, 0, 4}); ++repeat_stage;
+    }
+    if (repeat_stage == 4 && repeat_block >= 11780) {
+      engine.apply({app::Kind::PerfMute, 0, 1});
+      engine.apply({app::Kind::PerfSolo, 1, 1}); ++repeat_stage;
+    }
+    if (repeat_stage == 5 && repeat_block >= 11782) {
+      engine.apply({app::Kind::PerfClearMix, 0, 0});
+      engine.apply({app::Kind::PerfFill, 0, 15}); ++repeat_stage;
+    }
+    if (repeat_stage == 6 && repeat_block >= 11822) {
+      engine.apply({app::Kind::PerfRepeatRate, 0, 8}); ++repeat_stage;
+    }
+    if (repeat_stage == 7 && repeat_block >= 12250) {
+      engine.apply({app::Kind::PerfRepeatStop, 0, 0});
+      engine.apply({app::Kind::PerfOverrideCancel, 0, 0}); ++repeat_stage;
+    }
+#endif
     app::Command c;
     static uint16_t applied_commands = 0;
     bool transformed = false, tone_edited = false, tone_lock_edited = false,
@@ -2576,6 +2743,8 @@ void audio_worker(void *) {
       ++applied_commands;
       applied_actions[unsigned(c.kind)].fetch_add(1, std::memory_order_relaxed);
       if (c.kind == app::Kind::Source) {
+        const uint16_t bit = uint16_t(1u << c.track);
+        voice_sample_mask = uint16_t((voice_sample_mask & ~bit) | (engine.tracks[c.track].sample ? bit : 0));
         voice_state[c.track].event = {};
         apply_active_voice_tone(c.track);
         samples::voices[c.track].stop();
@@ -2625,10 +2794,30 @@ void audio_worker(void *) {
     const unsigned chain_wraps_before =
         engine.chain_advances + engine.chain_repeats;
     const unsigned perf_before = engine.perf_metrics.boundaries;
+    const auto repeat_before = engine.repeat_metrics;
+    const unsigned avoided_before = tone_lock_metrics.avoided;
+    const bool repeat_active_before = engine.performance.repeat.active != 0;
+    const bool x8_before = engine.performance.repeat.active == 8;
     render_buffer();
     auto us = uint32_t(esp_timer_get_time() - start);
     if (engine.chain_advances + engine.chain_repeats != chain_wraps_before)
       chain_boundary_max = std::max(chain_boundary_max, us);
+    if (repeat_active_before || engine.performance.repeat.active || engine.repeat_metrics.accepts != repeat_before.accepts)
+      repeat_worst = std::max(repeat_worst, us);
+    const bool x8_block = x8_before || engine.performance.repeat.active == 8 || engine.repeat_metrics.x8_hits != repeat_before.x8_hits;
+    if (x8_block && captured.load(std::memory_order_relaxed) < capture_blocks) {
+      x8_worst = std::max(x8_worst, us);
+      ++x8_blocks;
+      bool full_repeat = engine.bpm == 240 && is_delay && delays == 0xffff &&
+          engine.performance.repeat.capture.count == 16;
+      for (unsigned i = 0; i < engine.performance.repeat.capture.count && full_repeat; ++i)
+        full_repeat = engine.performance.repeat.capture.events[i].locked_mask ==
+            ((engine.performance.repeat.capture.samples & (1u << engine.performance.repeat.capture.events[i].track)) ? 0xf7 : 0x7f);
+      x8_full_blocks += full_repeat;
+      x8_coefficients += tone_lock_metrics.coefficients - coefficients_before;
+      x8_avoided += tone_lock_metrics.avoided - avoided_before;
+      x8_chokes += playback_metrics.choke_ops - choke_before;
+    }
     if (engine.perf_metrics.boundaries != perf_before)
       perf_boundary_max = std::max(perf_boundary_max, us);
     if (project_phase)
@@ -2663,6 +2852,7 @@ void audio_worker(void *) {
                         engine.chain_stops,      engine.chain_switches,
                         engine.chain_min_length, engine.chain_max_length,
                         chain_boundary_max,      chain_seen};
+        repeat_result = engine.repeat_metrics;
         perf_result = engine.perf_metrics;
         perf_state_result = engine.performance;
         playback_result = playback_metrics;
@@ -2711,6 +2901,7 @@ void audio_worker(void *) {
         dense_sample_min = std::min(dense_sample_min, sample_active);
         ++dense_sample_blocks;
       }
+      if (x8_block) { x8_active_min = std::min(x8_active_min, uint32_t(active)); x8_active_max = std::max(x8_active_max, uint32_t(active)); }
       active_min = std::min(active_min, active);
       active_max = std::max(active_max, active);
       render_times[b] = us;
@@ -2764,7 +2955,10 @@ void audio_worker(void *) {
     perf_mix.store(unsigned(p.mutes) | (unsigned(p.solos) << 16), std::memory_order_relaxed);
     perf_transport.store(unsigned(engine.chain_entry) | (unsigned(engine.chain_repeat) << 6) |
         (unsigned(engine.mode) << 11) | (unsigned(engine.playing) << 12) |
-        (unsigned(engine.playing_pattern) << 13) | (unsigned(engine.queued_pattern + 1) << 17), std::memory_order_relaxed);
+        (unsigned(engine.playing_pattern) << 13) | (unsigned(engine.queued_pattern + 1) << 17) | (unsigned(engine.step + 1) << 22), std::memory_order_relaxed);
+    const auto &rpt = p.repeat;
+    perf_repeat.store(unsigned(rpt.requested) | (unsigned(rpt.active) << 4) | (unsigned(rpt.next) << 8) |
+        (unsigned(rpt.capture.count) << 12), std::memory_order_relaxed);
     perf_ack.store(applied_commands, std::memory_order_relaxed);
     perf_generation.fetch_add(1, std::memory_order_release);
     chain_status.store(
@@ -2820,7 +3014,7 @@ void audio_worker(void *) {
 }
 } // namespace
 static bool app_pcm(int t, int16_t &v) {
-  if (!engine.tracks[t].sample)
+  if (!(voice_sample_mask & (1u << t)))
     return false;
   auto &voice = samples::voices[t];
   const bool natural = voice.active && !voice.releasing;
@@ -2833,7 +3027,7 @@ static int16_t app_velocity(int t, int16_t v) {
 }
 static void app_sample() {
   engine.sample(
-      [](app::TriggerEvent event, bool ratchet) { trigger(event, ratchet); },
+      [](app::TriggerEvent event, bool ratchet, bool sample) { trigger(event, ratchet, sample); },
       [](int t) {
         auto &v = samples::voices[t];
         if (v.sequenced)
@@ -3146,7 +3340,17 @@ void loop() {
         perf_result.fill_accepts, perf_result.fill_completions, perf_result.fill_to_override,
         perf_result.fill_to_arrangement, perf_result.mute_edits, perf_result.solo_edits,
         perf_result.boundaries, perf_boundary_max, unsigned(sizeof(app::PerformanceState)),
-        unsigned(sizeof(app::Engine)), 20u);
+        unsigned(sizeof(app::Engine)), 24u);
+    summary_printf("[M181 repeat] requests=%u accepts=%u cancelled=%u x2_windows=%u x4_windows=%u x8_windows=%u hits=%u x8_hits=%u changes=%u releases=%u empty=%u captured_max=%u suppressed=%u worst=%u capture_bytes=%u repeat_bytes=%u\n",
+        repeat_result.requests, repeat_result.accepts, repeat_result.cancelled, repeat_result.windows[0],
+        repeat_result.windows[1], repeat_result.windows[2], repeat_result.hits, repeat_result.x8_hits,
+        repeat_result.changes, repeat_result.releases, repeat_result.empty, repeat_result.captured_max,
+        repeat_result.suppressed, repeat_worst, unsigned(sizeof(app::RepeatCapture)), unsigned(sizeof(app::RepeatState)));
+    summary_printf("[M181 x8] blocks=%u worst=%u active_min=%u active_max=%u coefficients=%u avoided=%u chokes=%u full_blocks=%u\n",
+        x8_blocks, x8_worst, x8_blocks ? x8_active_min : 0, x8_active_max, x8_coefficients, x8_avoided, x8_chokes, x8_full_blocks);
+    summary_printf("[M181 runtime] requested=%u active=%u count=%u ui_presses=%u ui_releases=%u ui_edits=%u\n",
+        unsigned(perf_state_result.repeat.requested), unsigned(perf_state_result.repeat.active),
+        unsigned(perf_state_result.repeat.capture.count), repeat_ui_presses.load(), repeat_ui_releases.load(), repeat_ui_edits.load());
     summary_printf("[M18 runtime] override_target=%u override_active=%u fill_pending=%u fill_active=%u return_pattern=%u return_end=%u mutes=%u solos=%u ui_bytes=%u\n",
         unsigned(perf_state_result.override_target + 1), unsigned(perf_state_result.override_active + 1),
         unsigned(perf_state_result.fill_pending + 1), unsigned(perf_state_result.fill_active + 1),

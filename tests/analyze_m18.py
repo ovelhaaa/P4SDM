@@ -7,6 +7,9 @@ from pathlib import Path
 p = argparse.ArgumentParser()
 p.add_argument('log')
 p.add_argument('--normal', action='store_true')
+p.add_argument('--engine-bytes', type=int, default=52224)
+p.add_argument('--state-bytes', type=int, default=10)
+p.add_argument('--publication-bytes', type=int, default=20)
 p.add_argument('--synth', action='store_true')
 a = p.parse_args()
 data = Path(a.log).read_text(errors='replace')
@@ -18,7 +21,7 @@ m = metrics('[M18 performance]')
 u = metrics('[M18 UI]')
 r = metrics('[M18 runtime]')
 assert all(v == 0 for k,v in r.items() if k != 'ui_bytes'), r
-assert m['state_bytes'] == 10 and m['engine_bytes'] == 52224 and m['publication_bytes'] == 20
+assert m['state_bytes'] == a.state_bytes and m['engine_bytes'] == a.engine_bytes and m['publication_bytes'] == a.publication_bytes
 subprocess.run([sys.executable, 'tests/analyze_m17.py', a.log, '--engine-bytes', str(m['engine_bytes'])] + (['--normal'] if a.normal else []) + (['--synth'] if a.synth else []), check=True)
 keys = ('override_requests','override_accepts','override_loops','override_cancels','returns','fill_requests','fill_accepts','fill_completions','fill_to_override','fill_to_arrangement','mute_edits','solo_edits','boundaries','boundary_max')
 if a.normal:

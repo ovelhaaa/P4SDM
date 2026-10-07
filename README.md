@@ -564,4 +564,27 @@ See [M18 qualification](docs/GUITION_M18.md) for exact semantics, allocation
 checks, actual M17 equivalence/V2-byte proof, genuine SAMPLE/SYNTH/NORMAL
 measurements and memory. **PHYSICAL V2 PROJECT MIGRATION / CHAIN PERSISTENCE
 PENDING**; manual touch usability and audible listening remain pending.
-Work stops at M18. Beat Repeat, stutter, scenes, macros and MIDI are out of scope.
+M18.1 extends this page with the Repeat controls below.
+
+## M18.1 Step Repeat
+
+Cycle PERFORMANCE -> MIXER -> REPEAT. Hold x2, x4 or x8 to capture the next
+sixteenth step's accepted parent events. Each rate divides that exact swung
+sixteenth into 2, 4 or 8 hits; it replaces the step's original ratchets.
+The first parent is hit zero, then immutable resolved events retrigger through
+the existing SAMPLE/SYNTH path. Empty captures stay silent.
+
+Pattern/Chain/Fill/Override progression and probability RNG freeze while held.
+Release finishes the current window and resumes at the following normal step.
+Rate commands take effect at the next window. Runtime mute/solo overlays gate
+future sub-hits without changing the capture. Manual pads remain independent.
+Pending, active, release, rate and the frozen Pattern/Chain step appear in the
+status row. Physical release ownership survives finger drift or page changes;
+a full command queue retries Stop, and independent touch-up publication covers
+a lost release event.
+
+STOP, LOAD and NEW clear Repeat; SAVE ignores it, so project V2 bytes and project
+dirty state remain unchanged. See [M18.1 qualification](docs/GUITION_M181.md)
+for timing, tests, hardware metrics and limitations. Work stops at M18.1;
+audio-buffer stutter, triplets, reverse, pitch effects, scenes and macros remain
+out of scope.
