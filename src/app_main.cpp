@@ -55,6 +55,14 @@ app::Ui ui;
 std::atomic<int> playhead{-1};
 // Acknowledged command count and pattern transport published together. UI only
 // accepts snapshots after all its optimistic edits have reached audio.
+std::atomic<uint32_t> chain_status{0};
+uint32_t chain_boundary_max = 0, chain_seen = 0;
+struct ChainResult {
+  uint32_t starts, advances, repeats, loops, stops, switches, min_length,
+      max_length, boundary_max, seen;
+} chain_result{};
+std::atomic<unsigned> chain_ui_entries{0}, chain_ui_edits{0}, chain_ui_rows{0},
+    chain_ui_scrolls{0};
 std::atomic<uint32_t> pattern_status{0}, pattern_switches{0}, pattern_loops{0};
 uint16_t sent_commands = 0;
 std::atomic<uint32_t> applied_actions[unsigned(app::Kind::Count)]{},
@@ -64,7 +72,7 @@ std::atomic<uint32_t> diagnostic_p99{0}, diagnostic_max{0},
 std::atomic<uint32_t> flashes[16];
 bool delay_ready = false;
 int sample_index = 0;
-bool dirty[162]{};
+bool dirty[183]{};
 bool full = true;
 uint32_t rejected = 0, touch_errors = 0, frames = 0, full_frames = 0;
 uint32_t actions[162]{}, drags = 0;
@@ -308,6 +316,50 @@ void draw_waveform() {
       std::max(waveform_redraw_max, uint32_t(esp_timer_get_time() - started));
 }
 void draw(int id) {
+  if (id >= 162 && id <= 182) {
+    auto r = app::widget(id);
+    char line[80]{};
+    if (id == 162)
+      strlcpy(line, "CHAIN", sizeof(line));
+    else if (id <= 168) {
+      int row = ui.chain_scroll + id - 163;
+      if (row < view.chain.length) {
+        const auto &entry = view.chain.entries[row];
+        snprintf(line, sizeof(line), "%s%s%02d P%02d x%02d",
+                 row == ui.chain_row ? ">" : " ",
+                 view.playing && view.mode == app::TransportMode::Chain &&
+                         row == view.chain_entry
+                     ? "*"
+                     : " ",
+                 row + 1, entry.pattern + 1, entry.repeats);
+      }
+    } else {
+      const char *labels[] = {"UP",    "DOWN",  "ADD",   "DELETE", "PAT -",
+                              "PAT +", "REP -", "REP +", "LOOP",   "MODE",
+                              "CLEAR", "BACK",  "CANCEL"};
+      if (id == 179 && ui.chain_clear_pending)
+        strlcpy(line, "CONFIRM", sizeof(line));
+      else if (id == 177)
+        snprintf(line, sizeof(line), "LOOP %s", view.chain.loop ? "ON" : "OFF");
+      else if (id == 178)
+        snprintf(line, sizeof(line), "%s",
+                 view.playing                             ? "STOP FIRST"
+                 : view.mode == app::TransportMode::Chain ? "CHAIN"
+                                                          : "PATTERN");
+      else if (id == 182)
+        snprintf(line, sizeof(line), "MODE %s  %u/%u",
+                 view.mode == app::TransportMode::Chain ? "CHAIN" : "PATTERN",
+                 unsigned(view.chain_repeat + 1),
+                 view.chain_entry < view.chain.length
+                     ? unsigned(view.chain.entries[view.chain_entry].repeats)
+                     : 0);
+      else
+        strlcpy(line, labels[id - 169], sizeof(line));
+    }
+    display::rect(r.x, r.y, r.w, r.h, panel);
+    display::text(r.x + 6, r.y + 12, line, white, id == 182 ? 1 : 2);
+    return;
+  }
   if (id >= 153 && id <= 161) {
     char text[128]{};
     const auto r = app::widget(id);
@@ -591,8 +643,9 @@ void draw(int id) {
                view.playing_pattern + 1, view.queued_pattern + 1,
                view.selected_pattern + 1);
     else
-      snprintf(s, sizeof(s), "P%02d / EDIT %02d / PATTERN",
-               view.playing_pattern + 1, view.selected_pattern + 1);
+      snprintf(s, sizeof(s), "P%02d / EDIT %02d / %s", view.playing_pattern + 1,
+               view.selected_pattern + 1,
+               view.mode == app::TransportMode::Chain ? "CHAIN" : "PATTERN");
   } else if (id == 43) {
     char title[40];
     display::rect(24, 90, 216, 60, bg);
@@ -733,6 +786,100 @@ void header() {
   tempo_header();
 }
 void interact(int id, int x, bool initial) {
+  if (id == 162 && initial) {
+    chain_ui_entries.fetch_add(1);
+    ui.page = app::Page::Chain;
+    ui.chain_clear_pending = false;
+    full = true;
+    return;
+  }
+  if (ui.page == app::Page::Chain && id >= 163 && id <= 182) {
+    if (!initial || projects::locked())
+      return;
+    if (id == 180) {
+      ui.page = app::Page::Fx;
+      ui.chain_clear_pending = false;
+      full = true;
+      return;
+    }
+    if (id == 181) {
+      ui.chain_clear_pending = false;
+      dirty[179] = true;
+      return;
+    }
+    if (id != 179 && id != 181) {
+      ui.chain_clear_pending = false;
+      dirty[179] = true;
+    }
+    const int old_row = ui.chain_row, old_scroll = ui.chain_scroll;
+    app::Command c{app::Kind::Count, 0, 0};
+    c.step = uint8_t(ui.chain_row);
+    if (id >= 163 && id <= 168 &&
+        ui.chain_scroll + id - 163 < view.chain.length)
+      ui.chain_row = ui.chain_scroll + id - 163;
+    if (id == 169 || id == 170)
+      ui.chain_row = app::clamp(ui.chain_row + (id == 169 ? -1 : 1), 0,
+                                std::max(0, int(view.chain.length) - 1));
+    if (id == 171) {
+      c.kind = app::Kind::ChainAdd;
+      c.step = view.chain.length ? uint8_t(ui.chain_row + 1) : 0;
+      c.value = view.selected_pattern;
+    }
+    if (id == 172)
+      c.kind = app::Kind::ChainDelete;
+    if (view.chain.length && id >= 173 && id <= 176) {
+      const auto &entry = view.chain.entries[ui.chain_row];
+      c.kind = id <= 174 ? app::Kind::ChainPattern : app::Kind::ChainRepeats;
+      c.value = id <= 174
+                    ? app::clamp(entry.pattern + (id == 173 ? -1 : 1), 0, 15)
+                    : app::clamp(entry.repeats + (id == 175 ? -1 : 1), 1, 16);
+    }
+    if (id == 177) {
+      c.kind = app::Kind::ChainLoop;
+      c.value = !view.chain.loop;
+    }
+    if (id == 178 && !view.playing) {
+      c.kind = app::Kind::ChainMode;
+      c.value = view.mode == app::TransportMode::Pattern;
+    }
+    if (id == 179) {
+      if (ui.chain_clear_pending)
+        c.kind = app::Kind::ChainClear;
+      ui.chain_clear_pending = !ui.chain_clear_pending;
+      dirty[179] = true;
+    }
+    if (c.kind != app::Kind::Count && send(c)) {
+      chain_ui_edits.fetch_add(1);
+      if (c.kind == app::Kind::ChainAdd)
+        ui.chain_row =
+            std::min(int(c.step), std::max(0, int(view.chain.length) - 1));
+      if (c.kind == app::Kind::ChainAdd || c.kind == app::Kind::ChainDelete ||
+          c.kind == app::Kind::ChainClear)
+        for (int i = 163; i <= 168; ++i)
+          dirty[i] = true;
+      else if (ui.chain_row >= ui.chain_scroll &&
+               ui.chain_row < ui.chain_scroll + 6)
+        dirty[163 + ui.chain_row - ui.chain_scroll] = true;
+      dirty[44] = dirty[177] = dirty[44] = dirty[178] = dirty[182] = true;
+    }
+    ui.chain_row =
+        app::clamp(ui.chain_row, 0, std::max(0, int(view.chain.length) - 1));
+    if (ui.chain_row < ui.chain_scroll)
+      ui.chain_scroll = ui.chain_row;
+    if (ui.chain_row >= ui.chain_scroll + 6)
+      ui.chain_scroll = ui.chain_row - 5;
+    chain_ui_rows.fetch_add(old_row != ui.chain_row);
+    chain_ui_scrolls.fetch_add(old_scroll != ui.chain_scroll);
+    if (old_scroll != ui.chain_scroll)
+      for (int i = 163; i <= 168; ++i)
+        dirty[i] = true;
+    else {
+      if (old_row >= ui.chain_scroll && old_row < ui.chain_scroll + 6)
+        dirty[163 + old_row - ui.chain_scroll] = true;
+      dirty[163 + ui.chain_row - ui.chain_scroll] = true;
+    }
+    return;
+  }
   if (id == 153 && initial) {
     project_ui.cancel();
     ui.page = app::Page::Project;
@@ -1305,6 +1452,8 @@ void ui_task(void *) {
       }
       ui.cancel_tool();
       ui.cancel_pattern_action();
+      ui.chain_row = ui.chain_scroll = 0;
+      ui.chain_clear_pending = false;
       sent_commands = uint16_t(pattern_status.load() >> 16);
       projects::view_ready.store(true, std::memory_order_release);
       full = true;
@@ -1316,6 +1465,39 @@ void ui_task(void *) {
       if (ui.page == app::Page::Project)
         full = true;
     }
+#if P4SDM_CHAIN_STRESS
+    static bool chain_setup = false;
+    static unsigned chain_setup_row = 0;
+    if (millis() - started > 24000 && !projects::busy()) {
+      if (!chain_setup) {
+        send({app::Kind::Play, 0, 0});
+        send({app::Kind::ChainClear, 0, 0});
+        chain_setup = true;
+      }
+      if (chain_setup_row < 32) {
+        app::Command c{app::Kind::ChainAdd, 0, int(chain_setup_row % 16)};
+        c.step = uint8_t(chain_setup_row);
+        if (send(c)) {
+          c.kind = app::Kind::PatternLength;
+          c.pattern = uint8_t(c.value);
+          c.value = 1 + (chain_setup_row % 3 == 0   ? 0
+                         : chain_setup_row % 3 == 1 ? 2
+                                                    : 3);
+          send(c);
+          c.kind = app::Kind::ChainRepeats;
+          c.value = chain_setup_row % 8 == 0 ? 2 : 1;
+          send(c);
+          ++chain_setup_row;
+        }
+      } else if (chain_setup_row == 32) {
+        send({app::Kind::ChainLoop, 0, 1});
+        send({app::Kind::ChainMode, 0, 1});
+        send({app::Kind::Play, 0, 1});
+        ++chain_setup_row;
+        interact(162, 0, true);
+      }
+    }
+#endif
 #if P4SDM_PROJECT_STRESS
     static unsigned project_runs = 0;
     if (millis() - started > 22000 + project_runs * 12000 && project_runs < 3 &&
@@ -1323,8 +1505,39 @@ void ui_task(void *) {
       if (projects::request(projects::Operation::Fixture))
         ++project_runs;
     }
-    if (project_runs && !projects::busy() && !view.playing)
+    if (project_runs && !projects::busy() && !view.playing
+#if P4SDM_CHAIN_STRESS
+        && (!chain_setup || chain_setup_row > 32)
+#endif
+    )
       send({app::Kind::Play, 0, 1});
+#endif
+#if P4SDM_CHAIN_STRESS
+    static unsigned chain_ui_stage = 0;
+    static uint32_t chain_ui_due = 0;
+    if (millis() - started > 49000 && millis() >= chain_ui_due &&
+        !projects::busy()) {
+      chain_ui_due = millis() + 300;
+      const int actions[] = {170, 170, 170, 170, 170, 170, 170, 169,
+                             175, 176, 173, 174, 172, 171, 177, 177};
+      if (chain_ui_stage < sizeof(actions) / sizeof(actions[0])) {
+        interact(162, 0, true);
+        interact(actions[chain_ui_stage++], 0, true);
+      } else if (chain_ui_stage == sizeof(actions) / sizeof(actions[0])) {
+        interact(162, 0, true);
+        send({app::Kind::Play, 0, 0});
+        interact(178, 0, true);
+        interact(178, 0, true);
+        for (int p = 0; p < 16; ++p) {
+          app::Command c{app::Kind::PatternLength, 0, 1};
+          c.pattern = uint8_t(p);
+          send(c);
+        }
+        send({app::Kind::ChainLoop, 0, 0});
+        send({app::Kind::Play, 0, 1});
+        ++chain_ui_stage;
+      }
+    }
 #endif
     static unsigned sample_revision = 0;
     unsigned revision = samples::revision();
@@ -1707,8 +1920,26 @@ void ui_task(void *) {
         ui.capture = -1;
     }
     touch_errors = input_errors.load(std::memory_order_relaxed);
+    uint32_t cs = chain_status.load(std::memory_order_acquire);
     uint32_t status = pattern_status.load(std::memory_order_acquire);
-    if (uint16_t(status >> 16) == sent_commands) {
+    if (uint16_t(status >> 16) == sent_commands &&
+        uint16_t(cs >> 16) == sent_commands) {
+      if (view.chain_entry != (cs & 63) ||
+          view.chain_repeat != ((cs >> 6) & 31) ||
+          view.playing != bool(cs & (1u << 12)) ||
+          unsigned(view.mode) != ((cs >> 11) & 1)) {
+        if (ui.page == app::Page::Chain) {
+          for (int row : {int(view.chain_entry), int(cs & 63)})
+            if (row >= ui.chain_scroll && row < ui.chain_scroll + 6)
+              dirty[163 + row - ui.chain_scroll] = true;
+          dirty[178] = dirty[182] = true;
+        }
+        view.chain_entry = cs & 63;
+        view.chain_repeat = (cs >> 6) & 31;
+        view.mode = app::TransportMode((cs >> 11) & 1);
+        view.playing = cs & (1u << 12);
+        dirty[29] = true;
+      }
       int playing = status & 15, queued = int((status >> 4) & 31) - 1;
       if (playing != view.playing_pattern || queued != view.queued_pattern) {
         dirty[46 + view.playing_pattern] = dirty[46 + playing] = true;
@@ -1821,6 +2052,9 @@ void ui_task(void *) {
             draw(i);
           draw(123);
           sample_status();
+        } else if (ui.page == app::Page::Chain) {
+          for (int i = 163; i <= 182; ++i)
+            draw(i);
         } else if (ui.page == app::Page::Project) {
           char name[64];
           projects::current(name, sizeof(name));
@@ -1834,9 +2068,10 @@ void ui_task(void *) {
           draw(36);
           display::text(24, 210, "INTERNAL DELAY / NO SD REQUIRED", white, 2);
           draw(153);
+          draw(162);
         }
         if (ui.page != app::Page::SampleSlice && ui.page != app::Page::Project)
-          for (int i = 29; i < 34; ++i)
+          for (int i = 29; i < (ui.page == app::Page::Chain ? 30 : 34); ++i)
             draw(i);
         ++full_frames;
         full = false;
@@ -1851,9 +2086,10 @@ void ui_task(void *) {
           snprintf(title, sizeof(title), "P4SDM T%02d", ui.selected + 1);
           display::text(16, 24, title, white, 2);
         }
-        for (int i = 0; i < 162; ++i)
+        for (int i = 0; i < 183; ++i)
           if (dirty[i] &&
-              (((i >= 132 && i <= 147 && ui.page == app::Page::SampleSlice) ||
+              (((i >= 163 && i <= 182 && ui.page == app::Page::Chain) ||
+                (i >= 132 && i <= 147 && ui.page == app::Page::SampleSlice) ||
                 (i >= 124 && i <= 131 &&
                  ui.page == app::Page::SamplePlayback) ||
                 (i == 123 && ui.page == app::Page::Sample) ||
@@ -1861,7 +2097,8 @@ void ui_task(void *) {
                 (i == 113 && ui.page == app::Page::Track)) ||
                (i < 24 && ui.page == app::Page::Sequence) ||
                (i >= 24 && i < 29 && ui.page == app::Page::Track) ||
-               (i >= 29 && i < 34 && ui.page != app::Page::SampleSlice) ||
+               (i >= 29 && i < (ui.page == app::Page::Chain ? 30 : 34) &&
+                ui.page != app::Page::SampleSlice) ||
                (i == 36 && ui.page == app::Page::Fx) ||
                ((i == 37 || i == 42 || i == 43) &&
                 ui.page == app::Page::Track) ||
@@ -2226,8 +2463,12 @@ void audio_worker(void *) {
                                      samples::voices[c.track].release();
       else
         engine.audition(c.track, [](app::TriggerEvent e) { trigger(e); });
+    const unsigned chain_wraps_before =
+        engine.chain_advances + engine.chain_repeats;
     render_buffer();
     auto us = uint32_t(esp_timer_get_time() - start);
+    if (engine.chain_advances + engine.chain_repeats != chain_wraps_before)
+      chain_boundary_max = std::max(chain_boundary_max, us);
     if (project_phase)
       projects::measured(project_phase == 1, us);
     unsigned b = captured.load(std::memory_order_relaxed);
@@ -2251,7 +2492,15 @@ void audio_worker(void *) {
         tone_lock_metrics.edit_worst =
             std::max(tone_lock_metrics.edit_worst, us);
       }
+      if (engine.mode == app::TransportMode::Chain && engine.playing &&
+          engine.chain_entry < 32)
+        chain_seen |= 1u << engine.chain_entry;
       if (b + 1 == capture_blocks) {
+        chain_result = {engine.chain_starts,     engine.chain_advances,
+                        engine.chain_repeats,    engine.chain_loops,
+                        engine.chain_stops,      engine.chain_switches,
+                        engine.chain_min_length, engine.chain_max_length,
+                        chain_boundary_max,      chain_seen};
         playback_result = playback_metrics;
         slice_result = slice_metrics;
         slice_lock_result = slice_lock_metrics;
@@ -2343,6 +2592,11 @@ void audio_worker(void *) {
     }
     playhead.store(engine.playing ? engine.step : -1,
                    std::memory_order_relaxed);
+    chain_status.store(
+        (uint32_t(applied_commands) << 16) | unsigned(engine.chain_entry) |
+            (unsigned(engine.chain_repeat) << 6) |
+            (unsigned(engine.mode) << 11) | (unsigned(engine.playing) << 12),
+        std::memory_order_release);
     pattern_status.store((uint32_t(applied_commands) << 16) |
                              unsigned(engine.playing_pattern) |
                              (unsigned(engine.queued_pattern + 1) << 4),
@@ -2701,6 +2955,19 @@ void loop() {
           }
           return residue;
         }()));
+    summary_printf(
+        "[M17 chain] starts=%u advances=%u repeats=%u loops=%u stops=%u "
+        "switches=%u min_length=%u max_length=%u boundary_max=%u seen=%u "
+        "entry_bytes=%u chain_bytes=%u engine_bytes=%u\n",
+        chain_result.starts, chain_result.advances, chain_result.repeats,
+        chain_result.loops, chain_result.stops, chain_result.switches,
+        chain_result.min_length, chain_result.max_length,
+        chain_result.boundary_max, chain_result.seen,
+        unsigned(sizeof(app::ChainEntry)), unsigned(sizeof(app::PatternChain)),
+        unsigned(sizeof(app::Engine)));
+    summary_printf("[M17 UI] entries=%u edits=%u rows=%u scrolls=%u\n",
+                   chain_ui_entries.load(), chain_ui_edits.load(),
+                   chain_ui_rows.load(), chain_ui_scrolls.load());
     summary_printf(
         "[M16 project] state_bytes=%u file_bytes=%u snapshot_blocks=%u "
         "snapshot_max=%u apply_blocks=%u apply_max=%u fixtures=%u "

@@ -514,8 +514,10 @@ confirms before replacing unsaved edits. NEW also works without an SD card.
 Projects load STOPPED, then restore remembered WAV basenames one Track at a time.
 Missing/rejected WAVs retain their reference and SAMPLE source and stay silent.
 
-V1 explicitly encodes all canonical musical fields, all eight locks and all
-slice regions in a CRC32-protected 52,637-byte file. Two verified generations at
+V2 explicitly encodes all canonical musical fields, all eight locks, all
+slice regions and the Pattern Chain in a CRC32-protected 52,704-byte file.
+Existing V1 files load with empty Chain defaults; new saves write V2.
+Two verified generations at
 `/P4SDM/PROJECTS/<NAME>/A.P4P` and `B.P4P` preserve the previous valid file during
 an interrupted new write. Runtime DSP/clock/voice/pointer state is excluded.
 Filesystem and serialization belong to the storage task; audio snapshots and
@@ -525,4 +527,17 @@ See [M16 qualification](docs/GUITION_M16.md) for format, lifecycle, genuine devi
 metrics, host/recovery/equivalence checks, memory, CI and known limits.
 **PHYSICAL PROJECT SAVE/LOAD PENDING**: no working SD was available for real
 power-cycle, card-removal, audible and physical touchscreen validation.
-Work stops at M16.
+
+## M17 Pattern Chain
+
+Open FX -> CHAIN to arrange up to 32 Pattern entries, each with 1..16 repeats.
+ADD uses the editor Pattern; select rows, edit Pattern/repeats, toggle LOOP,
+and choose CHAIN mode while stopped. PLAY always starts entry zero. Pattern
+selection remains an editor action during Chain playback. Transitions reuse
+Pattern wraps and each Pattern's own length. Loop OFF finishes the final loop
+and stops; CLEAR requires confirmation and preserves all Patterns.
+
+See [M17 qualification](docs/GUITION_M17.md) for edit/boundary semantics, V2
+migration and dual-version recovery, actual M16 equivalence, realtime metrics,
+memory and CI. **PHYSICAL V2 PROJECT MIGRATION / CHAIN PERSISTENCE PENDING**.
+Work stops at M17; Performance Mode, scenes, fills and MIDI remain out of scope.

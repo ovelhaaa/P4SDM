@@ -46,12 +46,12 @@ project::Error read_slot(const char *name, unsigned slot, project::Slot &out) {
   const auto prefix = project::inspect(bytes, project::header_bytes, *staging);
   if (prefix != project::Error::Size)
     return prefix;
-  if (f.size() != project::file_bytes)
+  const unsigned payload = project::payload_size(project::u16(bytes + 4));
+  if (f.size() != project::header_bytes + payload)
     return project::Error::Size;
-  if (f.read(bytes + project::header_bytes, project::payload_bytes) !=
-      project::payload_bytes)
+  if (f.read(bytes + project::header_bytes, payload) != payload)
     return project::Error::Io;
-  auto e = project::inspect(bytes, project::file_bytes, *staging);
+  auto e = project::inspect(bytes, project::header_bytes + payload, *staging);
   if (e == project::Error::Ok)
     out = {true, project::u32(bytes + 12)};
   return e;
@@ -177,8 +177,10 @@ bool load() {
   }
   project::Slot check;
   if (read_slot(target, chosen, check) != project::Error::Ok ||
-      project::decode(bytes, project::file_bytes, *staging) !=
-          project::Error::Ok ||
+      project::decode(bytes,
+                      project::header_bytes +
+                          project::payload_size(project::u16(bytes + 4)),
+                      *staging) != project::Error::Ok ||
       strcmp(staging->name, target)) {
     report("LOAD FAILED - CURRENT PROJECT KEPT");
     return false;

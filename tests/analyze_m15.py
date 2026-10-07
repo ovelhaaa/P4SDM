@@ -8,8 +8,9 @@ p=argparse.ArgumentParser()
 p.add_argument('log')
 p.add_argument('--normal',action='store_true')
 p.add_argument('--synth',action='store_true')
+p.add_argument('--engine-bytes',default='52064')
 a=p.parse_args()
-subprocess.run([sys.executable,'tests/analyze_m14.py',a.log,'--step-bytes','9','--pattern-bytes','3106','--engine-bytes','52064']+(['--normal'] if a.normal else [])+(['--synth'] if a.synth else []),check=True)
+subprocess.run([sys.executable,'tests/analyze_m14.py',a.log,'--step-bytes','9','--pattern-bytes','3106','--engine-bytes',a.engine_bytes]+(['--normal'] if a.normal else [])+(['--synth'] if a.synth else []),check=True)
 data=Path(a.log).read_text(errors='replace')
 lines=[s for s in data.splitlines() if s.startswith('[M15 locks]')]
 assert len(lines)==1

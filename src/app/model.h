@@ -70,6 +70,14 @@ enum class Kind : uint8_t {
   SliceDelete,
   SliceReset,
   SliceAudition,
+  ChainMode,
+  ChainAdd,
+  ChainInsert,
+  ChainDelete,
+  ChainPattern,
+  ChainRepeats,
+  ChainLoop,
+  ChainClear,
   Count
 };
 struct Command {
@@ -300,7 +308,74 @@ inline bool pattern_occupied(const Pattern &p) {
 static_assert(std::is_trivially_copyable<Pattern>::value);
 static_assert(sizeof(Pattern) == 3106);
 static_assert(sizeof(Command) <= 12);
+enum class TransportMode : uint8_t { Pattern, Chain };
+struct ChainEntry {
+  uint8_t pattern = 0, repeats = 1;
+};
+struct PatternChain {
+  ChainEntry entries[32]{};
+  uint8_t length = 0;
+  bool loop = false;
+  bool insert(unsigned at, unsigned pattern) {
+    if (length == 32 || at > length || pattern >= 16)
+      return false;
+    for (unsigned i = length; i > at; --i)
+      entries[i] = entries[i - 1];
+    entries[at] = {uint8_t(pattern), 1};
+    ++length;
+    return true;
+  }
+  bool erase(unsigned at) {
+    if (at >= length)
+      return false;
+    for (unsigned i = at; i + 1 < length; ++i)
+      entries[i] = entries[i + 1];
+    entries[--length] = {};
+    return true;
+  }
+};
+static_assert(sizeof(ChainEntry) == 2 && sizeof(PatternChain) == 66);
 struct Engine {
+  PatternChain chain{};
+  TransportMode mode = TransportMode::Pattern;
+  uint8_t chain_entry = 0, chain_repeat = 0;
+  uint32_t chain_starts = 0, chain_advances = 0, chain_repeats = 0,
+           chain_loops = 0, chain_stops = 0, chain_switches = 0;
+  uint8_t chain_min_length = 16, chain_max_length = 0;
+  // Numerical positions deliberately follow the edited array at next wrap.
+  bool chain_boundary() {
+    ++chain_repeat;
+    if (chain_entry < chain.length &&
+        chain_repeat < chain.entries[chain_entry].repeats)
+      ++chain_repeats;
+    else {
+      chain_repeat = 0;
+      ++chain_entry;
+      ++chain_advances;
+      if (chain_entry >= chain.length) {
+        if (chain.loop) {
+          chain_entry = 0;
+          ++chain_loops;
+        } else {
+          playing = false;
+          first = false;
+          step = -1;
+          phase = 0;
+          queued_pattern = -1;
+          ++chain_stops;
+          return false;
+        }
+      }
+    }
+    const auto next = chain.entries[chain_entry].pattern;
+    if (next != playing_pattern) {
+      ++chain_switches;
+      ++switches;
+    }
+    playing_pattern = next;
+    return true;
+  }
+
   Pattern patterns[16];
   uint16_t solos = 0;
   int playing_pattern = 0, selected_pattern = 0, queued_pattern = -1;
@@ -361,6 +436,38 @@ struct Engine {
       return;
     auto &t = tracks[c.track];
     switch (c.kind) {
+    case Kind::ChainMode:
+      if (!playing && c.value >= 0 && c.value <= 1)
+        mode = c.value && chain.length ? TransportMode::Chain
+                                       : TransportMode::Pattern;
+      break;
+    case Kind::ChainAdd:
+    case Kind::ChainInsert:
+      chain.insert(c.step, unsigned(c.value));
+      break;
+    case Kind::ChainDelete:
+      chain.erase(c.step);
+      if (!chain.length) {
+        mode = TransportMode::Pattern;
+        queued_pattern = -1;
+      }
+      break;
+    case Kind::ChainPattern:
+      if (c.step < chain.length && c.value >= 0 && c.value < 16)
+        chain.entries[c.step].pattern = uint8_t(c.value);
+      break;
+    case Kind::ChainRepeats:
+      if (c.step < chain.length && c.value >= 1 && c.value <= 16)
+        chain.entries[c.step].repeats = uint8_t(c.value);
+      break;
+    case Kind::ChainLoop:
+      chain.loop = c.value != 0;
+      break;
+    case Kind::ChainClear:
+      chain = {};
+      mode = TransportMode::Pattern;
+      queued_pattern = -1;
+      break;
     case Kind::SliceEnable:
       if (t.sample)
         t.slice_enabled = c.value != 0;
@@ -431,7 +538,14 @@ struct Engine {
       step = -1;
       first = playing;
       queued_pattern = -1;
-      playing_pattern = selected_pattern;
+      chain_entry = chain_repeat = 0;
+      if (!chain.length)
+        mode = TransportMode::Pattern;
+      playing_pattern = playing && mode == TransportMode::Chain
+                            ? chain.entries[0].pattern
+                            : selected_pattern;
+      if (playing && mode == TransportMode::Chain)
+        ++chain_starts;
       break;
     case Kind::Bpm:
       bpm = clamp(c.value, 30, 400);
@@ -489,7 +603,7 @@ struct Engine {
     case Kind::InspectPattern:
       if (c.value >= 0 && c.value < 16) {
         selected_pattern = c.value;
-        if (c.kind == Kind::SelectPattern) {
+        if (c.kind == Kind::SelectPattern && mode == TransportMode::Pattern) {
           if (playing) {
             if (queued_pattern >= 0 && queued_pattern != c.value)
               ++queue_replacements;
@@ -699,7 +813,10 @@ struct Engine {
       // Wrap once on the next onset, then switch before triggering step zero.
       if (step + 1 >= patterns[playing_pattern].length) {
         ++loops;
-        if (queued_pattern >= 0) {
+        if (mode == TransportMode::Chain) {
+          if (!chain_boundary())
+            return;
+        } else if (queued_pattern >= 0) {
           long_to_short += patterns[playing_pattern].length == 16 &&
                            patterns[queued_pattern].length == 7;
           short_to_long += patterns[playing_pattern].length == 7 &&
@@ -711,6 +828,12 @@ struct Engine {
         step = 0;
       } else
         ++step;
+      if (mode == TransportMode::Chain) {
+        chain_min_length =
+            std::min(chain_min_length, patterns[playing_pattern].length);
+        chain_max_length =
+            std::max(chain_max_length, patterns[playing_pattern].length);
+      }
       // Capture swing per pair, so edits cannot change the pair's total.
       if (!(step & 1))
         pair_swing = swing;
@@ -789,9 +912,12 @@ enum class Page {
   SamplePlayback,
   SampleSlice,
   SampleLocks,
-  Project
+  Project,
+  Chain
 };
 struct Ui {
+  int chain_row = 0, chain_scroll = 0;
+  bool chain_clear_pending = false;
   Page page = Page::Sequence;
   int selected = 0, bank = 0, selected_step = -1, capture = -1;
   bool down = false, inspect = false;
@@ -942,6 +1068,17 @@ struct Ui {
   }
 };
 inline Rect widget(int id) {
+  if (id == 162)
+    return {240, 250, 200, 56};
+  if (id >= 163 && id <= 168)
+    return {16, 88 + (id - 163) * 50, 480, 48};
+  if (id >= 169 && id <= 180)
+    return {512 + (id - 169) % 2 * 136, 88 + (id - 169) / 2 * 50, 128, 48};
+  if (id == 181)
+    return {176, 420, 144, 52};
+  if (id == 182)
+    return {336, 420, 448, 52};
+
   if (id == 153)
     return {24, 310, 200, 52}; // FX -> PROJECT
   if (id >= 154 && id <= 157)
@@ -1078,6 +1215,16 @@ inline Rect widget(int id) {
   return {24, 340, 200, 56};
 }
 inline int hit(Page p, int x, int y) {
+  if (p == Page::Chain) {
+    for (int id = 163; id <= 182; ++id)
+      if (widget(id).contains(x, y))
+        return id;
+    if (widget(29).contains(x, y))
+      return 29;
+    return -1;
+  }
+  if (p == Page::Fx && widget(162).contains(x, y))
+    return 162;
   if (p == Page::Project) {
     for (int id = 154; id <= 160; ++id)
       if (widget(id).contains(x, y))
