@@ -422,6 +422,23 @@ TRACK -> TONE adds live per-track cutoff, resonance and continuous Delay send
 for both SYNTH and resident SAMPLE. Cutoff's right endpoint is OPEN; resonance
 and send span 0..127. Global DELAY ON/OFF remains separate. Untouched defaults
 preserve M10's filter and full-send output. Tone/routing survive source changes
-and are not copied by sequencer lane/pattern operations. M10 locks remain
-pitch/volume/pan/wave only. See [M11 qualification](docs/GUITION_M11.md) for the
+and are not copied by sequencer lane/pattern operations. M11 retains the M10 pitch/volume/pan/wave locks. See [M11 qualification](docs/GUITION_M11.md) for the
 explicit legacy-default resonance exception, mappings, tests and device evidence.
+
+
+### M12 Tone parameter locks
+
+STEP -> LOCKS 1/2 -> NEXT adds independent CUTOFF, RESONANCE and DELAY SEND
+locks. Enable starts from Track base; cutoff's right endpoint is OPEN. Both
+lock pages clear all seven lock types. Accepted parents resolve immutable
+snapshots, ratchets keep those snapshots, and Track base is never overwritten.
+Active locked parameters resist corresponding base edits; unlocked controls
+remain live. The final resolved cutoff/resonance pair always uses M11 mapping:
+**0/0 means the exact legacy open/default pair, including q=255**; a partial
+cutoff=64 / base resonance=0 resolves to edited q=0.
+
+Delay reads a precomputed per-voice send in the sample loop. Coefficients change
+only at control/trigger boundaries and identical ratchets reuse a tiny cache.
+See [M12 architecture and qualification](docs/GUITION_M12.md). Physical SAMPLE
+tone-lock validation remains pending without SD. No further FX/sample locks or
+persistence are included; this milestone stops at M12.
