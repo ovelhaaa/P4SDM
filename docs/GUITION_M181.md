@@ -10,11 +10,15 @@ M18 was accepted and merged through PR #7 (`eb24dc1`), including implementation
 `9dc8f58` and qualification `b31c4a5`. The comparison generator reads that actual
 Git revision, checks unchanged sampler/slice dependencies and tests its codec.
 M18.1 implementation `ee89850` adds the feature and tests; `3611740` refreshes
-Repeat status after normal resume/stop. The qualification commit accompanies
-this report and the raw captures. CI references are available on the milestone PR.
+Repeat status after normal resume/stop. `ae472c9` keeps active voice routing and
+Wave/Slice applicability attached to the captured source through subsequent
+live control edits, and makes the Git-baseline test independent of `.pio`. The qualification commit accompanies
+this report and the raw captures. All qualification/code commits are listed in [PR #8 commits](https://github.com/ovelhaaa/P4SDM/pull/8/commits);
+exact-revision CI status is available in [PR #8 checks](https://github.com/ovelhaaa/P4SDM/pull/8/checks).
 
 Changed source: `src/app/model.h` (bounded capture, scheduler, commands, owner,
 hit geometry); `src/app/project.h` (runtime command classification);
+`src/app/voice_state.h` (two-byte voice routing owner and source-aware live controls);
 `src/app_main.cpp` (voice routing, hold controls, publication, qualification);
 `platformio.ini` (two hardware targets). Host tests, strict analyzers, workflow,
 README and this report accompany the genuine serial logs.
@@ -54,7 +58,10 @@ normally underneath Repeat and returns at its next legal Pattern boundary.
 
 Repeated events retain all accepted velocity, pitch, volume, pan, wave, cutoff,
 resonance, send, lock mask and resolved Playback values, plus accepted source
-routing, despite later Track/Pattern/Slice edits. Only current runtime performance
+routing, despite later Track/Pattern/Slice edits. Routing changes only on voice triggers,
+explicit Source/assignment or reset transitions. Volume/Pan/Pitch/Length/Wave
+edits cannot reroute a sounding captured voice; live control resolution retains
+that voice's Wave/Slice lock applicability and pitch domain. Only current runtime performance
 mute/solo masks gate future sub-hits. Canonical acceptance remains frozen; masks
 do not edit the capture or add previously skipped Tracks. Manual pads use the
 independent audition queue and never enter capture.
@@ -95,7 +102,8 @@ windows per rate; first-hit count; every release sub-index; rate changes;
 16 immutable all-lock parents and source routing after edits; manual audition;
 mixed probability/RNG paused reference; empty capture; final-step Chain repeat
 accounting and edits; Fill/Override freezing and cancellation; pending Fill;
-length shrink; Stop/load/new/Save V2; hit bounds and full-queue release recovery.
+length shrink; Source-switch/retrigger/control-edit routing in both directions
+and source-aware Wave/Slice locks; Stop/load/new/Save V2; hit bounds and full-queue release recovery.
 Actual M18 inactive-repeat comparison runs 7.2 million samples across PATTERN,
 CHAIN, Override, Fill, mix, swing and all eight locks, and compares V2 bytes.
 
@@ -120,6 +128,8 @@ expectation of mask 255: resolved SAMPLE masks are F7 and SYNTH masks 7F because
 inapplicable Wave/Slice locks were already excluded by M18. A startup-missing capture lacks the initial SAMPLE fixture row; the pre-UI
 SYNTH capture passed but predates the two-line status refresh. Both are kept
 separately, and final SAMPLE/SYNTH logs include the current status fix.
+Three pre-routing captures passed but are superseded by fresh SAMPLE/SYNTH/NORMAL
+captures after the review correction.
 The final fixture follows inherited scripts and isolates
 the intentional repeat workload without weakening the earlier dense test.
 
@@ -135,21 +145,21 @@ All three final analyzers pass, with zero misses, failures, timeouts, rails or w
 | Measurement | SAMPLE | SYNTH | NORMAL |
 |---|---:|---:|---:|
 | Measured blocks | 13782 | 13782 | 10337 |
-| p50 us | 2910 | 3319 | 1755 |
-| p95 us | 3307 | 4091 | 1775 |
-| p99 us | 3418 | 4192 | 1782 |
-| Overall max us | 4617 | 4527 | 1938 |
-| Inherited dense max us | 3664 | 4527 | inactive |
-| Chain boundary max us | 3388 | 4310 | 0 |
-| Performance boundary max us | 3534 | 4231 | 0 |
-| Repeat max us | 4617 | 4145 | 0 |
-| x8 max us | 4442 | 4145 | 0 |
-| Snapshot max us | 3446 | 4155 | 0 |
-| Apply max us | 1970 | 1811 | 0 |
-| Peak PCM | 4010 | 7231 | 0 |
-| Nonzero PCM values | 6946206 | 7054455 | 0 |
-| Overall headroom | 20.46% | 22.02% | 66.61% |
-| x8 headroom | 23.48% | 28.60% | inactive |
+| p50 us | 2910 | 3322 | 1755 |
+| p95 us | 3319 | 4080 | 1774 |
+| p99 us | 3448 | 4186 | 1781 |
+| Overall max us | 3951 | 4515 | 1936 |
+| Inherited dense max us | 3664 | 4515 | inactive |
+| Chain boundary max us | 3597 | 4374 | 0 |
+| Performance boundary max us | 3558 | 4205 | 0 |
+| Repeat max us | 3928 | 4169 | 0 |
+| x8 max us | 3928 | 4169 | 0 |
+| Snapshot max us | 3414 | 4185 | 0 |
+| Apply max us | 2005 | 1784 | 0 |
+| Peak PCM | 4601 | 7686 | 0 |
+| Nonzero PCM values | 6900125 | 6909784 | 0 |
+| Overall headroom | 31.94% | 22.22% | 66.65% |
+| x8 headroom | 32.33% | 28.18% | inactive |
 
 Each stress run reports 3 requests, 1 acceptance, 2 pre-accept cancellations;
 8 x2 windows, 8 x4 windows, 99 x8 windows; 13,409 repeat-child hits and 12,672
@@ -186,10 +196,15 @@ Heaps remained stable within every accepted capture.
 
 ## Acceptance and limitations
 
-Local qualification passes all 21 PlatformIO environments and all 69 workflow
-host/analyzer commands (66 retained/new checks plus the three final analyzers).
-Remote CI rebuilds all 21 environments and retains every prior check; live
-results are linked from the milestone PR. Merge is gated on successful CI.
+All 69 workflow host/analyzer commands pass locally. All 21 environments passed
+local builds across M18.1; the final routing correction rebuilt the three
+hardware targets and passed fresh SAMPLE/SYNTH/NORMAL captures. The exact final
+revision is rebuilt in all 21 environments by retained CI, including every prior
+check and all 69 host/analyzer commands. Live results are linked from PR #8 above;
+merge is gated on successful CI. The initial candidate `942c0df` passed both
+[push CI](https://github.com/ovelhaaa/P4SDM/actions/runs/37646225438) and
+[PR CI](https://github.com/ovelhaaa/P4SDM/actions/runs/37646271670) before the
+review correction; it is not used as the final merge check.
 
 **Yes:** P4SDM now performs quantized x2/x4/x8 step repeats from immutable
 accepted events, pauses Pattern/Chain/Fill/Override progression, and resumes
