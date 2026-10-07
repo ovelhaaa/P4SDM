@@ -11,6 +11,7 @@
 
 #ifndef LOWPASS_H_
 #define LOWPASS_H_
+#include <stdint.h>
 
 /*
 simple resonant filter posted to musicdsp.org by Paul Kellett http://www.musicdsp.org/archive.php?classid=3#259
@@ -42,7 +43,7 @@ public:
 
 	/** Constructor.
 	*/
-	LowPassFilter(){;
+	LowPassFilter() : q(0), f(0), fb(0), buf0(0), buf1(0) {
 	}
 
 	// Control context: clear history without changing filter coefficients.
@@ -56,7 +57,7 @@ public:
 	void setCutoffFreq(uint8_t cutoff)
 	{
 		f = cutoff;
-		fb = q+ucfxmul(q, SHIFTED_1 - cutoff);
+		refresh();
 	}
 
 
@@ -66,6 +67,7 @@ public:
 	void setResonance(uint8_t resonance)
 	{
 		q = resonance;
+		refresh();
 	}
 
 	/** Calculate the next sample, given an input signal.
@@ -74,18 +76,32 @@ public:
 	@note Timing: about 11us.
 	*/
 	//	10.5 to 12.5 us, mostly 10.5 us (was 14us)
-	inline
+#if P4SDM_APP
+    inline __attribute__((always_inline))
+#else
+    inline
+#endif
 	int next(int in)
 	{
 		//setPin13High();
 		buf0+=fxmul(((in - buf0) + fxmul(fb, buf0-buf1)), f);
-		buf1+=ifxmul(buf0-buf1, f); // could overflow if input changes fast
+#if P4SDM_APP
+        // Bound history before downstream int32 volume/pan multiplication.
+        // Intended source/master input and q<=255 keep intermediate products
+        // inside int32; this guard handles excessive resonant overshoot.
+        // Master default can receive the sum of sixteen voices; preserve the
+        // accepted open coefficients and exact unrestricted default output.
+        if (f != 255)
+          buf0 = buf0 < -65535 ? -65535 : buf0 > 65535 ? 65535 : buf0;
+#endif
+        buf1+=ifxmul(buf0-buf1, f); // could overflow if input changes fast
 		//setPin13Low();
 		return buf1;
 	}
 
 
 private:
+	void refresh() { fb = q + ucfxmul(q, SHIFTED_1 - f); }
 	uint8_t q;
 	uint8_t f;
 	unsigned int fb;

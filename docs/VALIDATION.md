@@ -689,3 +689,14 @@ python tests/analyze_m10.py docs/GUITION_M10_NORMAL_SERIAL.log --normal
 Both captures last 60.006 seconds of audio; the first qualifies all-lock dense
 playback and bounded edits, the second verifies restored normal idle firmware.
 All prior host/build/analyzer checks remain. Physical SD qualification is separate.
+
+
+## M11 — Track tone / Delay sends
+
+Use `tests/track_tone_test.cpp`, `python tests/tone_equivalence.py`, and
+`python tests/no_tone_equivalence.py` for the bounded filter/send and actual-M10
+regressions. Retain all earlier host tests, firmware environments and analyzers.
+Qualify genuine device captures with `python tests/analyze_m11.py <log>`;
+normal restored idle captures use `--normal`. Full report: [GUITION_M11.md](GUITION_M11.md).
+No SD or new parameter-lock set is required. Audible, human touch/visual and
+physical resident sample qualification remain separate.
