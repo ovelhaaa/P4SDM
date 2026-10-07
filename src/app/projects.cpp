@@ -160,6 +160,10 @@ bool load() {
   project::Slot slots[2];
   auto a = read_slot(target, 0, slots[0]);
   auto b = read_slot(target, 1, slots[1]);
+  if (a == project::Error::Future || b == project::Error::Future) {
+    report("PROJECT VERSION TOO NEW - CURRENT PROJECT KEPT");
+    return false;
+  }
   int chosen = project::newest(slots[0], slots[1]);
   if (chosen < 0) {
     char text[128];
