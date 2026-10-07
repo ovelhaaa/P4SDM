@@ -21,4 +21,5 @@ else:
     assert all(m[k]>0 for k in ('locked','unlocked','unsliced','clamped','edits','ui_edits'))
     assert m['requested_min']==m['resolved_min']==0
     assert m['requested_max']==m['resolved_max']==15
+    assert m['requested_seen']==m['resolved_seen']==0xFFFF, 'not every slice index was exercised'
 print('M15 slice lock coverage, inherited M14 workload, heaps and >=20% headroom: PASS')

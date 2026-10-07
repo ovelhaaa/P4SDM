@@ -145,9 +145,11 @@ struct SliceMetrics {
 } slice_metrics{}, slice_result{};
 uint32_t slice_edit_blocks = 0, slice_edit_worst = 0;
 uint32_t slice_lock_ui_edits = 0;
+std::atomic<uint32_t> slice_lock_command_edits{0};
 struct SliceLockMetrics {
   unsigned locked = 0, unlocked = 0, unsliced = 0, requested_min = 16,
            requested_max = 0, resolved_min = 16, resolved_max = 0, clamped = 0;
+  unsigned requested_seen = 0, resolved_seen = 0;
 } slice_lock_metrics{}, slice_lock_result{};
 uint32_t slice_ui_entries = 0, slice_ui_edits = 0, slice_ui_full = 0;
 uint32_t waveform_first_us = 0, waveform_redraw_max = 0, slice_redraw_max = 0;
@@ -182,6 +184,8 @@ void trigger(app::TriggerEvent event, bool ratchet = false) {
       m.resolved_min = std::min(m.resolved_min, unsigned(event.slice - 1));
       m.resolved_max = std::max(m.resolved_max, unsigned(event.slice - 1));
       m.clamped += requested != unsigned(event.slice - 1);
+      m.requested_seen |= 1u << requested;
+      m.resolved_seen |= 1u << (event.slice - 1);
     } else if (event.slice)
       ++m.unlocked;
     else
@@ -1922,7 +1926,17 @@ void audio_worker(void *) {
     for (unsigned n = 0; n < 16 && commands.pop(c); ++n) {
       if (c.track >= 16)
         continue;
+      const bool slice_lock_edit =
+          engine.tracks[c.track].sample && c.pattern < 16 && c.step < 16 &&
+          (c.kind == app::Kind::LockSlice ||
+           (c.kind == app::Kind::UnlockParam && (c.value & app::SLICE_LOCK)) ||
+           (c.kind == app::Kind::ClearStepLocks &&
+            (engine.patterns[c.pattern].locks[c.track][c.step].mask &
+             app::SLICE_LOCK)));
       engine.apply(c);
+      if (slice_lock_edit)
+        slice_lock_command_edits.fetch_add(1, std::memory_order_relaxed);
+      slice_edited |= slice_lock_edit;
       slice_edited |= c.kind >= app::Kind::SliceEnable &&
                       c.kind <= app::Kind::SliceAudition;
       tone_lock_edited |= (c.kind >= app::Kind::LockFilterCutoff &&
@@ -2060,7 +2074,8 @@ void audio_worker(void *) {
           const auto &p = engine.patterns[0];
           locked &= p.track_steps[t] == 0xffff;
           for (int i = 0; i < 16; ++i)
-            locked &= p.meta[t][i].ratchets == 4 && (p.locks[t][i].mask & 0x7F) == 0x7F;
+            locked &= p.meta[t][i].ratchets == 4 &&
+                      (p.locks[t][i].mask & 0x7F) == 0x7F;
         }
         if (locked) {
           ++locked_dense_blocks;
@@ -2464,14 +2479,15 @@ void loop() {
                    unsigned(sizeof(app::Track)),
                    unsigned(sizeof(app::TriggerEvent)));
     const auto &lm = slice_lock_result;
-    summary_printf("[M15 locks] locked=%u unlocked=%u unsliced=%u "
-                   "requested_min=%u requested_max=%u resolved_min=%u "
-                   "resolved_max=%u clamped=%u edits=%u ui_edits=%u align=%u\n",
-                   lm.locked, lm.unlocked, lm.unsliced,
-                   lm.locked ? lm.requested_min : 0, lm.requested_max,
-                   lm.locked ? lm.resolved_min : 0, lm.resolved_max, lm.clamped,
-                   applied_actions[unsigned(app::Kind::LockSlice)].load(),
-                   slice_lock_ui_edits, unsigned(alignof(app::StepLocks)));
+    summary_printf(
+        "[M15 locks] locked=%u unlocked=%u unsliced=%u "
+        "requested_min=%u requested_max=%u resolved_min=%u "
+        "resolved_max=%u clamped=%u edits=%u ui_edits=%u align=%u "
+        "requested_seen=%u resolved_seen=%u\n",
+        lm.locked, lm.unlocked, lm.unsliced, lm.locked ? lm.requested_min : 0,
+        lm.requested_max, lm.locked ? lm.resolved_min : 0, lm.resolved_max,
+        lm.clamped, slice_lock_command_edits.load(), slice_lock_ui_edits,
+        unsigned(alignof(app::StepLocks)), lm.requested_seen, lm.resolved_seen);
     const auto &sm = slice_result;
     summary_printf("[M14 slices] triggers=%u auditions=%u index_min=%u "
                    "index_max=%u frames_min=%u frames_max=%u active_changes=%u "
