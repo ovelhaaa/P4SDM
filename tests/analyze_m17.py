@@ -7,6 +7,7 @@ from pathlib import Path
 p=argparse.ArgumentParser()
 p.add_argument('log')
 p.add_argument('--normal', action='store_true')
+p.add_argument('--engine-bytes', type=int, default=52160)
 p.add_argument('--synth', action='store_true')
 a=p.parse_args()
 data=Path(a.log).read_text(errors='replace')
@@ -15,7 +16,7 @@ def metrics(tag):
     assert len(rows)==1, tag
     return {k:int(v) for k,v in re.findall(r'(\w+)=(\d+)',rows[0])}
 c=metrics('[M17 chain]')
-assert c['entry_bytes']==2 and c['chain_bytes']==66 and c['engine_bytes']==52160
+assert c['entry_bytes']==2 and c['chain_bytes']==66 and c['engine_bytes']==a.engine_bytes
 subprocess.run([sys.executable,'tests/analyze_m15.py',a.log,'--engine-bytes',str(c['engine_bytes'])]+(['--normal'] if a.normal else [])+(['--synth'] if a.synth else []),check=True)
 m=metrics('[M16 project]')
 assert m['state_bytes']==53192 and m['file_bytes']==52704

@@ -78,6 +78,13 @@ enum class Kind : uint8_t {
   ChainRepeats,
   ChainLoop,
   ChainClear,
+  PerfOverride,
+  PerfOverrideCancel,
+  PerfFill,
+  PerfFillCancel,
+  PerfMute,
+  PerfSolo,
+  PerfClearMix,
   Count
 };
 struct Command {
@@ -335,7 +342,78 @@ struct PatternChain {
   }
 };
 static_assert(sizeof(ChainEntry) == 2 && sizeof(PatternChain) == 66);
+// Audio-owned, runtime only. -1 means absent; no Pattern data is copied.
+struct PerformanceState {
+  uint16_t mutes = 0, solos = 0;
+  int8_t override_target = -1, override_active = -1;
+  int8_t fill_pending = -1, fill_active = -1, return_pattern = -1;
+  bool return_end = false;
+  bool owns() const { return return_pattern >= 0; }
+  bool requested() const { return owns() || override_target >= 0 || fill_pending >= 0; }
+};
+static_assert(sizeof(PerformanceState) == 10);
+struct PerformanceMetrics {
+  uint32_t override_requests = 0, override_accepts = 0, override_loops = 0,
+           override_cancels = 0, returns = 0, fill_requests = 0,
+           fill_accepts = 0, fill_completions = 0, fill_to_override = 0,
+           fill_to_arrangement = 0, mute_edits = 0, solo_edits = 0,
+           boundaries = 0;
+};
 struct Engine {
+  PerformanceState performance{};
+  PerformanceMetrics perf_metrics{};
+  // Arrangement counters are accounted once at excursion acceptance, then
+  // remain frozen. return_pattern names the next unconsumed arrangement loop.
+  bool performance_boundary() {
+    auto &p = performance;
+    if (!p.requested())
+      return false;
+    ++perf_metrics.boundaries;
+    if (!p.owns()) {
+      const int audible = playing_pattern, old_step = step;
+      const uint64_t old_phase = phase;
+      p.return_end = mode == TransportMode::Chain && !chain_boundary();
+      p.return_pattern = int8_t(playing_pattern);
+      playing_pattern = audible;
+      if (p.return_end) { playing = true; first = false; step = old_step; phase = old_phase; }
+      queued_pattern = -1;
+    }
+    const bool filled = p.fill_active >= 0;
+    if (filled) {
+      p.fill_active = -1;
+      ++perf_metrics.fill_completions;
+    }
+    if (p.fill_pending >= 0) {
+      p.fill_active = p.fill_pending;
+      p.fill_pending = -1;
+      playing_pattern = p.fill_active;
+      ++perf_metrics.fill_accepts;
+    } else if (p.override_target >= 0) {
+      if (p.override_active != p.override_target)
+        ++perf_metrics.override_accepts;
+      else
+        ++perf_metrics.override_loops;
+      p.override_active = p.override_target;
+      playing_pattern = p.override_active;
+      if (filled) ++perf_metrics.fill_to_override;
+    } else {
+      playing_pattern = p.return_pattern;
+      const bool end = p.return_end;
+      p.override_active = -1;
+      p.return_pattern = -1;
+      p.return_end = false;
+      ++perf_metrics.returns;
+      if (filled) ++perf_metrics.fill_to_arrangement;
+      if (end) {
+        playing = first = false;
+        step = -1;
+        phase = 0;
+        performance = {};
+      }
+    }
+    return true;
+  }
+
   PatternChain chain{};
   TransportMode mode = TransportMode::Pattern;
   uint8_t chain_entry = 0, chain_repeat = 0;
@@ -363,6 +441,7 @@ struct Engine {
           phase = 0;
           queued_pattern = -1;
           ++chain_stops;
+          if (!performance.requested()) performance = {};
           return false;
         }
       }
@@ -436,6 +515,36 @@ struct Engine {
       return;
     auto &t = tracks[c.track];
     switch (c.kind) {
+    case Kind::PerfOverride:
+      if (playing && c.value >= 0 && c.value < 16) {
+        performance.override_target = int8_t(c.value);
+        ++perf_metrics.override_requests;
+      }
+      break;
+    case Kind::PerfOverrideCancel:
+      performance.override_target = -1;
+      ++perf_metrics.override_cancels;
+      break;
+    case Kind::PerfFill:
+      ++perf_metrics.fill_requests;
+      if (playing && performance.fill_active < 0 && c.value >= 0 && c.value < 16)
+        performance.fill_pending = int8_t(c.value);
+      break;
+    case Kind::PerfFillCancel:
+      performance.fill_pending = -1; // An accepted Fill always completes.
+      break;
+    case Kind::PerfMute:
+    case Kind::PerfSolo: {
+      auto &mask = c.kind == Kind::PerfMute ? performance.mutes : performance.solos;
+      const uint16_t bit = uint16_t(1u << c.track);
+      mask = uint16_t((mask & ~bit) | (c.value ? bit : 0));
+      if (c.kind == Kind::PerfMute) ++perf_metrics.mute_edits;
+      else ++perf_metrics.solo_edits;
+      break;
+    }
+    case Kind::PerfClearMix:
+      performance.mutes = performance.solos = 0;
+      break;
     case Kind::ChainMode:
       if (!playing && c.value >= 0 && c.value <= 1)
         mode = c.value && chain.length ? TransportMode::Chain
@@ -530,6 +639,7 @@ struct Engine {
     case Kind::GateRelease:
       break;
     case Kind::Play:
+      performance = {};
       playing = c.value;
       cancel_ratchets();
       rng = seed ? seed : default_seed;
@@ -603,7 +713,8 @@ struct Engine {
     case Kind::InspectPattern:
       if (c.value >= 0 && c.value < 16) {
         selected_pattern = c.value;
-        if (c.kind == Kind::SelectPattern && mode == TransportMode::Pattern) {
+        if (c.kind == Kind::SelectPattern && mode == TransportMode::Pattern &&
+            !performance.requested()) {
           if (playing) {
             if (queued_pattern >= 0 && queued_pattern != c.value)
               ++queue_replacements;
@@ -786,7 +897,10 @@ struct Engine {
     }
   }
   bool sequence_enabled(int t) const {
-    return !tracks[t].muted && (!solos || (solos & (1u << t)));
+    const uint16_t bit = uint16_t(1u << t);
+    const uint16_t combined = solos | performance.solos;
+    return !tracks[t].muted && !(performance.mutes & bit) &&
+           (!combined || (combined & bit));
   }
   template <class Trigger> void audition(int t, Trigger trigger) const {
     if (t >= 0 && t < 16) {
@@ -813,7 +927,9 @@ struct Engine {
       // Wrap once on the next onset, then switch before triggering step zero.
       if (step + 1 >= patterns[playing_pattern].length) {
         ++loops;
-        if (mode == TransportMode::Chain) {
+        if (performance_boundary()) {
+          if (!playing) return;
+        } else if (mode == TransportMode::Chain) {
           if (!chain_boundary())
             return;
         } else if (queued_pattern >= 0) {
@@ -913,9 +1029,12 @@ enum class Page {
   SampleSlice,
   SampleLocks,
   Project,
-  Chain
+  Chain,
+  Performance
 };
 struct Ui {
+  bool perf_mixer = false, perf_solo = false, perf_fill = false;
+
   int chain_row = 0, chain_scroll = 0;
   bool chain_clear_pending = false;
   Page page = Page::Sequence;
@@ -1068,6 +1187,14 @@ struct Ui {
   }
 };
 inline Rect widget(int id) {
+  if (id == 183) return {460, 250, 300, 56};
+  if (id >= 184 && id <= 199)
+    return {16 + (id - 184) % 4 * 196, 116 + (id - 184) / 4 * 66, 184, 60};
+  if (id >= 200 && id <= 204)
+    return {16 + (id - 200) * 128, 392, 120, 64};
+  if (id == 205) return {16, 82, 768, 28};
+  if (id == 206) return {656, 392, 128, 64};
+
   if (id == 162)
     return {240, 250, 200, 56};
   if (id >= 163 && id <= 168)
@@ -1215,6 +1342,14 @@ inline Rect widget(int id) {
   return {24, 340, 200, 56};
 }
 inline int hit(Page p, int x, int y) {
+  if (p == Page::Fx && widget(183).contains(x, y)) return 183;
+  if (p == Page::Performance) {
+    if (widget(206).contains(x,y)) return 206;
+    for (int id = 184; id <= 204; ++id)
+      if (widget(id).contains(x,y)) return id;
+    return -1;
+  }
+
   if (p == Page::Chain) {
     for (int id = 163; id <= 182; ++id)
       if (widget(id).contains(x, y))
