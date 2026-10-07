@@ -85,6 +85,9 @@ enum class Kind : uint8_t {
   PerfMute,
   PerfSolo,
   PerfClearMix,
+  PerfRepeatStart,
+  PerfRepeatRate,
+  PerfRepeatStop,
   Count
 };
 struct Command {
@@ -342,16 +345,52 @@ struct PatternChain {
   }
 };
 static_assert(sizeof(ChainEntry) == 2 && sizeof(PatternChain) == 66);
+struct RepeatCapture {
+  TriggerEvent events[16]{};
+  uint16_t samples = 0; // Accepted source routing, independent of later edits.
+  uint8_t count = 0;
+};
+struct RepeatState {
+  uint64_t next_offset = UINT64_MAX;
+  RepeatCapture capture{};
+  uint8_t requested = 0, active = 0, next = 1;
+};
+static_assert(sizeof(RepeatCapture) == 324);
+struct RepeatMetrics {
+  uint32_t requests = 0, accepts = 0, cancelled = 0, windows[3]{},
+           hits = 0, x8_hits = 0, changes = 0, releases = 0, empty = 0,
+           captured_max = 0, suppressed = 0;
+};
+// Physical gesture ownership; only a successful Stop submission clears it.
+struct RepeatGate {
+  bool held = false, release_pending = false;
+  template <class Send> void flush(Send send) {
+    if (release_pending && send({Kind::PerfRepeatStop, 0, 0}))
+      held = release_pending = false;
+  }
+  template <class Send> bool press(unsigned rate, Send send) {
+    flush(send);
+    if (held || release_pending || (rate != 2 && rate != 4 && rate != 8) ||
+        !send({Kind::PerfRepeatStart, 0, int(rate)})) return false;
+    held = true;
+    return true;
+  }
+  template <class Send> void release(Send send) {
+    if (held) release_pending = true;
+    flush(send);
+  }
+};
 // Audio-owned, runtime only. -1 means absent; no Pattern data is copied.
 struct PerformanceState {
   uint16_t mutes = 0, solos = 0;
   int8_t override_target = -1, override_active = -1;
   int8_t fill_pending = -1, fill_active = -1, return_pattern = -1;
   bool return_end = false;
+  RepeatState repeat{};
   bool owns() const { return return_pattern >= 0; }
   bool requested() const { return owns() || override_target >= 0 || fill_pending >= 0; }
 };
-static_assert(sizeof(PerformanceState) == 10);
+static_assert(sizeof(PerformanceState) == 352);
 struct PerformanceMetrics {
   uint32_t override_requests = 0, override_accepts = 0, override_loops = 0,
            override_cancels = 0, returns = 0, fill_requests = 0,
@@ -362,6 +401,7 @@ struct PerformanceMetrics {
 struct Engine {
   PerformanceState performance{};
   PerformanceMetrics perf_metrics{};
+  RepeatMetrics repeat_metrics{};
   // Arrangement counters are accounted once at excursion acceptance, then
   // remain frozen. return_pattern names the next unconsumed arrangement loop.
   bool performance_boundary() {
@@ -495,7 +535,9 @@ struct Engine {
   void emit(Trigger &trigger, TriggerEvent event, bool ratchet = false) {
     velocity_min = std::min(velocity_min, event.velocity);
     velocity_max = std::max(velocity_max, event.velocity);
-    if constexpr (std::is_invocable<Trigger, TriggerEvent, bool>::value)
+    if constexpr (std::is_invocable<Trigger, TriggerEvent, bool, bool>::value)
+      trigger(event, ratchet, tracks[event.track].sample);
+    else if constexpr (std::is_invocable<Trigger, TriggerEvent, bool>::value)
       trigger(event, ratchet);
     else if constexpr (std::is_invocable<Trigger, TriggerEvent>::value)
       trigger(event);
@@ -515,6 +557,20 @@ struct Engine {
       return;
     auto &t = tracks[c.track];
     switch (c.kind) {
+    case Kind::PerfRepeatStart:
+    case Kind::PerfRepeatRate:
+      if (playing && (c.value == 2 || c.value == 4 || c.value == 8) &&
+          (c.kind == Kind::PerfRepeatStart || performance.repeat.requested)) {
+        performance.repeat.requested = uint8_t(c.value);
+        if (c.kind == Kind::PerfRepeatStart) ++repeat_metrics.requests;
+      }
+      break;
+    case Kind::PerfRepeatStop:
+      if (performance.repeat.requested && !performance.repeat.active) {
+        ++repeat_metrics.cancelled;
+        performance.repeat = {};
+      } else performance.repeat.requested = 0;
+      break;
     case Kind::PerfOverride:
       if (playing && c.value >= 0 && c.value < 16) {
         performance.override_target = int8_t(c.value);
@@ -910,13 +966,62 @@ struct Engine {
         trigger(t); // Performance gates affect sequence only.
     }
   }
+  static unsigned repeat_index(unsigned rate) { return rate == 2 ? 0 : rate == 4 ? 1 : 2; }
+  template <class Trigger> void repeat_emit(Trigger &trigger) {
+    auto &r = performance.repeat;
+    for (unsigned i = 0; i < r.capture.count; ++i) {
+      const auto &event = r.capture.events[i];
+      const unsigned bit = 1u << event.track;
+      // Canonical acceptance is frozen. Only runtime performance masks gate
+      // repeated emissions; no Track/Pattern/lock/slice/probability lookup.
+      if ((performance.mutes & bit) ||
+          (performance.solos && !(performance.solos & bit))) {
+        ++repeat_metrics.suppressed;
+        continue;
+      }
+      if constexpr (std::is_invocable<Trigger, TriggerEvent, bool, bool>::value)
+        trigger(event, true, bool(r.capture.samples & bit));
+      else emit(trigger, event, true);
+      ++repeat_metrics.hits;
+      if (r.active == 8) ++repeat_metrics.x8_hits;
+    }
+  }
   // Exact rational sixteenth clock: accumulated BPM*4 per sample, no rounding
   // drift.
   template <class Trigger, class Release>
   void sample(Trigger trigger, Release release) {
     if (!playing)
       return;
-    if (first || phase >= duration) {
+    auto &r = performance.repeat;
+    bool repeat_resume = false;
+    if (r.active) {
+      if (phase >= duration) {
+        phase -= duration;
+        if (!r.requested) {
+          r = {};
+          ++repeat_metrics.releases;
+          repeat_resume = true;
+        } else {
+          repeat_metrics.changes += r.active != r.requested;
+          r.active = r.requested;
+          ++repeat_metrics.windows[repeat_index(r.active)];
+          r.next = 1;
+          r.next_offset = (duration + r.active - 1) / r.active;
+          repeat_emit(trigger); // Offset zero of subsequent windows only.
+        }
+      }
+      if (r.active) {
+        if (phase >= r.next_offset) {
+          repeat_emit(trigger);
+          ++r.next;
+          r.next_offset = r.next < r.active
+              ? (duration * r.next + r.active - 1) / r.active : UINT64_MAX;
+        }
+        phase += unsigned(bpm) * 4;
+        return;
+      }
+    }
+    if (first || repeat_resume || phase >= duration) {
       first = false;
       if (phase >= duration)
         phase -= duration;
@@ -956,6 +1061,8 @@ struct Engine {
       duration = straight * 2 *
                  unsigned((step & 1) ? 100 - pair_swing : pair_swing) / 100;
       unsigned scheduled = 0;
+      const bool capture_repeat = r.requested != 0;
+      if (capture_repeat) r.capture = RepeatCapture{};
       for (int t = 0; t < 16; ++t) {
         if (!sequence_enabled(t) ||
             !(patterns[playing_pattern].track_steps[t] & (1u << step)))
@@ -976,7 +1083,12 @@ struct Engine {
         unlocked_parents += event.locked_mask == 0;
         for (int i = 0; i < 7; ++i)
           lock_events[i] += (event.locked_mask >> i) & 1;
+        if (capture_repeat) {
+          r.capture.events[r.capture.count++] = event;
+          if (tracks[t].sample) r.capture.samples |= uint16_t(1u << t);
+        }
         emit(trigger, event);
+        if (capture_repeat) continue; // Repeat replaces, never multiplies ratchets.
         pending[t] = {event, m.ratchets, 1};
         scheduled += m.ratchets - 1;
         if (m.ratchets > 1)
@@ -984,6 +1096,16 @@ struct Engine {
               std::min(next_ratchet, (duration + m.ratchets - 1) / m.ratchets);
       }
       pending_max = std::max(pending_max, uint32_t(scheduled));
+      if (capture_repeat) {
+        r.active = r.requested;
+        r.next = 1;
+        r.next_offset = (duration + r.active - 1) / r.active;
+        ++repeat_metrics.accepts;
+        ++repeat_metrics.windows[repeat_index(r.active)];
+        repeat_metrics.empty += r.capture.count == 0;
+        repeat_metrics.captured_max = std::max(repeat_metrics.captured_max, uint32_t(r.capture.count));
+        if (r.active == 8) repeat_metrics.x8_hits += r.capture.count;
+      }
     }
     if (phase >= next_ratchet) {
       next_ratchet = UINT64_MAX;
@@ -1030,7 +1152,8 @@ enum class Page {
   SampleLocks,
   Project,
   Chain,
-  Performance
+  Performance,
+  PerformanceRepeat
 };
 struct Ui {
   bool perf_mixer = false, perf_solo = false, perf_fill = false;
@@ -1187,6 +1310,7 @@ struct Ui {
   }
 };
 inline Rect widget(int id) {
+  if (id >= 207 && id <= 209) return {16 + (id - 207) * 256, 152, 240, 152};
   if (id == 183) return {460, 250, 300, 56};
   if (id >= 184 && id <= 199)
     return {16 + (id - 184) % 4 * 196, 116 + (id - 184) / 4 * 66, 184, 60};
@@ -1342,6 +1466,12 @@ inline Rect widget(int id) {
   return {24, 340, 200, 56};
 }
 inline int hit(Page p, int x, int y) {
+  if (p == Page::PerformanceRepeat) {
+    for (int id = 207; id <= 209; ++id) if (widget(id).contains(x,y)) return id;
+    for (int id = 200; id <= 204; ++id) if (widget(id).contains(x,y)) return id;
+    if (widget(206).contains(x,y)) return 206;
+    return -1;
+  }
   if (p == Page::Fx && widget(183).contains(x, y)) return 183;
   if (p == Page::Performance) {
     if (widget(206).contains(x,y)) return 206;
