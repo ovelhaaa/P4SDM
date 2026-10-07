@@ -2060,7 +2060,7 @@ void audio_worker(void *) {
           const auto &p = engine.patterns[0];
           locked &= p.track_steps[t] == 0xffff;
           for (int i = 0; i < 16; ++i)
-            locked &= p.meta[t][i].ratchets == 4 && p.locks[t][i].mask == 127;
+            locked &= p.meta[t][i].ratchets == 4 && (p.locks[t][i].mask & 0x7F) == 0x7F;
         }
         if (locked) {
           ++locked_dense_blocks;
