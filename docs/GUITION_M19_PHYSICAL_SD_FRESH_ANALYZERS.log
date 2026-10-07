@@ -1,0 +1,305 @@
+# COMMAND C:\progs\P4SDM\.venv\Scripts\python.exe tests/analyze_m19.py docs/GUITION_M19_PHYSICAL_SD_FIXED_NORMAL_SERIAL.log --normal
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m5.py", line 21, in <module>
+    assert mem['internal_before']==mem['internal_after'], 'internal heap change requires investigation'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: internal heap change requires investigation
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m10.py", line 20, in <module>
+    subprocess.run([sys.executable,'tests/analyze_m5.py',args.log],check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m5.py', 'docs/GUITION_M19_PHYSICAL_SD_FIXED_NORMAL_SERIAL.log']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m11.py", line 18, in <module>
+    subprocess.run([sys.executable,'tests/analyze_m10.py',args.log,'--pattern-bytes',str(args.pattern_bytes)] + (['--normal'] if args.normal else []) + (['--sample'] if args.sample else []), check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m10.py', 'docs/GUITION_M19_PHYSICAL_SD_FIXED_NORMAL_SERIAL.log', '--pattern-bytes', '3106', '--normal']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m12.py", line 25, in <module>
+    subprocess.run([sys.executable, 'tests/analyze_m11.py', args.log,
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    '--pattern-bytes', str(args.pattern_bytes)] + (['--normal'] if args.normal else []) + (['--sample'] if args.sample else []), check=True)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m11.py', 'docs/GUITION_M19_PHYSICAL_SD_FIXED_NORMAL_SERIAL.log', '--pattern-bytes', '3106', '--normal']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m13.py", line 21, in <module>
+    subprocess.run([sys.executable, 'tests/analyze_m12.py', a.log,
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        '--step-bytes',str(a.step_bytes),'--pattern-bytes',str(a.pattern_bytes),'--event-bytes','20','--voice-bytes','384','--engine-bytes',str(a.engine_bytes)]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        + (['--normal'] if a.normal else []) + (['--sample'] if not a.normal and not a.synth else []), check=True)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m12.py', 'docs/GUITION_M19_PHYSICAL_SD_FIXED_NORMAL_SERIAL.log', '--step-bytes', '9', '--pattern-bytes', '3106', '--event-bytes', '20', '--voice-bytes', '384', '--engine-bytes', '52616', '--normal']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m14.py", line 20, in <module>
+    subprocess.run([sys.executable,'tests/analyze_m13.py',a.log,
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        '--track-bytes','116','--engine-bytes',str(a.engine_bytes),'--step-bytes',str(a.step_bytes),'--pattern-bytes',str(a.pattern_bytes)] +
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        (['--normal'] if a.normal else []) + (['--synth'] if a.synth else []),check=True)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m13.py', 'docs/GUITION_M19_PHYSICAL_SD_FIXED_NORMAL_SERIAL.log', '--track-bytes', '116', '--engine-bytes', '52616', '--step-bytes', '9', '--pattern-bytes', '3106', '--normal']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m15.py", line 13, in <module>
+    subprocess.run([sys.executable,'tests/analyze_m14.py',a.log,'--step-bytes','9','--pattern-bytes','3106','--engine-bytes',a.engine_bytes]+(['--normal'] if a.normal else [])+(['--synth'] if a.synth else []),check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m14.py', 'docs/GUITION_M19_PHYSICAL_SD_FIXED_NORMAL_SERIAL.log', '--step-bytes', '9', '--pattern-bytes', '3106', '--engine-bytes', '52616', '--normal']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m17.py", line 20, in <module>
+    subprocess.run([sys.executable,'tests/analyze_m15.py',a.log,'--engine-bytes',str(c['engine_bytes'])]+(['--normal'] if a.normal else [])+(['--synth'] if a.synth else []),check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m15.py', 'docs/GUITION_M19_PHYSICAL_SD_FIXED_NORMAL_SERIAL.log', '--engine-bytes', '52616', '--normal']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m18.py", line 25, in <module>
+    subprocess.run([sys.executable, 'tests/analyze_m17.py', a.log, '--engine-bytes', str(m['engine_bytes'])] + (['--normal'] if a.normal else []) + (['--synth'] if a.synth else []), check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m17.py', 'docs/GUITION_M19_PHYSICAL_SD_FIXED_NORMAL_SERIAL.log', '--engine-bytes', '52616', '--normal']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m181.py", line 22, in <module>
+    subprocess.run([sys.executable, 'tests/analyze_m18.py', a.log,
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        '--engine-bytes','52616','--state-bytes','352','--publication-bytes','24'] +
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        (['--normal'] if a.normal else []) + (['--synth'] if a.synth else []), check=True)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m18.py', 'docs/GUITION_M19_PHYSICAL_SD_FIXED_NORMAL_SERIAL.log', '--engine-bytes', '52616', '--state-bytes', '352', '--publication-bytes', '24', '--normal']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m19.py", line 17, in <module>
+    subprocess.run([sys.executable, 'tests/analyze_m181.py', a.log] +
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                   (['--normal'] if a.normal else []) + (['--synth'] if a.synth else []), check=True)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m181.py', 'docs/GUITION_M19_PHYSICAL_SD_FIXED_NORMAL_SERIAL.log', '--normal']' returned non-zero exit status 1.
+
+ANALYZER_EXIT=1
+
+# COMMAND C:\progs\P4SDM\.venv\Scripts\python.exe tests/analyze_m19.py docs/GUITION_M19_PHYSICAL_SD_FIXED_STRESS_SERIAL.log
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m5.py", line 21, in <module>
+    assert mem['internal_before']==mem['internal_after'], 'internal heap change requires investigation'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: internal heap change requires investigation
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m8.py", line 19, in <module>
+    subprocess.run([sys.executable, "tests/analyze_m5.py", args.log], check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m5.py', 'docs/GUITION_M19_PHYSICAL_SD_FIXED_STRESS_SERIAL.log']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m9.py", line 13, in <module>
+    subprocess.run([sys.executable, "tests/analyze_m8.py", args.log,
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    "--pattern-bytes", str(args.pattern_bytes)], check=True)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m8.py', 'docs/GUITION_M19_PHYSICAL_SD_FIXED_STRESS_SERIAL.log', '--pattern-bytes', '3106']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m10.py", line 29, in <module>
+    subprocess.run([sys.executable,'tests/analyze_m9.py',args.log,'--pattern-bytes',str(args.pattern_bytes)],check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m9.py', 'docs/GUITION_M19_PHYSICAL_SD_FIXED_STRESS_SERIAL.log', '--pattern-bytes', '3106']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m11.py", line 18, in <module>
+    subprocess.run([sys.executable,'tests/analyze_m10.py',args.log,'--pattern-bytes',str(args.pattern_bytes)] + (['--normal'] if args.normal else []) + (['--sample'] if args.sample else []), check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m10.py', 'docs/GUITION_M19_PHYSICAL_SD_FIXED_STRESS_SERIAL.log', '--pattern-bytes', '3106', '--sample']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m12.py", line 25, in <module>
+    subprocess.run([sys.executable, 'tests/analyze_m11.py', args.log,
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    '--pattern-bytes', str(args.pattern_bytes)] + (['--normal'] if args.normal else []) + (['--sample'] if args.sample else []), check=True)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m11.py', 'docs/GUITION_M19_PHYSICAL_SD_FIXED_STRESS_SERIAL.log', '--pattern-bytes', '3106', '--sample']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m13.py", line 21, in <module>
+    subprocess.run([sys.executable, 'tests/analyze_m12.py', a.log,
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        '--step-bytes',str(a.step_bytes),'--pattern-bytes',str(a.pattern_bytes),'--event-bytes','20','--voice-bytes','384','--engine-bytes',str(a.engine_bytes)]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        + (['--normal'] if a.normal else []) + (['--sample'] if not a.normal and not a.synth else []), check=True)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m12.py', 'docs/GUITION_M19_PHYSICAL_SD_FIXED_STRESS_SERIAL.log', '--step-bytes', '9', '--pattern-bytes', '3106', '--event-bytes', '20', '--voice-bytes', '384', '--engine-bytes', '52616', '--sample']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m14.py", line 20, in <module>
+    subprocess.run([sys.executable,'tests/analyze_m13.py',a.log,
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        '--track-bytes','116','--engine-bytes',str(a.engine_bytes),'--step-bytes',str(a.step_bytes),'--pattern-bytes',str(a.pattern_bytes)] +
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        (['--normal'] if a.normal else []) + (['--synth'] if a.synth else []),check=True)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m13.py', 'docs/GUITION_M19_PHYSICAL_SD_FIXED_STRESS_SERIAL.log', '--track-bytes', '116', '--engine-bytes', '52616', '--step-bytes', '9', '--pattern-bytes', '3106']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m15.py", line 13, in <module>
+    subprocess.run([sys.executable,'tests/analyze_m14.py',a.log,'--step-bytes','9','--pattern-bytes','3106','--engine-bytes',a.engine_bytes]+(['--normal'] if a.normal else [])+(['--synth'] if a.synth else []),check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m14.py', 'docs/GUITION_M19_PHYSICAL_SD_FIXED_STRESS_SERIAL.log', '--step-bytes', '9', '--pattern-bytes', '3106', '--engine-bytes', '52616']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m17.py", line 20, in <module>
+    subprocess.run([sys.executable,'tests/analyze_m15.py',a.log,'--engine-bytes',str(c['engine_bytes'])]+(['--normal'] if a.normal else [])+(['--synth'] if a.synth else []),check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m15.py', 'docs/GUITION_M19_PHYSICAL_SD_FIXED_STRESS_SERIAL.log', '--engine-bytes', '52616']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m18.py", line 25, in <module>
+    subprocess.run([sys.executable, 'tests/analyze_m17.py', a.log, '--engine-bytes', str(m['engine_bytes'])] + (['--normal'] if a.normal else []) + (['--synth'] if a.synth else []), check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m17.py', 'docs/GUITION_M19_PHYSICAL_SD_FIXED_STRESS_SERIAL.log', '--engine-bytes', '52616']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m181.py", line 22, in <module>
+    subprocess.run([sys.executable, 'tests/analyze_m18.py', a.log,
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        '--engine-bytes','52616','--state-bytes','352','--publication-bytes','24'] +
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        (['--normal'] if a.normal else []) + (['--synth'] if a.synth else []), check=True)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m18.py', 'docs/GUITION_M19_PHYSICAL_SD_FIXED_STRESS_SERIAL.log', '--engine-bytes', '52616', '--state-bytes', '352', '--publication-bytes', '24']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m19.py", line 17, in <module>
+    subprocess.run([sys.executable, 'tests/analyze_m181.py', a.log] +
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                   (['--normal'] if a.normal else []) + (['--synth'] if a.synth else []), check=True)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m181.py', 'docs/GUITION_M19_PHYSICAL_SD_FIXED_STRESS_SERIAL.log']' returned non-zero exit status 1.
+
+ANALYZER_EXIT=1
+
+# COMMAND C:\progs\P4SDM\.venv\Scripts\python.exe tests/analyze_m19.py docs/GUITION_M19_PHYSICAL_SD_FIXED_SYNTH_STRESS_SERIAL.log --synth
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M8 >=60s realtime groove + 12s 16-track 4x ratchet qualification: PASS
+M9 transforms + dense realtime stress: PASS
+M10 locks + all-lock dense realtime + bounded dirty UI: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m13.py", line 26, in <module>
+    assert 'NO CARD' in data
+           ^^^^^^^^^^^^^^^^^
+AssertionError
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m14.py", line 20, in <module>
+    subprocess.run([sys.executable,'tests/analyze_m13.py',a.log,
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        '--track-bytes','116','--engine-bytes',str(a.engine_bytes),'--step-bytes',str(a.step_bytes),'--pattern-bytes',str(a.pattern_bytes)] +
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        (['--normal'] if a.normal else []) + (['--synth'] if a.synth else []),check=True)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m13.py', 'docs/GUITION_M19_PHYSICAL_SD_FIXED_SYNTH_STRESS_SERIAL.log', '--track-bytes', '116', '--engine-bytes', '52616', '--step-bytes', '9', '--pattern-bytes', '3106', '--synth']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m15.py", line 13, in <module>
+    subprocess.run([sys.executable,'tests/analyze_m14.py',a.log,'--step-bytes','9','--pattern-bytes','3106','--engine-bytes',a.engine_bytes]+(['--normal'] if a.normal else [])+(['--synth'] if a.synth else []),check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m14.py', 'docs/GUITION_M19_PHYSICAL_SD_FIXED_SYNTH_STRESS_SERIAL.log', '--step-bytes', '9', '--pattern-bytes', '3106', '--engine-bytes', '52616', '--synth']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m17.py", line 20, in <module>
+    subprocess.run([sys.executable,'tests/analyze_m15.py',a.log,'--engine-bytes',str(c['engine_bytes'])]+(['--normal'] if a.normal else [])+(['--synth'] if a.synth else []),check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m15.py', 'docs/GUITION_M19_PHYSICAL_SD_FIXED_SYNTH_STRESS_SERIAL.log', '--engine-bytes', '52616', '--synth']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m18.py", line 25, in <module>
+    subprocess.run([sys.executable, 'tests/analyze_m17.py', a.log, '--engine-bytes', str(m['engine_bytes'])] + (['--normal'] if a.normal else []) + (['--synth'] if a.synth else []), check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m17.py', 'docs/GUITION_M19_PHYSICAL_SD_FIXED_SYNTH_STRESS_SERIAL.log', '--engine-bytes', '52616', '--synth']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m181.py", line 22, in <module>
+    subprocess.run([sys.executable, 'tests/analyze_m18.py', a.log,
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        '--engine-bytes','52616','--state-bytes','352','--publication-bytes','24'] +
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        (['--normal'] if a.normal else []) + (['--synth'] if a.synth else []), check=True)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m18.py', 'docs/GUITION_M19_PHYSICAL_SD_FIXED_SYNTH_STRESS_SERIAL.log', '--engine-bytes', '52616', '--state-bytes', '352', '--publication-bytes', '24', '--synth']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m19.py", line 17, in <module>
+    subprocess.run([sys.executable, 'tests/analyze_m181.py', a.log] +
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                   (['--normal'] if a.normal else []) + (['--synth'] if a.synth else []), check=True)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m181.py', 'docs/GUITION_M19_PHYSICAL_SD_FIXED_SYNTH_STRESS_SERIAL.log', '--synth']' returned non-zero exit status 1.
+
+ANALYZER_EXIT=1
+
+These are genuine mounted-card captures. No inherited assertion is changed.
+Normal/sample fail exact startup internal heap equality (+528 bytes).
+Synth passes M5 through M12, then M13 requires NO CARD, absent on mounted SD.
+See M19P report for scope and separate passing workflow/physical checks.

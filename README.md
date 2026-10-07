@@ -347,7 +347,9 @@ resident sample voices and a TRACK → SAMPLE assignment page. Put WAV files in
 `/P4SDM/SAMPLES/`; mono and stereo (downmixed during load) are supported.
 Synth fallback still boots without a card. No formatting is performed.
 See [M6 architecture, audit and qualification](docs/GUITION_M6.md).
-**PHYSICAL SD VALIDATION PENDING** until a microSD card is available.
+Physical SD mounting, synthetic WAV loads and rejections are now recorded in
+[M19P physical SD qualification](docs/GUITION_M19_PHYSICAL_SD.md).
+Real musical listening and touchscreen validation remain pending.
 
 M6.1 sample pitch/source semantics and optional physical-card runner: [qualification report](docs/GUITION_M61.md).
 
@@ -525,8 +527,10 @@ applies metadata in bounded blocks. No autosave, sample embedding or deduplicati
 
 See [M16 qualification](docs/GUITION_M16.md) for format, lifecycle, genuine device
 metrics, host/recovery/equivalence checks, memory, CI and known limits.
-**PHYSICAL PROJECT SAVE/LOAD PENDING**: no working SD was available for real
-power-cycle, card-removal, audible and physical touchscreen validation.
+Real SD SAVE/hardware-reset/LOAD and sample restoration passed in
+[M19P](docs/GUITION_M19_PHYSICAL_SD.md), including a corrected WAV-load stack
+overflow. **PHYSICAL PROJECT SAVE/POWER-CYCLE/LOAD PENDING** for electrical
+power removal; card-removal, audible and touchscreen validation remain pending.
 
 ## M17 Pattern Chain
 
@@ -539,7 +543,9 @@ and stops; CLEAR requires confirmation and preserves all Patterns.
 
 See [M17 qualification](docs/GUITION_M17.md) for edit/boundary semantics, V2
 migration and dual-version recovery, actual M16 equivalence, realtime metrics,
-memory and CI. **PHYSICAL V2 PROJECT MIGRATION / CHAIN PERSISTENCE PENDING**.
+memory and CI. M19P verifies synthetic SD Chain V2 persistence across hardware
+reset and two playback loops. **PHYSICAL V1→V2 MIGRATION / ELECTRICAL
+POWER-CYCLE PENDING**; see [physical results](docs/GUITION_M19_PHYSICAL_SD.md).
 M18 adds the runtime Performance layer below.
 
 ## M18 Performance Mode
@@ -603,3 +609,5 @@ checks discard stale proposals. Playback, Slice Locks, immutable x8 Repeat and
 Project V2 use their existing paths. Details, metrics and genuine device evidence:
 [M19 qualification](docs/GUITION_M19.md). Real musical SD/touch/listening validation
 remains pending; synthetic qualification does not establish subjective musical quality.
+The [M19P supplement](docs/GUITION_M19_PHYSICAL_SD.md) records actual SD fixtures,
+save/reset/load, corruption fallback, heap cycles and dense PCM/x8 analysis.

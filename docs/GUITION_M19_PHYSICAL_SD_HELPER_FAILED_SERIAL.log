@@ -1,0 +1,199 @@
+
+# HOST STORE 1
+[Q COMMAND] STORE 1
+Guru Meditation Error: Core  0 panic'ed (Stack protection fault). 
+
+Detected in task "sample_storage" at 0x400548d6
+Stack pointer: 0x4ff2cd60
+Stack bounds: 0x4ff2cd8c - 0x4ff2e8e0
+
+
+Core  0 register dump:
+MEPC    : 0x400548f0  RA      : 0x4004fb1e  SP      : 0x4ff2cd60  GP      : 0x4ff12980  
+TP      : 0x4ff2e8c0  T0      : 0x4fc1a058  T1      : 0x0000000f  T2      : 0xffffffff  
+S0/FP   : 0x00000403  S1      : 0x40081410  A0      : 0x4ff27a78  A1      : 0x4ff2d1f8  
+A2      : 0x40081410  A3      : 0x4ff2d27c  A4      : 0x00000000  A5      : 0x00000402  
+A6      : 0x00000004  A7      : 0x00000003  S2      : 0xffffffff  S3      : 0x40081000  
+S4      : 0x4ff7a000  S5      : 0x4ff17000  S6      : 0x4ff18000  S7      : 0x00000000  
+S8      : 0x00000000  S9      : 0x00000000  S10     : 0x00000001  S11     : 0x00000000  
+T3      : 0x00000000  T4      : 0x00000000  T5      : 0x00000000  T6      : 0x00000000  
+MSTATUS : 0x00011880  MTVEC   : 0x4ff00003  MCAUSE  : 0x0000001b  MTVAL   : 0x00000000  
+MHARTID : 0x00000000  
+
+Stack memory:
+4ff2cd60: 0xcc5c8fd5 0x06b74c1c 0x4ff2d1f8 0x16fd0130 0x8ff5076e 0xcc1c8fd9 0x86634701 0x4ff2ad78
+4ff2cd80: 0x00001c00 0xabba1234 0x00001b58 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2cda0: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2cdc0: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2cde0: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2ce00: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2ce20: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0x4ff2d27c
+4ff2ce40: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2ce60: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2ce80: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2cea0: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2cec0: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2cee0: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2cf00: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2cf20: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2cf40: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2cf60: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2cf80: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2cfa0: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2cfc0: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2cfe0: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2d000: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2d020: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2d040: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2d060: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2d080: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2d0a0: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2d0c0: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2d0e0: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2d100: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2d120: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2d140: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+
+
+
+ELF file SHA256: 2d690a9bb
+
+Rebooting...
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0xc (SW_CPU_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4ff08366
+Core1 Saved PC:0x40023228
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M6 budget] total=33554432 display=2304000 fx_delay=352800 samples=0 reserve=4194304 free=30779004 largest=30408692 internal=231876
+[M6 SD] mounted=1 width=4 clock_khz=20000 mount_us=245053 capacity=8053063680 status=SD READY
+[M6 index] files=0 entries=0 limited=0 scan_us=2944 ps_free=30752712 largest=30408692 internal=230372
+
+# HOST STORE 2
+[Q COMMAND] STORE 2
+[Q FS] total=8050966528 used=131072
+Guru Meditation Error: Core  0 panic'ed (Stack protection fault). 
+
+Detected in task "sample_storage" at 0x400548d6
+Stack pointer: 0x4ff2c9d0
+Stack bounds: 0x4ff2cd8c - 0x4ff2e8e0
+
+
+Core  0 register dump:
+MEPC    : 0x400548f0  RA      : 0x4004fb1e  SP      : 0x4ff2c9d0  GP      : 0x4ff12980  
+TP      : 0x4ff2e8c0  T0      : 0x4fc1a058  T1      : 0x0000000f  T2      : 0xffffffff  
+S0/FP   : 0x00000403  S1      : 0x40081410  A0      : 0x4ff27a78  A1      : 0x4ff2ce68  
+A2      : 0x40081410  A3      : 0x4ff2ceec  A4      : 0x00000000  A5      : 0x00000402  
+A6      : 0x00000004  A7      : 0x0000000a  S2      : 0xffffffff  S3      : 0x40081000  
+S4      : 0x4ff7a000  S5      : 0x4ff31da8  S6      : 0x40074120  S7      : 0x0000002f  
+S8      : 0x00000000  S9      : 0x4ff7a000  S10     : 0x00000002  S11     : 0x00000000  
+T3      : 0x00000000  T4      : 0x00000000  T5      : 0x00000000  T6      : 0x00000000  
+MSTATUS : 0x00011880  MTVEC   : 0x4ff00003  MCAUSE  : 0x0000001b  MTVAL   : 0x00000000  
+MHARTID : 0x00000000  
+
+Stack memory:
+4ff2c9d0: 0x4ff2cca0 0x00000000 0x4ff2ce68 0x00000000 0x4ff3f030 0x00000001 0x4ff3f084 0x00000001
+4ff2c9f0: 0x00000000 0x00000000 0x20800008 0x1f000000 0x00000000 0x00007fff 0x4ff3f084 0x4ff3efb4
+4ff2ca10: 0x00000000 0x4ff3f054 0x00000002 0x4ff3efb4 0x4ff50000 0x000004c1 0x000006d5 0x4ff6a000
+4ff2ca30: 0x4ff7a000 0x4ff7a000 0x4ff5c168 0x00000000 0x4ff3f084 0x00000001 0x4ff3f030 0x4ff09064
+4ff2ca50: 0x08000000 0x4fc10a5c 0x00000064 0x00000064 0x4ff2cacc 0x4ff770b0 0x00000000 0x00001dc0
+4ff2ca70: 0x00000002 0x4ff76cb0 0x4ff2cacc 0x00000400 0x00000064 0x00000001 0x4ff3ef8c 0x400326f6
+4ff2ca90: 0x4ff5c168 0x00000100 0x00000400 0x00000002 0x4ff77000 0x00000100 0x4ff7a000 0x4ff2ceec
+4ff2cab0: 0x4ff77000 0x00000400 0x00000000 0x40017d2a 0x00000000 0x00000000 0x00000000 0x00000000
+4ff2cad0: 0x00000000 0x00000000 0x00000000 0x00000100 0x00000102 0x00000100 0x4ff5c168 0x4001820a
+4ff2caf0: 0x00000000 0x00000000 0x4ff50000 0x00000001 0x4ff7a000 0x4ff129f0 0x4ff7a000 0x00000000
+4ff2cb10: 0x4ff5c000 0x00000000 0x4ff69f28 0x40014e3c 0xa5a5a5a5 0x00000000 0xa5a5a5a5 0x00000000
+4ff2cb30: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff2cb50: 0x00000000 0x00000000 0x00748006 0x00000000 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2cb70: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2cb90: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2cbb0: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a50000 0xa5a5a5a5
+4ff2cbd0: 0xa5000000 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2cbf0: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0x4ff09466 0x00000000 0x00000000 0x4ff12980
+4ff2cc10: 0x4ff2cca0 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x40013932 0x00000000
+4ff2cc30: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff2cc50: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x4ff09472
+4ff2cc70: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff2cc90: 0x00000000 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0x00000001 0x4ff2ad88 0x4ff2ad88 0x00000000
+4ff2ccb0: 0x00000000 0x00000000 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xbaad5678 0x063746e2
+4ff2ccd0: 0xd3947000 0xce365394 0x069246f2 0x8ed18291 0x4772ce36 0x00efd398 0xc91104f0 0x07935c58
+4ff2ccf0: 0xb793fe0c 0x07860017 0x8fd99b75 0x4c5cdc5c 0xfffc0713 0x079a076a 0x8fd98399 0x4c1ccc5c
+4ff2cd10: 0xc0000737 0x01803c33 0x0c7a177d 0xe7b38ff9 0xcc1c0187 0x01942223 0x0a6386a6 0x07b70009
+4ff2cd30: 0xa7834ff4 0xc783fe87 0x86b30197 0x4c1c00f4 0xe0000637 0x00d03733 0x0776167d 0x8fd98ff1
+4ff2cd50: 0xca89cc1c 0x16fd4c5c 0x03f6f693 0xfc07f793 0xcc5c8fd5 0x06b74c1c 0x3733f800 0x16fd0130
+4ff2cd70: 0x8ff5076e 0xcc1c8fd9 0x86634701 0x4ff2ad78 0x00001c00 0xabba1234 0x00001b58 0xa5a5a5a5
+4ff2cd90: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2cdb0: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+
+
+
+ELF file SHA256: 2d690a9bb
+
+Rebooting...
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0xc (SW_CPU_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4ff08366
+Core1 Saved PC:0x40023228
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M6 budget] total=33554432 display=2304000 fx_delay=352800 samples=0 reserve=4194304 free=30779004 largest=30408692 internal=231876
+[M6 SD] mounted=1 width=4 clock_khz=20000 mount_us=245021 capacity=8053063680 status=SD READY
+[M6 index] files=0 entries=0 limited=0 scan_us=2938 ps_free=30752712 largest=30408692 internal=230372
+
+# HOST STATE
+[Q COMMAND] STATE
+[Q STATE] bpm=120 swing=50 playing=0 mode=0 chain_length=0 chain_loop=0 project_busy=0 restoring=0 sample_busy=0 project_status=PROJECT READY sample_status=0 WAV files
+[Q TRACK] track=0 source=0 pitch=36 synth_pitch=36 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=0 index=0 start=0 end=65535
+[Q TRACK] track=1 source=0 pitch=39 synth_pitch=39 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=1 index=0 start=0 end=65535
+[Q TRACK] track=2 source=0 pitch=42 synth_pitch=42 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=2 index=0 start=0 end=65535
+[Q TRACK] track=3 source=0 pitch=45 synth_pitch=45 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=3 index=0 start=0 end=65535
+[Q PATTERN] index=0 length=16 masks=0000,0000,0000
+[Q LOCK] pattern=0 step=0 mask=0 slice=0
+[Q LOCK] pattern=0 step=1 mask=0 slice=0
+[Q LOCK] pattern=0 step=2 mask=0 slice=0
+[Q LOCK] pattern=0 step=3 mask=0 slice=0
+[Q PATTERN] index=1 length=16 masks=0000,0000,0000
+[Q LOCK] pattern=1 step=0 mask=0 slice=0
+[Q LOCK] pattern=1 step=1 mask=0 slice=0
+[Q LOCK] pattern=1 step=2 mask=0 slice=0
+[Q LOCK] pattern=1 step=3 mask=0 slice=0
+[Q PATTERN] index=2 length=16 masks=0000,0000,0000
+[Q LOCK] pattern=2 step=0 mask=0 slice=0
+[Q LOCK] pattern=2 step=1 mask=0 slice=0
+[Q LOCK] pattern=2 step=2 mask=0 slice=0
+[Q LOCK] pattern=2 step=3 mask=0 slice=0
+[Q PATTERN] index=3 length=16 masks=0000,0000,0000
+[Q LOCK] pattern=3 step=0 mask=0 slice=0
+[Q LOCK] pattern=3 step=1 mask=0 slice=0
+[Q LOCK] pattern=3 step=2 mask=0 slice=0
+[Q LOCK] pattern=3 step=3 mask=0 slice=0
+[Q TRANSIENT] state=0 request=0 progress=0 count=1 stale_discarded=0 apply=0 cancel=0 duration_max_us=0 chunk_max_us=0
+[Q PROPOSAL] index=0 start=0 end=65535
+[Q HEAP] tag=state internal=230692 free=30753324 largest=30408692
+[Q PLAYBACK] triggers=0 reverse=0 gate=0 releases=0 chokes=0 retriggers=0 repeat_accepts=0 repeat_hits=0 chain_loops=0

@@ -1,0 +1,168 @@
+
+before_fix_original_storage
+source_sha256=745dfeec7bcedb7fc50c1ff9110e77d33d3a8a9d4e03c534c54366026c5b26d3
+firmware_sha256=95e3211dff383eea8c1caf74301cc70b609d5d62ee9e3703443267e1aed066c7
+400054fc 000003d6 t samples::(anonymous namespace)::worker(void*)
+
+C:\progs\P4SDM\.pio\m19p-proof\.pio\build\guition_app\firmware.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .flash.text:
+
+400054fc <samples::(anonymous namespace)::worker(void*)>:
+400054fc:	7169                	addi	sp,sp,-304
+400054fe:	13212023          	sw	s2,288(sp)
+40005502:	4ff7a937          	lui	s2,0x4ff7a
+40005506:	24092783          	lw	a5,576(s2) # 4ff7a240 <__stack_chk_guard>
+4000550a:	dfbe                	sw	a5,252(sp)
+4000550c:	4781                	li	a5,0
+4000550e:	40000513          	li	a0,1024
+40005512:	12112623          	sw	ra,300(sp)
+40005516:	11612823          	sw	s6,272(sp)
+4000551a:	12812423          	sw	s0,296(sp)
+4000551e:	12912223          	sw	s1,292(sp)
+40005522:	11312e23          	sw	s3,284(sp)
+40005526:	11412c23          	sw	s4,280(sp)
+4000552a:	11512a23          	sw	s5,276(sp)
+4000552e:	11712623          	sw	s7,268(sp)
+40005532:	11812423          	sw	s8,264(sp)
+40005536:	11912223          	sw	s9,260(sp)
+4000553a:	11a12023          	sw	s10,256(sp)
+4000553e:	6a21e0ef          	jal	40023be0 <heap_caps_get_total_size>
+40005542:	ce2a                	sw	a0,28(sp)
+40005544:	40000513          	li	a0,1024
+40005548:	6d41e0ef          	jal	40023c1c <heap_caps_get_free_size>
+4000554c:	cc2a                	sw	a0,24(sp)
+4000554e:	40000513          	li	a0,1024
+40005552:	7881e0ef          	jal	40023cda <heap_caps_get_largest_free_block>
+40005556:	ca2a                	sw	a0,20(sp)
+40005558:	6505                	lui	a0,0x1
+4000555a:	80050513          	addi	a0,a0,-2048 # 800 <EXT_ILL_CSR+0x10>
+4000555e:	6be1e0ef          	jal	40023c1c <heap_caps_get_free_size>
+40005562:	47d2                	lw	a5,20(sp)
+40004cba 00000842 t samples::(anonymous namespace)::load_name(char const*)
+
+C:\progs\P4SDM\.pio\m19p-proof\.pio\build\guition_app\firmware.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .flash.text:
+
+40004cba <samples::(anonymous namespace)::load_name(char const*)>:
+40004cba:	7169                	addi	sp,sp,-304
+40004cbc:	72fd                	lui	t0,0xfffff
+40004cbe:	12112623          	sw	ra,300(sp)
+40004cc2:	12812423          	sw	s0,296(sp)
+40004cc6:	12912223          	sw	s1,292(sp)
+40004cca:	13212023          	sw	s2,288(sp)
+40004cce:	11312e23          	sw	s3,284(sp)
+40004cd2:	11412c23          	sw	s4,280(sp)
+40004cd6:	11512a23          	sw	s5,276(sp)
+40004cda:	11612823          	sw	s6,272(sp)
+40004cde:	11712623          	sw	s7,268(sp)
+40004ce2:	11812423          	sw	s8,264(sp)
+40004ce6:	11912223          	sw	s9,260(sp)
+40004cea:	11a12023          	sw	s10,256(sp)
+40004cee:	dfee                	sw	s11,252(sp)
+40004cf0:	6785                	lui	a5,0x1
+40004cf2:	9116                	add	sp,sp,t0
+40004cf4:	0bc78713          	addi	a4,a5,188 # 10bc <CSR_UINTSTATUS+0x40b>
+40004cf8:	181c                	addi	a5,sp,48
+40004cfa:	973e                	add	a4,a4,a5
+40004cfc:	4ff7a6b7          	lui	a3,0x4ff7a
+40004d00:	d62a                	sw	a0,44(sp)
+40004d02:	2406a783          	lw	a5,576(a3) # 4ff7a240 <__stack_chk_guard>
+40004d06:	c31c                	sw	a5,0(a4)
+40004d08:	4781                	li	a5,0
+40004d0a:	0330000f          	fence	rw,rw
+40004d0e:	4785                	li	a5,1
+40004d10:	4ff7a737          	lui	a4,0x4ff7a
+40004d14:	eef70623          	sb	a5,-276(a4) # 4ff79eec <samples::load_active>
+40004d18:	0330000f          	fence	rw,rw
+40004d1c:	4da130ef          	jal	400181f6 <storage::probe()>
+40004d20:	c929                	beqz	a0,40004d72 <samples::(anonymous namespace)::load_name(char const*)+0xb8>
+
+after_fix
+source_sha256=f7e9a4f3ac186fc89601dad73c256d1ce85357bc2b79bbbda6e08a0d8d881ade
+firmware_sha256=d06ac93fe46b168bb95a734d2f169713acee25c754b0aa10a894cb665e00204b
+40007250 0000011a t samples::(anonymous namespace)::worker(void*)
+
+C:\progs\P4SDM\.pio\m19p\.pio\build\guition_app\firmware.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .flash.text:
+
+40007250 <samples::(anonymous namespace)::worker(void*)>:
+40007250:	7179                	addi	sp,sp,-48
+40007252:	40000513          	li	a0,1024
+40007256:	d606                	sw	ra,44(sp)
+40007258:	d422                	sw	s0,40(sp)
+4000725a:	d226                	sw	s1,36(sp)
+4000725c:	d04a                	sw	s2,32(sp)
+4000725e:	ce4e                	sw	s3,28(sp)
+40007260:	cc52                	sw	s4,24(sp)
+40007262:	ca56                	sw	s5,20(sp)
+40007264:	c85a                	sw	s6,16(sp)
+40007266:	3a01e0ef          	jal	40025606 <heap_caps_get_total_size>
+4000726a:	c62a                	sw	a0,12(sp)
+4000726c:	40000513          	li	a0,1024
+40007270:	3d21e0ef          	jal	40025642 <heap_caps_get_free_size>
+40007274:	c42a                	sw	a0,8(sp)
+40007276:	40000513          	li	a0,1024
+4000727a:	4861e0ef          	jal	40025700 <heap_caps_get_largest_free_block>
+4000727e:	c22a                	sw	a0,4(sp)
+40007280:	6505                	lui	a0,0x1
+40007282:	80050513          	addi	a0,a0,-2048 # 800 <EXT_ILL_CSR+0x10>
+40007286:	3bc1e0ef          	jal	40025642 <heap_caps_get_free_size>
+4000728a:	4792                	lw	a5,4(sp)
+4000728c:	4722                	lw	a4,8(sp)
+4000728e:	4632                	lw	a2,12(sp)
+40007290:	882a                	mv	a6,a0
+40007292:	400715b7          	lui	a1,0x40071
+40007296:	4ff77537          	lui	a0,0x4ff77
+4000729a:	004006b7          	lui	a3,0x400
+4000729e:	3c458593          	addi	a1,a1,964 # 400713c4 <_flash_rodata_start+0x12a4>
+400072a2:	2d850513          	addi	a0,a0,728 # 4ff772d8 <HWCDCSerial>
+400072a6:	29f130ef          	jal	4001ad44 <Print::printf(char const*, ...)>
+400072aa:	00f120ef          	jal	40019ab8 <storage::mount()>
+400072ae:	c94d                	beqz	a0,40007360 <samples::(anonymous namespace)::worker(void*)+0x110>
+400072b0:	b13fd0ef          	jal	40004dc2 <samples::(anonymous namespace)::scan()>
+400072b4:	0310000f          	fence	rw,w
+400050ca 000007ba t samples::(anonymous namespace)::load_name(char const*)
+
+C:\progs\P4SDM\.pio\m19p\.pio\build\guition_app\firmware.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .flash.text:
+
+400050ca <samples::(anonymous namespace)::load_name(char const*)>:
+400050ca:	7169                	addi	sp,sp,-304
+400050cc:	4ff7a737          	lui	a4,0x4ff7a
+400050d0:	12112623          	sw	ra,300(sp)
+400050d4:	12812423          	sw	s0,296(sp)
+400050d8:	12912223          	sw	s1,292(sp)
+400050dc:	13212023          	sw	s2,288(sp)
+400050e0:	11312e23          	sw	s3,284(sp)
+400050e4:	11412c23          	sw	s4,280(sp)
+400050e8:	11512a23          	sw	s5,276(sp)
+400050ec:	11612823          	sw	s6,272(sp)
+400050f0:	11712623          	sw	s7,268(sp)
+400050f4:	11812423          	sw	s8,264(sp)
+400050f8:	11912223          	sw	s9,260(sp)
+400050fc:	11a12023          	sw	s10,256(sp)
+40005100:	dfee                	sw	s11,252(sp)
+40005102:	d22a                	sw	a0,36(sp)
+40005104:	24072783          	lw	a5,576(a4) # 4ff7a240 <__stack_chk_guard>
+40005108:	d7be                	sw	a5,236(sp)
+4000510a:	4781                	li	a5,0
+4000510c:	0330000f          	fence	rw,rw
+40005110:	4785                	li	a5,1
+40005112:	4ff7a737          	lui	a4,0x4ff7a
+40005116:	eef70823          	sb	a5,-272(a4) # 4ff79ef0 <samples::load_active>
+4000511a:	0330000f          	fence	rw,rw
+4000511e:	2ff140ef          	jal	40019c1c <storage::probe()>
+40005122:	e91d                	bnez	a0,40005158 <samples::(anonymous namespace)::load_name(char const*)+0x8e>
+40005124:	12b140ef          	jal	40019a4e <storage::status()>
+40005128:	b98ff0ef          	jal	400044c0 <samples::(anonymous namespace)::report(char const*)>
+4000512c:	d202                	sw	zero,36(sp)
+4000512e:	0330000f          	fence	rw,rw
+4ff186d8 00001000 b samples::(anonymous namespace)::load_name(char const*)::chunk
