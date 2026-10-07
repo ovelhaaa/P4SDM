@@ -8,7 +8,8 @@ M15 was merged through PR #4 into `main` at `ef6f7e792544b2c3566a3718a8c08f77492
 
 - `3862514`: canonical model/codec, dual slots, storage integration, bounded snapshot/apply, sample retirement/restoration, project UI, host tests and qualification environments.
 - `adec077`: reject any future-version slot before choosing an older supported fallback, preserving the current project and future-format files.
-- Evidence/report/CI commit: the commit containing this document and final captures.
+- `70b9e75`: evidence, report, README and complete M16 CI coverage.
+- Final documentation follow-up: links to the evidence-head remote CI runs; no firmware changes.
 
 Changed implementation: `src/app/project.h`, `projects.h/.cpp`, `project_ui.h`, `samples.h/.cpp`, `model.h`, `app_main.cpp`; environments in `platformio.ini`; `tests/project_test.cpp`, `no_project_equivalence.py/.cpp`, `analyze_m16.py`; CI, README, this report and genuine serial logs. Existing PCM/sampler render, WAV decoder, SliceBank, clock, accepted-parent resolution, synth and FX processing algorithms remain unchanged. Unavailable SAMPLE triggers explicitly stay silent instead of starting a synth voice.
 
@@ -113,7 +114,7 @@ Each was uploaded, reset and captured with `tests/capture_guition.py`; final log
 
 CI retains M3–M15 builds/tests/analyzers and adds both M16 firmware modes, V1 roundtrip/corruption/recovery/no-allocation/UI tests, actual M15 idle equivalence and final M16 SAMPLE/SYNTH/normal analyzers. It never depends on physical SD.
 
-Remote CI: awaiting the evidence-head PR/push pipelines; this line will be updated with verified run links.
+Remote CI for evidence revision `70b9e7518c4b501e935f4957ca7dc61ddc831438`: [PR pipeline](https://github.com/ovelhaaa/P4SDM/actions/runs/37569884123) and [push pipeline](https://github.com/ovelhaaa/P4SDM/actions/runs/37569874337). These links expose the verified run results and all retained/new checks. Merge is gated on successful remote pipelines, including the final documentation follow-up revision.
 
 Physical checklist remains pending: format an SD with `/P4SDM/SAMPLES`, assign WAVs, save while playing, save again, power-cycle and restore all musical fields; test SYNTH remembered references, missing/rejected WAVs, duplicate residency, all locks/slices, overwrite/dirty confirmation and NEW retirement; corrupt/truncate the newest slot and verify fallback; remove power/card during header/payload/flush/readback and load/sample resolution; verify real free-space failures, playable output and touch usability. Preserve genuine captures for these checks.
 
