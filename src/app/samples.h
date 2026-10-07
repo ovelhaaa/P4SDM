@@ -27,4 +27,8 @@ unsigned revision();
 void describe(int index, char *destination, unsigned size);
 void track_name(unsigned track, char *destination, unsigned size);
 void message(char *destination, unsigned size);
+// Project lifecycle: detach on audio boundary, retire/restore on storage task.
+void detach_project_samples();
+void retire_project_samples();
+bool restore(unsigned track, const char *reference);
 } // namespace samples

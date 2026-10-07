@@ -788,7 +788,8 @@ enum class Page {
   ToneLocks,
   SamplePlayback,
   SampleSlice,
-  SampleLocks
+  SampleLocks,
+  Project
 };
 struct Ui {
   Page page = Page::Sequence;
@@ -941,6 +942,14 @@ struct Ui {
   }
 };
 inline Rect widget(int id) {
+  if (id == 153)
+    return {24, 310, 200, 52}; // FX -> PROJECT
+  if (id >= 154 && id <= 157)
+    return {24 + (id - 154) % 2 * 384, 152 + (id - 154) / 2 * 68, 368, 56};
+  if (id >= 158 && id <= 160)
+    return {24 + (id - 158) * 256, 300, 240, 56};
+  if (id == 161)
+    return {24, 368, 752, 48};
   if (id == 148)
     return {24, 100, 752, 56};
   if (id == 149)
@@ -1069,6 +1078,14 @@ inline Rect widget(int id) {
   return {24, 340, 200, 56};
 }
 inline int hit(Page p, int x, int y) {
+  if (p == Page::Project) {
+    for (int id = 154; id <= 160; ++id)
+      if (widget(id).contains(x, y))
+        return id;
+    return -1;
+  }
+  if (p == Page::Fx && widget(153).contains(x, y))
+    return 153;
   for (int i = p == Page::SampleSlice ? 34 : 29; i <= 35; ++i)
     if (widget(i).contains(x, y))
       return i;

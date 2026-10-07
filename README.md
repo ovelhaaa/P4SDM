@@ -478,7 +478,7 @@ A resident Sample owns a completed 360-column min/max waveform (1440 bytes),
 built outside audio before publication. Display redraw uses those bins and
 existing framebuffer caching, never a PCM scan. Pattern tools do not modify
 slices; M14 retained eight-byte StepLocks. M15 adds Slice Lock below. No onset
-detection, time-stretch, persistence or MIDI is implemented.
+detection, time-stretch or MIDI is implemented. M16 persistence is below.
 
 `guition_sample_slice_stress` retains sixteen distinct PSRAM buffers and the
 M13 dense workload. See [M14 qualification](docs/GUITION_M14.md) for genuine
@@ -503,4 +503,26 @@ unchanged. Normal pad/inspected-slice auditions ignore step locks.
 
 `guition_slice_lock_stress` extends the full M14 workload. See
 [M15 qualification](docs/GUITION_M15.md) for host/equivalence checks, genuine
-SAMPLE/SYNTH/normal results, memory and physical SD status. Work stops at M15.
+SAMPLE/SYNTH/normal results, memory and physical SD status. M15 is merged into main.
+
+
+## M16 projects
+
+Open FX -> PROJECT for manual SAVE, SAVE AS, LOAD and NEW. SAVE AS uses generated
+names with Previous/Next and confirmation; LOAD provides a bounded browser and
+confirms before replacing unsaved edits. NEW also works without an SD card.
+Projects load STOPPED, then restore remembered WAV basenames one Track at a time.
+Missing/rejected WAVs retain their reference and SAMPLE source and stay silent.
+
+V1 explicitly encodes all canonical musical fields, all eight locks and all
+slice regions in a CRC32-protected 52,637-byte file. Two verified generations at
+`/P4SDM/PROJECTS/<NAME>/A.P4P` and `B.P4P` preserve the previous valid file during
+an interrupted new write. Runtime DSP/clock/voice/pointer state is excluded.
+Filesystem and serialization belong to the storage task; audio snapshots and
+applies metadata in bounded blocks. No autosave, sample embedding or deduplication.
+
+See [M16 qualification](docs/GUITION_M16.md) for format, lifecycle, genuine device
+metrics, host/recovery/equivalence checks, memory, CI and known limits.
+**PHYSICAL PROJECT SAVE/LOAD PENDING**: no working SD was available for real
+power-cycle, card-removal, audible and physical touchscreen validation.
+Work stops at M16.

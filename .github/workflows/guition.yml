@@ -12,7 +12,7 @@ jobs:
           python-version: '3.11.7'
       - run: pip install platformio==6.1.18
       # platformio.ini pins hardware-validated pioarduino 55.03.36-1.
-      - run: pio run -e guition_boot -e guition_audio -e guition_synth -e guition_fx -e guition_display -e guition_ui_audio -e guition_ui_audio_m41 -e guition_app -e guition_app_stress -e guition_sampler_stress -e guition_sample_playback_stress -e guition_sample_slice_stress -e guition_slice_lock_stress
+      - run: pio run -e guition_boot -e guition_audio -e guition_synth -e guition_fx -e guition_display -e guition_ui_audio -e guition_ui_audio_m41 -e guition_app -e guition_app_stress -e guition_sampler_stress -e guition_sample_playback_stress -e guition_sample_slice_stress -e guition_slice_lock_stress -e guition_project_stress -e guition_project_synth_stress
       - run: g++ -std=c++17 -Wall -Wextra -Werror tests/pcm_mono_test.cpp -o /tmp/pcm_mono_test && /tmp/pcm_mono_test
       - run: g++ -std=c++17 -Wall -Wextra -Werror -Itests/fx_stubs tests/fx_safety_test.cpp -o /tmp/fx_safety_test && /tmp/fx_safety_test
       - run: python tests/compare_fx_baseline.py
@@ -78,3 +78,9 @@ jobs:
       - run: python tests/analyze_m15.py docs/GUITION_M15_SAMPLE_STRESS_SERIAL.log
       - run: python tests/analyze_m15.py docs/GUITION_M15_SYNTH_STRESS_SERIAL.log --synth
       - run: python tests/analyze_m15.py docs/GUITION_M15_NORMAL_SERIAL.log --normal
+
+      - run: g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/project_test.cpp -o /tmp/project_test && /tmp/project_test
+      - run: python tests/no_project_equivalence.py
+      - run: python tests/analyze_m16.py docs/GUITION_M16_SAMPLE_STRESS_SERIAL.log
+      - run: python tests/analyze_m16.py docs/GUITION_M16_SYNTH_STRESS_SERIAL.log --synth
+      - run: python tests/analyze_m16.py docs/GUITION_M16_NORMAL_SERIAL.log --normal

@@ -6,6 +6,8 @@ app::Engine engine, view;
 app::VoiceState voice_state[16]{};
 uint8_t voice_delay_send[16]{};
 } // namespace
+#include "app/project_ui.h"
+#include "app/projects.h"
 #include "app/qualification.h"
 #include "app/samples.h"
 #include <cstdarg>
@@ -62,10 +64,11 @@ std::atomic<uint32_t> diagnostic_p99{0}, diagnostic_max{0},
 std::atomic<uint32_t> flashes[16];
 bool delay_ready = false;
 int sample_index = 0;
-bool dirty[153]{};
+bool dirty[162]{};
 bool full = true;
 uint32_t rejected = 0, touch_errors = 0, frames = 0, full_frames = 0;
-uint32_t actions[153]{}, drags = 0;
+uint32_t actions[162]{}, drags = 0;
+project::Workflow project_ui;
 uint64_t dirty_bytes = 0, normal_dirty_bytes = 0;
 unsigned normal_frames = 0;
 uint32_t normal_dirty_max = 0;
@@ -215,7 +218,7 @@ void trigger(app::TriggerEvent event, bool ratchet = false) {
       slice_metrics.max_frames =
           std::max(slice_metrics.max_frames, r.end - r.start);
     }
-  } else
+  } else if (!engine.tracks[t].sample)
     synthESP32_TRIGGER_P(t, event.pitch);
   flashes[t].fetch_add(1, std::memory_order_relaxed);
 }
@@ -243,6 +246,8 @@ void update_track(int t) {
     samples::voices[t].set_increment(sampler::pitch_increment(effective.pitch));
 }
 bool send(app::Command c) {
+  if (projects::locked())
+    return false;
   if (c.kind == app::Kind::Pitch)
     c.pitch_source = view.tracks[c.track].sample
                          ? app::Command::PitchSource::Sample
@@ -303,6 +308,48 @@ void draw_waveform() {
       std::max(waveform_redraw_max, uint32_t(esp_timer_get_time() - started));
 }
 void draw(int id) {
+  if (id >= 153 && id <= 161) {
+    char text[128]{};
+    const auto r = app::widget(id);
+    if (id == 161) {
+      projects::status(text, sizeof(text));
+    } else if (id == 153)
+      strlcpy(text, "PROJECT", sizeof(text));
+    else if (project_ui.mode == project::Workflow::Mode::Confirm) {
+      if (id == 154)
+        strlcpy(text, "CONFIRM", sizeof(text));
+      if (id == 155)
+        strlcpy(text, "CANCEL", sizeof(text));
+      if (id == 156)
+        snprintf(text, sizeof(text), "%s", project_ui.target);
+    } else if (project_ui.mode == project::Workflow::Mode::Browser ||
+               project_ui.mode == project::Workflow::Mode::Naming) {
+      if (id == 154)
+        strlcpy(text, "PREVIOUS", sizeof(text));
+      if (id == 155)
+        strlcpy(text, "NEXT", sizeof(text));
+      if (id == 156) {
+        if (project_ui.mode == project::Workflow::Mode::Browser)
+          projects::describe(project_ui.selection, text, sizeof(text));
+        else
+          strlcpy(text, project_ui.target, sizeof(text));
+      }
+      if (id == 157)
+        strlcpy(text,
+                project_ui.mode == project::Workflow::Mode::Browser
+                    ? "LOAD SELECTED"
+                    : "SAVE THIS NAME",
+                sizeof(text));
+    } else {
+      const char *labels[] = {"SAVE", "SAVE AS", "LOAD", "NEW", "", "", "BACK"};
+      strlcpy(text, labels[id - 154], sizeof(text));
+    }
+    if (id == 160)
+      strlcpy(text, "BACK", sizeof(text));
+    display::rect(r.x, r.y, r.w, r.h, panel);
+    display::text(r.x + 8, r.y + 12, text, white, id == 161 ? 1 : 2);
+    return;
+  }
   if (id == 147) {
     display::rect(40, 82, 720, 16, bg);
     display::text(40, 82, slice_notice, white, 1);
@@ -686,6 +733,74 @@ void header() {
   tempo_header();
 }
 void interact(int id, int x, bool initial) {
+  if (id == 153 && initial) {
+    project_ui.cancel();
+    ui.page = app::Page::Project;
+    full = true;
+    return;
+  }
+  if (ui.page == app::Page::Project) {
+    if (!initial || projects::busy())
+      return;
+    if (id == 160) {
+      project_ui.cancel();
+      ui.page = app::Page::Fx;
+      full = true;
+      return;
+    }
+    using Mode = project::Workflow::Mode;
+    using Op = projects::Operation;
+    bool submit = false;
+    if (project_ui.mode == Mode::Confirm) {
+      if (id == 154)
+        submit = true;
+      if (id == 155)
+        project_ui.cancel();
+    } else if (project_ui.mode == Mode::Browser) {
+      if (id == 154 && project_ui.selection)
+        --project_ui.selection;
+      if (id == 155 && project_ui.selection + 1 < projects::count())
+        ++project_ui.selection;
+      if (id == 157 && projects::count()) {
+        char name[32];
+        projects::describe(project_ui.selection, name, sizeof(name));
+        submit = project_ui.confirm(Op::Load, name, projects::dirty());
+      }
+    } else if (project_ui.mode == Mode::Naming) {
+      if (id == 154 && project_ui.generated > 1)
+        --project_ui.generated;
+      if (id == 155 && project_ui.generated < 9999)
+        ++project_ui.generated;
+      project_ui.generated_name();
+      if (id == 157) {
+        char name[32];
+        strlcpy(name, project_ui.target, sizeof(name));
+        submit = project_ui.confirm(Op::SaveAs, name, true);
+      }
+    } else if (id == 154) {
+      char name[32];
+      projects::current(name, sizeof(name));
+      if (!strcmp(name, "UNTITLED")) {
+        project_ui.mode = Mode::Naming;
+        project_ui.generated_name();
+        projects::request(Op::Scan);
+      } else
+        submit = project_ui.confirm(Op::Save, name, false);
+    } else if (id == 155) {
+      project_ui.mode = Mode::Naming;
+      project_ui.generated_name();
+      projects::request(Op::Scan);
+    } else if (id == 156) {
+      project_ui.mode = Mode::Browser;
+      project_ui.selection = 0;
+      projects::request(Op::Scan);
+    } else if (id == 157)
+      submit = project_ui.confirm(Op::New, "UNTITLED", projects::dirty());
+    if (submit && projects::request(project_ui.pending, project_ui.target))
+      project_ui.cancel();
+    full = true;
+    return;
+  }
   if (id >= 131 && id <= 146) {
     if (initial && (id == 131 || id == 146)) {
       ui.page = id == 131 ? app::Page::SampleSlice : app::Page::SamplePlayback;
@@ -1176,6 +1291,41 @@ void ui_task(void *) {
                largest_before =
                    heap_caps_get_largest_free_block(MALLOC_CAP_SPIRAM);
   for (;;) {
+    static unsigned project_revision = 0, project_changes = 0;
+    if (projects::handoff.load(std::memory_order_acquire) ==
+            projects::Handoff::ApplyReady &&
+        !projects::view_ready.load()) {
+      for (unsigned part = 0; part <= 16; ++part)
+        project::apply_part(view, *projects::staging, part);
+      ui.selected_step = -1;
+      ui.capture = -1;
+      ui.down = false;
+      app::Command stale;
+      while (input_events.pop(stale)) {
+      }
+      ui.cancel_tool();
+      ui.cancel_pattern_action();
+      sent_commands = uint16_t(pattern_status.load() >> 16);
+      projects::view_ready.store(true, std::memory_order_release);
+      full = true;
+    }
+    if (project_revision != projects::revision.load() ||
+        project_changes != projects::changes.load()) {
+      project_revision = projects::revision.load();
+      project_changes = projects::changes.load();
+      if (ui.page == app::Page::Project)
+        full = true;
+    }
+#if P4SDM_PROJECT_STRESS
+    static unsigned project_runs = 0;
+    if (millis() - started > 22000 + project_runs * 12000 && project_runs < 3 &&
+        !projects::busy()) {
+      if (projects::request(projects::Operation::Fixture))
+        ++project_runs;
+    }
+    if (project_runs && !projects::busy() && !view.playing)
+      send({app::Kind::Play, 0, 1});
+#endif
     static unsigned sample_revision = 0;
     unsigned revision = samples::revision();
     if (revision != sample_revision) {
@@ -1183,7 +1333,8 @@ void ui_task(void *) {
       dirty[38] = dirty[132] = true;
       for (unsigned t = 0; t < 16; ++t)
         if (samples::assigned(t)) {
-          view.tracks[t].assigned();
+          if (!projects::restoring.load())
+            view.tracks[t].assigned();
           if (int(t) == ui.selected) {
             for (int i = 133; i <= 142; ++i)
               dirty[i] = true;
@@ -1670,11 +1821,21 @@ void ui_task(void *) {
             draw(i);
           draw(123);
           sample_status();
+        } else if (ui.page == app::Page::Project) {
+          char name[64];
+          projects::current(name, sizeof(name));
+          char line[96];
+          snprintf(line, sizeof(line), "PROJECT: %s%s", name,
+                   projects::dirty() ? " *" : "");
+          display::text(24, 108, line, accent, 2);
+          for (int i = 154; i <= 161; ++i)
+            draw(i);
         } else {
           draw(36);
           display::text(24, 210, "INTERNAL DELAY / NO SD REQUIRED", white, 2);
+          draw(153);
         }
-        if (ui.page != app::Page::SampleSlice)
+        if (ui.page != app::Page::SampleSlice && ui.page != app::Page::Project)
           for (int i = 29; i < 34; ++i)
             draw(i);
         ++full_frames;
@@ -1690,7 +1851,7 @@ void ui_task(void *) {
           snprintf(title, sizeof(title), "P4SDM T%02d", ui.selected + 1);
           display::text(16, 24, title, white, 2);
         }
-        for (int i = 0; i < 153; ++i)
+        for (int i = 0; i < 162; ++i)
           if (dirty[i] &&
               (((i >= 132 && i <= 147 && ui.page == app::Page::SampleSlice) ||
                 (i >= 124 && i <= 131 &&
@@ -1859,7 +2020,8 @@ void touch_worker(void *) {
     else {
       if (state.pressed != down ||
           (state.pressed && (state.x != x || state.y != y))) {
-        if (state.pressed && !down && visible_page.load() == 0) {
+        if (state.pressed && !down && visible_page.load() == 0 &&
+            !projects::locked()) {
           int id = app::hit(app::Page::Sequence, state.x, state.y);
           if (id >= 16 && id < 24 &&
               !pad.press(visible_bank.load() * 8 + id - 16, pad_triggers))
@@ -1878,6 +2040,65 @@ void touch_worker(void *) {
     }
     delay(8);
   }
+}
+unsigned project_boundary() {
+  static projects::Handoff previous = projects::Handoff::Idle;
+  static unsigned part = 0, clear = 0;
+  auto phase = projects::handoff.load(std::memory_order_acquire);
+  if (phase != previous) {
+    part = clear = 0;
+    previous = phase;
+  }
+  if (phase == projects::Handoff::Snapshot) {
+    project::snapshot_part(engine, *projects::staging, part);
+    if (!part) {
+      memcpy(projects::staging->references, projects::references,
+             sizeof(projects::references));
+      projects::applied_revision.store(projects::changes.load());
+    }
+    if (++part == 17)
+      projects::handoff.store(projects::Handoff::SnapshotReady,
+                              std::memory_order_release);
+    return 1;
+  }
+  if (phase == projects::Handoff::Apply) {
+    if (part <= 16) {
+      project::apply_part(engine, *projects::staging, part);
+      if (!part) {
+        is_delay = false;
+        delays = 0;
+        if (!projects::keep_resident.load())
+          samples::detach_project_samples();
+        for (unsigned t = 0; t < 16; ++t) {
+          samples::voices[t].stop();
+          PITCH[t] = 255;
+          AMP[t] = 0;
+          FILTROS[t].reset();
+          voice_state[t] = {};
+          update_track(t);
+        }
+        memcpy(projects::references, projects::staging->references,
+               sizeof(projects::references));
+      }
+      ++part;
+    } else {
+      const unsigned n = std::min(1024u, unsigned(myDelay.len) - clear);
+      if (n) {
+        memset(myDelay.lBuffer + clear, 0, n * sizeof(int16_t));
+        memset(myDelay.rBuffer + clear, 0, n * sizeof(int16_t));
+        clear += n;
+      }
+      if (clear == unsigned(myDelay.len)) {
+        myDelay.writeIndex = 0;
+        is_delay = delay_ready && engine.delay;
+        delays = is_delay ? 0xffff : 0;
+        projects::handoff.store(projects::Handoff::ApplyReady,
+                                std::memory_order_release);
+      }
+    }
+    return 2;
+  }
+  return 0;
 }
 void audio_worker(void *) {
   for (;;) {
@@ -1909,7 +2130,9 @@ void audio_worker(void *) {
     int sample_track = samples::transfer.consume(samples::voices);
     if (sample_track >= 0) {
       unsigned t = unsigned(sample_track);
-      engine.tracks[t].assigned();
+      if (!projects::restoring.load())
+        engine.tracks[t].assigned();
+      projects::assigned(t, samples::voices[t].sample->name);
       PITCH[t] = 255;
       AMP[t] = 0;
       FILTROS[t].reset();
@@ -1923,7 +2146,16 @@ void audio_worker(void *) {
     const unsigned choke_before = playback_metrics.choke_ops,
                    retrigger_before = playback_metrics.retriggers;
     const unsigned coefficients_before = tone_lock_metrics.coefficients;
-    for (unsigned n = 0; n < 16 && commands.pop(c); ++n) {
+    if (projects::handoff.load() == projects::Handoff::Apply) {
+      // Discard edits/pads queued for the old project, acknowledging UI count.
+      while (commands.pop(c))
+        ++applied_commands;
+      while (pad_triggers.pop(c)) {
+      }
+    }
+    const unsigned project_phase = project_boundary();
+    for (unsigned n = 0; n < 16 && !projects::locked() && commands.pop(c);
+         ++n) {
       if (c.track >= 16)
         continue;
       const bool slice_lock_edit =
@@ -1934,6 +2166,7 @@ void audio_worker(void *) {
             (engine.patterns[c.pattern].locks[c.track][c.step].mask &
              app::SLICE_LOCK)));
       engine.apply(c);
+      projects::edited(c.kind);
       if (slice_lock_edit)
         slice_lock_command_edits.fetch_add(1, std::memory_order_relaxed);
       slice_edited |= slice_lock_edit;
@@ -1984,7 +2217,8 @@ void audio_worker(void *) {
       } else if (c.kind >= app::Kind::Volume && c.kind <= app::Kind::Wave)
         update_track(c.track);
     }
-    for (unsigned n = 0; n < 16 && pad_triggers.pop(c); ++n)
+    for (unsigned n = 0; n < 16 && !projects::locked() && pad_triggers.pop(c);
+         ++n)
       if (c.track >= 16)
         continue;
       else if (c.kind == app::Kind::GateRelease)
@@ -1994,6 +2228,8 @@ void audio_worker(void *) {
         engine.audition(c.track, [](app::TriggerEvent e) { trigger(e); });
     render_buffer();
     auto us = uint32_t(esp_timer_get_time() - start);
+    if (project_phase)
+      projects::measured(project_phase == 1, us);
     unsigned b = captured.load(std::memory_order_relaxed);
     if (b < capture_blocks) {
       if (slice_edited) {
@@ -2346,6 +2582,7 @@ static void initialize(void *) {
   setup_playback_fixture();
 #endif
   tone_lock_metrics = {};
+  projects::initialize();
   xTaskCreatePinnedToCore(audio_worker, "app_audio", 8000, nullptr,
                           configMAX_PRIORITIES - 1, nullptr, 0);
   samples::start();
@@ -2464,6 +2701,15 @@ void loop() {
           }
           return residue;
         }()));
+    summary_printf(
+        "[M16 project] state_bytes=%u file_bytes=%u snapshot_blocks=%u "
+        "snapshot_max=%u apply_blocks=%u apply_max=%u fixtures=%u "
+        "fixture_errors=%u dirty=%u physical_pending=1\n",
+        unsigned(sizeof(project::State)), project::file_bytes,
+        projects::snapshot_blocks.load(), projects::snapshot_max.load(),
+        projects::apply_blocks.load(), projects::apply_max.load(),
+        projects::fixtures.load(), projects::fixture_errors.load(),
+        projects::dirty());
     summary_printf("[M13 dense] blocks=%u active_min=%u\n", dense_sample_blocks,
                    dense_sample_min);
     const auto &pm = playback_result;

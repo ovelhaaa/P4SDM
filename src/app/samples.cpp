@@ -2,6 +2,7 @@
 #include "../hal/storage_hal.h"
 #include "esp_heap_caps.h"
 #include "esp_timer.h"
+#include "projects.h"
 #include "qualification.h"
 namespace samples {
 std::atomic<unsigned> waveform_builds{0}, waveform_build_max{0},
@@ -24,6 +25,7 @@ unsigned target = 0;
 portMUX_TYPE lock = portMUX_INITIALIZER_UNLOCKED;
 size_t payload = 0;
 const sampler::Sample *previews[16]{};
+sampler::Sample *owned[16]{}, *project_retired[16]{};
 void report(const char *s) {
   portENTER_CRITICAL(&lock);
   strlcpy(info, s, sizeof(info));
@@ -77,21 +79,23 @@ void scan() {
                 unsigned(heap_caps_get_largest_free_block(MALLOC_CAP_SPIRAM)),
                 unsigned(heap_caps_get_free_size(MALLOC_CAP_INTERNAL)));
 }
-void load(int index) {
+bool load_name(const char *name) {
   struct Interval {
     Interval() { load_active.store(true); }
     ~Interval() { load_active.store(false); }
   } interval;
   if (!storage::probe()) {
     report(storage::status());
-    return;
+    return false;
   }
   char path[128];
-  snprintf(path, sizeof(path), "/P4SDM/SAMPLES/%s", names[index]);
+  if (!project::reference_valid(name) || !name[0])
+    return false;
+  snprintf(path, sizeof(path), "/P4SDM/SAMPLES/%s", name);
   File file = storage::open(path);
   if (!file) {
     report("Cannot open WAV");
-    return;
+    return false;
   }
   unsigned file_bytes = file.size();
   sampler::Wav wav;
@@ -103,26 +107,26 @@ void load(int index) {
   const char *error = sampler::parse(file.size(), read, wav);
   if (error) {
     report(error);
-    return;
+    return false;
   }
   size_t bytes = size_t(wav.frames) * 2;
   size_t free = heap_caps_get_free_size(MALLOC_CAP_SPIRAM),
          largest = heap_caps_get_largest_free_block(MALLOC_CAP_SPIRAM);
   if (!sampler::fits_budget(bytes, free, largest)) {
     report("Sample exceeds PSRAM budget");
-    return;
+    return false;
   }
   auto *s = new (std::nothrow) sampler::Sample;
   if (!s) {
     report("Metadata allocation failed");
-    return;
+    return false;
   }
   s->data =
       (int16_t *)heap_caps_malloc(bytes, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
   if (!s->data) {
     delete s;
     report("PSRAM allocation failed");
-    return;
+    return false;
   }
   s->original_channels = wav.channels;
   s->rate = wav.rate;
@@ -130,14 +134,14 @@ void load(int index) {
   s->allocation = bytes;
   payload += bytes;
   size_t peak_payload = payload;
-  strlcpy(s->name, names[index], sizeof(s->name));
+  strlcpy(s->name, name, sizeof(s->name));
   uint8_t chunk[4096];
   unsigned frame = 0;
   if (!file.seek(wav.offset)) {
     destroy(s);
     storage::io_error();
     report("WAV seek failed");
-    return;
+    return false;
   }
   while (frame < wav.frames) {
     unsigned frames = std::min<uint32_t>(1024, wav.frames - frame),
@@ -146,7 +150,7 @@ void load(int index) {
       destroy(s);
       storage::io_error();
       report("Short WAV read / card removed");
-      return;
+      return false;
     }
     for (unsigned j = 0; j < frames; ++j) {
       s->data[frame + j] =
@@ -163,10 +167,12 @@ void load(int index) {
     vTaskDelay(1);
   publish_preview(target, s);
   destroy(transfer.retired.exchange(nullptr));
+  owned[target] = s;
   portENTER_CRITICAL(&lock);
   strlcpy(assigned_names[target], s->name, 96);
   portEXIT_CRITICAL(&lock);
-  assignments.fetch_or(uint16_t(1u << target));
+  if (!projects::restoring.load())
+    assignments.fetch_or(uint16_t(1u << target));
   report("SAMPLE READY");
   Serial.printf("[M6 read] bytes=%u read_us=%llu bytes_per_second=%llu "
                 "original_channels=%u rate=%u total_psram=%u\n",
@@ -188,7 +194,9 @@ void load(int index) {
       "[M6.1 replacement] retired_clear=%d ps_delta=%lld status=READY\n",
       transfer.retired.load() == nullptr,
       (long long)free - (long long)heap_caps_get_free_size(MALLOC_CAP_SPIRAM));
+  return true;
 }
+void load(int index) { load_name(names[index]); }
 #if P4SDM_SAMPLER_QUALIFICATION
 int fixture(const char *name) {
   for (unsigned i = 0; i < indexed; ++i)
@@ -283,6 +291,7 @@ void worker(void *) {
                    "mounted card)");
 #endif
   for (;;) {
+    projects::poll();
     int index = job.exchange(-1, std::memory_order_acquire);
     if (index >= 0) {
       report("LOADING");
@@ -340,7 +349,8 @@ void start() {
 }
 bool request(unsigned track, int index) {
   if (track >= 16 || index < 0 || unsigned(index) >= indexed ||
-      storage::state() != storage::State::Ready || working.exchange(true))
+      projects::busy() || storage::state() != storage::State::Ready ||
+      working.exchange(true))
     return false;
   target = track;
   job.store(index, std::memory_order_release);
@@ -365,12 +375,47 @@ void describe(int i, char *d, unsigned n) {
 }
 void track_name(unsigned t, char *d, unsigned n) {
   portENTER_CRITICAL(&lock);
-  strlcpy(d, assigned_names[t][0] ? assigned_names[t] : "SYNTH", n);
+  if (assigned_names[t][0] && !previews[t])
+    snprintf(d, n, "MISSING SAMPLE T%02u", t + 1);
+  else
+    strlcpy(d, assigned_names[t][0] ? assigned_names[t] : "SYNTH", n);
   portEXIT_CRITICAL(&lock);
 }
 void message(char *d, unsigned n) {
   portENTER_CRITICAL(&lock);
   strlcpy(d, info, n);
   portEXIT_CRITICAL(&lock);
+}
+void detach_project_samples() {
+  // No producer can publish concurrently: project operation owns storage task.
+  portENTER_CRITICAL(&lock);
+  for (unsigned t = 0; t < 16; ++t) {
+    project_retired[t] = owned[t];
+    previews[t] = nullptr;
+    transfer.active[t] = nullptr;
+    voices[t].assign(nullptr);
+  }
+  portEXIT_CRITICAL(&lock);
+  assignments.store(0);
+}
+void retire_project_samples() {
+  for (unsigned t = 0; t < 16; ++t) {
+    destroy(project_retired[t]);
+    project_retired[t] = owned[t] = nullptr;
+    portENTER_CRITICAL(&lock);
+    assigned_names[t][0] = 0;
+    portEXIT_CRITICAL(&lock);
+  }
+  changed.fetch_add(1);
+}
+bool restore(unsigned t, const char *ref) {
+  target = t;
+  // Remember unavailable references too; UI can identify the missing Track.
+  portENTER_CRITICAL(&lock);
+  strlcpy(assigned_names[t], ref, 96);
+  portEXIT_CRITICAL(&lock);
+  bool ok = load_name(ref);
+  changed.fetch_add(1);
+  return ok;
 }
 } // namespace samples
