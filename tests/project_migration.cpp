@@ -55,6 +55,12 @@ int main() {
   auto preserved = v1;
   static project::State state;
   assert(project::decode(v1.data(), v1.size(), state) == project::Error::Ok);
+  for (unsigned n = 0; n < v1.size(); ++n)
+    assert(project::decode(v1.data(), n, state) != project::Error::Ok);
+  auto trailing = v1;
+  trailing.push_back(0);
+  assert(project::inspect(trailing.data(), trailing.size(), state) ==
+         project::Error::Size);
   assert(!state.chain.length && !state.chain.loop &&
          state.mode == app::TransportMode::Pattern);
   assert(project::encode(state, 11, v2.data(), v2.size()));

@@ -1,0 +1,49 @@
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0x17 (CHIP_USB_UART_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4000f34c
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M13 fixture] voices=16 frames=65536 bytes=2097152 psram=1
+[M6 budget] total=33554432 display=2304000 fx_delay=352800 samples=0 reserve=4194304 free=28616312 largest=28311540 internal=274824
+E (3644) sdmmc_common: sdmmc_init_ocr: send_op_cond (1) returned 0x107
+E (3645) vfs_fat_sdmmc: sdmmc_card_init failed (0x107).
+[  1382][E][SD_MMC.cpp:307] begin(): Failed to initialize the card (0x107). Make sure SD card lines have pull-up resistors in place.
+[M6 SD] mounted=0 width=4 clock_khz=20000 mount_us=260685 capacity=0 status=NO CARD / MOUNT ERROR
+[M5] blocks=10337 p50=2743 p95=3469 p99=3568 max=3799 misses=0 failures=0 timeouts=0 peak=4473 nonzero=5115667 rails=0 active_min=0 active_max=16
+[M8 groove] parents=7280 passed=6735 skipped=545 ratchets=18861 pending_max=48 velocity_min=1 velocity_max=127 swing_changes=8
+[M8 worst] blocks=2068 bpm=240 voices=16 ratchet=4 swing=50 delay=1 max=3799 triggers=12304 triggers_per_second=1024
+[MEM] M8 after 60s PSRAM total=33554432 free=28616312 largest=28311540 internal_free=273816
+[M10 locks] locked=6693 unlocked=42 pitch=6665 volume=6664 pan=6659 wave=0 pattern_bytes=3106 bank_bytes=49696 engine_bytes=52160
+[M11 tone] cutoff=558 resonance=559 send=558 cutoff_min=0 cutoff_max=127 resonance_min=0 resonance_max=127 send_min=0 send_max=127 blocks=558 max=3799 dense=2068 dense_max=3799
+[M12 locks] cutoff=6670 resonance=6647 send=6658 coefficients=7288 avoided=19866 send_changes=7057 coefficient_blocks=845 coefficient_max=3730 edit_blocks=176 edit_max=3648 commands=139 step_bytes=9 event_bytes=20 voice_bytes=384 idle_residue=0
+[M17 chain] starts=4 advances=102 repeats=15 loops=1 stops=0 switches=101 min_length=1 max_length=16 boundary_max=3730 seen=4294967295 entry_bytes=2 chain_bytes=66 engine_bytes=52160
+[M17 UI] entries=18 edits=10 rows=9 scrolls=2
+[M16 project] state_bytes=53192 file_bytes=52704 snapshot_blocks=51 snapshot_max=3603 apply_blocks=312 apply_max=2076 fixtures=3 fixture_errors=0 dirty=1 physical_pending=1
+[M13 dense] blocks=2068 active_min=16
+[M13 playback] triggers=25987 reverse=11964 gate=14387 releases=4617 ends=63 choke_ops=2121 choked=953 retriggers=24664 region_min=1 region_max=65536 max=3799 choke_max=3730 retrigger_max=3799 voice_bytes=64 track_bytes=116 event_bytes=20
+[M15 locks] locked=5014 unlocked=1591 unsliced=130 requested_min=0 requested_max=15 resolved_min=0 resolved_max=15 clamped=480 edits=208 ui_edits=32 align=1 requested_seen=65535 resolved_seen=65535
+[M14 slices] triggers=25417 auditions=19 index_min=0 index_max=15 frames_min=1 frames_max=65536 active_changes=40 divides=95 adds=21 deletes=19 resets=18 edit_blocks=351 edit_max=3648 slice_bytes=4 bank_bytes=66 sample_bytes=1556
+[M10 worst] blocks=2068 max=3799
+[M9 tools] rotate=26 reverse=22 copy_track=24 clear_track=13 duplicate=20 euclidean=14 randomize=16 mutate=15 reroll=14 blocks=145 dense_blocks=59 max=3799
+[M5 UI] seconds=63.055 submitted=1182 completed=1182 dirty_avg=240988 dirty_max=768000 full=170 preparation_max_us=117921 touch_errors=0 rejected=0 pads=3 steps=8 drags=68 pages=20 transport=0 bpm=0 skipped=150
+[M7 patterns] switches=110 loops=152 selections=25 copies=4 clears=4 lengths=16 solos=8 mutes=8 normal_frames=1012 dirty_avg=152459 dirty_max=502784 pattern_bytes=3106 command_bytes=12
+[M7 applied] long_to_short=1 short_to_long=1 queue_replacements=3 copies=4 clears=4 lengths=47 solos=6 mutes=6 steps=8
+[M9 UI] entries=2 copies=2 randomize=4 cell_max=16 edit_full=0
+[M12 UI] entries=14 edits=46 widgets_max=2 edit_full=0
+[M11 UI] entries=12 edits=29 widgets_max=1 edit_full=0
+[M10 UI] entries=31 edits=94 widgets_max=2 edit_full=0
+[M13 UI] entries=18 edits=38 widgets_max=3 edit_full=0
+[M14 UI] entries=75 edits=218 edit_full=0 waveform_first_us=116900 waveform_redraw_max_us=17539 slice_redraw_max_us=71446 build_count=17 build_max_us=360261 large_us=360261 cache_bytes=1440 page_max_us=117912 drag_dirty_max=280576
+[M5 memory] ps_before=28616312 ps_after=28616312 internal_before=273816 internal_after=273816 largest_before=28311540 largest_after=28311540

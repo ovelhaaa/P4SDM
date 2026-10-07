@@ -96,6 +96,37 @@ int main() {
     start(e);
     assert(e.chain_entry == 0 && e.chain_repeat == 0 && e.step == 0);
   }
+  // One entry must finish exactly every legal repeat count, including 16.
+  for (int repeats = 1; repeats <= 16; ++repeats) {
+    e = Engine{};
+    e.patterns[0].length = 1;
+    edit(e, Kind::ChainAdd, 0, 0);
+    edit(e, Kind::ChainRepeats, 0, repeats);
+    start(e);
+    for (int loop = 0; loop < repeats; ++loop) {
+      assert(e.playing && e.chain_repeat == loop);
+      wrap(e);
+    }
+    assert(!e.playing && e.loops == unsigned(repeats));
+  }
+  e = Engine{};
+  edit(e, Kind::ChainAdd, 0, 0);
+  edit(e, Kind::ChainAdd, 1, 1);
+  start(e);
+  edit(e, Kind::ChainPattern, 1, 7);
+  assert(e.playing_pattern == 0);
+  wrap(e);
+  assert(e.playing_pattern == 7);
+  // Live length edits are consulted at onset, never cached for entry duration.
+  e = Engine{};
+  edit(e, Kind::ChainAdd, 0, 0);
+  edit(e, Kind::ChainRepeats, 0, 2);
+  start(e);
+  e.apply({Kind::PatternLength, 0, 1});
+  wrap(e);
+  assert(e.chain_repeat == 1 && e.playing);
+  wrap(e);
+  assert(!e.playing && e.loops == 2);
   // Repeats follow real lengths and swing, with no clock reset/drift on switch.
   for (int length : {1, 3, 7, 12, 16})
     for (int swing : {50, 75}) {
