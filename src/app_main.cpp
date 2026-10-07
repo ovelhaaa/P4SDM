@@ -64,6 +64,14 @@ struct ChainResult {
 std::atomic<unsigned> chain_ui_entries{0}, chain_ui_edits{0}, chain_ui_rows{0},
     chain_ui_scrolls{0};
 std::atomic<uint32_t> pattern_status{0}, pattern_switches{0}, pattern_loops{0};
+// Bounded publication: a generation guards the three payload words and ack.
+// UI never spins waiting for audio, and rejects a snapshot during an update.
+std::atomic<uint32_t> perf_generation{0}, perf_patterns{0}, perf_mix{0}, perf_ack{0}, perf_transport{0};
+uint32_t perf_boundary_max = 0;
+app::PerformanceMetrics perf_result{};
+app::PerformanceState perf_state_result{};
+std::atomic<unsigned> perf_ui_entries{0}, perf_ui_pads{0}, perf_ui_fills{0},
+    perf_ui_toggles{0}, perf_ui_switches{0};
 uint16_t sent_commands = 0;
 std::atomic<uint32_t> applied_actions[unsigned(app::Kind::Count)]{},
     long_to_short{0}, short_to_long{0}, queue_replacements{0};
@@ -72,7 +80,7 @@ std::atomic<uint32_t> diagnostic_p99{0}, diagnostic_max{0},
 std::atomic<uint32_t> flashes[16];
 bool delay_ready = false;
 int sample_index = 0;
-bool dirty[183]{};
+bool dirty[207]{};
 bool full = true;
 uint32_t rejected = 0, touch_errors = 0, frames = 0, full_frames = 0;
 uint32_t actions[162]{}, drags = 0;
@@ -316,6 +324,62 @@ void draw_waveform() {
       std::max(waveform_redraw_max, uint32_t(esp_timer_get_time() - started));
 }
 void draw(int id) {
+  if (id >= 183 && id <= 206) {
+    auto r = app::widget(id);
+    char line[96]{};
+    const auto &p = view.performance;
+    uint16_t color = white;
+    if (id == 206) strlcpy(line, view.playing ? "STOP" : "PLAY", sizeof(line));
+    else if (id == 183) strlcpy(line, "PERFORMANCE", sizeof(line));
+    else if (id == 205) {
+      const int arrangement = p.owns() ? p.return_pattern : view.playing_pattern;
+      if (view.mode == app::TransportMode::Chain)
+        snprintf(line, sizeof(line), "CHAIN E%02u %u/%u ARR P%02d  HEAR P%02d%s",
+                 view.chain_entry + 1, view.chain_repeat + 1,
+                 view.chain_entry < view.chain.length ? view.chain.entries[view.chain_entry].repeats : 0,
+                 arrangement + 1, view.playing_pattern + 1, p.return_end ? " END" : "");
+      else snprintf(line, sizeof(line), "PATTERN ARR P%02d  HEAR P%02d  EDIT P%02d",
+                    arrangement + 1, view.playing_pattern + 1, view.selected_pattern + 1);
+    } else if (id <= 199) {
+      const int n = id - 184;
+      if (ui.perf_mixer) {
+        const unsigned bit = 1u << n;
+        snprintf(line, sizeof(line), "T%02d%s%s%s%s", n + 1,
+                 view.tracks[n].muted ? " B" : "",
+                 view.solos & bit ? " S" : "",
+                 p.mutes & bit ? " M" : "", p.solos & bit ? " +S" : "");
+        color = !view.sequence_enabled(n) ? 0x8410 : accent;
+      } else {
+        snprintf(line, sizeof(line), "P%02d%s%s%s%s%s", n + 1,
+                 view.selected_pattern == n ? " E" : "",
+                 (p.owns() ? p.return_pattern : view.playing_pattern) == n ? " A" : "",
+                 p.override_target == n ? " O?" : "",
+                 p.override_active == n ? " O" : "",
+                 p.fill_pending == n ? " F?" : p.fill_active == n ? " F" : "");
+        color = p.fill_active == n ? 0xffe0 : p.override_active == n ? accent : white;
+      }
+    } else {
+      const char *labels[] = {ui.perf_mixer ? "PATTERNS" : "MIXER",
+          ui.perf_mixer ? (ui.perf_solo ? "SOLO" : "MUTE") : (ui.perf_fill ? "FILL NEXT" : "OVERRIDE"),
+          ui.perf_mixer ? "CLEAR MIX" : "CANCEL O", "CANCEL F", "BACK"};
+      strlcpy(line, labels[id-200], sizeof(line));
+    }
+    display::rect(r.x, r.y, r.w, r.h, bg);
+    display::text(r.x + 6, r.y + (id == 205 ? 6 : 18), line, color, id == 205 ? 1 : 2);
+    if (id >= 184 && id <= 199) {
+      const int n = id - 184;
+      if (!ui.perf_mixer && view.playing && view.playing_pattern == n) {
+        display::rect(r.x, r.y, r.w, 4, accent);
+        display::rect(r.x, r.y + r.h - 4, r.w, 4, accent);
+      }
+      if (!ui.perf_mixer && view.selected_pattern == n)
+        display::rect(r.x, r.y, 4, r.h, white);
+      if (ui.perf_mixer && view.tracks[n].muted)
+        display::rect(r.x, r.y + r.h - 4, r.w, 4, 0xf800);
+    }
+    return;
+  }
+
   if (id >= 162 && id <= 182) {
     auto r = app::widget(id);
     char line[80]{};
@@ -337,7 +401,9 @@ void draw(int id) {
       const char *labels[] = {"UP",    "DOWN",  "ADD",   "DELETE", "PAT -",
                               "PAT +", "REP -", "REP +", "LOOP",   "MODE",
                               "CLEAR", "BACK",  "CANCEL"};
-      if (id == 179 && ui.chain_clear_pending)
+      if (id == 181 && !ui.chain_clear_pending)
+        strlcpy(line, "PERF", sizeof(line));
+      else if (id == 179 && ui.chain_clear_pending)
         strlcpy(line, "CONFIRM", sizeof(line));
       else if (id == 177)
         snprintf(line, sizeof(line), "LOOP %s", view.chain.loop ? "ON" : "OFF");
@@ -780,12 +846,50 @@ void tempo_header() {
 void header() {
   char s[32];
   display::rect(0, 0, 800, 80, bg);
-  snprintf(s, sizeof(s), "P4SDM T%02d", ui.selected + 1);
+  if (ui.page == app::Page::Performance)
+    snprintf(s, sizeof(s), "PERF %s", ui.perf_mixer ? "MIX" : "PATS");
+  else snprintf(s, sizeof(s), "P4SDM T%02d", ui.selected + 1);
   display::text(16, 24, s, white, 2);
   draw(44);
   tempo_header();
 }
 void interact(int id, int x, bool initial) {
+  if (id == 183 && initial) {
+    ui.page = app::Page::Performance;
+    ui.perf_fill = false;
+    perf_ui_entries.fetch_add(1);
+    full = true;
+    return;
+  }
+  if (ui.page == app::Page::Performance && id >= 184 && id <= 206 && id != 205) {
+    if (!initial || projects::locked()) return;
+    if (id == 206) { send({app::Kind::Play, 0, !view.playing}); ui.perf_fill = false; }
+    else if (id == 204) { ui.page = app::Page::Fx; ui.perf_fill = false; full = true; return; }
+    else if (id == 200) {
+      ui.perf_mixer = !ui.perf_mixer; ui.perf_fill = false;
+      full = true;
+      perf_ui_switches.fetch_add(1);
+    } else if (id == 201) {
+      if (ui.perf_mixer) ui.perf_solo = !ui.perf_solo;
+      else ui.perf_fill = !ui.perf_fill;
+    } else if (id == 202) send({ui.perf_mixer ? app::Kind::PerfClearMix : app::Kind::PerfOverrideCancel, 0, 0});
+    else if (id == 203) { send({app::Kind::PerfFillCancel, 0, 0}); ui.perf_fill = false; }
+    else if (id <= 199) {
+      const int n = id - 184;
+      if (ui.perf_mixer) {
+        const auto mask = ui.perf_solo ? view.performance.solos : view.performance.mutes;
+        if (send({ui.perf_solo ? app::Kind::PerfSolo : app::Kind::PerfMute,
+                  uint8_t(n), !(mask & (1u << n))})) perf_ui_toggles.fetch_add(1);
+      } else if (send({ui.perf_fill ? app::Kind::PerfFill : app::Kind::PerfOverride, 0, n})) {
+        perf_ui_pads.fetch_add(1);
+        if (ui.perf_fill) perf_ui_fills.fetch_add(1);
+        ui.perf_fill = false;
+      }
+    }
+    for (int i = 184; i <= 206; ++i) dirty[i] = true;
+    return;
+  }
+
   if (id == 162 && initial) {
     chain_ui_entries.fetch_add(1);
     ui.page = app::Page::Chain;
@@ -803,13 +907,14 @@ void interact(int id, int x, bool initial) {
       return;
     }
     if (id == 181) {
+      if (!ui.chain_clear_pending) { interact(183, 0, true); return; }
       ui.chain_clear_pending = false;
-      dirty[179] = true;
+      dirty[179] = dirty[181] = true;
       return;
     }
     if (id != 179 && id != 181) {
       ui.chain_clear_pending = false;
-      dirty[179] = true;
+      dirty[179] = dirty[181] = true;
     }
     const int old_row = ui.chain_row, old_scroll = ui.chain_scroll;
     app::Command c{app::Kind::Count, 0, 0};
@@ -846,7 +951,7 @@ void interact(int id, int x, bool initial) {
       if (ui.chain_clear_pending)
         c.kind = app::Kind::ChainClear;
       ui.chain_clear_pending = !ui.chain_clear_pending;
-      dirty[179] = true;
+      dirty[179] = dirty[181] = true;
     }
     if (c.kind != app::Kind::Count && send(c)) {
       chain_ui_edits.fetch_add(1);
@@ -1454,6 +1559,7 @@ void ui_task(void *) {
       ui.cancel_pattern_action();
       ui.chain_row = ui.chain_scroll = 0;
       ui.chain_clear_pending = false;
+      ui.perf_fill = false;
       sent_commands = uint16_t(pattern_status.load() >> 16);
       projects::view_ready.store(true, std::memory_order_release);
       full = true;
@@ -1495,6 +1601,28 @@ void ui_task(void *) {
         send({app::Kind::Play, 0, 1});
         ++chain_setup_row;
         interact(162, 0, true);
+      }
+    }
+#endif
+#if P4SDM_PERFORMANCE_STRESS
+    static unsigned perf_stage = 0;
+    if (millis() - started > 36000 + perf_stage * 700 && perf_stage < 13 && !projects::busy()) {
+      interact(183, 0, true);
+      ui.perf_mixer = false;
+      switch (perf_stage++) {
+      case 0: interact(192, 0, true); interact(193, 0, true); break;
+      case 1: interact(194, 0, true); break;
+      case 2: interact(201, 0, true); interact(196, 0, true); break;
+      case 3: send({app::Kind::PerfFill, 0, 13}); break;
+      case 4: interact(202, 0, true); break;
+      case 5: interact(201, 0, true); interact(195, 0, true); break;
+      case 6: interact(191, 0, true); break;
+      case 7: interact(201, 0, true); interact(198, 0, true); interact(202, 0, true); break;
+      case 8: interact(200, 0, true); for (int i = 184; i <= 199; ++i) interact(i, 0, true); break;
+      case 9: ui.perf_mixer = true; interact(201, 0, true); for (int i = 184; i <= 199; ++i) interact(i, 0, true); break;
+      case 10: ui.perf_mixer = true; interact(202, 0, true); for (int i = 184; i <= 199; ++i) { interact(i, 0, true); interact(i, 0, true); } break;
+      case 11: send({app::Kind::PerfOverride, 0, 8}); send({app::Kind::PerfOverrideCancel, 0, 0}); send({app::Kind::PerfFill, 0, 9}); send({app::Kind::PerfFillCancel, 0, 0}); break;
+      case 12: send({app::Kind::PerfOverrideCancel, 0, 0}); send({app::Kind::PerfClearMix, 0, 0}); interact(204, 0, true); break;
       }
     }
 #endif
@@ -1920,10 +2048,33 @@ void ui_task(void *) {
         ui.capture = -1;
     }
     touch_errors = input_errors.load(std::memory_order_relaxed);
-    uint32_t cs = chain_status.load(std::memory_order_acquire);
-    uint32_t status = pattern_status.load(std::memory_order_acquire);
+    const uint32_t pg = perf_generation.load(std::memory_order_acquire);
+    const uint32_t pp = perf_patterns.load(std::memory_order_relaxed);
+    const uint32_t pm = perf_mix.load(std::memory_order_relaxed);
+    const uint32_t pa = perf_ack.load(std::memory_order_relaxed);
+    const uint32_t pt = perf_transport.load(std::memory_order_relaxed);
+    std::atomic_thread_fence(std::memory_order_acquire);
+    const bool perf_coherent = !(pg & 1) && pg == perf_generation.load(std::memory_order_acquire) && pa == sent_commands;
+    if (perf_coherent) {
+      app::PerformanceState next{};
+      next.override_target = int((pp >> 0) & 31) - 1;
+      next.override_active = int((pp >> 5) & 31) - 1;
+      next.fill_pending = int((pp >> 10) & 31) - 1;
+      next.fill_active = int((pp >> 15) & 31) - 1;
+      next.return_pattern = int((pp >> 20) & 31) - 1;
+      next.return_end = pp & (1u << 25);
+      next.mutes = pm & 65535;
+      next.solos = pm >> 16;
+      if (memcmp(&next, &view.performance, sizeof(next))) {
+        view.performance = next;
+        if (ui.page == app::Page::Performance)
+          for (int i = 184; i <= 206; ++i) dirty[i] = true;
+      }
+    }
+    uint32_t cs = (pa << 16) | (pt & 8191);
+    uint32_t status = (pa << 16) | ((pt >> 13) & 511);
     if (uint16_t(status >> 16) == sent_commands &&
-        uint16_t(cs >> 16) == sent_commands) {
+        uint16_t(cs >> 16) == sent_commands && perf_coherent) {
       if (view.chain_entry != (cs & 63) ||
           view.chain_repeat != ((cs >> 6) & 31) ||
           view.playing != bool(cs & (1u << 12)) ||
@@ -1934,6 +2085,7 @@ void ui_task(void *) {
               dirty[163 + row - ui.chain_scroll] = true;
           dirty[178] = dirty[182] = true;
         }
+        if (ui.page == app::Page::Performance) dirty[205] = true;
         view.chain_entry = cs & 63;
         view.chain_repeat = (cs >> 6) & 31;
         view.mode = app::TransportMode((cs >> 11) & 1);
@@ -1948,6 +2100,8 @@ void ui_task(void *) {
         if (queued >= 0)
           dirty[46 + queued] = true;
         dirty[44] = true;
+        if (ui.page == app::Page::Performance)
+          for (int i = 184; i <= 206; ++i) dirty[i] = true;
         view.playing_pattern = playing;
         view.queued_pattern = queued;
       }
@@ -2052,6 +2206,9 @@ void ui_task(void *) {
             draw(i);
           draw(123);
           sample_status();
+        } else if (ui.page == app::Page::Performance) {
+          display::text(16, 464, ui.perf_mixer ? "B=BASE MUTE S=BASE SOLO M=PERF MUTE +S=PERF SOLO" : "E=EDITOR A=ARRANGEMENT O=OVERRIDE F=FILL ?=TARGET  BORDER=AUDIBLE", white, 1);
+          for (int i = 184; i <= 206; ++i) draw(i);
         } else if (ui.page == app::Page::Chain) {
           for (int i = 163; i <= 182; ++i)
             draw(i);
@@ -2069,8 +2226,9 @@ void ui_task(void *) {
           display::text(24, 210, "INTERNAL DELAY / NO SD REQUIRED", white, 2);
           draw(153);
           draw(162);
+          draw(183);
         }
-        if (ui.page != app::Page::SampleSlice && ui.page != app::Page::Project)
+        if (ui.page != app::Page::SampleSlice && ui.page != app::Page::Project && ui.page != app::Page::Performance)
           for (int i = 29; i < (ui.page == app::Page::Chain ? 30 : 34); ++i)
             draw(i);
         ++full_frames;
@@ -2086,9 +2244,10 @@ void ui_task(void *) {
           snprintf(title, sizeof(title), "P4SDM T%02d", ui.selected + 1);
           display::text(16, 24, title, white, 2);
         }
-        for (int i = 0; i < 183; ++i)
+        for (int i = 0; i < 207; ++i)
           if (dirty[i] &&
-              (((i >= 163 && i <= 182 && ui.page == app::Page::Chain) ||
+              (((i >= 184 && i <= 206 && ui.page == app::Page::Performance) ||
+                (i >= 163 && i <= 182 && ui.page == app::Page::Chain) ||
                 (i >= 132 && i <= 147 && ui.page == app::Page::SampleSlice) ||
                 (i >= 124 && i <= 131 &&
                  ui.page == app::Page::SamplePlayback) ||
@@ -2098,7 +2257,7 @@ void ui_task(void *) {
                (i < 24 && ui.page == app::Page::Sequence) ||
                (i >= 24 && i < 29 && ui.page == app::Page::Track) ||
                (i >= 29 && i < (ui.page == app::Page::Chain ? 30 : 34) &&
-                ui.page != app::Page::SampleSlice) ||
+                ui.page != app::Page::SampleSlice && ui.page != app::Page::Performance) ||
                (i == 36 && ui.page == app::Page::Fx) ||
                ((i == 37 || i == 42 || i == 43) &&
                 ui.page == app::Page::Track) ||
@@ -2465,10 +2624,13 @@ void audio_worker(void *) {
         engine.audition(c.track, [](app::TriggerEvent e) { trigger(e); });
     const unsigned chain_wraps_before =
         engine.chain_advances + engine.chain_repeats;
+    const unsigned perf_before = engine.perf_metrics.boundaries;
     render_buffer();
     auto us = uint32_t(esp_timer_get_time() - start);
     if (engine.chain_advances + engine.chain_repeats != chain_wraps_before)
       chain_boundary_max = std::max(chain_boundary_max, us);
+    if (engine.perf_metrics.boundaries != perf_before)
+      perf_boundary_max = std::max(perf_boundary_max, us);
     if (project_phase)
       projects::measured(project_phase == 1, us);
     unsigned b = captured.load(std::memory_order_relaxed);
@@ -2501,6 +2663,8 @@ void audio_worker(void *) {
                         engine.chain_stops,      engine.chain_switches,
                         engine.chain_min_length, engine.chain_max_length,
                         chain_boundary_max,      chain_seen};
+        perf_result = engine.perf_metrics;
+        perf_state_result = engine.performance;
         playback_result = playback_metrics;
         slice_result = slice_metrics;
         slice_lock_result = slice_lock_metrics;
@@ -2592,6 +2756,17 @@ void audio_worker(void *) {
     }
     playhead.store(engine.playing ? engine.step : -1,
                    std::memory_order_relaxed);
+    perf_generation.fetch_add(1, std::memory_order_acq_rel);
+    const auto &p = engine.performance;
+    perf_patterns.store(unsigned(p.override_target + 1) | (unsigned(p.override_active + 1) << 5) |
+        (unsigned(p.fill_pending + 1) << 10) | (unsigned(p.fill_active + 1) << 15) |
+        (unsigned(p.return_pattern + 1) << 20) | (unsigned(p.return_end) << 25), std::memory_order_relaxed);
+    perf_mix.store(unsigned(p.mutes) | (unsigned(p.solos) << 16), std::memory_order_relaxed);
+    perf_transport.store(unsigned(engine.chain_entry) | (unsigned(engine.chain_repeat) << 6) |
+        (unsigned(engine.mode) << 11) | (unsigned(engine.playing) << 12) |
+        (unsigned(engine.playing_pattern) << 13) | (unsigned(engine.queued_pattern + 1) << 17), std::memory_order_relaxed);
+    perf_ack.store(applied_commands, std::memory_order_relaxed);
+    perf_generation.fetch_add(1, std::memory_order_release);
     chain_status.store(
         (uint32_t(applied_commands) << 16) | unsigned(engine.chain_entry) |
             (unsigned(engine.chain_repeat) << 6) |
@@ -2965,6 +3140,20 @@ void loop() {
         chain_result.boundary_max, chain_result.seen,
         unsigned(sizeof(app::ChainEntry)), unsigned(sizeof(app::PatternChain)),
         unsigned(sizeof(app::Engine)));
+    summary_printf("[M18 performance] override_requests=%u override_accepts=%u override_loops=%u override_cancels=%u returns=%u fill_requests=%u fill_accepts=%u fill_completions=%u fill_to_override=%u fill_to_arrangement=%u mute_edits=%u solo_edits=%u boundaries=%u boundary_max=%u state_bytes=%u engine_bytes=%u publication_bytes=%u\n",
+        perf_result.override_requests, perf_result.override_accepts, perf_result.override_loops,
+        perf_result.override_cancels, perf_result.returns, perf_result.fill_requests,
+        perf_result.fill_accepts, perf_result.fill_completions, perf_result.fill_to_override,
+        perf_result.fill_to_arrangement, perf_result.mute_edits, perf_result.solo_edits,
+        perf_result.boundaries, perf_boundary_max, unsigned(sizeof(app::PerformanceState)),
+        unsigned(sizeof(app::Engine)), 20u);
+    summary_printf("[M18 runtime] override_target=%u override_active=%u fill_pending=%u fill_active=%u return_pattern=%u return_end=%u mutes=%u solos=%u ui_bytes=%u\n",
+        unsigned(perf_state_result.override_target + 1), unsigned(perf_state_result.override_active + 1),
+        unsigned(perf_state_result.fill_pending + 1), unsigned(perf_state_result.fill_active + 1),
+        unsigned(perf_state_result.return_pattern + 1), unsigned(perf_state_result.return_end),
+        unsigned(perf_state_result.mutes), unsigned(perf_state_result.solos), unsigned(sizeof(app::Ui)));
+    summary_printf("[M18 UI] entries=%u pads=%u fills=%u toggles=%u switches=%u\n",
+        perf_ui_entries.load(), perf_ui_pads.load(), perf_ui_fills.load(), perf_ui_toggles.load(), perf_ui_switches.load());
     summary_printf("[M17 UI] entries=%u edits=%u rows=%u scrolls=%u\n",
                    chain_ui_entries.load(), chain_ui_edits.load(),
                    chain_ui_rows.load(), chain_ui_scrolls.load());
