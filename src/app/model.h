@@ -1,5 +1,6 @@
 #pragma once
 #include "sample_playback.h"
+#include "slices.h"
 #include <algorithm>
 #include <atomic>
 #include <cstdint>
@@ -59,6 +60,15 @@ enum class Kind : uint8_t {
   SampleChoke,
   SampleResetRegion,
   GateRelease,
+  SliceEnable,
+  SliceSelect,
+  SliceStart,
+  SliceEnd,
+  SliceDivide,
+  SliceAdd,
+  SliceDelete,
+  SliceReset,
+  SliceAudition,
   Count
 };
 struct Command {
@@ -126,6 +136,8 @@ struct Track {
   int synth_pitch = 48, sample_pitch = 60;
   bool sample_configured = false;
   sampler::Playback playback{};
+  sampler::SliceBank slices{};
+  bool slice_enabled = false;
   void source(bool pcm) {
     if (sample)
       sample_pitch = pitch;
@@ -138,6 +150,7 @@ struct Track {
     source(true);
     if (!sample_configured) {
       playback = {};
+      slices.reset(playback);
       sample_pitch = 60;
       pitch = 60;
       sample_configured = true;
@@ -171,25 +184,31 @@ struct TriggerEvent {
   uint8_t filter_cutoff = 0, filter_resonance = 0, delay_send = 127;
   sampler::Playback playback{};
   bool sequenced = false;
-  uint8_t reserved = 0;
+  uint8_t slice = 0; // zero=unsliced; index+1 otherwise (formerly reserved)
 };
 inline TriggerEvent resolve_event(int track, const Track &base, int velocity,
-                                  StepLocks locks = {}) {
-  return {uint8_t(track),
-          uint8_t(velocity),
-          uint8_t(locks.mask & PITCH_LOCK ? locks.pitch : base.pitch),
-          uint8_t(locks.mask & VOLUME_LOCK ? locks.volume : base.volume),
-          int8_t(locks.mask & PAN_LOCK ? locks.pan : base.pan),
-          uint8_t(!base.sample && (locks.mask & WAVE_LOCK) ? locks.wave
-                                                           : base.wave),
-          uint8_t(locks.mask & (base.sample ? 119 : 127)),
-          uint8_t(locks.mask & FILTER_CUTOFF_LOCK ? locks.filter_cutoff
-                                                  : base.filter_cutoff),
-          uint8_t(locks.mask & FILTER_RESONANCE_LOCK ? locks.filter_resonance
-                                                     : base.filter_resonance),
-          uint8_t(locks.mask & DELAY_SEND_LOCK ? locks.delay_send
-                                               : base.delay_send),
-          base.playback};
+                                  StepLocks locks = {}, int slice_index = -1) {
+  TriggerEvent event{
+      uint8_t(track),
+      uint8_t(velocity),
+      uint8_t(locks.mask & PITCH_LOCK ? locks.pitch : base.pitch),
+      uint8_t(locks.mask & VOLUME_LOCK ? locks.volume : base.volume),
+      int8_t(locks.mask & PAN_LOCK ? locks.pan : base.pan),
+      uint8_t(!base.sample && (locks.mask & WAVE_LOCK) ? locks.wave
+                                                       : base.wave),
+      uint8_t(locks.mask & (base.sample ? 119 : 127)),
+      uint8_t(locks.mask & FILTER_CUTOFF_LOCK ? locks.filter_cutoff
+                                              : base.filter_cutoff),
+      uint8_t(locks.mask & FILTER_RESONANCE_LOCK ? locks.filter_resonance
+                                                 : base.filter_resonance),
+      uint8_t(locks.mask & DELAY_SEND_LOCK ? locks.delay_send
+                                           : base.delay_send),
+      base.playback};
+  if (base.sample && (base.slice_enabled || slice_index >= 0)) {
+    event.playback = base.slices.resolve(base.playback, slice_index);
+    event.slice = uint8_t(base.slices.index(slice_index) + 1);
+  }
+  return event;
 }
 // Preserve the M9 linear attenuation pan law, including its endpoint rounding.
 inline int event_channel_gain(int volume, int pan, bool right) {
@@ -335,6 +354,37 @@ struct Engine {
       return;
     auto &t = tracks[c.track];
     switch (c.kind) {
+    case Kind::SliceEnable:
+      if (t.sample)
+        t.slice_enabled = c.value != 0;
+      break;
+    case Kind::SliceSelect:
+      if (t.sample)
+        t.slices.selected = uint8_t(t.slices.index(clamp(c.value, 0, 15)));
+      break;
+    case Kind::SliceStart:
+    case Kind::SliceEnd:
+      if (t.sample)
+        t.slices.edit(c.step, c.kind == Kind::SliceStart, c.value);
+      break;
+    case Kind::SliceDivide:
+      if (t.sample)
+        t.slices.divide(t.playback, unsigned(c.value));
+      break;
+    case Kind::SliceAdd:
+      if (t.sample)
+        t.slices.add(c.step);
+      break;
+    case Kind::SliceDelete:
+      if (t.sample)
+        t.slices.erase(c.step);
+      break;
+    case Kind::SliceReset:
+      if (t.sample)
+        t.slices.reset(t.playback);
+      break;
+    case Kind::SliceAudition:
+      break;
     case Kind::SampleStart:
       if (t.sample)
         t.playback.start = uint16_t(clamp(c.value, 0, 65535));
@@ -724,12 +774,14 @@ enum class Page {
   Locks,
   Tone,
   ToneLocks,
-  SamplePlayback
+  SamplePlayback,
+  SampleSlice
 };
 struct Ui {
   Page page = Page::Sequence;
   int selected = 0, bank = 0, selected_step = -1, capture = -1;
   bool down = false, inspect = false;
+  uint8_t inspected_slice[16]{};
   int copy_source = -1, clear_pattern = -1;
   int tool_section = 0, tool_destination = 0;
   int pulses = 5, rotation = 0, density = 45, vel_var = 20, prob_var = 15,
@@ -856,6 +908,19 @@ struct Ui {
   }
 };
 inline Rect widget(int id) {
+  if (id == 131)
+    return {280, 350, 240, 56}; // playback -> slice page
+  if (id == 132)
+    return {40, 100, 720, 116}; // cached waveform
+  if (id >= 133 && id <= 136)
+    return {24 + (id - 133) * 192, 222, 176, 48};
+  if (id == 137 || id == 138)
+    return {24 + (id - 137) * 384, 278, 368, 56};
+  if (id >= 139 && id <= 142)
+    return {24 + (id - 139) * 192, 342, 176, 56};
+  if (id >= 143 && id <= 146)
+    return {24 + (id - 143) * 192, 404, 176, 56};
+
   if (id == 123)
     return {24, 270, 752, 52};
   if (id == 124 || id == 125)
@@ -963,12 +1028,18 @@ inline Rect widget(int id) {
   return {24, 340, 200, 56};
 }
 inline int hit(Page p, int x, int y) {
-  for (int i = 29; i <= 35; ++i)
+  for (int i = p == Page::SampleSlice ? 34 : 29; i <= 35; ++i)
     if (widget(i).contains(x, y))
       return i;
   if (widget(44).contains(x, y))
     return 44;
-  if (p == Page::SamplePlayback) {
+  if (p == Page::SampleSlice) {
+    for (int i = 133; i <= 146; ++i)
+      if (widget(i).contains(x, y))
+        return i;
+  } else if (p == Page::SamplePlayback) {
+    if (widget(131).contains(x, y))
+      return 131;
     for (int i = 124; i <= 130; ++i)
       if (widget(i).contains(x, y))
         return i;

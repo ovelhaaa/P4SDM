@@ -1,9 +1,11 @@
 #include "samples.h"
-#include "qualification.h"
 #include "../hal/storage_hal.h"
 #include "esp_heap_caps.h"
 #include "esp_timer.h"
+#include "qualification.h"
 namespace samples {
+std::atomic<unsigned> waveform_builds{0}, waveform_build_max{0},
+    waveform_large_us{0};
 sampler::Voice voices[16];
 sampler::Transfer transfer;
 std::atomic<unsigned> qualification_phase{0};
@@ -21,6 +23,7 @@ std::atomic<bool> working{false};
 unsigned target = 0;
 portMUX_TYPE lock = portMUX_INITIALIZER_UNLOCKED;
 size_t payload = 0;
+const sampler::Sample *previews[16]{};
 void report(const char *s) {
   portENTER_CRITICAL(&lock);
   strlcpy(info, s, sizeof(info));
@@ -67,7 +70,8 @@ void scan() {
   snprintf(s, sizeof(s), "%u WAV files%s", indexed.load(),
            limited ? " (INDEX LIMIT)" : "");
   report(s);
-  Serial.printf("[M6 index] files=%u entries=%u limited=%d scan_us=%lld ps_free=%u largest=%u internal=%u\n",
+  Serial.printf("[M6 index] files=%u entries=%u limited=%d scan_us=%lld "
+                "ps_free=%u largest=%u internal=%u\n",
                 indexed.load(), entries, limited, esp_timer_get_time() - start,
                 unsigned(heap_caps_get_free_size(MALLOC_CAP_SPIRAM)),
                 unsigned(heap_caps_get_largest_free_block(MALLOC_CAP_SPIRAM)),
@@ -153,9 +157,11 @@ void load(int index) {
   }
   uint64_t read_us = esp_timer_get_time() - start;
   file.close();
+  analyze(*s);
   transfer.publish(s, target);
   while (!transfer.acknowledged.load(std::memory_order_acquire))
     vTaskDelay(1);
+  publish_preview(target, s);
   destroy(transfer.retired.exchange(nullptr));
   portENTER_CRITICAL(&lock);
   strlcpy(assigned_names[target], s->name, 96);
@@ -178,14 +184,16 @@ void load(int index) {
       unsigned(heap_caps_get_free_size(MALLOC_CAP_SPIRAM)),
       unsigned(heap_caps_get_largest_free_block(MALLOC_CAP_SPIRAM)),
       unsigned(heap_caps_get_free_size(MALLOC_CAP_INTERNAL)), reserve);
-  Serial.printf("[M6.1 replacement] retired_clear=%d ps_delta=%lld status=READY\n",
-                transfer.retired.load() == nullptr,
-                (long long)free - (long long)heap_caps_get_free_size(MALLOC_CAP_SPIRAM));
+  Serial.printf(
+      "[M6.1 replacement] retired_clear=%d ps_delta=%lld status=READY\n",
+      transfer.retired.load() == nullptr,
+      (long long)free - (long long)heap_caps_get_free_size(MALLOC_CAP_SPIRAM));
 }
 #if P4SDM_SAMPLER_QUALIFICATION
 int fixture(const char *name) {
   for (unsigned i = 0; i < indexed; ++i)
-    if (!strcmp(names[i], name)) return int(i);
+    if (!strcmp(names[i], name))
+      return int(i);
   return -1;
 }
 void qualify() {
@@ -193,7 +201,9 @@ void qualify() {
                             "unsupported_depth.wav", "truncated.wav"};
   for (auto name : required)
     if (fixture(name) < 0) {
-      Serial.printf("[M6.1 qualification] SKIP missing=%s PHYSICAL SD VALIDATION PENDING\n", name);
+      Serial.printf("[M6.1 qualification] SKIP missing=%s PHYSICAL SD "
+                    "VALIDATION PENDING\n",
+                    name);
       return;
     }
   size_t baseline_free = 0, baseline_largest = 0;
@@ -202,19 +212,26 @@ void qualify() {
     auto *before = transfer.active[0];
     const char *name = sampler::qualification_fixture(i);
     load(fixture(name));
-    bool accepted = transfer.active[0] && !strcmp(transfer.active[0]->name, name);
+    bool accepted =
+        transfer.active[0] && !strcmp(transfer.active[0]->name, name);
     bool preserved = transfer.active[0] == before;
     size_t free = heap_caps_get_free_size(MALLOC_CAP_SPIRAM),
            largest = heap_caps_get_largest_free_block(MALLOC_CAP_SPIRAM);
-    Serial.printf("[M6.1 fixture] name=%s accepted=%d preserved=%d retired_clear=%d payload=%u free=%u largest=%u\n",
+    Serial.printf("[M6.1 fixture] name=%s accepted=%d preserved=%d "
+                  "retired_clear=%d payload=%u free=%u largest=%u\n",
                   name, accepted, preserved, transfer.retired.load() == nullptr,
                   unsigned(payload), unsigned(free), unsigned(largest));
-    if (i == 0) { baseline_free = free; baseline_largest = largest; }
+    if (i == 0) {
+      baseline_free = free;
+      baseline_largest = largest;
+    }
     if (i == 3)
-      Serial.printf("[M6.1 equal_payload] free_loss=%lld largest_loss=%lld suspect=%d tolerance=4096\n",
+      Serial.printf("[M6.1 equal_payload] free_loss=%lld largest_loss=%lld "
+                    "suspect=%d tolerance=4096\n",
                     (long long)baseline_free - (long long)free,
                     (long long)baseline_largest - (long long)largest,
-                    sampler::memory_loss_suspect(baseline_free, free, baseline_largest, largest));
+                    sampler::memory_loss_suspect(baseline_free, free,
+                                                 baseline_largest, largest));
     if ((i < 4 && !accepted) || (i >= 4 && (accepted || !preserved))) {
       Serial.println("[M6.1 qualification] FAIL fixture / assignment");
       return;
@@ -222,7 +239,8 @@ void qualify() {
   }
   for (target = 0; target < 16; ++target) {
     load(fixture("long_mono.wav"));
-    if (!transfer.active[target] || strcmp(transfer.active[target]->name, "long_mono.wav")) {
+    if (!transfer.active[target] ||
+        strcmp(transfer.active[target]->name, "long_mono.wav")) {
       Serial.println("[M6.1 qualification] FAIL resident setup");
       return;
     }
@@ -239,7 +257,8 @@ void qualify() {
     vTaskDelay(pdMS_TO_TICKS(12000));
   }
   qualification_phase.store(0);
-  Serial.println("[M6.1 qualification] AUTOMATION COMPLETE; inspect metrics; audible/removal checks MANUAL");
+  Serial.println("[M6.1 qualification] AUTOMATION COMPLETE; inspect metrics; "
+                 "audible/removal checks MANUAL");
 }
 #endif
 void worker(void *) {
@@ -259,7 +278,9 @@ void worker(void *) {
     working.store(true);
     qualify();
     working.store(false);
-  } else Serial.println("[M6.1 qualification] PHYSICAL SD VALIDATION PENDING (no mounted card)");
+  } else
+    Serial.println("[M6.1 qualification] PHYSICAL SD VALIDATION PENDING (no "
+                   "mounted card)");
 #endif
   for (;;) {
     int index = job.exchange(-1, std::memory_order_acquire);
@@ -278,6 +299,37 @@ void worker(void *) {
   }
 }
 } // namespace
+void analyze(sampler::Sample &s, bool responsive) {
+  const auto start = esp_timer_get_time();
+  sampler::build_waveform(s.waveform, s.data, s.frames, [responsive] {
+    if (responsive)
+      vTaskDelay(1);
+  });
+  const unsigned us = unsigned(esp_timer_get_time() - start);
+  waveform_builds.fetch_add(1);
+  waveform_build_max.store(std::max(waveform_build_max.load(), us));
+  if (s.frames == 2097152)
+    waveform_large_us.store(us);
+}
+void publish_preview(unsigned track, const sampler::Sample *s) {
+  if (track >= 16)
+    return;
+  portENTER_CRITICAL(&lock);
+  previews[track] = s;
+  portEXIT_CRITICAL(&lock);
+  changed.fetch_add(1);
+}
+void preview(unsigned track, Preview &out) {
+  portENTER_CRITICAL(&lock);
+  const auto *s = track < 16 ? previews[track] : nullptr;
+  if (s) {
+    out.waveform = s->waveform;
+    out.frames = s->frames;
+    strlcpy(out.name, s->name, sizeof(out.name));
+  } else
+    out = {};
+  portEXIT_CRITICAL(&lock);
+}
 bool initialized() { return booted.load(std::memory_order_acquire); }
 void start() {
   if (xTaskCreatePinnedToCore(worker, "sample_storage", 7000, nullptr, 1,

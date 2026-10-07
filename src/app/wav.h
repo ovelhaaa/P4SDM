@@ -1,5 +1,6 @@
 #pragma once
 #include "sample_playback.h"
+#include "waveform.h"
 #include <atomic>
 #include <cstdint>
 #include <cstring>
@@ -101,6 +102,7 @@ struct Sample {
   uint32_t frames = 0, rate = 44100, allocation = 0;
   uint16_t original_channels = 1, channels = 1;
   char name[96]{};
+  Waveform waveform{};
 };
 struct Voice {
   const Sample *sample = nullptr;
