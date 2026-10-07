@@ -48,6 +48,7 @@ enum class Kind : uint8_t {
   LockFilterCutoff,
   LockFilterResonance,
   LockDelaySend,
+  LockSlice,
   UnlockParam,
   ClearStepLocks,
   FilterCutoff,
@@ -170,12 +171,14 @@ enum LockBit : uint8_t {
   WAVE_LOCK = 8,
   FILTER_CUTOFF_LOCK = 16,
   FILTER_RESONANCE_LOCK = 32,
-  DELAY_SEND_LOCK = 64
+  DELAY_SEND_LOCK = 64,
+  SLICE_LOCK = 128
 };
 struct StepLocks {
   uint8_t mask = 0, pitch = 0, volume = 0;
   int8_t pan = 0;
-  uint8_t wave = 0, filter_cutoff = 0, filter_resonance = 0, delay_send = 0;
+  uint8_t wave = 0, filter_cutoff = 0, filter_resonance = 0, delay_send = 0,
+          slice = 0;
 };
 struct TriggerEvent {
   uint8_t track, velocity, pitch = 0, volume = 0;
@@ -196,7 +199,7 @@ inline TriggerEvent resolve_event(int track, const Track &base, int velocity,
       int8_t(locks.mask & PAN_LOCK ? locks.pan : base.pan),
       uint8_t(!base.sample && (locks.mask & WAVE_LOCK) ? locks.wave
                                                        : base.wave),
-      uint8_t(locks.mask & (base.sample ? 119 : 127)),
+      uint8_t(locks.mask & (base.sample ? 0xF7 : 0x7F)),
       uint8_t(locks.mask & FILTER_CUTOFF_LOCK ? locks.filter_cutoff
                                               : base.filter_cutoff),
       uint8_t(locks.mask & FILTER_RESONANCE_LOCK ? locks.filter_resonance
@@ -204,6 +207,10 @@ inline TriggerEvent resolve_event(int track, const Track &base, int velocity,
       uint8_t(locks.mask & DELAY_SEND_LOCK ? locks.delay_send
                                            : base.delay_send),
       base.playback};
+  // Explicit audition wins; sequenced locks override the Track default,
+  // including SLICES OFF. Never rewrite the stored requested index.
+  if (slice_index < 0 && base.sample && (locks.mask & SLICE_LOCK))
+    slice_index = locks.slice;
   if (base.sample && (base.slice_enabled || slice_index >= 0)) {
     event.playback = base.slices.resolve(base.playback, slice_index);
     event.slice = uint8_t(base.slices.index(slice_index) + 1);
@@ -214,7 +221,7 @@ inline TriggerEvent resolve_event(int track, const Track &base, int velocity,
 inline int event_channel_gain(int volume, int pan, bool right) {
   return volume * clamp(128 + (right ? pan : -pan), 0, 128) / 128;
 }
-static_assert(sizeof(StepLocks) == 8);
+static_assert(sizeof(StepLocks) == 9);
 static_assert(std::is_trivially_copyable<StepLocks>::value);
 // Q15 attenuation: unity at 127; bounded signed multiply, no PCM mutation.
 inline uint16_t velocity_gain(int velocity) {
@@ -291,7 +298,7 @@ inline bool pattern_occupied(const Pattern &p) {
   return false;
 }
 static_assert(std::is_trivially_copyable<Pattern>::value);
-static_assert(sizeof(Pattern) == 2850);
+static_assert(sizeof(Pattern) == 3106);
 static_assert(sizeof(Command) <= 12);
 struct Engine {
   Pattern patterns[16];
@@ -527,6 +534,7 @@ struct Engine {
     case Kind::LockFilterCutoff:
     case Kind::LockFilterResonance:
     case Kind::LockDelaySend:
+    case Kind::LockSlice:
     case Kind::UnlockParam:
     case Kind::ClearStepLocks:
       if (c.pattern < 16 && c.step < 16) {
@@ -534,9 +542,11 @@ struct Engine {
         if (c.kind == Kind::ClearStepLocks)
           l = {};
         else if (c.kind == Kind::UnlockParam)
-          l.mask &= uint8_t(~(c.value & 127));
+          l.mask &= uint8_t(~(c.value & 255));
         else {
           const int param = int(c.kind) - int(Kind::LockPitch);
+          if (param == 7 && !t.sample)
+            break;
           l.mask |= uint8_t(1u << param);
           if (param == 0)
             l.pitch = clamp(c.value, 0, 127);
@@ -552,6 +562,8 @@ struct Engine {
             l.filter_resonance = clamp(c.value, 0, 127);
           if (param == 6)
             l.delay_send = clamp(c.value, 0, 127);
+          if (param == 7)
+            l.slice = clamp(c.value, 0, 15);
         }
       }
       break;
@@ -775,7 +787,8 @@ enum class Page {
   Tone,
   ToneLocks,
   SamplePlayback,
-  SampleSlice
+  SampleSlice,
+  SampleLocks
 };
 struct Ui {
   Page page = Page::Sequence;
@@ -790,6 +803,26 @@ struct Ui {
   Command pending_tool{};
   bool lock_action(int id, int x, bool initial, const Engine &e,
                    Command &c) const;
+  bool slice_lock_action(int id, bool initial, const Engine &e,
+                         Command &c) const {
+    if (!initial || id < 149 || id > 151 || selected_step < 0 ||
+        selected_step >= 16 || !e.tracks[selected].sample)
+      return false;
+    c = {Kind::LockSlice, uint8_t(selected), 0};
+    c.pattern = uint8_t(e.selected_pattern);
+    c.step = uint8_t(selected_step);
+    const auto &l = e.patterns[c.pattern].locks[c.track][c.step];
+    if (id == 149 && (l.mask & SLICE_LOCK)) {
+      c.kind = Kind::UnlockParam;
+      c.value = SLICE_LOCK;
+    } else {
+      const int current =
+          l.mask & SLICE_LOCK ? l.slice : e.tracks[selected].slices.index();
+      c.value = clamp(current + (id == 150 ? -1 : id == 151 ? 1 : 0), 0, 15);
+    }
+    return true;
+  }
+
   void cancel_tool() { tool_pending = false; }
   bool tool_action(int id, const Engine &e, Command &c) {
     if (id >= 80 && id <= 82) {
@@ -908,6 +941,14 @@ struct Ui {
   }
 };
 inline Rect widget(int id) {
+  if (id == 148)
+    return {24, 100, 752, 56};
+  if (id == 149)
+    return {24, 168, 752, 56};
+  if (id == 150 || id == 151)
+    return {24 + (id - 150) * 384, 236, 368, 56};
+  if (id == 152)
+    return {24, 350, 752, 56};
   if (id == 131)
     return {280, 350, 240, 56}; // playback -> slice page
   if (id == 132)
@@ -1033,7 +1074,11 @@ inline int hit(Page p, int x, int y) {
       return i;
   if (widget(44).contains(x, y))
     return 44;
-  if (p == Page::SampleSlice) {
+  if (p == Page::SampleLocks) {
+    for (int i = 149; i <= 152; ++i)
+      if (widget(i).contains(x, y))
+        return i;
+  } else if (p == Page::SampleSlice) {
     for (int i = 133; i <= 146; ++i)
       if (widget(i).contains(x, y))
         return i;

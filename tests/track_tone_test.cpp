@@ -34,7 +34,7 @@ struct Wide {
 };
 int main() {
   static_assert(sizeof(app::Command) == 12);
-  static_assert(sizeof(app::StepLocks) == 8);
+  static_assert(sizeof(app::StepLocks) == 9);
   static_assert(sizeof(app::TriggerEvent) == 20);
   assert(p4tone::cutoff(0) == 255 && p4tone::cutoff(127) == 0);
   assert(p4tone::resonance(0, 0) == 255);

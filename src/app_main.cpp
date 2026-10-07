@@ -62,10 +62,10 @@ std::atomic<uint32_t> diagnostic_p99{0}, diagnostic_max{0},
 std::atomic<uint32_t> flashes[16];
 bool delay_ready = false;
 int sample_index = 0;
-bool dirty[148]{};
+bool dirty[153]{};
 bool full = true;
 uint32_t rejected = 0, touch_errors = 0, frames = 0, full_frames = 0;
-uint32_t actions[148]{}, drags = 0;
+uint32_t actions[153]{}, drags = 0;
 uint64_t dirty_bytes = 0, normal_dirty_bytes = 0;
 unsigned normal_frames = 0;
 uint32_t normal_dirty_max = 0;
@@ -144,6 +144,13 @@ struct SliceMetrics {
   unsigned min_index = 16, max_index = 0;
 } slice_metrics{}, slice_result{};
 uint32_t slice_edit_blocks = 0, slice_edit_worst = 0;
+uint32_t slice_lock_ui_edits = 0;
+std::atomic<uint32_t> slice_lock_command_edits{0};
+struct SliceLockMetrics {
+  unsigned locked = 0, unlocked = 0, unsliced = 0, requested_min = 16,
+           requested_max = 0, resolved_min = 16, resolved_max = 0, clamped = 0;
+  unsigned requested_seen = 0, resolved_seen = 0;
+} slice_lock_metrics{}, slice_lock_result{};
 uint32_t slice_ui_entries = 0, slice_ui_edits = 0, slice_ui_full = 0;
 uint32_t waveform_first_us = 0, waveform_redraw_max = 0, slice_redraw_max = 0;
 uint32_t slice_page_max = 0, slice_drag_dirty_max = 0;
@@ -166,6 +173,24 @@ void flush_slice_release() {
 }
 void trigger(app::TriggerEvent event, bool ratchet = false) {
   int t = event.track;
+  if (!ratchet && event.sequenced && engine.tracks[t].sample) {
+    auto &m = slice_lock_metrics;
+    if (event.locked_mask & app::SLICE_LOCK) {
+      ++m.locked;
+      const unsigned requested =
+          engine.patterns[engine.playing_pattern].locks[t][engine.step].slice;
+      m.requested_min = std::min(m.requested_min, requested);
+      m.requested_max = std::max(m.requested_max, requested);
+      m.resolved_min = std::min(m.resolved_min, unsigned(event.slice - 1));
+      m.resolved_max = std::max(m.resolved_max, unsigned(event.slice - 1));
+      m.clamped += requested != unsigned(event.slice - 1);
+      m.requested_seen |= 1u << requested;
+      m.resolved_seen |= 1u << (event.slice - 1);
+    } else if (event.slice)
+      ++m.unlocked;
+    else
+      ++m.unsliced;
+  }
   voice_state[t].event = event;
   apply_voice_tone(t, event);
   event_gain[t] = app::velocity_gain(event.velocity);
@@ -290,7 +315,7 @@ void draw(int id) {
     draw_waveform();
     return;
   }
-  if (id >= 133) {
+  if (id >= 133 && id <= 146) {
     const auto &t = view.tracks[ui.selected];
     const auto &bank = t.slices;
     const unsigned inspected = bank.index(ui.inspected_slice[ui.selected]);
@@ -313,12 +338,13 @@ void draw(int id) {
                : bank.count < 8  ? 8
                : bank.count < 16 ? 16
                                  : 2);
-    const char *labels[] = {"ADD",     "DELETE",  "RESET SLICES", "AUDITION",
-                            "TRACK PREV", "TRACK NEXT", "BACK"};
+    const char *labels[] = {"ADD",      "DELETE",     "RESET SLICES",
+                            "AUDITION", "TRACK PREV", "TRACK NEXT",
+                            "BACK"};
     if (id >= 140)
       snprintf(s, sizeof(s), "%s", labels[id - 140]);
     color = id == 135 && inspected == bank.index() ? accent : panel;
-  } else if (id >= 123) {
+  } else if (id >= 123 && id <= 131) {
     const auto &t = view.tracks[ui.selected];
     const auto &p = t.playback;
     if (id == 123)
@@ -346,13 +372,34 @@ void draw(int id) {
       snprintf(s, sizeof(s), "SLICE EDITOR");
     if (id == 130)
       snprintf(s, sizeof(s), "BACK");
+  } else if (id >= 148 && id <= 152) {
+    const auto &t = view.tracks[ui.selected];
+    const auto &l = view.patterns[view.selected_pattern]
+                        .locks[ui.selected][std::max(0, ui.selected_step)];
+    if (id == 152)
+      snprintf(s, sizeof(s), "BACK TO LOCKS 1/3");
+    else if (!t.sample)
+      snprintf(s, sizeof(s), "SLICE - SAMPLE ONLY");
+    else if (id == 149)
+      snprintf(s, sizeof(s), "%s",
+               l.mask & app::SLICE_LOCK ? "UNLOCK" : "ENABLE LOCK");
+    else if (id == 150 || id == 151)
+      snprintf(s, sizeof(s), "SLICE %s", id == 150 ? "PREV" : "NEXT");
+    else if (!(l.mask & app::SLICE_LOCK))
+      snprintf(s, sizeof(s), "SLICE -- UNLOCKED");
+    else if (l.slice != t.slices.index(l.slice))
+      snprintf(s, sizeof(s), "SLICE %02u -> %02u LOCKED", l.slice + 1,
+               t.slices.index(l.slice) + 1);
+    else
+      snprintf(s, sizeof(s), "SLICE %02u / %02u LOCKED", l.slice + 1,
+               t.slices.count);
   } else if (id >= 114) {
     if (id == 120)
       snprintf(s, sizeof(s), "CLEAR ALL LOCKS");
     else if (id == 121)
       snprintf(s, sizeof(s), "%s",
-               ui.page == app::Page::Locks ? "NEXT: LOCKS 2/2"
-                                           : "BACK: LOCKS 1/2");
+               ui.page == app::Page::Locks ? "NEXT: LOCKS 2/3"
+                                           : "NEXT: SAMPLE LOCKS");
     else if (id == 122)
       snprintf(s, sizeof(s), "BACK TO STEP");
     else {
@@ -394,7 +441,7 @@ void draw(int id) {
                            : "TONE");
   } else if (id >= 95) {
     if (id == 95)
-      snprintf(s, sizeof(s), "LOCKS 1/2");
+      snprintf(s, sizeof(s), "LOCKS 1/3");
     else if (id == 104)
       snprintf(s, sizeof(s), "CLEAR LOCKS");
     else if (id == 105)
@@ -639,7 +686,7 @@ void header() {
   tempo_header();
 }
 void interact(int id, int x, bool initial) {
-  if (id >= 131) {
+  if (id >= 131 && id <= 146) {
     if (initial && (id == 131 || id == 146)) {
       ui.page = id == 131 ? app::Page::SampleSlice : app::Page::SamplePlayback;
       if (id == 131)
@@ -736,7 +783,7 @@ void interact(int id, int x, bool initial) {
     return;
   }
 
-  if (id >= 123) {
+  if (id >= 123 && id <= 130) {
     if (id == 130 && initial) {
       ui.page = app::Page::Sample;
       full = true;
@@ -793,10 +840,24 @@ void interact(int id, int x, bool initial) {
     ++actions[id];
   else
     ++drags;
+  if (id >= 149 && id <= 152) {
+    if (id == 152 && initial) {
+      ui.page = app::Page::Locks;
+      full = true;
+    } else {
+      app::Command c{};
+      if (ui.slice_lock_action(id, initial, view, c) && send(c)) {
+        dirty[148] = dirty[149] = true;
+        dirty[c.step] = true;
+        ++slice_lock_ui_edits;
+      }
+    }
+    return;
+  }
   if (id == 121) {
     if (initial) {
-      ui.page =
-          ui.page == app::Page::Locks ? app::Page::ToneLocks : app::Page::Locks;
+      ui.page = ui.page == app::Page::Locks ? app::Page::ToneLocks
+                                            : app::Page::SampleLocks;
       if (ui.page == app::Page::ToneLocks)
         ++tone_lock_ui_entries;
       full = true;
@@ -1390,10 +1451,34 @@ void ui_task(void *) {
           interact(id, 600, false);
         }
       }
+#if P4SDM_SLICE_LOCK_STRESS
+      if (stage == 2) {
+        ui.page = app::Page::Sample;
+        interact(123, 0, true);
+        for (int id : {124, 125, 126, 127, 128, 129})
+          interact(id, id == 124 ? 80 : 730, true);
+      }
+#endif
       app::Command length{app::Kind::PatternLength, 0, stage ? 16 : 7};
       length.pattern = 4;
       send(length);
     }
+#if P4SDM_SLICE_LOCK_STRESS
+    static uint32_t slice_lock_due = 0;
+    static unsigned slice_lock_edit = 0;
+    if (millis() - started >= 18000 && millis() >= slice_lock_due) {
+      slice_lock_due = millis() + 250;
+      const unsigned n = slice_lock_edit++;
+      app::Command c{n % 5 == 0 ? app::Kind::UnlockParam : app::Kind::LockSlice,
+                     uint8_t(n % 16),
+                     n % 5 == 0 ? int(app::SLICE_LOCK) : int((n * 7) & 15)};
+      c.pattern = uint8_t(view.playing_pattern);
+      c.step = uint8_t((n / 16) % 16);
+      send(c);
+      if (n % 7 == 0)
+        send({app::Kind::SliceEnable, uint8_t(n % 16), int(n & 1)});
+    }
+#endif
     static uint32_t slice_due = 0;
     static unsigned slice_edit = 0;
     if (millis() - started >= 12000 && millis() >= slice_due &&
@@ -1409,6 +1494,12 @@ void ui_task(void *) {
         interact(131, 0, true);
       const int ids[] = {139, 139, 139, 139, 134, 135,
                          137, 138, 140, 141, 143, 142};
+#if P4SDM_SLICE_LOCK_STRESS
+      if (n % 12 == 8) {
+        // Make room for a successful ADD after the four AUTO counts.
+        send({app::Kind::SliceDivide, uint8_t(ui.selected), 4});
+      }
+#endif
       interact(ids[n % 12], ids[n % 12] == 137 ? 80 : 730, true);
       if (n % 12 == 3) {
         send({app::Kind::SliceSelect, uint8_t(ui.selected), 15});
@@ -1418,8 +1509,19 @@ void ui_task(void *) {
         slice_audition_release = true;
         flush_slice_release();
       }
-      if (n % 24 == 23)
+      if (n % 24 == 23) {
         interact(146, 0, true);
+#if P4SDM_SLICE_LOCK_STRESS
+        ui.selected_step = int((n / 24) % 16);
+        interact(95, 0, true);
+        interact(121, 0, true);
+        interact(121, 0, true);
+        for (int id : {149, 150, 151, 149})
+          interact(id, 0, true);
+        // Leave the page visible for a real display pass before next slice
+        // edit.
+#endif
+      }
     }
 #endif
     flush_slice_release();
@@ -1522,12 +1624,16 @@ void ui_task(void *) {
           for (int i = 79; i <= 94; ++i)
             draw(i);
         } else if (ui.page == app::Page::Locks) {
-          display::text(24, 82, "LOCKS 1/2", white, 1);
+          display::text(24, 82, "LOCKS 1/3", white, 1);
           for (int i = 96; i <= 105; ++i)
             draw(i);
           draw(121);
+        } else if (ui.page == app::Page::SampleLocks) {
+          display::text(24, 82, "SAMPLE LOCKS 3/3", white, 1);
+          for (int i = 148; i <= 152; ++i)
+            draw(i);
         } else if (ui.page == app::Page::ToneLocks) {
-          display::text(24, 82, "LOCKS 2/2", white, 1);
+          display::text(24, 82, "LOCKS 2/3", white, 1);
           for (int i = 114; i <= 122; ++i)
             draw(i);
         } else if (ui.page == app::Page::Step) {
@@ -1584,9 +1690,9 @@ void ui_task(void *) {
           snprintf(title, sizeof(title), "P4SDM T%02d", ui.selected + 1);
           display::text(16, 24, title, white, 2);
         }
-        for (int i = 0; i < 148; ++i)
+        for (int i = 0; i < 153; ++i)
           if (dirty[i] &&
-              (((i >= 132 && ui.page == app::Page::SampleSlice) ||
+              (((i >= 132 && i <= 147 && ui.page == app::Page::SampleSlice) ||
                 (i >= 124 && i <= 131 &&
                  ui.page == app::Page::SamplePlayback) ||
                 (i == 123 && ui.page == app::Page::Sample) ||
@@ -1606,6 +1712,7 @@ void ui_task(void *) {
                (((i >= 96 && i <= 105) || i == 121) &&
                 ui.page == app::Page::Locks) ||
                (i >= 114 && i <= 122 && ui.page == app::Page::ToneLocks) ||
+               (i >= 148 && i <= 152 && ui.page == app::Page::SampleLocks) ||
                (i >= 79 && i <= 94 && ui.page == app::Page::Tools)))
             draw(i);
       }
@@ -1819,7 +1926,17 @@ void audio_worker(void *) {
     for (unsigned n = 0; n < 16 && commands.pop(c); ++n) {
       if (c.track >= 16)
         continue;
+      const bool slice_lock_edit =
+          engine.tracks[c.track].sample && c.pattern < 16 && c.step < 16 &&
+          (c.kind == app::Kind::LockSlice ||
+           (c.kind == app::Kind::UnlockParam && (c.value & app::SLICE_LOCK)) ||
+           (c.kind == app::Kind::ClearStepLocks &&
+            (engine.patterns[c.pattern].locks[c.track][c.step].mask &
+             app::SLICE_LOCK)));
       engine.apply(c);
+      if (slice_lock_edit)
+        slice_lock_command_edits.fetch_add(1, std::memory_order_relaxed);
+      slice_edited |= slice_lock_edit;
       slice_edited |= c.kind >= app::Kind::SliceEnable &&
                       c.kind <= app::Kind::SliceAudition;
       tone_lock_edited |= (c.kind >= app::Kind::LockFilterCutoff &&
@@ -1901,6 +2018,7 @@ void audio_worker(void *) {
       if (b + 1 == capture_blocks) {
         playback_result = playback_metrics;
         slice_result = slice_metrics;
+        slice_lock_result = slice_lock_metrics;
         tone_lock_result = tone_lock_metrics;
         for (int i = 0; i < 3; ++i)
           tone_parents[i] = engine.lock_events[i + 4];
@@ -1956,7 +2074,8 @@ void audio_worker(void *) {
           const auto &p = engine.patterns[0];
           locked &= p.track_steps[t] == 0xffff;
           for (int i = 0; i < 16; ++i)
-            locked &= p.meta[t][i].ratchets == 4 && p.locks[t][i].mask == 127;
+            locked &= p.meta[t][i].ratchets == 4 &&
+                      (p.locks[t][i].mask & 0x7F) == 0x7F;
         }
         if (locked) {
           ++locked_dense_blocks;
@@ -1966,6 +2085,7 @@ void audio_worker(void *) {
       if (b + 1 == capture_blocks) {
         playback_result = playback_metrics;
         slice_result = slice_metrics;
+        slice_lock_result = slice_lock_metrics;
         lock_result[0] = engine.locked_parents;
         lock_result[1] = engine.unlocked_parents;
         for (int i = 0; i < 4; ++i)
@@ -2093,7 +2213,25 @@ void setup_playback_fixture() {
     track.slices.slices[track.slices.selected] = {uint16_t(t * 256),
                                                   uint16_t(65535 - t * 128)};
     track.slice_enabled = true;
+#if P4SDM_SLICE_LOCK_STRESS
+    track.slices.divide(p, 16);
+    // Retain the dense sixteen-voice workload at every locked index.
+    for (unsigned i = 0; i < 16; ++i)
+      track.slices.slices[i] = {uint16_t(p.start + i * 64),
+                                uint16_t(p.end - i * 32)};
+    for (auto &pattern : engine.patterns)
+      for (unsigned step = 0; step < 16; ++step) {
+        auto &l = pattern.locks[t][step];
+        if ((t + step) % 4)
+          l.mask |= app::SLICE_LOCK;
+        l.slice = (t * 3 + step * 5) & 15;
+      }
+#endif
     view.tracks[t] = track;
+#if P4SDM_SLICE_LOCK_STRESS
+    for (unsigned pattern = 0; pattern < 16; ++pattern)
+      view.patterns[pattern] = engine.patterns[pattern];
+#endif
 #endif
   }
 #if P4SDM_SAMPLE_SLICE_STRESS
@@ -2340,6 +2478,16 @@ void loop() {
                    unsigned(sizeof(sampler::Voice)),
                    unsigned(sizeof(app::Track)),
                    unsigned(sizeof(app::TriggerEvent)));
+    const auto &lm = slice_lock_result;
+    summary_printf(
+        "[M15 locks] locked=%u unlocked=%u unsliced=%u "
+        "requested_min=%u requested_max=%u resolved_min=%u "
+        "resolved_max=%u clamped=%u edits=%u ui_edits=%u align=%u "
+        "requested_seen=%u resolved_seen=%u\n",
+        lm.locked, lm.unlocked, lm.unsliced, lm.locked ? lm.requested_min : 0,
+        lm.requested_max, lm.locked ? lm.resolved_min : 0, lm.resolved_max,
+        lm.clamped, slice_lock_command_edits.load(), slice_lock_ui_edits,
+        unsigned(alignof(app::StepLocks)), lm.requested_seen, lm.resolved_seen);
     const auto &sm = slice_result;
     summary_printf("[M14 slices] triggers=%u auditions=%u index_min=%u "
                    "index_max=%u frames_min=%u frames_max=%u active_changes=%u "

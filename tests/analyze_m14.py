@@ -6,6 +6,9 @@ import sys
 from pathlib import Path
 p = argparse.ArgumentParser()
 p.add_argument('log')
+p.add_argument('--step-bytes', type=int, default=8)
+p.add_argument('--pattern-bytes', type=int, default=2850)
+p.add_argument('--engine-bytes', type=int, default=47968)
 p.add_argument('--normal', action='store_true')
 p.add_argument('--synth', action='store_true')
 a = p.parse_args()
@@ -15,7 +18,7 @@ def row(prefix):
     assert len(lines) == 1, f'missing/repeated {prefix}'
     return {k:int(v) for k,v in re.findall(r'(\w+)=(\d+)', lines[0])}
 subprocess.run([sys.executable,'tests/analyze_m13.py',a.log,
-    '--track-bytes','116','--engine-bytes','47968'] +
+    '--track-bytes','116','--engine-bytes',str(a.engine_bytes),'--step-bytes',str(a.step_bytes),'--pattern-bytes',str(a.pattern_bytes)] +
     (['--normal'] if a.normal else []) + (['--synth'] if a.synth else []),check=True)
 m = row('[M14 slices]')
 u = row('[M14 UI]')

@@ -477,9 +477,30 @@ ratchets keep one immutable playback snapshot.
 A resident Sample owns a completed 360-column min/max waveform (1440 bytes),
 built outside audio before publication. Display redraw uses those bins and
 existing framebuffer caching, never a PCM scan. Pattern tools do not modify
-slices; StepLocks stays eight bytes. No Slice Lock, onset detection,
-time-stretch, persistence or MIDI is implemented. Work stops at M14.
+slices; M14 retained eight-byte StepLocks. M15 adds Slice Lock below. No onset
+detection, time-stretch, persistence or MIDI is implemented.
 
 `guition_sample_slice_stress` retains sixteen distinct PSRAM buffers and the
 M13 dense workload. See [M14 qualification](docs/GUITION_M14.md) for genuine
 SAMPLE/SYNTH/normal captures, UI costs, memory, CI and pending physical SD QA.
+
+## M15 per-step Slice Lock
+
+Open STEP -> LOCKS 1/3 -> LOCKS 2/3 -> SAMPLE LOCKS 3/3. ENABLE LOCK starts
+from the Track active selection; PREV/NEXT chooses one of sixteen discrete
+requested slices. A locked step plays that region even with SLICES OFF.
+Unlocked steps use the Track active slice when ON or Track START/END when OFF.
+The Track active selection stays unchanged. A request beyond the current count
+clamps for playback and the page shows requested -> effective; adding slices
+back restores the original requested index. UNLOCK restores Track behavior.
+SYNTH shows SAMPLE ONLY and retains existing data for switching back to SAMPLE.
+
+Slice Lock uses bit 0x80 and adds one byte to StepLocks. Pattern transforms
+carry it, generative tools preserve it, and CLEAR STEP LOCKS removes it.
+Accepted parents and all pending ratchets retain one immutable region through
+live lock and slice-bank edits. PCM ownership, M13 Voice and scheduler are
+unchanged. Normal pad/inspected-slice auditions ignore step locks.
+
+`guition_slice_lock_stress` extends the full M14 workload. See
+[M15 qualification](docs/GUITION_M15.md) for host/equivalence checks, genuine
+SAMPLE/SYNTH/normal results, memory and physical SD status. Work stops at M15.
