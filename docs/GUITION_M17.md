@@ -18,7 +18,7 @@ Manual Pattern selection in CHAIN updates only selected_pattern. It never change
 
 ## UI and telemetry
 
-FX -> CHAIN opens six 48-pixel rows with UP/DOWN scrolling, ADD after selected row (current editor Pattern, one repeat), DELETE, PATTERN -/+, REPEATS -/+, LOOP, MODE, CLEAR/CONFIRM/CANCEL, PLAY/STOP and BACK. `>` marks selected row; `*` marks audible row. Footer shows preferred mode and repetition progress. Row selection never automatically moves the Pattern editor, including while stopped. Empty mode remains PATTERN; mode switching is gated while running. Individual edits redraw the affected row/status; structural shifts and scrolling redraw the visible list. LOAD/NEW resets row/scroll/pending confirmation. Runtime row, repeat, mode and playing state reach the UI through bounded atomic publications.
+FX -> CHAIN opens six 48-pixel rows with UP/DOWN scrolling, ADD after selected row (current editor Pattern, one repeat), DELETE, PATTERN -/+, REPEATS -/+, LOOP, MODE, CLEAR/CONFIRM/CANCEL, PLAY/STOP and BACK. `>` marks selected row; `*` marks audible row. Footer shows preferred mode and repetition progress. Row selection never automatically moves the Pattern editor, including while stopped. Empty mode remains PATTERN; mode switching is gated while running. Individual edits redraw the affected row/status; structural shifts and scrolling redraw the visible list. LOAD/NEW resets row/scroll/pending confirmation. Runtime row, repeat, mode and playing state reach the UI through bounded atomic publications. Both Chain and Pattern publications include the acknowledged command sequence; UI accepts runtime only when both have acknowledged every optimistic edit.
 
 Aggregated audio telemetry: starts, entry advances, repeat loops, full loops, clean stops, Chain Pattern switches, min/max lengths, all-row coverage and maximum boundary block. A final capture snapshot preserves these measurements; no per-transition Serial. UI telemetry counts page entry, edits, row selection and scrolling.
 
@@ -46,17 +46,18 @@ Both device stress modes retain the dense first 2,068 blocks: 16 voices, 240 BPM
 
 ## Final device results
 
-Implementation source: `768c48b` (tests/documentation follow-up does not change firmware). Genuine native USB captures on COM13, 10,337 blocks / 60.006 seconds each. Final SAMPLE/SYNTH pass `analyze_m17.py`, including every inherited assertion. Initial logs are retained but rejected: the first Chain page handler intercepted scripted inherited Tools actions. The handler was narrowed to its own control IDs, and the late non-loop section uses short lengths so natural STOP is reached before capture end. No inherited coverage/budget assertion was weakened.
+Final implementation source: `14ea331` (initial implementation `768c48b`) (tests/documentation follow-up does not change firmware). Genuine native USB captures on COM13, 10,337 blocks / 60.006 seconds each. Final SAMPLE/SYNTH pass `analyze_m17.py`, including every inherited assertion. Initial logs are retained but rejected: the first Chain page handler intercepted scripted inherited Tools actions. The handler was narrowed to its own control IDs, and the late non-loop section uses short lengths so natural STOP is reached before capture end. No inherited coverage/budget assertion was weakened. PRE_ACK captures also passed but precede the final command-acknowledgement publication fix; they are retained separately and are not substituted for final evidence.
 
 | Firmware | Render p50 / p95 / p99 / max us | Min headroom | Boundary block max us | Snapshot max us | Apply/clear max us |
 | --- | --- | --- | --- | --- | --- |
-| SAMPLE | 2744 / 3454 / 3542 / 3756 | 35.30% | 3610 | 3468 | 2043 |
-| SYNTH | 3626 / 4117 / 4215 / 4412 | 24.00% | 4259 | 4218 | 1956 |
-| NORMAL | 1789 / 1809 / 1817 / 2004 | 65.48% | 0 | 0 | 0 |
+| SAMPLE | 2779 / 3458 / 3547 / 3777 | 34.94% | 3638 | 3432 | 2060 |
+| SYNTH | 3607 / 4119 / 4223 / 4430 | 23.69% | 4287 | 4194 | 1827 |
+| NORMAL | 1789 / 1809 / 1817 / 1978 | 65.93% | 0 | 0 | 0 |
+
 
 Both modes have zero missed deadlines, I2S failures/timeouts and rails; three successful RAM V2 fixtures, zero fixture errors, 51 snapshot blocks and 312 apply/clear blocks. No Chain bookkeeping is performed for ordinary audio samples inside a Pattern. Maximum boundary block measures the entire audio block, including normal rendering and command work, rather than an isolated algorithm estimate.
 
-SAMPLE: 5 starts, 120 entry advances, 17 repeat loops, 1 full loop, 1 natural stop, 119 Chain Pattern switches, lengths 1..16. SYNTH: 5 starts, 185 advances, 25 repeats, 3 full loops, 1 natural stop, 183 switches, lengths 1..6. Both visit all 32 rows (`0xFFFFFFFF`), and UI records 18 page entries, 10 edits, 9 row changes and 2 scrolls. Runtime counters survive project fixture applies for aggregate qualification but are never persisted.
+SAMPLE: 5 starts, 124 entry advances, 18 repeat loops, 2 full loops, 1 natural stop, 122 Chain Pattern switches, lengths 1..16. SYNTH: 5 starts, 183 entry advances, 25 repeat loops, 3 full loops, 1 natural stop, 181 Chain Pattern switches, lengths 1..6. Both visit all 32 rows (`0xFFFFFFFF`), and UI records 18 page entries, 10 edits, 9 row changes and 2 scrolls. Runtime counters survive project fixture applies for aggregate qualification but are never persisted.
 
 | Mode | Internal free before -> after | PSRAM free before -> after | Largest PSRAM block before -> after |
 | --- | --- | --- | --- |
@@ -64,14 +65,15 @@ SAMPLE: 5 starts, 120 entry advances, 17 repeat loops, 1 full loop, 1 natural st
 | SYNTH | 298676 -> 298676 | 30779004 -> 30779004 | 30408692 -> 30408692 |
 | NORMAL | 298724 -> 298724 | 30779004 -> 30779004 | 30408692 -> 30408692 |
 
+
 Compared with accepted M16, SAMPLE/SYNTH internal free are each 400 bytes lower; PSRAM allocator buckets retain the same free/largest values despite 131 additional requested staging bytes. Normal linked RAM grows 64 bytes (78,400); complete Engine/mirror sizes and runtime heap deltas are reported separately. No ongoing allocation/heap growth is observed.
 
 SHA-256 of final binaries:
 
-- `guition_chain_stress`: `e5fe68806ff8f8062742cbb2c284a3da5ed465eaf60d7810daabee0a039fc03b`
-- `guition_chain_synth_stress`: `b0e1772280b20ece0b073e7232210394d77dc9d6911fabc1f7b63c84aa086cf1`
+- `guition_chain_stress`: `39da51351bc1a34a4a7d1d0be3921cd1878a0b36859a306ffee4fccb459f9dd6`
+- `guition_chain_synth_stress`: `5b4527dd9e638a9f62066bc6294b23218b744ad933e971a43d458417b7b30a6f`
 
-- `guition_app`: `803770518946c8bcc6c4e4b952f16f26244acc1c2a1e07e384fb4243007ac1da`
+- `guition_app`: `b2d3f1b42d62ec59331945514d344a71c648e8322c746a6787a9505344371d7d`
 
 Normal no-card firmware is restored on the board. It passes the normal analyzer: Chain empty/PATTERN defaults, zero Chain starts/transitions, zero project fixtures/snapshot/apply/dirty state, zero PCM/cache/lock residue and zero nonzero output. Internal free is 384 bytes below M16 normal; PSRAM free/largest remain unchanged. All normal heaps stay fixed through the capture.
 
@@ -89,6 +91,8 @@ Normal no-card firmware is restored on the board. It passes the normal analyzer:
 
 ## Build and CI status
 
-All **17 local PlatformIO environments** pass, retaining every M3-M16 target and adding `guition_chain_stress` / `guition_chain_synth_stress`. All workflow host commands and historical analyzers/equivalence comparisons pass locally; final M17 SAMPLE/SYNTH/NORMAL analyzers also pass. The firmware source is frozen at implementation commit `768c48b`; the qualification follow-up adds the report, original/final captures, README and additional host assertions without changing that firmware.
+All **17 local PlatformIO environments** pass, retaining every M3-M16 target and adding `guition_chain_stress` / `guition_chain_synth_stress`. All workflow host commands and historical analyzers/equivalence comparisons pass locally; final M17 SAMPLE/SYNTH/NORMAL analyzers also pass. The firmware source is frozen at `14ea331`; the qualification follow-up adds the report, original/pre-ack/final captures, README and additional host assertions without changing that firmware.
 
-Remote pull-request CI is verified separately after publication; its run link/result is recorded in the delivery message. Physical SD status remains pending regardless of CI.
+Initial evidence revision `2ab95ae` passed full [remote CI](https://github.com/ovelhaaa/P4SDM/actions/runs/37572844004). Final [PR checks](https://github.com/ovelhaaa/P4SDM/pull/6/checks) cover the acknowledged-publication source and updated captures. Remote pull-request CI is verified separately after publication; its run link/result is recorded in the delivery message. Physical SD status remains pending regardless of CI.
+
+Commits: `768c48b` implements Chain/V2; `2ab95ae` records first qualification; `14ea331` fixes runtime acknowledgement. The final evidence follow-up refreshes all three captures and preserves PRE_ACK logs.

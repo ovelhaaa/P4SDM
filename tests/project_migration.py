@@ -2,6 +2,10 @@
 import subprocess
 import tempfile
 from pathlib import Path
+# Shared sampler types are unchanged; reject baseline comparisons if that changes.
+for dependency in ('sample_playback.h', 'slices.h'):
+    accepted = subprocess.check_output(['git','show','dbc9505:src/app/'+dependency]).decode()
+    assert accepted == (Path('src/app')/dependency).read_text(encoding='utf-8'), dependency
 with tempfile.TemporaryDirectory() as folder:
     root = Path(folder)
     for name in ('model.h', 'project.h', 'sample_playback.h', 'slices.h'):
