@@ -540,4 +540,28 @@ and stops; CLEAR requires confirmation and preserves all Patterns.
 See [M17 qualification](docs/GUITION_M17.md) for edit/boundary semantics, V2
 migration and dual-version recovery, actual M16 equivalence, realtime metrics,
 memory and CI. **PHYSICAL V2 PROJECT MIGRATION / CHAIN PERSISTENCE PENDING**.
-Work stops at M17; Performance Mode, scenes, fills and MIDI remain out of scope.
+M18 adds the runtime Performance layer below.
+
+## M18 Performance Mode
+
+Open FX -> PERFORMANCE, or CHAIN -> PERF. Pattern pads launch a latched
+Override at the next Pattern boundary. FILL NEXT makes the next pad tap a
+one-loop Fill. CANCEL O finishes the current temporary loop and returns to
+arrangement; CANCEL F only cancels a pending Fill. An active Fill always
+finishes; additional Fill requests during it are ignored. Fill takes priority
+over Override and returns to Override if still requested.
+
+The arrangement accounts for the completed loop at launch, then freezes the
+next Chain entry/repeat until return. PATTERN returns to the captured audible
+Pattern, independently of editor selection. E/A/O/F markers and audible borders
+separate editing, arrangement and temporary playback. MIXER provides sixteen
+runtime mute/solo cells; B/S identify base controls and M/+S identify temporary
+ones. CLEAR MIX clears only those temporary masks. STOP, LOAD and NEW clear
+all performance state. Performance actions never dirty or persist in projects;
+V2 bytes and the existing realtime Pattern engine remain unchanged.
+
+See [M18 qualification](docs/GUITION_M18.md) for exact semantics, allocation
+checks, actual M17 equivalence/V2-byte proof, genuine SAMPLE/SYNTH/NORMAL
+measurements and memory. **PHYSICAL V2 PROJECT MIGRATION / CHAIN PERSISTENCE
+PENDING**; manual touch usability and audible listening remain pending.
+Work stops at M18. Beat Repeat, stutter, scenes, macros and MIDI are out of scope.

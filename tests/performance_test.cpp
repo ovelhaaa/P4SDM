@@ -2,6 +2,7 @@
 #include <cassert>
 #include <cstdlib>
 #include <iostream>
+#include <tuple>
 static bool realtime = false;
 void *operator new(std::size_t n) {
   assert(!realtime);
@@ -20,8 +21,16 @@ void wrap(Engine &e) {
   do { tick(e); } while (e.playing && e.loops == loops);
 }
 void play(Engine &e) { e.apply({Kind::Play, 0, 1}); tick(e); }
+auto event_key(TriggerEvent e, bool ratchet) {
+  return std::make_tuple(e.track, e.velocity, e.pitch, e.volume, e.pan,
+                        e.wave, e.locked_mask, e.filter_cutoff,
+                        e.filter_resonance, e.delay_send, e.playback.start,
+                        e.playback.end, e.playback.reverse, e.playback.mode,
+                        e.slice, e.sequenced, ratchet);
+}
 int main() {
   static Engine e;
+  static Engine reference;
   static project::State canonical, saved, decoded;
   static uint8_t before[project::file_bytes], after[project::file_bytes];
   realtime = true;
@@ -90,6 +99,23 @@ int main() {
     wrap(e);
     assert(e.playing_pattern == 2 && e.selected_pattern == 14);
   }
+  // Requested two-entry golden sequences have no duplicated/lost repeats.
+  for (bool fill : {false, true}) {
+    e = Engine{}; e.chain.length = 2; e.mode = TransportMode::Chain;
+    e.chain.entries[0] = {0, 2}; e.chain.entries[1] = {1, 2};
+    for (auto &p : e.patterns) p.length = 1;
+    play(e); assert(e.playing_pattern == 0 && e.chain_repeat == 0);
+    e.apply({fill ? Kind::PerfFill : Kind::PerfOverride, 0, fill ? 9 : 7});
+    wrap(e); assert(e.playing_pattern == (fill ? 9 : 7) && e.chain_repeat == 1);
+    if (!fill) {
+      wrap(e); assert(e.playing_pattern == 7 && e.chain_repeat == 1);
+      e.apply({Kind::PerfOverrideCancel, 0, 0});
+    }
+    wrap(e); assert(e.playing_pattern == 0 && e.chain_repeat == 1);
+    wrap(e); assert(e.playing_pattern == 1 && e.chain_repeat == 0);
+    wrap(e); assert(e.playing_pattern == 1 && e.chain_repeat == 1);
+    wrap(e); assert(!e.playing);
+  }
   // Exact next-loop context: every entry/repeat, with excursion at that loop.
   for (int repeats : {1, 2, 4, 16}) for (int entry = 0; entry < 3; ++entry)
     for (int repeat = 0; repeat < repeats; ++repeat) for (bool fill : {false, true}) {
@@ -133,6 +159,49 @@ int main() {
   assert(e.performance.return_pattern == 0 && e.queued_pattern == -1);
   e.apply({Kind::PerfOverrideCancel, 0, 0}); wrap(e);
   assert(e.playing_pattern == 0 && e.selected_pattern == 3);
+  // Active excursions have exactly the same sample clock/events as the usual
+  // Pattern queue following the same audible sequence, including odd lengths.
+  for (int length : {1, 3, 7, 12, 16}) for (int swing : {50, 60, 75}) {
+    e = Engine{}; e.bpm = 240; e.swing = swing;
+    e.patterns[0].length = 3;
+    e.patterns[7].length = uint8_t(length); e.patterns[9].length = 7;
+    for (int p : {0, 7, 9}) for (int t = 0; t < 16; ++t) {
+      e.patterns[p].track_steps[t] = 0xffff;
+      for (int step = 0; step < 16; ++step) {
+        e.patterns[p].meta[t][step] = {uint8_t(30 + step), 53, 4};
+        e.patterns[p].locks[t][step] = {127, 71, 63, -20, 4, 83, 41, 27, 0};
+      }
+    }
+    reference = e; play(e); play(reference);
+    bool fill_queued_return = false;
+    for (int i = 0; i < 200000; ++i) {
+      if (i == 10000) {
+        e.apply({Kind::PerfOverride, 0, 7});
+        reference.apply({Kind::SelectPattern, 0, 7});
+      }
+      if (i == 60000) {
+        e.apply({Kind::PerfFill, 0, 9});
+        reference.apply({Kind::SelectPattern, 0, 9});
+      }
+      if (i == 120000) {
+        e.apply({Kind::PerfOverrideCancel, 0, 0});
+        reference.apply({Kind::SelectPattern, 0, 0});
+      }
+      decltype(event_key({}, false)) a[64], b[64];
+      unsigned na = 0, nb = 0;
+      e.sample([&](TriggerEvent ev, bool r) { assert(na < 64); a[na++] = event_key(ev, r); });
+      reference.sample([&](TriggerEvent ev, bool r) { assert(nb < 64); b[nb++] = event_key(ev, r); });
+      assert(na == nb);
+      for (unsigned n = 0; n < na; ++n) assert(a[n] == b[n]);
+      assert(e.phase == reference.phase && e.step == reference.step &&
+             e.rng == reference.rng && e.playing_pattern == reference.playing_pattern);
+      if (e.performance.fill_active >= 0 && !fill_queued_return) {
+        reference.apply({Kind::SelectPattern, 0, 7});
+        fill_queued_return = true;
+      }
+    }
+    assert(fill_queued_return && e.perf_metrics.fill_completions == 1);
+  }
   // Natural finite Chain STOP also leaves neutral performance controls.
   e = Engine{}; e.chain.length = 1; e.mode = TransportMode::Chain;
   e.patterns[0].length = 1;
@@ -197,6 +266,8 @@ int main() {
     assert(r.w >= 100 && r.h >= 60 && r.y + r.h <= 480);
     assert(hit(Page::Performance, r.x + r.w/2, r.y + r.h/2) == id);
   }
+  auto play_button = widget(206);
+  assert(hit(Page::Performance, play_button.x + 8, play_button.y + 8) == 206);
   realtime = false;
   std::cout << "M18 performance PASS (allocation guard, mix truth table, Pattern/Chain returns, Fill, lengths/swing, locks/slices, V2, resets, UI); state="
             << sizeof(PerformanceState) << " engine=" << sizeof(Engine) << '\n';
