@@ -779,7 +779,7 @@ void interact(int id, int x, bool initial) {
     return;
   }
 
-  if (id >= 123) {
+  if (id >= 123 && id <= 130) {
     if (id == 130 && initial) {
       ui.page = app::Page::Sample;
       full = true;
@@ -1447,6 +1447,14 @@ void ui_task(void *) {
           interact(id, 600, false);
         }
       }
+#if P4SDM_SLICE_LOCK_STRESS
+      if (stage == 2) {
+        ui.page = app::Page::Sample;
+        interact(123, 0, true);
+        for (int id : {124, 125, 126, 127, 128, 129})
+          interact(id, id == 124 ? 80 : 730, true);
+      }
+#endif
       app::Command length{app::Kind::PatternLength, 0, stage ? 16 : 7};
       length.pattern = 4;
       send(length);
