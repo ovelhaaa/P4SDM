@@ -62,10 +62,10 @@ std::atomic<uint32_t> diagnostic_p99{0}, diagnostic_max{0},
 std::atomic<uint32_t> flashes[16];
 bool delay_ready = false;
 int sample_index = 0;
-bool dirty[131]{};
+bool dirty[148]{};
 bool full = true;
 uint32_t rejected = 0, touch_errors = 0, frames = 0, full_frames = 0;
-uint32_t actions[131]{}, drags = 0;
+uint32_t actions[148]{}, drags = 0;
 uint64_t dirty_bytes = 0, normal_dirty_bytes = 0;
 unsigned normal_frames = 0;
 uint32_t normal_dirty_max = 0;
@@ -139,6 +139,31 @@ uint32_t playback_worst = 0, choke_worst = 0, retrigger_worst = 0;
 unsigned dense_sample_min = 16, dense_sample_blocks = 0;
 uint32_t playback_ui_entries = 0, playback_ui_edits = 0, playback_ui_full = 0,
          playback_widgets = 0;
+struct SliceMetrics {
+  uint32_t triggers = 0, auditions = 0, min_frames = UINT32_MAX, max_frames = 0;
+  unsigned min_index = 16, max_index = 0;
+} slice_metrics{}, slice_result{};
+uint32_t slice_edit_blocks = 0, slice_edit_worst = 0;
+uint32_t slice_ui_entries = 0, slice_ui_edits = 0, slice_ui_full = 0;
+uint32_t waveform_first_us = 0, waveform_redraw_max = 0, slice_redraw_max = 0;
+uint32_t slice_page_max = 0, slice_drag_dirty_max = 0;
+bool slice_drag_dirty = false;
+char slice_notice[64] = "SAMPLE SLICE / YELLOW VIEW / CYAN ACTIVE";
+samples::Preview
+    wave_preview; // UI-owned, copies immutable published metadata only
+unsigned wave_revision = UINT_MAX;
+int wave_track = -1;
+int slice_audition_track = -1;
+bool slice_audition_release = false;
+void flush_slice_release() {
+  if (slice_audition_release &&
+      commands.push(
+          {app::Kind::GateRelease, uint8_t(slice_audition_track), 0})) {
+    ++sent_commands;
+    slice_audition_track = -1;
+    slice_audition_release = false;
+  }
+}
 void trigger(app::TriggerEvent event, bool ratchet = false) {
   int t = event.track;
   voice_state[t].event = event;
@@ -150,9 +175,21 @@ void trigger(app::TriggerEvent event, bool ratchet = false) {
   if (engine.tracks[t].sample && samples::voices[t].sample) {
     PITCH[t] = 255;
     AMP[t] = 0;
-    sampler::trigger_voice(
+    const bool played = sampler::trigger_voice(
         samples::voices, t, sampler::pitch_increment(event.pitch),
         event.playback, event.sequenced, ratchet, playback_metrics);
+    if (played && event.slice) {
+      ++slice_metrics.triggers;
+      slice_metrics.min_index =
+          std::min(slice_metrics.min_index, unsigned(event.slice - 1));
+      slice_metrics.max_index =
+          std::max(slice_metrics.max_index, unsigned(event.slice - 1));
+      const auto &r = samples::voices[t].region;
+      slice_metrics.min_frames =
+          std::min(slice_metrics.min_frames, r.end - r.start);
+      slice_metrics.max_frames =
+          std::max(slice_metrics.max_frames, r.end - r.start);
+    }
   } else
     synthESP32_TRIGGER_P(t, event.pitch);
   flashes[t].fetch_add(1, std::memory_order_relaxed);
@@ -193,11 +230,95 @@ bool send(app::Command c) {
   view.apply(c);
   return true;
 }
+void draw_waveform() {
+  const auto started = esp_timer_get_time();
+  const unsigned revision = samples::revision();
+  if (wave_track != ui.selected || wave_revision != revision) {
+    samples::preview(ui.selected, wave_preview);
+    wave_track = ui.selected;
+    wave_revision = revision;
+  }
+  const auto &bank = view.tracks[ui.selected].slices;
+  const unsigned inspected = bank.index(ui.inspected_slice[ui.selected]);
+  const auto &region = bank.slices[inspected];
+  display::rect(40, 100, 720, 116, bg);
+  const int a = 40 + uint32_t(region.start) * 719 / 65535;
+  const int b = 40 + uint32_t(region.end) * 719 / 65535;
+  display::rect(a, 102, std::max(1, b - a), 112, panel);
+  display::rect(40, 158, 720, 1, 0x4208);
+  for (unsigned i = 0; i < sampler::waveform_columns; ++i) {
+    const auto c = wave_preview.waveform.columns[i];
+    const int x = 40 + int(i) * 2;
+    const int top = 158 - int(c.max) * 48 / 32768;
+    const int bottom = 158 - int(c.min) * 48 / 32768;
+    display::rect(x, top, 2, bottom - top + 1, white);
+  }
+  for (unsigned i = 0; i < std::min(16u, unsigned(bank.count)); ++i) {
+    const auto r = bank.slices[i];
+    const uint16_t color = i == inspected      ? 0xffe0
+                           : i == bank.index() ? accent
+                                               : 0x6318;
+    const int x = 40 + uint32_t(r.start) * 719 / 65535;
+    display::rect(x, 104, 1, 109, color);
+    const int end = 40 + uint32_t(r.end) * 719 / 65535;
+    display::rect(end, 104, 1, 109, color);
+    // A short cyan marker remains visible even when active and inspected
+    // coincide.
+    if (i == bank.index())
+      display::rect(x, 208, std::max(1, end - x), 6, accent);
+  }
+  char name[96];
+  strlcpy(name, wave_preview.frames ? wave_preview.name : "NO RESIDENT SAMPLE",
+          sizeof(name));
+  for (char &c : name)
+    if (c >= 'a' && c <= 'z')
+      c = char(c - 'a' + 'A');
+  display::text(44, 102, name, white, 1);
+  waveform_redraw_max =
+      std::max(waveform_redraw_max, uint32_t(esp_timer_get_time() - started));
+}
 void draw(int id) {
+  if (id == 147) {
+    display::rect(40, 82, 720, 16, bg);
+    display::text(40, 82, slice_notice, white, 1);
+    return;
+  }
   auto r = app::widget(id);
   char s[48]{};
   uint16_t color = panel;
-  if (id >= 123) {
+  if (id == 132) {
+    draw_waveform();
+    return;
+  }
+  if (id >= 133) {
+    const auto &t = view.tracks[ui.selected];
+    const auto &bank = t.slices;
+    const unsigned inspected = bank.index(ui.inspected_slice[ui.selected]);
+    const auto region = bank.slices[inspected];
+    if (id == 133 || id == 134)
+      snprintf(s, sizeof(s), "%s %u/%u", id == 133 ? "VIEW PREV" : "VIEW NEXT",
+               inspected + 1, bank.count);
+    if (id == 135)
+      snprintf(s, sizeof(s), "USE %u [ACT %u]", inspected + 1,
+               bank.index() + 1);
+    if (id == 136)
+      snprintf(s, sizeof(s), "SLICES %s", t.slice_enabled ? "ON" : "OFF");
+    if (id == 137 || id == 138)
+      snprintf(s, sizeof(s), "%s %u / 65535", id == 137 ? "START" : "END",
+               id == 137 ? region.start : region.end);
+    if (id == 139)
+      snprintf(s, sizeof(s), "AUTO %u",
+               bank.count < 2    ? 2
+               : bank.count < 4  ? 4
+               : bank.count < 8  ? 8
+               : bank.count < 16 ? 16
+                                 : 2);
+    const char *labels[] = {"ADD",     "DELETE",  "RESET SLICES", "AUDITION",
+                            "TRACK PREV", "TRACK NEXT", "BACK"};
+    if (id >= 140)
+      snprintf(s, sizeof(s), "%s", labels[id - 140]);
+    color = id == 135 && inspected == bank.index() ? accent : panel;
+  } else if (id >= 123) {
     const auto &t = view.tracks[ui.selected];
     const auto &p = t.playback;
     if (id == 123)
@@ -221,6 +342,8 @@ void draw(int id) {
     }
     if (id == 129)
       snprintf(s, sizeof(s), "RESET REGION");
+    if (id == 131)
+      snprintf(s, sizeof(s), "SLICE EDITOR");
     if (id == 130)
       snprintf(s, sizeof(s), "BACK");
   } else if (id >= 114) {
@@ -516,6 +639,103 @@ void header() {
   tempo_header();
 }
 void interact(int id, int x, bool initial) {
+  if (id >= 131) {
+    if (initial && (id == 131 || id == 146)) {
+      ui.page = id == 131 ? app::Page::SampleSlice : app::Page::SamplePlayback;
+      if (id == 131)
+        ++slice_ui_entries;
+      full = true;
+      return;
+    }
+    if (initial && (id == 144 || id == 145)) {
+      ui.selected = app::clamp(ui.selected + (id == 144 ? -1 : 1), 0, 15);
+      full = true;
+      return;
+    }
+    auto &t = view.tracks[ui.selected];
+    if (!t.sample)
+      return;
+    auto &inspected = ui.inspected_slice[ui.selected];
+    inspected = uint8_t(t.slices.index(inspected));
+    if (initial && (id == 133 || id == 134)) {
+      inspected = uint8_t(app::clamp(int(inspected) + (id == 133 ? -1 : 1), 0,
+                                     t.slices.count - 1));
+    } else {
+      app::Command c{app::Kind::SliceSelect, uint8_t(ui.selected),
+                     int(inspected)};
+      c.step = inspected;
+      if (id == 137 || id == 138) {
+        auto r = app::widget(id);
+        c.value = app::clamp(x - r.x, 0, r.w - 1) * 65535 / (r.w - 1);
+        c.kind = id == 137 ? app::Kind::SliceStart : app::Kind::SliceEnd;
+      } else if (!initial)
+        return;
+      else if (id == 135)
+        c.kind = app::Kind::SliceSelect;
+      else if (id == 136) {
+        c.kind = app::Kind::SliceEnable;
+        c.value = !t.slice_enabled;
+      } else if (id == 139) {
+        c.kind = app::Kind::SliceDivide;
+        c.value = t.slices.count < 2    ? 2
+                  : t.slices.count < 4  ? 4
+                  : t.slices.count < 8  ? 8
+                  : t.slices.count < 16 ? 16
+                                        : 2;
+        if (t.playback.end <= t.playback.start ||
+            t.playback.end - t.playback.start < c.value) {
+          strlcpy(slice_notice, "AUTO REJECTED / TRACK REGION TOO SHORT",
+                  sizeof(slice_notice));
+          dirty[147] = true;
+          return;
+        }
+      } else if (id == 140) {
+        if (t.slices.count == 16 ||
+            t.slices.slices[inspected].end - t.slices.slices[inspected].start <
+                2) {
+          strlcpy(slice_notice, "ADD REJECTED / MAX 16 OR SLICE TOO SHORT",
+                  sizeof(slice_notice));
+          dirty[147] = true;
+          return;
+        }
+        c.kind = app::Kind::SliceAdd;
+      } else if (id == 141) {
+        if (t.slices.count == 1)
+          return;
+        c.kind = app::Kind::SliceDelete;
+      } else if (id == 142)
+        c.kind = app::Kind::SliceReset;
+      else if (id == 143) {
+        flush_slice_release();
+        if (slice_audition_track >= 0)
+          return;
+        c.kind = app::Kind::SliceAudition;
+      } else
+        return;
+      const bool was_full = full;
+      if (!send(c))
+        return;
+      slice_ui_full += full && !was_full;
+      if (c.kind == app::Kind::SliceAudition)
+        slice_audition_track = ui.selected;
+      inspected = uint8_t(t.slices.index(inspected));
+      ++slice_ui_edits;
+    }
+    if (strcmp(slice_notice, "SAMPLE SLICE / YELLOW VIEW / CYAN ACTIVE")) {
+      strlcpy(slice_notice, "SAMPLE SLICE / YELLOW VIEW / CYAN ACTIVE",
+              sizeof(slice_notice));
+      dirty[147] = true;
+    }
+    dirty[132] = true;
+    if (id == 137 || id == 138) {
+      dirty[id] = true;
+      slice_drag_dirty = true;
+    } else
+      for (int i = 133; i <= 142; ++i)
+        dirty[i] = true;
+    return;
+  }
+
   if (id >= 123) {
     if (id == 130 && initial) {
       ui.page = app::Page::Sample;
@@ -899,10 +1119,14 @@ void ui_task(void *) {
     unsigned revision = samples::revision();
     if (revision != sample_revision) {
       sample_revision = revision;
-      dirty[38] = true;
+      dirty[38] = dirty[132] = true;
       for (unsigned t = 0; t < 16; ++t)
         if (samples::assigned(t)) {
           view.tracks[t].assigned();
+          if (int(t) == ui.selected) {
+            for (int i = 133; i <= 142; ++i)
+              dirty[i] = true;
+          }
           if (int(t) == ui.selected)
             dirty[43] = dirty[106] = true;
           if (int(t) == ui.selected)
@@ -1137,6 +1361,68 @@ void ui_task(void *) {
       }
     }
 #endif
+#if P4SDM_SAMPLE_SLICE_STRESS
+    static uint32_t inherited_ui_due = 0;
+    static unsigned inherited_ui_stage = 0;
+    if (millis() - started >= 12000 && millis() >= inherited_ui_due) {
+      inherited_ui_due = millis() + 3500;
+      ui.selected_step = 2;
+      const unsigned stage = inherited_ui_stage++ % 3;
+      if (stage < 2) {
+        ui.page = app::Page::Step;
+        interact(95, 0, true);
+        if (stage == 1)
+          interact(121, 0, true);
+        for (int param = 0; param < 3; ++param) {
+          const int toggle = stage == 0 ? 97 + param * 2 : 115 + param * 2;
+          // Toggle twice to guarantee an enabled value regardless of prior
+          // state.
+          if (view.patterns[view.selected_pattern].locks[ui.selected][2].mask &
+              (1u << (param + (stage ? 4 : 0))))
+            interact(toggle, 0, true);
+          interact(toggle, 0, true);
+          interact(toggle - 1, app::widget(toggle - 1).x + 270, false);
+        }
+      } else {
+        interact(113, 0, true);
+        for (int id = 107; id <= 109; ++id) {
+          interact(id, 260, false);
+          interact(id, 600, false);
+        }
+      }
+      app::Command length{app::Kind::PatternLength, 0, stage ? 16 : 7};
+      length.pattern = 4;
+      send(length);
+    }
+    static uint32_t slice_due = 0;
+    static unsigned slice_edit = 0;
+    if (millis() - started >= 12000 && millis() >= slice_due &&
+        millis() + 3400 >= inherited_ui_due) {
+      slice_due = millis() + 160;
+      const unsigned n = slice_edit++;
+      const int selected_track = int((n / 24) % 16);
+      if (ui.selected != selected_track) {
+        ui.selected = selected_track;
+        full = true;
+      }
+      if (ui.page != app::Page::SampleSlice)
+        interact(131, 0, true);
+      const int ids[] = {139, 139, 139, 139, 134, 135,
+                         137, 138, 140, 141, 143, 142};
+      interact(ids[n % 12], ids[n % 12] == 137 ? 80 : 730, true);
+      if (n % 12 == 3) {
+        send({app::Kind::SliceSelect, uint8_t(ui.selected), 15});
+        dirty[132] = dirty[135] = true;
+      }
+      if (slice_audition_track >= 0) {
+        slice_audition_release = true;
+        flush_slice_release();
+      }
+      if (n % 24 == 23)
+        interact(146, 0, true);
+    }
+#endif
+    flush_slice_release();
     app::Command event;
     while (input_events.pop(event)) {
       touch_state.pressed = event.kind != app::Kind::Play;
@@ -1150,13 +1436,19 @@ void ui_task(void *) {
           ui.capture = -1;
         interact(ui.capture, touch_state.x, true);
       } else if (touch_state.pressed &&
-                 ((ui.capture >= 107 && ui.capture <= 109) ||
+                 ((ui.capture == 137 || ui.capture == 138 ||
+                   ui.capture == 124 || ui.capture == 125) ||
+                  (ui.capture >= 107 && ui.capture <= 109) ||
                   (ui.capture >= 24 && ui.capture < 29) || ui.capture == 69 ||
                   ui.capture == 71 || ui.capture == 73 ||
                   (ui.page == app::Page::Tools && ui.tool_section == 1 &&
                    ((ui.capture >= 83 && ui.capture <= 88) ||
                     ui.capture == 93))))
         interact(ui.capture, touch_state.x, false);
+      if (!touch_state.pressed && ui.down && slice_audition_track >= 0) {
+        slice_audition_release = true;
+        flush_slice_release();
+      }
       ui.down = touch_state.pressed;
       if (!ui.down)
         ui.capture = -1;
@@ -1242,9 +1534,13 @@ void ui_task(void *) {
           draw(95);
           for (int i = 70; i <= 77; ++i)
             draw(i);
+        } else if (ui.page == app::Page::SampleSlice) {
+          draw(147);
+          for (int i = 132; i <= 146; ++i)
+            draw(i);
         } else if (ui.page == app::Page::SamplePlayback) {
           display::text(24, 82, "SAMPLE PLAYBACK", white, 1);
-          for (int i = 124; i <= 130; ++i)
+          for (int i = 124; i <= 131; ++i)
             draw(i);
         } else if (ui.page == app::Page::Tone) {
           for (int i = 106; i <= 112; ++i)
@@ -1272,8 +1568,9 @@ void ui_task(void *) {
           draw(36);
           display::text(24, 210, "INTERNAL DELAY / NO SD REQUIRED", white, 2);
         }
-        for (int i = 29; i < 34; ++i)
-          draw(i);
+        if (ui.page != app::Page::SampleSlice)
+          for (int i = 29; i < 34; ++i)
+            draw(i);
         ++full_frames;
         full = false;
       } else {
@@ -1287,15 +1584,18 @@ void ui_task(void *) {
           snprintf(title, sizeof(title), "P4SDM T%02d", ui.selected + 1);
           display::text(16, 24, title, white, 2);
         }
-        for (int i = 0; i < 131; ++i)
+        for (int i = 0; i < 148; ++i)
           if (dirty[i] &&
-              (((i >= 124 && ui.page == app::Page::SamplePlayback) ||
+              (((i >= 132 && ui.page == app::Page::SampleSlice) ||
+                (i >= 124 && i <= 131 &&
+                 ui.page == app::Page::SamplePlayback) ||
                 (i == 123 && ui.page == app::Page::Sample) ||
                 (i >= 106 && i <= 112 && ui.page == app::Page::Tone) ||
                 (i == 113 && ui.page == app::Page::Track)) ||
                (i < 24 && ui.page == app::Page::Sequence) ||
                (i >= 24 && i < 29 && ui.page == app::Page::Track) ||
-               (i >= 29 && i < 34) || (i == 36 && ui.page == app::Page::Fx) ||
+               (i >= 29 && i < 34 && ui.page != app::Page::SampleSlice) ||
+               (i == 36 && ui.page == app::Page::Fx) ||
                ((i == 37 || i == 42 || i == 43) &&
                 ui.page == app::Page::Track) ||
                (i >= 46 && i <= 67 && ui.page == app::Page::Pattern) ||
@@ -1305,7 +1605,7 @@ void ui_task(void *) {
                 ui.page == app::Page::Step) ||
                (((i >= 96 && i <= 105) || i == 121) &&
                 ui.page == app::Page::Locks) ||
-               (i >= 114 && ui.page == app::Page::ToneLocks) ||
+               (i >= 114 && i <= 122 && ui.page == app::Page::ToneLocks) ||
                (i >= 79 && i <= 94 && ui.page == app::Page::Tools)))
             draw(i);
       }
@@ -1315,11 +1615,24 @@ void ui_task(void *) {
       }
       if (diag)
         overlay();
+      if (ui.page == app::Page::SampleSlice) {
+        const uint32_t us = uint32_t(esp_timer_get_time() - start);
+        if (page_change) {
+          if (!waveform_first_us)
+            waveform_first_us = us;
+          slice_page_max = std::max(slice_page_max, us);
+        }
+        if (!page_change)
+          slice_redraw_max = std::max(slice_redraw_max, us);
+      }
       std::fill(std::begin(dirty), std::end(dirty), false);
       prep_max = std::max(prep_max, uint32_t(esp_timer_get_time() - start));
       if (display::present() != ESP_OK)
         vTaskSuspend(nullptr);
       auto tel = display::telemetry();
+      if (ui.page == app::Page::SampleSlice && slice_drag_dirty && !page_change)
+        slice_drag_dirty_max = std::max(slice_drag_dirty_max, tel.dirty_bytes);
+      slice_drag_dirty = false;
       dirty_bytes += tel.dirty_bytes;
       if (!page_change) {
         ++normal_frames;
@@ -1407,6 +1720,17 @@ void ui_task(void *) {
           "[M13 UI] entries=%u edits=%u widgets_max=%u edit_full=%u\n",
           playback_ui_entries, playback_ui_edits, playback_widgets,
           playback_ui_full);
+      summary_printf(
+          "[M14 UI] entries=%u edits=%u edit_full=%u waveform_first_us=%u "
+          "waveform_redraw_max_us=%u slice_redraw_max_us=%u build_count=%u "
+          "build_max_us=%u large_us=%u cache_bytes=%u page_max_us=%u "
+          "drag_dirty_max=%u\n",
+          slice_ui_entries, slice_ui_edits, slice_ui_full, waveform_first_us,
+          waveform_redraw_max, slice_redraw_max,
+          samples::waveform_builds.load(), samples::waveform_build_max.load(),
+          samples::waveform_large_us.load(),
+          unsigned(sizeof(sampler::Waveform)), slice_page_max,
+          slice_drag_dirty_max);
       summary_printf("[M5 memory] ps_before=%u ps_after=%u internal_before=%u "
                      "internal_after=%u largest_before=%u largest_after=%u\n",
                      unsigned(ps_before), unsigned(ps_after),
@@ -1487,7 +1811,8 @@ void audio_worker(void *) {
     }
     app::Command c;
     static uint16_t applied_commands = 0;
-    bool transformed = false, tone_edited = false, tone_lock_edited = false;
+    bool transformed = false, tone_edited = false, tone_lock_edited = false,
+         slice_edited = false;
     const unsigned choke_before = playback_metrics.choke_ops,
                    retrigger_before = playback_metrics.retriggers;
     const unsigned coefficients_before = tone_lock_metrics.coefficients;
@@ -1495,6 +1820,8 @@ void audio_worker(void *) {
       if (c.track >= 16)
         continue;
       engine.apply(c);
+      slice_edited |= c.kind >= app::Kind::SliceEnable &&
+                      c.kind <= app::Kind::SliceAudition;
       tone_lock_edited |= (c.kind >= app::Kind::LockFilterCutoff &&
                            c.kind <= app::Kind::LockDelaySend) ||
                           c.kind == app::Kind::ClearStepLocks ||
@@ -1510,7 +1837,11 @@ void audio_worker(void *) {
         PITCH[c.track] = 255;
         AMP[c.track] = 0;
       }
-      if (c.kind == app::Kind::Trigger)
+      if (c.kind == app::Kind::SliceAudition && engine.tracks[c.track].sample) {
+        ++slice_metrics.auditions;
+        trigger(app::resolve_event(c.track, engine.tracks[c.track], 127, {},
+                                   c.step));
+      } else if (c.kind == app::Kind::Trigger)
         engine.audition(c.track, [](app::TriggerEvent e) { trigger(e); });
       else if (c.kind == app::Kind::GateRelease)
         playback_metrics.releases += !samples::voices[c.track].sequenced &&
@@ -1548,6 +1879,10 @@ void audio_worker(void *) {
     auto us = uint32_t(esp_timer_get_time() - start);
     unsigned b = captured.load(std::memory_order_relaxed);
     if (b < capture_blocks) {
+      if (slice_edited) {
+        ++slice_edit_blocks;
+        slice_edit_worst = std::max(slice_edit_worst, us);
+      }
       playback_worst = std::max(playback_worst, us);
       if (playback_metrics.choke_ops != choke_before)
         choke_worst = std::max(choke_worst, us);
@@ -1565,6 +1900,7 @@ void audio_worker(void *) {
       }
       if (b + 1 == capture_blocks) {
         playback_result = playback_metrics;
+        slice_result = slice_metrics;
         tone_lock_result = tone_lock_metrics;
         for (int i = 0; i < 3; ++i)
           tone_parents[i] = engine.lock_events[i + 4];
@@ -1629,6 +1965,7 @@ void audio_worker(void *) {
       }
       if (b + 1 == capture_blocks) {
         playback_result = playback_metrics;
+        slice_result = slice_metrics;
         lock_result[0] = engine.locked_parents;
         lock_result[1] = engine.unlocked_parents;
         for (int i = 0; i < 4; ++i)
@@ -1734,6 +2071,9 @@ void setup_playback_fixture() {
     auto &sample = fixture_samples[t];
     sample.data = pcm + t * frames;
     sample.frames = frames;
+    snprintf(sample.name, sizeof(sample.name), "PSRAM TRACK %02u", t + 1);
+    samples::analyze(sample, false);
+    samples::publish_preview(t, &sample);
     samples::voices[t].assign(&sample);
     engine.tracks[t].assigned();
     view.tracks[t].assigned();
@@ -1743,7 +2083,32 @@ void setup_playback_fixture() {
     p.reverse = t & 1;
     p.mode = t % 3 == 0 ? sampler::Mode::Gate : sampler::Mode::OneShot;
     view.tracks[t].playback = p;
+#if P4SDM_SAMPLE_SLICE_STRESS
+    auto &track = engine.tracks[t];
+    track.slices.divide(p, 2u << (t % 4));
+    // Wide independent regions keep all sixteen voices running between
+    // ratchets, even under retained +24-semitone locks. Other slots remain
+    // equal divisions.
+    track.slices.selected = uint8_t(t % track.slices.count);
+    track.slices.slices[track.slices.selected] = {uint16_t(t * 256),
+                                                  uint16_t(65535 - t * 128)};
+    track.slice_enabled = true;
+    view.tracks[t] = track;
+#endif
   }
+#if P4SDM_SAMPLE_SLICE_STRESS
+  sampler::Sample large;
+  large.frames = 2097152;
+  large.data = static_cast<int16_t *>(
+      heap_caps_malloc(4194304, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT));
+  if (large.data) {
+    for (unsigned i = 0; i < large.frames; ++i)
+      large.data[i] = int16_t(i);
+    samples::analyze(large);
+    heap_caps_free(large.data);
+  } else
+    Serial.println("[M14 fixture] FAIL large allocation");
+#endif
   Serial.printf("[M13 fixture] voices=16 frames=%u bytes=%u psram=1\n", frames,
                 frames * 2 * 16);
 }
@@ -1975,6 +2340,22 @@ void loop() {
                    unsigned(sizeof(sampler::Voice)),
                    unsigned(sizeof(app::Track)),
                    unsigned(sizeof(app::TriggerEvent)));
+    const auto &sm = slice_result;
+    summary_printf("[M14 slices] triggers=%u auditions=%u index_min=%u "
+                   "index_max=%u frames_min=%u frames_max=%u active_changes=%u "
+                   "divides=%u adds=%u deletes=%u resets=%u edit_blocks=%u "
+                   "edit_max=%u slice_bytes=%u bank_bytes=%u sample_bytes=%u\n",
+                   sm.triggers, sm.auditions, sm.triggers ? sm.min_index : 0,
+                   sm.max_index, sm.triggers ? sm.min_frames : 0, sm.max_frames,
+                   applied_actions[unsigned(app::Kind::SliceSelect)].load(),
+                   applied_actions[unsigned(app::Kind::SliceDivide)].load(),
+                   applied_actions[unsigned(app::Kind::SliceAdd)].load(),
+                   applied_actions[unsigned(app::Kind::SliceDelete)].load(),
+                   applied_actions[unsigned(app::Kind::SliceReset)].load(),
+                   slice_edit_blocks, slice_edit_worst,
+                   unsigned(sizeof(sampler::Slice)),
+                   unsigned(sizeof(sampler::SliceBank)),
+                   unsigned(sizeof(sampler::Sample)));
     summary_printf("[M10 worst] blocks=%u max=%u\n", locked_dense_blocks,
                    locked_dense_max);
     summary_printf(

@@ -451,10 +451,35 @@ SAMPLE -> SAMPLE PLAYBACK. Region/mode/routing edits affect the next accepted
 parent; its ratchets retain the captured settings. Gate pads release on lift;
 sequenced Gate voices release at the next step onset. RESET REGION restores
 full forward playback and retains mode/choke/tone/pitch. Stereo WAVs retain the
-accepted M6 frame-wise mono downmix. No sample parameter locks or slicing yet.
+accepted M6 frame-wise mono downmix. M13 introduces no sample parameter locks; M14 slicing is described below.
 
 `guition_sample_playback_stress` adds qualification-only PSRAM PCM fixtures to
 the retained synth stress workflow and requires no SD card. Normal `guition_app`
 contains no fixture allocation. Behavior, bounds/ownership audit, host tests,
 device evidence and remaining physical validation are in
 [GUITION_M13.md](docs/GUITION_M13.md).
+
+## M14 sample slices and waveform
+
+Open SAMPLE PLAYBACK -> SLICE EDITOR. Each SAMPLE Track owns 1..16 fixed,
+absolute normalized regions. VIEW PREV/NEXT inspects a slice; USE sets the
+Track's audible default. SLICES ON/OFF chooses that slice or M13 START/END.
+Yellow marks inspection; cyan marks the active region.
+
+AUTO cycles through 2/4/8/16 equal divisions of current Track START/END. ADD
+splits the inspected region; DELETE shifts later slots; RESET SLICES returns
+to one current-Track region. START/END edits leave neighbors and index order
+alone, allowing gaps and overlaps. Replacement retains normalized slices.
+AUDITION captures the inspected region through the normal voice/tone/Delay
+pipeline, at velocity 127; Gate releases on lift. Accepted parents and their
+ratchets keep one immutable playback snapshot.
+
+A resident Sample owns a completed 360-column min/max waveform (1440 bytes),
+built outside audio before publication. Display redraw uses those bins and
+existing framebuffer caching, never a PCM scan. Pattern tools do not modify
+slices; StepLocks stays eight bytes. No Slice Lock, onset detection,
+time-stretch, persistence or MIDI is implemented. Work stops at M14.
+
+`guition_sample_slice_stress` retains sixteen distinct PSRAM buffers and the
+M13 dense workload. See [M14 qualification](docs/GUITION_M14.md) for genuine
+SAMPLE/SYNTH/normal captures, UI costs, memory, CI and pending physical SD QA.

@@ -8,6 +8,8 @@ p = argparse.ArgumentParser()
 p.add_argument('log')
 p.add_argument('--normal', action='store_true')
 p.add_argument('--synth', action='store_true')
+p.add_argument('--track-bytes', type=int, default=48)
+p.add_argument('--engine-bytes', type=int, default=46880)
 a = p.parse_args()
 data = Path(a.log).read_text(errors='replace')
 def row(prefix):
@@ -15,10 +17,10 @@ def row(prefix):
     assert len(lines) == 1, f'missing/repeated {prefix}'
     return {k:int(v) for k,v in re.findall(r'(\w+)=(\d+)', lines[0])}
 subprocess.run([sys.executable, 'tests/analyze_m12.py', a.log,
-    '--event-bytes','20','--voice-bytes','384','--engine-bytes','46880']
+    '--event-bytes','20','--voice-bytes','384','--engine-bytes',str(a.engine_bytes)]
     + (['--normal'] if a.normal else []) + (['--sample'] if not a.normal and not a.synth else []), check=True)
 m = row('[M13 playback]')
-assert m['voice_bytes'] == 64 and m['track_bytes'] == 48 and m['event_bytes'] == 20
+assert m['voice_bytes'] == 64 and m['track_bytes'] == a.track_bytes and m['event_bytes'] == 20
 assert 'NO CARD' in data
 assert 'Guru Meditation' not in data and 'task_wdt' not in data
 assert row('[M5]')['blocks'] * 256 / 44100 >= 60
