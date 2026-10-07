@@ -442,3 +442,19 @@ only at control/trigger boundaries and identical ratchets reuse a tiny cache.
 See [M12 architecture and qualification](docs/GUITION_M12.md). Physical SAMPLE
 tone-lock validation remains pending without SD. No further FX/sample locks or
 persistence are included; this milestone stops at M12.
+
+## M13 sample playback
+
+Resident SAMPLE Tracks now support normalized start/end, forward/reverse,
+OneShot/Gate, 32-frame boundary fades and choke groups OFF/1..8. Open TRACK ->
+SAMPLE -> SAMPLE PLAYBACK. Region/mode/routing edits affect the next accepted
+parent; its ratchets retain the captured settings. Gate pads release on lift;
+sequenced Gate voices release at the next step onset. RESET REGION restores
+full forward playback and retains mode/choke/tone/pitch. Stereo WAVs retain the
+accepted M6 frame-wise mono downmix. No sample parameter locks or slicing yet.
+
+`guition_sample_playback_stress` adds qualification-only PSRAM PCM fixtures to
+the retained synth stress workflow and requires no SD card. Normal `guition_app`
+contains no fixture allocation. Behavior, bounds/ownership audit, host tests,
+device evidence and remaining physical validation are in
+[GUITION_M13.md](docs/GUITION_M13.md).

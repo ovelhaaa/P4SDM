@@ -1,18 +1,24 @@
 #pragma once
+#include "sample_playback.h"
 #include <atomic>
 #include <cstdint>
 #include <cstring>
 namespace sampler {
 // Rounded Q16 semitone ratios. Octaves are exact; clamp before lookup.
 inline uint64_t pitch_increment(int pitch) {
-  static constexpr uint32_t ratios[12] = {
-      65536, 69433, 73562, 77936, 82570, 87480,
-      92682, 98193, 104032, 110218, 116772, 123715};
-  if (pitch < 0) pitch = 0;
-  if (pitch > 127) pitch = 127;
+  static constexpr uint32_t ratios[12] = {65536,  69433,  73562,  77936,
+                                          82570,  87480,  92682,  98193,
+                                          104032, 110218, 116772, 123715};
+  if (pitch < 0)
+    pitch = 0;
+  if (pitch > 127)
+    pitch = 127;
   int delta = pitch - 60;
   int octave = delta / 12, note = delta % 12;
-  if (note < 0) { note += 12; --octave; }
+  if (note < 0) {
+    note += 12;
+    --octave;
+  }
   return octave >= 0 ? uint64_t(ratios[note]) << octave
                      : uint64_t(ratios[note]) >> -octave;
 }
@@ -100,34 +106,118 @@ struct Voice {
   const Sample *sample = nullptr;
   uint64_t position = 0, increment = 65536;
   bool active = false;
+  Playback playback{};
+  Region region{};
+  uint64_t remaining = 0;
+  uint8_t attack = 0, release_left = 0, fade = boundary_fade;
+  bool releasing = false, sequenced = false;
   void stop() {
     active = false;
     position = 0;
+    releasing = false;
+    release_left = 0;
   }
   void assign(const Sample *s) {
     sample = s;
     stop();
   }
-  void trigger(uint64_t step) {
-    position = 0;
+  void set_increment(uint64_t step) {
     increment = step;
-    active = sample && sample->frames && step;
+    const uint64_t limit = uint64_t(region.end - region.start) << 16;
+    remaining =
+        step && position < limit ? (limit - position - 1) / step + 1 : 0;
+    if (!remaining)
+      active = false;
+  }
+  void trigger(uint64_t step, Playback settings = {}, bool sequence = false,
+               unsigned fade_samples = boundary_fade) {
+    position = 0;
+    playback = settings;
+    sequenced = sequence;
+    region = resolve_region(settings, sample ? sample->frames : 0);
+    attack = 0;
+    fade = fade_samples > boundary_fade ? boundary_fade : fade_samples;
+    releasing = false;
+    release_left = 0;
+    active = sample && sample->data && region.end > region.start && step;
+    set_increment(step);
+  }
+  bool release(bool choke = false) {
+    if (!active || releasing || (!choke && playback.mode != Mode::Gate))
+      return false;
+    releasing = true;
+    release_left = fade;
+    if (!fade)
+      active = false;
+    return true;
+  }
+  uint32_t frame_index() const {
+    uint32_t offset = uint32_t(position >> 16);
+    return playback.reverse ? region.end - 1 - offset : region.start + offset;
   }
   int16_t next() {
     if (!active || !sample)
       return 0;
-    uint64_t index = position >> 16;
-    if (index >= sample->frames) {
+    if ((position >> 16) >= region.end - region.start || !remaining) {
       active = false;
       return 0;
     }
-    int16_t result = sample->data[index];
-    position += increment;
-    if ((position >> 16) >= sample->frames)
+    int16_t result = sample->data[frame_index()];
+    if (fade) {
+      unsigned gain = attack;
+      if (remaining <= fade)
+        gain = unsigned(remaining - 1) < gain ? unsigned(remaining - 1) : gain;
+      if (releasing && release_left - 1u < gain)
+        gain = release_left - 1u;
+      result = int16_t(int32_t(result) * int(gain) / int(fade));
+      if (attack < fade)
+        ++attack;
+    }
+    --remaining;
+    if (!remaining || (releasing && !--release_left))
       active = false;
+    else
+      position +=
+          increment; // bounded by remaining; cannot wrap at valid PCM sizes
     return result;
   }
 };
+struct PlaybackMetrics {
+  uint32_t triggers = 0, reverse = 0, gate = 0, releases = 0, ends = 0;
+  uint32_t choke_ops = 0, choked = 0, retriggers = 0;
+  uint32_t region_min = UINT32_MAX, region_max = 0;
+};
+// Called only for accepted triggers, on the audio owner. Ratchets skip the
+// scan.
+inline bool trigger_voice(Voice *voices, unsigned track, uint64_t increment,
+                          Playback playback, bool sequenced, bool ratchet,
+                          PlaybackMetrics &m) {
+  if (track >= 16)
+    return false;
+  Voice &v = voices[track];
+  if (!v.sample || !v.sample->data || !v.sample->frames || !increment)
+    return false;
+  if (!ratchet && playback.choke) {
+    ++m.choke_ops;
+    for (unsigned t = 0; t < 16; ++t)
+      if (t != track && voices[t].playback.choke == playback.choke &&
+          voices[t].release(true)) {
+        ++m.choked;
+        ++m.releases;
+      }
+  }
+  m.retriggers += v.active;
+  v.trigger(increment, playback, sequenced);
+  ++m.triggers;
+  m.reverse += playback.reverse;
+  m.gate += playback.mode == Mode::Gate;
+  const uint32_t n = v.region.end - v.region.start;
+  if (n < m.region_min)
+    m.region_min = n;
+  if (n > m.region_max)
+    m.region_max = n;
+  return true;
+}
 // One staging slot. Storage owns staging/retired buffers; audio owns active.
 // Storage cannot submit another object until audio acknowledges the first.
 struct Transfer {

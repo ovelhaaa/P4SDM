@@ -146,20 +146,20 @@ int main(int argc, char **argv) {
   a.frames = 3;
   sampler::Voice v;
   v.assign(&a);
-  v.trigger(sampler::pitch_increment(60));
+  v.trigger(sampler::pitch_increment(60), {}, false, 0);
   assert(v.next() == 10 && v.next() == 20 && v.next() == 30);
   assert(!v.active && v.next() == 0);
   for (uint64_t step : {32768ull, 65536ull, 131072ull, 999999999ull}) {
-    v.trigger(step);
+    v.trigger(step, {}, false, 0);
     assert(v.next() == 10);
     for (int i = 0; i < 10; ++i)
       v.next();
     assert(!v.active);
     assert(v.next() == 0);
   }
-  v.trigger(65536);
+  v.trigger(65536, {}, false, 0);
   v.next();
-  v.trigger(65536);
+  v.trigger(65536, {}, false, 0);
   assert(v.next() == 10);
   v.stop(); // Source switching uses this same voice operation.
   assert(v.next() == 0 && !v.active && v.position == 0);
@@ -167,7 +167,7 @@ int main(int argc, char **argv) {
   short_sample.data = pcm;
   short_sample.frames = 1;
   v.assign(&short_sample);
-  v.trigger(65536);
+  v.trigger(65536, {}, false, 0);
   assert(v.next() == 10 && !v.active);
   assert(v.next() == 0);
   sampler::Voice voices[16];

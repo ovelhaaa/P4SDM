@@ -7,6 +7,7 @@ from pathlib import Path
 parser = argparse.ArgumentParser()
 parser.add_argument('log')
 parser.add_argument('--normal', action='store_true')
+parser.add_argument('--sample', action='store_true', help='resident PCM: WAVE locks must remain suppressed')
 parser.add_argument('--pattern-bytes', type=int, default=2082)
 args = parser.parse_args()
 data = Path(args.log).read_text(errors='replace')
@@ -14,7 +15,7 @@ def row(prefix):
     lines = [line for line in data.splitlines() if line.startswith(prefix)]
     assert len(lines) == 1, f'missing or repeated {prefix}'
     return {k:int(v) for k,v in re.findall(r'(\w+)=(\d+)', lines[0])}
-subprocess.run([sys.executable,'tests/analyze_m10.py',args.log,'--pattern-bytes',str(args.pattern_bytes)] + (['--normal'] if args.normal else []), check=True)
+subprocess.run([sys.executable,'tests/analyze_m10.py',args.log,'--pattern-bytes',str(args.pattern_bytes)] + (['--normal'] if args.normal else []) + (['--sample'] if args.sample else []), check=True)
 tone = row('[M11 tone]')
 ui = row('[M11 UI]')
 assert 'task_wdt' not in data and 'Aborting.' not in data

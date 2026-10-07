@@ -1,0 +1,111 @@
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0x17 (CHIP_USB_UART_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x40009e02
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] Guru Meditation Error: Core  0 panic'ed (Store access fault). Exception was unhandled.
+
+Core  0 register dump:
+MEPC    : 0x4000f55c  RA      : 0x4000f46e  SP      : 0x4ff650d0  GP      : 0x4ff12900  
+TP      : 0x4ff29ce0  T0      : 0x00000fff  T1      : 0xfffffff0  T2      : 0x00000000  
+S0/FP   : 0x500d2000  S1      : 0x00000008  A0      : 0x4ff3debb  A1      : 0x4ff3debb  
+A2      : 0x00000000  A3      : 0x0000001b  A4      : 0x00000009  A5      : 0x00000002  
+A6      : 0x0000001b  A7      : 0x4ff3dde0  S2      : 0x4ff67000  S3      : 0x4ff67000  
+S4      : 0x00000000  S5      : 0x4ff63000  S6      : 0x4ff67000  S7      : 0x4008a2c4  
+S8      : 0x00000001  S9      : 0x4ff67000  S10     : 0x4ff67000  S11     : 0x00000010  
+T3      : 0x00000000  T4      : 0x00000000  T5      : 0x00000000  T6      : 0x00000000  
+MSTATUS : 0x00001880  MTVEC   : 0x4ff00003  MCAUSE  : 0x00000007  MTVAL   : 0x500d2000  
+MHARTID : 0x00000000  
+
+Stack memory:
+4ff650d0: 0x00000000 0x00000000 0x00000050 0x0000001b 0x00001880 0x4ff63000 0x00000000 0x500d2000
+4ff650f0: 0x00001880 0xb8000014 0x00000000 0x4ff002d4 0x00000000 0x00000000 0x00000000 0x00000000
+4ff65110: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff65130: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff65150: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff65170: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff65190: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff651b0: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff651d0: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff651f0: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff65210: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff65230: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff65250: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff65270: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff65290: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff652b0: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff652d0: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff652f0: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff65310: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff65330: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff65350: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff65370: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff65390: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff653b0: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff653d0: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff653f0: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff65410: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff65430: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff65450: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff65470: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff65490: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff654b0: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+
+
+
+ELF file SHA256: e8af21d64
+
+Rebooting...
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0xc (SW_CPU_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4ff08366
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M6 budget] total=33554432 display=2304000 fx_delay=352800 samples=0 reserve=4194304 free=30885508 largest=30408692 internal=315508
+E (2479) sdmmc_common: sdmmc_init_ocr: send_op_cond (1) returned 0x107
+E (2480) vfs_fat_sdmmc: sdmmc_card_init failed (0x107).
+[   803][E][SD_MMC.cpp:307] begin(): Failed to initialize the card (0x107). Make sure SD card lines have pull-up resistors in place.
+[M6 SD] mounted=0 width=4 clock_khz=20000 mount_us=260933 capacity=0 status=NO CARD / MOUNT ERROR
+[M5] blocks=10337 p50=3407 p95=4101 p99=4197 max=4399 misses=0 failures=0 timeouts=0 peak=6615 nonzero=5290740 rails=0 active_min=16 active_max=16
+[M8 groove] parents=15021 passed=13765 skipped=1256 ratchets=38880 pending_max=48 velocity_min=1 velocity_max=127 swing_changes=8
+[M8 worst] blocks=2068 bpm=240 voices=16 ratchet=4 swing=50 delay=1 max=4371 triggers=12304 triggers_per_second=1024
+[MEM] M8 after 60s PSRAM total=33554432 free=30885508 largest=30408692 internal_free=314500
+[M10 locks] locked=13633 unlocked=132 pitch=13372 volume=13324 pan=13355 wave=13382 pattern_bytes=2850 bank_bytes=45600 engine_bytes=46880
+[M11 tone] cutoff=617 resonance=616 send=616 cutoff_min=0 cutoff_max=127 resonance_min=0 resonance_max=127 send_min=0 send_max=127 blocks=601 max=4399 dense=2068 dense_max=4371
+[M12 locks] cutoff=13362 resonance=13311 send=13319 coefficients=13996 avoided=40143 send_changes=13960 coefficient_blocks=1013 coefficient_max=4399 edit_blocks=210 edit_max=4399 commands=149 step_bytes=8 event_bytes=20 voice_bytes=384 idle_residue=16
+[M13 dense] blocks=2068 active_min=0
+[M13 playback] triggers=0 reverse=0 gate=0 releases=0 ends=0 choke_ops=0 choked=0 retriggers=0 region_min=0 region_max=0 max=4399 choke_max=0 retrigger_max=0 voice_bytes=64 track_bytes=48 event_bytes=20
+[M10 worst] blocks=2068 max=4371
+[M9 tools] rotate=27 reverse=22 copy_track=25 clear_track=14 duplicate=21 euclidean=14 randomize=18 mutate=15 reroll=15 blocks=150 dense_blocks=121 max=4399
+[M5 UI] seconds=63.036 submitted=1355 completed=1355 dirty_avg=114872 dirty_max=768000 full=68 preparation_max_us=146819 touch_errors=0 rejected=0 pads=4 steps=8 drags=69 pages=24 transport=0 bpm=0 skipped=99
+[M7 patterns] switches=8 loops=83 selections=28 copies=4 clears=4 lengths=16 solos=8 mutes=8 normal_frames=1287 dirty_avg=80364 dirty_max=476160 pattern_bytes=2850 command_bytes=12
+[M7 applied] long_to_short=2 short_to_long=2 queue_replacements=12 copies=4 clears=8 lengths=9 solos=8 mutes=8 steps=8
+[M9 UI] entries=4 copies=4 randomize=8 cell_max=16 edit_full=0
+[M12 UI] entries=10 edits=57 widgets_max=6 edit_full=0
+[M11 UI] entries=8 edits=52 widgets_max=1 edit_full=0
+[M10 UI] entries=12 edits=69 widgets_max=6 edit_full=0
+[M13 UI] entries=0 edits=0 widgets_max=0 edit_full=0
+[M5 memory] ps_before=30885508 ps_after=30885508 internal_before=314500 internal_after=314500 largest_before=30408692 largest_after=30408692

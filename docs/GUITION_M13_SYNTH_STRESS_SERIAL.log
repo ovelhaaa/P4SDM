@@ -1,0 +1,42 @@
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0x17 (CHIP_USB_UART_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4000973a
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M6 budget] total=33554432 display=2304000 fx_delay=352800 samples=0 reserve=4194304 free=30885508 largest=30408692 internal=315508
+E (2478) sdmmc_common: sdmmc_init_ocr: send_op_cond (1) returned 0x107
+E (2479) vfs_fat_sdmmc: sdmmc_card_init failed (0x107).
+[   803][E][SD_MMC.cpp:307] begin(): Failed to initialize the card (0x107). Make sure SD card lines have pull-up resistors in place.
+[M6 SD] mounted=0 width=4 clock_khz=20000 mount_us=260925 capacity=0 status=NO CARD / MOUNT ERROR
+[M5] blocks=10337 p50=3387 p95=4102 p99=4198 max=4389 misses=0 failures=0 timeouts=0 peak=6705 nonzero=5290827 rails=0 active_min=16 active_max=16
+[M8 groove] parents=15007 passed=13848 skipped=1159 ratchets=39357 pending_max=48 velocity_min=1 velocity_max=127 swing_changes=8
+[M8 worst] blocks=2068 bpm=240 voices=16 ratchet=4 swing=50 delay=1 max=4389 triggers=12304 triggers_per_second=1024
+[MEM] M8 after 60s PSRAM total=33554432 free=30885508 largest=30408692 internal_free=314500
+[M10 locks] locked=13710 unlocked=138 pitch=13443 volume=13387 pan=13434 wave=13461 pattern_bytes=2850 bank_bytes=45600 engine_bytes=46880
+[M11 tone] cutoff=614 resonance=614 send=612 cutoff_min=0 cutoff_max=127 resonance_min=0 resonance_max=127 send_min=0 send_max=127 blocks=604 max=4389 dense=2068 dense_max=4389
+[M12 locks] cutoff=13423 resonance=13367 send=13389 coefficients=14088 avoided=40606 send_changes=14058 coefficient_blocks=1003 coefficient_max=4352 edit_blocks=205 edit_max=4281 commands=137 step_bytes=8 event_bytes=20 voice_bytes=384 idle_residue=16
+[M13 dense] blocks=2068 active_min=0
+[M13 playback] triggers=0 reverse=0 gate=0 releases=0 ends=0 choke_ops=0 choked=0 retriggers=0 region_min=0 region_max=0 max=4389 choke_max=0 retrigger_max=0 voice_bytes=64 track_bytes=48 event_bytes=20
+[M10 worst] blocks=2068 max=4389
+[M9 tools] rotate=27 reverse=21 copy_track=24 clear_track=14 duplicate=21 euclidean=14 randomize=18 mutate=15 reroll=15 blocks=150 dense_blocks=123 max=4389
+[M5 UI] seconds=63.054 submitted=1352 completed=1352 dirty_avg=114000 dirty_max=768000 full=68 preparation_max_us=146802 touch_errors=0 rejected=0 pads=4 steps=8 drags=55 pages=24 transport=0 bpm=0 skipped=103
+[M7 patterns] switches=8 loops=79 selections=29 copies=4 clears=4 lengths=16 solos=8 mutes=8 normal_frames=1284 dirty_avg=79365 dirty_max=476160 pattern_bytes=2850 command_bytes=12
+[M7 applied] long_to_short=2 short_to_long=2 queue_replacements=12 copies=4 clears=8 lengths=11 solos=8 mutes=8 steps=8
+[M9 UI] entries=4 copies=4 randomize=8 cell_max=16 edit_full=0
+[M12 UI] entries=9 edits=45 widgets_max=6 edit_full=0
+[M11 UI] entries=8 edits=37 widgets_max=1 edit_full=0
+[M10 UI] entries=12 edits=57 widgets_max=6 edit_full=0
+[M13 UI] entries=0 edits=0 widgets_max=0 edit_full=0
+[M5 memory] ps_before=30885508 ps_after=30885508 internal_before=314500 internal_after=314500 largest_before=30408692 largest_after=30408692
