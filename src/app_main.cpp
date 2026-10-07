@@ -2181,6 +2181,7 @@ void ui_task(void *) {
           dirty[178] = dirty[182] = true;
         }
         if (ui.page == app::Page::Performance) dirty[205] = true;
+        if (ui.page == app::Page::PerformanceRepeat) dirty[205] = dirty[206] = true;
         view.chain_entry = cs & 63;
         view.chain_repeat = (cs >> 6) & 31;
         view.mode = app::TransportMode((cs >> 11) & 1);
@@ -2201,6 +2202,7 @@ void ui_task(void *) {
         dirty[44] = true;
         if (ui.page == app::Page::Performance)
           for (int i = 184; i <= 206; ++i) dirty[i] = true;
+        if (ui.page == app::Page::PerformanceRepeat) dirty[205] = true;
         view.playing_pattern = playing;
         view.queued_pattern = queued;
       }
