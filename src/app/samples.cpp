@@ -4,6 +4,7 @@
 #include "esp_timer.h"
 #include "projects.h"
 #include "qualification.h"
+#include "transient_service.h"
 namespace samples {
 std::atomic<unsigned> waveform_builds{0}, waveform_build_max{0},
     waveform_large_us{0};
@@ -291,6 +292,10 @@ void worker(void *) {
                    "mounted card)");
 #endif
   for (;;) {
+    transients::poll();
+#if P4SDM_TRANSIENT_STRESS
+    transients::qualification_poll();
+#endif
     projects::poll();
     int index = job.exchange(-1, std::memory_order_acquire);
     if (index >= 0) {
@@ -338,6 +343,12 @@ void preview(unsigned track, Preview &out) {
   } else
     out = {};
   portEXIT_CRITICAL(&lock);
+}
+bool resident(unsigned track, const sampler::Sample *sample) {
+  portENTER_CRITICAL(&lock);
+  const bool valid = track < 16 && sample && previews[track] == sample;
+  portEXIT_CRITICAL(&lock);
+  return valid;
 }
 bool initialized() { return booted.load(std::memory_order_acquire); }
 void start() {
