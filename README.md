@@ -588,3 +588,18 @@ dirty state remain unchanged. See [M18.1 qualification](docs/GUITION_M181.md)
 for timing, tests, hardware metrics and limitations. Work stops at M18.1;
 audio-buffer stutter, triplets, reverse, pitch effects, scenes and macros remain
 out of scope.
+### M19 — transient auto-slicing
+
+SAMPLE SLICE -> TRANSIENTS opens a non-destructive AUTO SLICE proposal.
+Choose NATURAL/4/8/16 and LOW/MED/HIGH (default MED), then ANALYZE. Current
+boundaries stay yellow/cyan; proposed markers are dashed magenta. APPLY replaces
+the ordinary SliceBank through audio command processing; CANCEL/BACK preserves
+the current bank. Fewer credible onsets report FOUND M/N without inventing markers.
+Equal AUTO DIVIDE and manual START/END editing remain available.
+
+The 64-frame integer energy/attack detector runs on resident PCM in the existing
+storage task, with fixed scratch and periodic yields. Sample/Track/region generation
+checks discard stale proposals. Playback, Slice Locks, immutable x8 Repeat and
+Project V2 use their existing paths. Details, metrics and genuine device evidence:
+[M19 qualification](docs/GUITION_M19.md). Real musical SD/touch/listening validation
+remains pending; synthetic qualification does not establish subjective musical quality.

@@ -1,0 +1,107 @@
+M19 local qualification, firmware source 752cb94, 2026-10-07
+All 75 workflow host/analyzer commands passed.
+
+PASS 1/75 g++ -std=c++17 -Wall -Wextra -Werror tests/pcm_mono_test.cpp -o /tmp/pcm_mono_test && /tmp/pcm_mono_test
+PASS 2/75 g++ -std=c++17 -Wall -Wextra -Werror -Itests/fx_stubs tests/fx_safety_test.cpp -o /tmp/fx_safety_test && /tmp/fx_safety_test
+PASS 3/75 python tests/compare_fx_baseline.py
+PASS 4/75 g++ -std=c++17 -Wall -Wextra -Werror tests/display_geometry_test.cpp -o /tmp/display_geometry_test && /tmp/display_geometry_test
+PASS 5/75 g++ -std=c++17 -Wall -Wextra -Werror tests/display_dirty_test.cpp -o /tmp/display_dirty_test && /tmp/display_dirty_test
+PASS 6/75 python tests/analyze_m4.py docs/GUITION_M4_UI_AUDIO_SERIAL.log --display-log docs/GUITION_M4_DISPLAY_SERIAL.log
+PASS 7/75 python tests/analyze_m41.py docs/GUITION_M41_SHORT_SERIAL.log docs/GUITION_M41_INTERACTION_SERIAL.log --require-interaction
+PASS 8/75 g++ -std=c++17 -Wall -Wextra -Werror tests/app_model_test.cpp -o /tmp/app_model_test && /tmp/app_model_test
+PASS 9/75 python tests/analyze_m5.py docs/GUITION_M5_STRESS_SERIAL.log --stress
+PASS 10/75 python tests/generate_m6_fixtures.py /tmp/m6-fixtures
+PASS 11/75 g++ -std=c++17 -Wall -Wextra -Werror -pthread tests/wav_sampler_test.cpp -o /tmp/wav_sampler_test && /tmp/wav_sampler_test /tmp/m6-fixtures
+PASS 12/75 python tests/analyze_m6.py docs/GUITION_M6_NO_CARD_STRESS_SERIAL.log
+PASS 13/75 python tests/analyze_m6.py docs/GUITION_M61_NO_CARD_STRESS_SERIAL.log
+PASS 14/75 g++ -std=c++17 -Wall -Wextra -Werror tests/pattern_engine_test.cpp -o /tmp/pattern_engine_test && /tmp/pattern_engine_test
+PASS 15/75 python tests/analyze_m7.py docs/GUITION_M7_STRESS_SERIAL.log
+PASS 16/75 g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/groove_engine_test.cpp -o /tmp/groove_engine_test && /tmp/groove_engine_test
+PASS 17/75 python tests/analyze_m8.py docs/GUITION_M8_STRESS_SERIAL.log
+PASS 18/75 g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/pattern_tools_test.cpp -o /tmp/pattern_tools_test && /tmp/pattern_tools_test
+PASS 19/75 python tests/analyze_m9.py docs/GUITION_M9_STRESS_SERIAL.log
+PASS 20/75 g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/parameter_locks_test.cpp -o /tmp/parameter_locks_test && /tmp/parameter_locks_test
+PASS 21/75 python tests/no_lock_equivalence.py
+PASS 22/75 python tests/analyze_m10.py docs/GUITION_M10_STRESS_SERIAL.log
+PASS 23/75 python tests/analyze_m10.py docs/GUITION_M10_NORMAL_SERIAL.log --normal
+PASS 24/75 g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/track_tone_test.cpp -o /tmp/track_tone_test && /tmp/track_tone_test
+PASS 25/75 python tests/tone_equivalence.py
+PASS 26/75 python tests/no_tone_equivalence.py
+PASS 27/75 python tests/analyze_m11.py docs/GUITION_M11_STRESS_SERIAL.log
+PASS 28/75 python tests/analyze_m11.py docs/GUITION_M11_NORMAL_SERIAL.log --normal
+PASS 29/75 g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/tone_locks_test.cpp -o /tmp/tone_locks_test && /tmp/tone_locks_test
+PASS 30/75 python tests/no_tone_lock_equivalence.py
+PASS 31/75 python tests/tone_lock_routing_equivalence.py
+PASS 32/75 python tests/analyze_m12.py docs/GUITION_M12_STRESS_SERIAL.log
+PASS 33/75 python tests/analyze_m12.py docs/GUITION_M12_NORMAL_SERIAL.log --normal
+PASS 34/75 g++ -std=c++17 -O2 -Wall -Wextra -Werror -Itests/fx_stubs tests/sample_playback_test.cpp -o /tmp/sample_playback_test && /tmp/sample_playback_test
+PASS 35/75 python tests/analyze_m13.py docs/GUITION_M13_SAMPLE_STRESS_SERIAL.log
+PASS 36/75 python tests/analyze_m13.py docs/GUITION_M13_SYNTH_STRESS_SERIAL.log --synth
+PASS 37/75 python tests/analyze_m13.py docs/GUITION_M13_NORMAL_SERIAL.log --normal
+PASS 38/75 g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/slice_bank_test.cpp -o /tmp/slice_bank_test && /tmp/slice_bank_test
+PASS 39/75 g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/waveform_test.cpp -o /tmp/waveform_test && /tmp/waveform_test
+PASS 40/75 g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/slice_playback_test.cpp -o /tmp/slice_playback_test && /tmp/slice_playback_test
+PASS 41/75 python tests/analyze_m14.py docs/GUITION_M14_SAMPLE_STRESS_SERIAL.log
+PASS 42/75 python tests/analyze_m14.py docs/GUITION_M14_SYNTH_STRESS_SERIAL.log --synth
+PASS 43/75 python tests/analyze_m14.py docs/GUITION_M14_NORMAL_SERIAL.log --normal
+PASS 44/75 g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/slice_lock_test.cpp -o /tmp/slice_lock_test && /tmp/slice_lock_test
+PASS 45/75 python tests/no_slice_lock_equivalence.py
+PASS 46/75 python tests/analyze_m15.py docs/GUITION_M15_SAMPLE_STRESS_SERIAL.log
+PASS 47/75 python tests/analyze_m15.py docs/GUITION_M15_SYNTH_STRESS_SERIAL.log --synth
+PASS 48/75 python tests/analyze_m15.py docs/GUITION_M15_NORMAL_SERIAL.log --normal
+PASS 49/75 g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/project_test.cpp -o /tmp/project_test && /tmp/project_test
+PASS 50/75 python tests/no_project_equivalence.py
+PASS 51/75 python tests/analyze_m16.py docs/GUITION_M16_SAMPLE_STRESS_SERIAL.log
+PASS 52/75 python tests/analyze_m16.py docs/GUITION_M16_SYNTH_STRESS_SERIAL.log --synth
+PASS 53/75 python tests/analyze_m16.py docs/GUITION_M16_NORMAL_SERIAL.log --normal
+PASS 54/75 g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/chain_test.cpp -o /tmp/chain_test && /tmp/chain_test
+PASS 55/75 python tests/no_chain_equivalence.py
+PASS 56/75 python tests/project_migration.py
+PASS 57/75 python tests/analyze_m17.py docs/GUITION_M17_SAMPLE_STRESS_SERIAL.log
+PASS 58/75 python tests/analyze_m17.py docs/GUITION_M17_SYNTH_STRESS_SERIAL.log --synth
+PASS 59/75 python tests/analyze_m17.py docs/GUITION_M17_NORMAL_SERIAL.log --normal
+PASS 60/75 g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/performance_test.cpp -o /tmp/performance_test && /tmp/performance_test
+PASS 61/75 python tests/no_performance_equivalence.py
+PASS 62/75 python tests/analyze_m18.py docs/GUITION_M18_SAMPLE_STRESS_SERIAL.log
+PASS 63/75 python tests/analyze_m18.py docs/GUITION_M18_SYNTH_STRESS_SERIAL.log --synth
+PASS 64/75 python tests/analyze_m18.py docs/GUITION_M18_NORMAL_SERIAL.log --normal
+PASS 65/75 g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/repeat_engine_test.cpp -o /tmp/repeat_engine_test && /tmp/repeat_engine_test
+PASS 66/75 python tests/no_repeat_equivalence.py
+PASS 67/75 python tests/analyze_m181.py docs/GUITION_M181_SAMPLE_STRESS_SERIAL.log
+PASS 68/75 python tests/analyze_m181.py docs/GUITION_M181_SYNTH_STRESS_SERIAL.log --synth
+PASS 69/75 python tests/analyze_m181.py docs/GUITION_M181_NORMAL_SERIAL.log --normal
+PASS 70/75 g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/transient_test.cpp -o /tmp/transient_test && /tmp/transient_test
+PASS 71/75 g++ -std=c++17 -O2 -Wall -Wextra -Werror -Itests/transient_stubs tests/transient_service_test.cpp -o /tmp/transient_service_test && /tmp/transient_service_test
+PASS 72/75 python tests/no_transient_equivalence.py
+PASS 73/75 python tests/analyze_m19.py docs/GUITION_M19_SAMPLE_STRESS_SERIAL.log
+PASS 74/75 python tests/analyze_m19.py docs/GUITION_M19_SYNTH_STRESS_SERIAL.log --synth
+PASS 75/75 python tests/analyze_m19.py docs/GUITION_M19_NORMAL_SERIAL.log --normal
+
+All 23 firmware environments passed:
+PASS guition_boot
+PASS guition_audio
+PASS guition_synth
+PASS guition_fx
+PASS guition_display
+PASS guition_ui_audio
+PASS guition_ui_audio_m41
+PASS guition_app
+PASS guition_app_stress
+PASS guition_sampler_stress
+PASS guition_sample_playback_stress
+PASS guition_sample_slice_stress
+PASS guition_slice_lock_stress
+PASS guition_project_stress
+PASS guition_project_synth_stress
+PASS guition_chain_stress
+PASS guition_chain_synth_stress
+PASS guition_performance_stress
+PASS guition_performance_synth_stress
+PASS guition_repeat_stress
+PASS guition_repeat_synth_stress
+PASS guition_transient_stress
+PASS guition_transient_synth_stress
+
+The initial disk-full failure was repaired using the intact packaged SDK builder backup.
+The last three inherited targets were rerun successfully after repair.
+Normal firmware was restored on COM13; genuine serial captures are saved separately.

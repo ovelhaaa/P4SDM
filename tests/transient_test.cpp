@@ -94,7 +94,8 @@ int main() {
   pcm.assign(44100 * 2, 0);
   burst(pcm, 4000, 20000, 0, 2, 0); burst(pcm, 11000, 20000, 0, 2, 1);
   burst(pcm, 21000, 20000, 0, 2, 0); burst(pcm, 21000, -20000, 0, 2, 1);
-  quality("stereo", pcm, {4000, 11000, 21000}, 2);
+  burst(pcm, 36000, 20000, 0, 2, 0); burst(pcm, 36000, 20000, 0, 2, 1);
+  quality("stereo", pcm, {4000, 11000, 21000, 36000}, 2);
   pcm.assign(44100, 0); rng = 17;
   for (auto &x : pcm) x = int16_t(noise() / 128);
   for (auto n : {4000u, 11000u, 21000u, 36000u}) burst(pcm, n, 20000, 2);
