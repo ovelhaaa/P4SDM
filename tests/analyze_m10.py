@@ -7,6 +7,7 @@ from pathlib import Path
 parser=argparse.ArgumentParser()
 parser.add_argument('log')
 parser.add_argument('--normal', action='store_true')
+parser.add_argument('--pattern-bytes', type=int, default=2082)
 args=parser.parse_args()
 data=Path(args.log).read_text(errors='replace')
 def row(prefix):
@@ -21,13 +22,13 @@ if args.normal:
     assert row('[M8 groove]')['parents']==row('[M8 groove]')['ratchets']==0
     assert all(locks[key]==0 for key in ('locked','unlocked','pitch','volume','pan','wave'))
     assert row('[M5 UI]')['pads']==row('[M5 UI]')['steps']==0
-    assert locks['pattern_bytes']==2082 and locks['bank_bytes']==33312
+    assert locks['pattern_bytes']==args.pattern_bytes and locks['bank_bytes']==args.pattern_bytes*16
     print('M10 normal no-card idle, no parameter residue, stable heaps: PASS')
     sys.exit(0)
-subprocess.run([sys.executable,'tests/analyze_m9.py',args.log,'--pattern-bytes','2082'],check=True)
+subprocess.run([sys.executable,'tests/analyze_m9.py',args.log,'--pattern-bytes',str(args.pattern_bytes)],check=True)
 for key in ('locked','unlocked','pitch','volume','pan','wave'):
     assert locks[key]>0, f'unexercised {key}'
-assert locks['pattern_bytes']==2082 and locks['bank_bytes']==33312
+assert locks['pattern_bytes']==args.pattern_bytes and locks['bank_bytes']==args.pattern_bytes*16
 assert locks['locked']+locks['unlocked']==row('[M8 groove]')['passed']
 worst=row('[M10 worst]')
 assert worst['blocks']>=2000, 'missing all-lock 16-track 4x dense envelope'

@@ -54,3 +54,9 @@ jobs:
       - run: python tests/no_tone_equivalence.py
       - run: python tests/analyze_m11.py docs/GUITION_M11_STRESS_SERIAL.log
       - run: python tests/analyze_m11.py docs/GUITION_M11_NORMAL_SERIAL.log --normal
+
+      - run: g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/tone_locks_test.cpp -o /tmp/tone_locks_test && /tmp/tone_locks_test
+      - run: python tests/no_tone_lock_equivalence.py
+      - run: python tests/tone_lock_routing_equivalence.py
+      - run: python tests/analyze_m12.py docs/GUITION_M12_STRESS_SERIAL.log
+      - run: python tests/analyze_m12.py docs/GUITION_M12_NORMAL_SERIAL.log --normal

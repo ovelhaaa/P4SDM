@@ -15,6 +15,11 @@ constexpr int cutoff_from_slider(int position) {
 }
 // Post-pan channel input is bounded to +/-65535; product <= 8322945.
 // Full send is an exact identity, zero is exact silence, signed truncation.
+// Trigger/update boundaries guarantee amount <=127. The hot path needs no
+// second clamp or lock/Track lookup.
+inline int32_t resolved_delay_send(int32_t sample, uint8_t amount) {
+  return amount == 127 ? sample : sample * amount / 127;
+}
 inline int32_t delay_send(int32_t sample, int amount) {
   return amount == 127 ? sample : sample * bounded(amount) / 127;
 }

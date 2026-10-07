@@ -43,6 +43,9 @@ enum class Kind : uint8_t {
   LockVolume,
   LockPan,
   LockWave,
+  LockFilterCutoff,
+  LockFilterResonance,
+  LockDelaySend,
   UnlockParam,
   ClearStepLocks,
   FilterCutoff,
@@ -118,17 +121,21 @@ enum LockBit : uint8_t {
   PITCH_LOCK = 1,
   VOLUME_LOCK = 2,
   PAN_LOCK = 4,
-  WAVE_LOCK = 8
+  WAVE_LOCK = 8,
+  FILTER_CUTOFF_LOCK = 16,
+  FILTER_RESONANCE_LOCK = 32,
+  DELAY_SEND_LOCK = 64
 };
 struct StepLocks {
   uint8_t mask = 0, pitch = 0, volume = 0;
   int8_t pan = 0;
-  uint8_t wave = 0;
+  uint8_t wave = 0, filter_cutoff = 0, filter_resonance = 0, delay_send = 0;
 };
 struct TriggerEvent {
   uint8_t track, velocity, pitch = 0, volume = 0;
   int8_t pan = 0;
   uint8_t wave = 0, locked_mask = 0;
+  uint8_t filter_cutoff = 0, filter_resonance = 0, delay_send = 127;
 };
 inline TriggerEvent resolve_event(int track, const Track &base, int velocity,
                                   StepLocks locks = {}) {
@@ -139,13 +146,19 @@ inline TriggerEvent resolve_event(int track, const Track &base, int velocity,
           int8_t(locks.mask & PAN_LOCK ? locks.pan : base.pan),
           uint8_t(!base.sample && (locks.mask & WAVE_LOCK) ? locks.wave
                                                            : base.wave),
-          uint8_t(locks.mask & (base.sample ? 7 : 15))};
+          uint8_t(locks.mask & (base.sample ? 119 : 127)),
+          uint8_t(locks.mask & FILTER_CUTOFF_LOCK ? locks.filter_cutoff
+                                                  : base.filter_cutoff),
+          uint8_t(locks.mask & FILTER_RESONANCE_LOCK ? locks.filter_resonance
+                                                     : base.filter_resonance),
+          uint8_t(locks.mask & DELAY_SEND_LOCK ? locks.delay_send
+                                               : base.delay_send)};
 }
 // Preserve the M9 linear attenuation pan law, including its endpoint rounding.
 inline int event_channel_gain(int volume, int pan, bool right) {
   return volume * clamp(128 + (right ? pan : -pan), 0, 128) / 128;
 }
-static_assert(sizeof(StepLocks) == 5);
+static_assert(sizeof(StepLocks) == 8);
 static_assert(std::is_trivially_copyable<StepLocks>::value);
 // Q15 attenuation: unity at 127; bounded signed multiply, no PCM mutation.
 inline uint16_t velocity_gain(int velocity) {
@@ -222,7 +235,7 @@ inline bool pattern_occupied(const Pattern &p) {
   return false;
 }
 static_assert(std::is_trivially_copyable<Pattern>::value);
-static_assert(sizeof(Pattern) == 2082);
+static_assert(sizeof(Pattern) == 2850);
 static_assert(sizeof(Command) <= 12);
 struct Engine {
   Pattern patterns[16];
@@ -249,7 +262,7 @@ struct Engine {
   uint32_t step_events = 0, probability_passed = 0, probability_skipped = 0,
            ratchet_events = 0, pending_max = 0, swing_changes = 0;
   uint8_t velocity_min = 127, velocity_max = 0;
-  uint32_t locked_parents = 0, unlocked_parents = 0, lock_events[4]{};
+  uint32_t locked_parents = 0, unlocked_parents = 0, lock_events[7]{};
   uint32_t random() {
     rng ^= rng << 13;
     rng ^= rng >> 17;
@@ -391,6 +404,9 @@ struct Engine {
     case Kind::LockVolume:
     case Kind::LockPan:
     case Kind::LockWave:
+    case Kind::LockFilterCutoff:
+    case Kind::LockFilterResonance:
+    case Kind::LockDelaySend:
     case Kind::UnlockParam:
     case Kind::ClearStepLocks:
       if (c.pattern < 16 && c.step < 16) {
@@ -398,7 +414,7 @@ struct Engine {
         if (c.kind == Kind::ClearStepLocks)
           l = {};
         else if (c.kind == Kind::UnlockParam)
-          l.mask &= uint8_t(~(c.value & 15));
+          l.mask &= uint8_t(~(c.value & 127));
         else {
           const int param = int(c.kind) - int(Kind::LockPitch);
           l.mask |= uint8_t(1u << param);
@@ -410,6 +426,12 @@ struct Engine {
             l.pan = clamp(c.value, -127, 127);
           if (param == 3)
             l.wave = clamp(c.value, 0, 15);
+          if (param == 4)
+            l.filter_cutoff = clamp(c.value, 0, 127);
+          if (param == 5)
+            l.filter_resonance = clamp(c.value, 0, 127);
+          if (param == 6)
+            l.delay_send = clamp(c.value, 0, 127);
         }
       }
       break;
@@ -577,7 +599,7 @@ struct Engine {
             t, tracks[t], m.velocity, patterns[playing_pattern].locks[t][step]);
         locked_parents += event.locked_mask != 0;
         unlocked_parents += event.locked_mask == 0;
-        for (int i = 0; i < 4; ++i)
+        for (int i = 0; i < 7; ++i)
           lock_events[i] += (event.locked_mask >> i) & 1;
         emit(trigger, event);
         pending[t] = {event, m.ratchets, 1};
@@ -623,7 +645,8 @@ enum class Page {
   Step,
   Tools,
   Locks,
-  Tone
+  Tone,
+  ToneLocks
 };
 struct Ui {
   Page page = Page::Sequence;
@@ -755,6 +778,17 @@ struct Ui {
   }
 };
 inline Rect widget(int id) {
+  if (id >= 114 && id <= 119) {
+    int row = (id - 114) / 2;
+    return {id % 2 == 0 ? 24 : 560, 100 + row * 68, id % 2 == 0 ? 520 : 216,
+            56};
+  }
+  if (id == 120)
+    return {24, 362, 240, 52};
+  if (id == 121)
+    return {280, 362, 240, 52};
+  if (id == 122)
+    return {536, 362, 240, 52};
   if (id == 37)
     return {24, 368, 200, 52};
   if (id == 106)
@@ -778,9 +812,9 @@ inline Rect widget(int id) {
             56};
   }
   if (id == 104)
-    return {24, 372, 360, 52};
+    return {24, 362, 240, 52};
   if (id == 105)
-    return {400, 372, 376, 52};
+    return {536, 362, 240, 52};
   if (id == 78)
     return {488, 224, 288, 52};
   if (id == 79)
@@ -852,7 +886,13 @@ inline int hit(Page p, int x, int y) {
     for (int i = 107; i <= 112; ++i)
       if (widget(i).contains(x, y))
         return i;
+  } else if (p == Page::ToneLocks) {
+    for (int i = 114; i <= 122; ++i)
+      if (widget(i).contains(x, y))
+        return i;
   } else if (p == Page::Locks) {
+    if (widget(121).contains(x, y))
+      return 121;
     for (int i = 96; i <= 105; ++i)
       if (widget(i).contains(x, y))
         return i;
@@ -904,14 +944,15 @@ inline int drag(int id, int x) {
 }
 inline bool Ui::lock_action(int id, int x, bool initial, const Engine &e,
                             Command &c) const {
-  if (id < 96 || id > 104 || selected_step < 0 || selected_step >= 16)
+  if (!((id >= 96 && id <= 104) || (id >= 114 && id <= 120)) ||
+      selected_step < 0 || selected_step >= 16)
     return false;
   c = {Kind::ClearStepLocks, uint8_t(selected), 0};
   c.pattern = uint8_t(e.selected_pattern);
   c.step = uint8_t(selected_step);
-  if (id == 104)
+  if (id == 104 || id == 120)
     return initial;
-  const int param = (id - 96) / 2;
+  const int param = id >= 114 ? 4 + (id - 114) / 2 : (id - 96) / 2;
   const auto &base = e.tracks[c.track];
   const auto &locks = e.patterns[c.pattern].locks[c.track][c.step];
   if (param == 3 && base.sample)
@@ -924,7 +965,9 @@ inline bool Ui::lock_action(int id, int x, bool initial, const Engine &e,
       c.kind = Kind::UnlockParam;
       c.value = 1 << param;
     } else {
-      const int values[] = {base.pitch, base.volume, base.pan, base.wave};
+      const int values[] = {
+          base.pitch,         base.volume,           base.pan,       base.wave,
+          base.filter_cutoff, base.filter_resonance, base.delay_send};
       c.value = values[param];
     }
   } else {
@@ -935,6 +978,8 @@ inline bool Ui::lock_action(int id, int x, bool initial, const Engine &e,
       c.value = c.value * 2 - 127;
     if (param == 3)
       c.value = c.value * 15 / 127;
+    if (param == 4)
+      c.value = 127 - c.value;
   }
   return true;
 }
