@@ -62,10 +62,10 @@ std::atomic<uint32_t> diagnostic_p99{0}, diagnostic_max{0},
 std::atomic<uint32_t> flashes[16];
 bool delay_ready = false;
 int sample_index = 0;
-bool dirty[123]{};
+bool dirty[131]{};
 bool full = true;
 uint32_t rejected = 0, touch_errors = 0, frames = 0, full_frames = 0;
-uint32_t actions[123]{}, drags = 0;
+uint32_t actions[131]{}, drags = 0;
 uint64_t dirty_bytes = 0, normal_dirty_bytes = 0;
 unsigned normal_frames = 0;
 uint32_t normal_dirty_max = 0;
@@ -134,7 +134,12 @@ inline __attribute__((always_inline)) void
 apply_active_voice_tone(int t, bool tone = true) {
   apply_voice_tone(t, voice_state[t].effective(engine.tracks[t]), tone);
 }
-void trigger(app::TriggerEvent event) {
+sampler::PlaybackMetrics playback_metrics{}, playback_result{};
+uint32_t playback_worst = 0, choke_worst = 0, retrigger_worst = 0;
+unsigned dense_sample_min = 16, dense_sample_blocks = 0;
+uint32_t playback_ui_entries = 0, playback_ui_edits = 0, playback_ui_full = 0,
+         playback_widgets = 0;
+void trigger(app::TriggerEvent event, bool ratchet = false) {
   int t = event.track;
   voice_state[t].event = event;
   apply_voice_tone(t, event);
@@ -145,7 +150,9 @@ void trigger(app::TriggerEvent event) {
   if (engine.tracks[t].sample && samples::voices[t].sample) {
     PITCH[t] = 255;
     AMP[t] = 0;
-    samples::voices[t].trigger(sampler::pitch_increment(event.pitch));
+    sampler::trigger_voice(
+        samples::voices, t, sampler::pitch_increment(event.pitch),
+        event.playback, event.sequenced, ratchet, playback_metrics);
   } else
     synthESP32_TRIGGER_P(t, event.pitch);
   flashes[t].fetch_add(1, std::memory_order_relaxed);
@@ -171,7 +178,7 @@ void update_track(int t) {
   if (PITCH[t] != 255)
     synthESP32_setPitch(t, effective.pitch);
   if (v.sample)
-    samples::voices[t].increment = sampler::pitch_increment(effective.pitch);
+    samples::voices[t].set_increment(sampler::pitch_increment(effective.pitch));
 }
 bool send(app::Command c) {
   if (c.kind == app::Kind::Pitch)
@@ -190,7 +197,33 @@ void draw(int id) {
   auto r = app::widget(id);
   char s[48]{};
   uint16_t color = panel;
-  if (id >= 114) {
+  if (id >= 123) {
+    const auto &t = view.tracks[ui.selected];
+    const auto &p = t.playback;
+    if (id == 123)
+      snprintf(s, sizeof(s), "%s",
+               t.sample ? "SAMPLE PLAYBACK" : "SAMPLE ONLY");
+    if (id == 124 || id == 125)
+      snprintf(
+          s, sizeof(s), "%s %u.%u%%", id == 124 ? "START" : "END",
+          unsigned(uint32_t(id == 124 ? p.start : p.end) * 1000 / 65535) / 10,
+          unsigned(uint32_t(id == 124 ? p.start : p.end) * 1000 / 65535) % 10);
+    if (id == 126)
+      snprintf(s, sizeof(s), "DIRECTION %s", p.reverse ? "REV" : "FWD");
+    if (id == 127)
+      snprintf(s, sizeof(s), "%s",
+               p.mode == sampler::Mode::Gate ? "GATE" : "ONE SHOT");
+    if (id == 128) {
+      if (p.choke)
+        snprintf(s, sizeof(s), "CHOKE %u", p.choke);
+      else
+        snprintf(s, sizeof(s), "CHOKE OFF");
+    }
+    if (id == 129)
+      snprintf(s, sizeof(s), "RESET REGION");
+    if (id == 130)
+      snprintf(s, sizeof(s), "BACK");
+  } else if (id >= 114) {
     if (id == 120)
       snprintf(s, sizeof(s), "CLEAR ALL LOCKS");
     else if (id == 121)
@@ -441,14 +474,14 @@ void draw(int id) {
 }
 void sample_status() {
   char line[128];
-  display::rect(24, 290, 752, 120, bg);
+  display::rect(24, 330, 752, 80, bg);
   samples::describe(sample_index, line, sizeof(line));
-  display::text(24, 296, line, white, 1);
+  display::text(24, 330, line, white, 1);
   samples::track_name(ui.selected, line, sizeof(line));
-  display::text(24, 325, line, accent, 1);
+  display::text(24, 350, line, accent, 1);
   samples::message(line, sizeof(line));
-  display::text(24, 356, line, white, 1);
-  display::text(24, 380,
+  display::text(24, 370, line, white, 1);
+  display::text(24, 390,
                 view.tracks[ui.selected].sample ? "SOURCE SAMPLE / C4=UNITY"
                                                 : "SOURCE SYNTH",
                 white, 1);
@@ -483,6 +516,57 @@ void header() {
   tempo_header();
 }
 void interact(int id, int x, bool initial) {
+  if (id >= 123) {
+    if (id == 130 && initial) {
+      ui.page = app::Page::Sample;
+      full = true;
+      return;
+    }
+    auto &t = view.tracks[ui.selected];
+    if (!t.sample)
+      return;
+    if (id == 123 && initial) {
+      ++playback_ui_entries;
+      ui.page = app::Page::SamplePlayback;
+      full = true;
+      return;
+    }
+    app::Command c{app::Kind::SampleStart, uint8_t(ui.selected), 0};
+    auto &p = t.playback;
+    if (id == 124 || id == 125) {
+      auto r = app::widget(id);
+      int value = app::clamp(x - r.x, 0, r.w - 1) * 65535 / (r.w - 1);
+      c.kind = id == 124 ? app::Kind::SampleStart : app::Kind::SampleEnd;
+      c.value = id == 124 ? std::min(value, std::max(0, int(p.end) - 1))
+                          : std::max(value, std::min(65535, int(p.start) + 1));
+    } else if (initial) {
+      if (id == 126) {
+        c.kind = app::Kind::SampleReverse;
+        c.value = !p.reverse;
+      } else if (id == 127) {
+        c.kind = app::Kind::SampleMode;
+        c.value = p.mode != sampler::Mode::Gate;
+      } else if (id == 128) {
+        c.kind = app::Kind::SampleChoke;
+        c.value = (p.choke + 1) % 9;
+      } else if (id == 129)
+        c.kind = app::Kind::SampleResetRegion;
+      else
+        return;
+    } else
+      return;
+    const bool was_full = full;
+    if (send(c)) {
+      ++playback_ui_edits;
+      playback_ui_full += full && !was_full;
+      playback_widgets =
+          std::max(playback_widgets, uint32_t(id == 129 ? 3 : 1));
+      dirty[id] = true;
+      if (id == 129)
+        dirty[124] = dirty[125] = dirty[126] = true;
+    }
+    return;
+  }
   if (id < 0)
     return;
   if (initial)
@@ -829,6 +913,48 @@ void ui_task(void *) {
         }
     }
 #if P4SDM_APP_STRESS
+#if P4SDM_SAMPLE_PLAYBACK_STRESS
+    static uint32_t playback_due = 0;
+    static unsigned playback_edit = 0;
+    if (millis() - started >= 12000 && millis() >= playback_due) {
+      playback_due = millis() + 110;
+      unsigned n = playback_edit++;
+      uint8_t t = uint8_t(n % 16);
+      const app::Kind kinds[] = {
+          app::Kind::SampleStart,   app::Kind::SampleEnd,
+          app::Kind::SampleReverse, app::Kind::SampleMode,
+          app::Kind::SampleChoke,   app::Kind::SampleResetRegion,
+          app::Kind::Trigger,       app::Kind::GateRelease};
+      int values[] = {int((n * 317) % 16000),
+                      40000 + int(n % 25000),
+                      int(n & 1),
+                      1,
+                      int(1 + n % 8),
+                      0,
+                      0,
+                      0};
+      send({kinds[(n / 16) % 8], t, values[(n / 16) % 8]});
+      // A pair exercises cross-track choke while the remaining fourteen render.
+      if (n % 16 == 0) {
+        send({app::Kind::SampleChoke, 0, 1});
+        send({app::Kind::SampleChoke, 1, 1});
+        send({app::Kind::Trigger, 0, 0});
+        send({app::Kind::Trigger, 1, 0});
+        send({app::Kind::GateRelease, 0, 0});
+      }
+      if (n % 16 == 7) {
+        send({app::Kind::SampleStart, 15, 65500});
+        send({app::Kind::SampleEnd, 15, 65535});
+        send({app::Kind::Trigger, 15, 0});
+      }
+      if (n % 32 == 0) {
+        ui.page = app::Page::Sample;
+        interact(123, 0, true);
+      } else if (ui.page == app::Page::SamplePlayback && !full) {
+        interact(124 + int(n % 5), 300 + int(n % 400), n % 5 >= 2);
+      }
+    }
+#endif
     static uint32_t tone_due = 0;
     static unsigned tone_edit = 0;
     if (millis() >= tone_due) {
@@ -1116,6 +1242,10 @@ void ui_task(void *) {
           draw(95);
           for (int i = 70; i <= 77; ++i)
             draw(i);
+        } else if (ui.page == app::Page::SamplePlayback) {
+          display::text(24, 82, "SAMPLE PLAYBACK", white, 1);
+          for (int i = 124; i <= 130; ++i)
+            draw(i);
         } else if (ui.page == app::Page::Tone) {
           for (int i = 106; i <= 112; ++i)
             draw(i);
@@ -1136,6 +1266,7 @@ void ui_task(void *) {
         } else if (ui.page == app::Page::Sample) {
           for (int i = 38; i <= 41; ++i)
             draw(i);
+          draw(123);
           sample_status();
         } else {
           draw(36);
@@ -1156,9 +1287,11 @@ void ui_task(void *) {
           snprintf(title, sizeof(title), "P4SDM T%02d", ui.selected + 1);
           display::text(16, 24, title, white, 2);
         }
-        for (int i = 0; i < 123; ++i)
+        for (int i = 0; i < 131; ++i)
           if (dirty[i] &&
-              (((i >= 106 && i <= 112 && ui.page == app::Page::Tone) ||
+              (((i >= 124 && ui.page == app::Page::SamplePlayback) ||
+                (i == 123 && ui.page == app::Page::Sample) ||
+                (i >= 106 && i <= 112 && ui.page == app::Page::Tone) ||
                 (i == 113 && ui.page == app::Page::Track)) ||
                (i < 24 && ui.page == app::Page::Sequence) ||
                (i >= 24 && i < 29 && ui.page == app::Page::Track) ||
@@ -1270,6 +1403,10 @@ void ui_task(void *) {
           "[M10 UI] entries=%u edits=%u widgets_max=%u edit_full=%u\n",
           actions[95], lock_ui_edits, lock_ui_widgets_max, lock_ui_full);
 
+      summary_printf(
+          "[M13 UI] entries=%u edits=%u widgets_max=%u edit_full=%u\n",
+          playback_ui_entries, playback_ui_edits, playback_widgets,
+          playback_ui_full);
       summary_printf("[M5 memory] ps_before=%u ps_after=%u internal_before=%u "
                      "internal_after=%u largest_before=%u largest_after=%u\n",
                      unsigned(ps_before), unsigned(ps_after),
@@ -1283,7 +1420,9 @@ void touch_worker(void *) {
   touch::State state;
   bool down = false;
   uint16_t x = 0, y = 0;
+  app::PadGate pad;
   for (;;) {
+    pad.flush(pad_triggers);
     if (touch::poll(state) != ESP_OK)
       input_errors.fetch_add(1);
     else {
@@ -1292,11 +1431,11 @@ void touch_worker(void *) {
         if (state.pressed && !down && visible_page.load() == 0) {
           int id = app::hit(app::Page::Sequence, state.x, state.y);
           if (id >= 16 && id < 24 &&
-              !pad_triggers.push({app::Kind::Trigger,
-                                  uint8_t(visible_bank.load() * 8 + id - 16),
-                                  0}))
+              !pad.press(visible_bank.load() * 8 + id - 16, pad_triggers))
             input_overflow.fetch_add(1);
         }
+        if (!state.pressed && down)
+          pad.release(pad_triggers);
         if (!input_events.push(
                 {state.pressed ? app::Kind::Trigger : app::Kind::Play, 0,
                  int(unsigned(state.x) | (unsigned(state.y) << 16))}))
@@ -1349,8 +1488,12 @@ void audio_worker(void *) {
     app::Command c;
     static uint16_t applied_commands = 0;
     bool transformed = false, tone_edited = false, tone_lock_edited = false;
+    const unsigned choke_before = playback_metrics.choke_ops,
+                   retrigger_before = playback_metrics.retriggers;
     const unsigned coefficients_before = tone_lock_metrics.coefficients;
     for (unsigned n = 0; n < 16 && commands.pop(c); ++n) {
+      if (c.track >= 16)
+        continue;
       engine.apply(c);
       tone_lock_edited |= (c.kind >= app::Kind::LockFilterCutoff &&
                            c.kind <= app::Kind::LockDelaySend) ||
@@ -1369,7 +1512,14 @@ void audio_worker(void *) {
       }
       if (c.kind == app::Kind::Trigger)
         engine.audition(c.track, [](app::TriggerEvent e) { trigger(e); });
-      else if (c.kind == app::Kind::Delay) {
+      else if (c.kind == app::Kind::GateRelease)
+        playback_metrics.releases += !samples::voices[c.track].sequenced &&
+                                     samples::voices[c.track].release();
+      else if (c.kind == app::Kind::Play && !c.value) {
+        for (auto &v : samples::voices)
+          if (v.sequenced)
+            playback_metrics.releases += v.release();
+      } else if (c.kind == app::Kind::Delay) {
         is_delay = delay_ready && engine.delay;
         delays = is_delay ? 0xffff : 0;
       } else if (c.kind >= app::Kind::FilterCutoff &&
@@ -1387,11 +1537,22 @@ void audio_worker(void *) {
         update_track(c.track);
     }
     for (unsigned n = 0; n < 16 && pad_triggers.pop(c); ++n)
-      engine.audition(c.track, [](app::TriggerEvent e) { trigger(e); });
+      if (c.track >= 16)
+        continue;
+      else if (c.kind == app::Kind::GateRelease)
+        playback_metrics.releases += !samples::voices[c.track].sequenced &&
+                                     samples::voices[c.track].release();
+      else
+        engine.audition(c.track, [](app::TriggerEvent e) { trigger(e); });
     render_buffer();
     auto us = uint32_t(esp_timer_get_time() - start);
     unsigned b = captured.load(std::memory_order_relaxed);
     if (b < capture_blocks) {
+      playback_worst = std::max(playback_worst, us);
+      if (playback_metrics.choke_ops != choke_before)
+        choke_worst = std::max(choke_worst, us);
+      if (playback_metrics.retriggers != retrigger_before)
+        retrigger_worst = std::max(retrigger_worst, us);
       if (tone_lock_metrics.coefficients != coefficients_before) {
         ++tone_lock_metrics.coefficient_blocks;
         tone_lock_metrics.coefficient_worst =
@@ -1403,6 +1564,7 @@ void audio_worker(void *) {
             std::max(tone_lock_metrics.edit_worst, us);
       }
       if (b + 1 == capture_blocks) {
+        playback_result = playback_metrics;
         tone_lock_result = tone_lock_metrics;
         for (int i = 0; i < 3; ++i)
           tone_parents[i] = engine.lock_events[i + 4];
@@ -1439,6 +1601,13 @@ void audio_worker(void *) {
       unsigned active = 0;
       for (unsigned t = 0; t < 16; ++t)
         active += (PITCH[t] != 255 && AMP[t] != 0) || samples::voices[t].active;
+      if (b < worst_blocks) {
+        unsigned sample_active = 0;
+        for (auto &voice : samples::voices)
+          sample_active += voice.active;
+        dense_sample_min = std::min(dense_sample_min, sample_active);
+        ++dense_sample_blocks;
+      }
       active_min = std::min(active_min, active);
       active_max = std::max(active_max, active);
       render_times[b] = us;
@@ -1459,6 +1628,7 @@ void audio_worker(void *) {
         }
       }
       if (b + 1 == capture_blocks) {
+        playback_result = playback_metrics;
         lock_result[0] = engine.locked_parents;
         lock_result[1] = engine.unlocked_parents;
         for (int i = 0; i < 4; ++i)
@@ -1508,6 +1678,11 @@ void audio_worker(void *) {
     }
 #endif
     if (b < capture_blocks) {
+      playback_worst = std::max(playback_worst, us);
+      if (playback_metrics.choke_ops != choke_before)
+        choke_worst = std::max(choke_worst, us);
+      if (playback_metrics.retriggers != retrigger_before)
+        retrigger_worst = std::max(retrigger_worst, us);
       write_errors += err != ESP_OK;
       timeouts += err == ESP_ERR_TIMEOUT;
       captured.store(b + 1, std::memory_order_release);
@@ -1525,15 +1700,54 @@ void audio_worker(void *) {
 static bool app_pcm(int t, int16_t &v) {
   if (!engine.tracks[t].sample)
     return false;
-  v = samples::voices[t].next();
+  auto &voice = samples::voices[t];
+  const bool natural = voice.active && !voice.releasing;
+  v = voice.next();
+  playback_metrics.ends += natural && !voice.active;
   return true;
 }
 static int16_t app_velocity(int t, int16_t v) {
   return app::scale_velocity(v, event_gain[t]);
 }
 static void app_sample() {
-  engine.sample([](app::TriggerEvent event) { trigger(event); });
+  engine.sample(
+      [](app::TriggerEvent event, bool ratchet) { trigger(event, ratchet); },
+      [](int t) {
+        auto &v = samples::voices[t];
+        if (v.sequenced)
+          playback_metrics.releases += v.release();
+      });
 }
+#if P4SDM_SAMPLE_PLAYBACK_STRESS
+sampler::Sample fixture_samples[16];
+void setup_playback_fixture() {
+  constexpr unsigned frames = 65536;
+  auto *pcm = static_cast<int16_t *>(
+      heap_caps_malloc(frames * 2 * 16, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT));
+  if (!pcm) {
+    Serial.println("[M13 fixture] FAIL allocation");
+    return;
+  }
+  for (unsigned n = 0; n < frames * 16; ++n)
+    pcm[n] = int16_t((n % 97) * 160 - 7680);
+  for (unsigned t = 0; t < 16; ++t) {
+    auto &sample = fixture_samples[t];
+    sample.data = pcm + t * frames;
+    sample.frames = frames;
+    samples::voices[t].assign(&sample);
+    engine.tracks[t].assigned();
+    view.tracks[t].assigned();
+    auto &p = engine.tracks[t].playback;
+    p.start = uint16_t(t * 256);
+    p.end = uint16_t(65535 - t * 128);
+    p.reverse = t & 1;
+    p.mode = t % 3 == 0 ? sampler::Mode::Gate : sampler::Mode::OneShot;
+    view.tracks[t].playback = p;
+  }
+  Serial.printf("[M13 fixture] voices=16 frames=%u bytes=%u psram=1\n", frames,
+                frames * 2 * 16);
+}
+#endif
 static void initialize(void *) {
   Serial.setTxBufferSize(2048);
   Serial.begin(115200);
@@ -1624,6 +1838,9 @@ static void initialize(void *) {
   view.apply({app::Kind::Bpm, 0, 240});
   engine.apply({app::Kind::Play, 0, 1});
   view.apply({app::Kind::Play, 0, 1});
+#endif
+#if P4SDM_SAMPLE_PLAYBACK_STRESS
+  setup_playback_fixture();
 #endif
   tone_lock_metrics = {};
   xTaskCreatePinnedToCore(audio_worker, "app_audio", 8000, nullptr,
@@ -1744,6 +1961,20 @@ void loop() {
           }
           return residue;
         }()));
+    summary_printf("[M13 dense] blocks=%u active_min=%u\n", dense_sample_blocks,
+                   dense_sample_min);
+    const auto &pm = playback_result;
+    summary_printf("[M13 playback] triggers=%u reverse=%u gate=%u releases=%u "
+                   "ends=%u choke_ops=%u choked=%u retriggers=%u region_min=%u "
+                   "region_max=%u max=%u choke_max=%u retrigger_max=%u "
+                   "voice_bytes=%u track_bytes=%u event_bytes=%u\n",
+                   pm.triggers, pm.reverse, pm.gate, pm.releases, pm.ends,
+                   pm.choke_ops, pm.choked, pm.retriggers,
+                   pm.region_min == UINT32_MAX ? 0 : pm.region_min,
+                   pm.region_max, playback_worst, choke_worst, retrigger_worst,
+                   unsigned(sizeof(sampler::Voice)),
+                   unsigned(sizeof(app::Track)),
+                   unsigned(sizeof(app::TriggerEvent)));
     summary_printf("[M10 worst] blocks=%u max=%u\n", locked_dense_blocks,
                    locked_dense_max);
     summary_printf(

@@ -213,7 +213,7 @@ int main() {
   sampler::Voice voice;
   voice.assign(&sample);
   for (int velocity : {1, 64, 100, 127}) {
-    voice.trigger(65536);
+    voice.trigger(65536, {}, false, 0);
     for (auto value : pcm) {
       auto out = scale_velocity(voice.next(), velocity_gain(velocity));
       assert(out == int32_t(value) * velocity_gain(velocity) / 32768);

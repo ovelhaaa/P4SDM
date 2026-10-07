@@ -7,6 +7,7 @@ from pathlib import Path
 parser=argparse.ArgumentParser()
 parser.add_argument('log')
 parser.add_argument('--normal', action='store_true')
+parser.add_argument('--sample', action='store_true', help='resident PCM: WAVE locks must remain suppressed')
 parser.add_argument('--pattern-bytes', type=int, default=2082)
 args=parser.parse_args()
 data=Path(args.log).read_text(errors='replace')
@@ -27,7 +28,10 @@ if args.normal:
     sys.exit(0)
 subprocess.run([sys.executable,'tests/analyze_m9.py',args.log,'--pattern-bytes',str(args.pattern_bytes)],check=True)
 for key in ('locked','unlocked','pitch','volume','pan','wave'):
-    assert locks[key]>0, f'unexercised {key}'
+    if key == 'wave' and args.sample:
+        assert locks[key] == 0, 'SAMPLE unexpectedly resolved a WAVE lock'
+    else:
+        assert locks[key]>0, f'unexercised {key}'
 assert locks['pattern_bytes']==args.pattern_bytes and locks['bank_bytes']==args.pattern_bytes*16
 assert locks['locked']+locks['unlocked']==row('[M8 groove]')['passed']
 worst=row('[M10 worst]')

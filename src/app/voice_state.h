@@ -38,5 +38,5 @@ struct VoiceState {
   }
 };
 static_assert(std::is_trivially_copyable<TriggerEvent>::value);
-static_assert(sizeof(TriggerEvent) == 10);
+static_assert(sizeof(TriggerEvent) == 20);
 } // namespace app

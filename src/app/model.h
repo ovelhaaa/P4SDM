@@ -1,4 +1,5 @@
 #pragma once
+#include "sample_playback.h"
 #include <algorithm>
 #include <atomic>
 #include <cstdint>
@@ -51,6 +52,13 @@ enum class Kind : uint8_t {
   FilterCutoff,
   FilterResonance,
   DelaySend,
+  SampleStart,
+  SampleEnd,
+  SampleReverse,
+  SampleMode,
+  SampleChoke,
+  SampleResetRegion,
+  GateRelease,
   Count
 };
 struct Command {
@@ -88,12 +96,36 @@ template <unsigned N> struct Queue {
     return true;
   }
 };
+// Physical pad ownership survives selection/page changes and queue pressure.
+struct PadGate {
+  int track = -1;
+  bool release_pending = false;
+  template <unsigned N> void flush(Queue<N> &queue) {
+    if (release_pending && queue.push({Kind::GateRelease, uint8_t(track), 0})) {
+      track = -1;
+      release_pending = false;
+    }
+  }
+  template <unsigned N> bool press(unsigned t, Queue<N> &queue) {
+    flush(queue);
+    if (track >= 0 || t >= 16 || !queue.push({Kind::Trigger, uint8_t(t), 0}))
+      return false;
+    track = int(t);
+    return true;
+  }
+  template <unsigned N> void release(Queue<N> &queue) {
+    if (track >= 0)
+      release_pending = true;
+    flush(queue);
+  }
+};
 struct Track {
   int volume = 80, pan = 0, pitch = 48, length = 32, wave = 0;
   uint8_t filter_cutoff = 0, filter_resonance = 0, delay_send = 127;
   bool muted = false, sample = false;
   int synth_pitch = 48, sample_pitch = 60;
   bool sample_configured = false;
+  sampler::Playback playback{};
   void source(bool pcm) {
     if (sample)
       sample_pitch = pitch;
@@ -105,6 +137,7 @@ struct Track {
   void assigned() {
     source(true);
     if (!sample_configured) {
+      playback = {};
       sample_pitch = 60;
       pitch = 60;
       sample_configured = true;
@@ -136,6 +169,9 @@ struct TriggerEvent {
   int8_t pan = 0;
   uint8_t wave = 0, locked_mask = 0;
   uint8_t filter_cutoff = 0, filter_resonance = 0, delay_send = 127;
+  sampler::Playback playback{};
+  bool sequenced = false;
+  uint8_t reserved = 0;
 };
 inline TriggerEvent resolve_event(int track, const Track &base, int velocity,
                                   StepLocks locks = {}) {
@@ -152,7 +188,8 @@ inline TriggerEvent resolve_event(int track, const Track &base, int velocity,
           uint8_t(locks.mask & FILTER_RESONANCE_LOCK ? locks.filter_resonance
                                                      : base.filter_resonance),
           uint8_t(locks.mask & DELAY_SEND_LOCK ? locks.delay_send
-                                               : base.delay_send)};
+                                               : base.delay_send),
+          base.playback};
 }
 // Preserve the M9 linear attenuation pan law, including its endpoint rounding.
 inline int event_channel_gain(int volume, int pan, bool right) {
@@ -274,10 +311,13 @@ struct Engine {
     for (auto &p : pending)
       p.next = p.count;
   }
-  template <class Trigger> void emit(Trigger &trigger, TriggerEvent event) {
+  template <class Trigger>
+  void emit(Trigger &trigger, TriggerEvent event, bool ratchet = false) {
     velocity_min = std::min(velocity_min, event.velocity);
     velocity_max = std::max(velocity_max, event.velocity);
-    if constexpr (std::is_invocable<Trigger, TriggerEvent>::value)
+    if constexpr (std::is_invocable<Trigger, TriggerEvent, bool>::value)
+      trigger(event, ratchet);
+    else if constexpr (std::is_invocable<Trigger, TriggerEvent>::value)
       trigger(event);
     else
       trigger(event.track); // Legacy host callback compatibility.
@@ -295,6 +335,36 @@ struct Engine {
       return;
     auto &t = tracks[c.track];
     switch (c.kind) {
+    case Kind::SampleStart:
+      if (t.sample)
+        t.playback.start = uint16_t(clamp(c.value, 0, 65535));
+      break;
+    case Kind::SampleEnd:
+      if (t.sample)
+        t.playback.end = uint16_t(clamp(c.value, 0, 65535));
+      break;
+    case Kind::SampleReverse:
+      if (t.sample)
+        t.playback.reverse = c.value != 0;
+      break;
+    case Kind::SampleMode:
+      if (t.sample)
+        t.playback.mode =
+            c.value ? sampler::Mode::Gate : sampler::Mode::OneShot;
+      break;
+    case Kind::SampleChoke:
+      if (t.sample)
+        t.playback.choke = uint8_t(clamp(c.value, 0, 8));
+      break;
+    case Kind::SampleResetRegion:
+      if (t.sample) {
+        t.playback.start = 0;
+        t.playback.end = 65535;
+        t.playback.reverse = false;
+      }
+      break;
+    case Kind::GateRelease:
+      break;
     case Kind::Play:
       playing = c.value;
       cancel_ratchets();
@@ -552,7 +622,8 @@ struct Engine {
   }
   // Exact rational sixteenth clock: accumulated BPM*4 per sample, no rounding
   // drift.
-  template <class Trigger> void sample(Trigger trigger) {
+  template <class Trigger, class Release>
+  void sample(Trigger trigger, Release release) {
     if (!playing)
       return;
     if (first || phase >= duration) {
@@ -560,6 +631,8 @@ struct Engine {
       if (phase >= duration)
         phase -= duration;
       cancel_ratchets();
+      for (int t = 0; t < 16; ++t)
+        release(t);
       // Length edits never move a live head between musical boundaries.
       // Wrap once on the next onset, then switch before triggering step zero.
       if (step + 1 >= patterns[playing_pattern].length) {
@@ -595,8 +668,9 @@ struct Engine {
           continue;
         }
         ++probability_passed;
-        const auto event = resolve_event(
-            t, tracks[t], m.velocity, patterns[playing_pattern].locks[t][step]);
+        auto event = resolve_event(t, tracks[t], m.velocity,
+                                   patterns[playing_pattern].locks[t][step]);
+        event.sequenced = true;
         locked_parents += event.locked_mask != 0;
         unlocked_parents += event.locked_mask == 0;
         for (int i = 0; i < 7; ++i)
@@ -618,7 +692,7 @@ struct Engine {
           continue;
         auto offset = (duration * p.next + p.count - 1) / p.count;
         if (phase >= offset) {
-          emit(trigger, p.event);
+          emit(trigger, p.event, true);
           ++ratchet_events;
           ++p.next;
         }
@@ -628,6 +702,9 @@ struct Engine {
       }
     }
     phase += unsigned(bpm) * 4;
+  }
+  template <class Trigger> void sample(Trigger trigger) {
+    sample(trigger, [](int) {});
   }
 };
 struct Rect {
@@ -646,7 +723,8 @@ enum class Page {
   Tools,
   Locks,
   Tone,
-  ToneLocks
+  ToneLocks,
+  SamplePlayback
 };
 struct Ui {
   Page page = Page::Sequence;
@@ -778,6 +856,14 @@ struct Ui {
   }
 };
 inline Rect widget(int id) {
+  if (id == 123)
+    return {24, 270, 752, 52};
+  if (id == 124 || id == 125)
+    return {24, 100 + (id - 124) * 68, 752, 56};
+  if (id >= 126 && id <= 128)
+    return {24 + (id - 126) * 256, 236, 240, 56};
+  if (id == 129 || id == 130)
+    return {24 + (id - 129) * 512, 350, 240, 56};
   if (id >= 114 && id <= 119) {
     int row = (id - 114) / 2;
     return {id % 2 == 0 ? 24 : 560, 100 + row * 68, id % 2 == 0 ? 520 : 216,
@@ -882,7 +968,11 @@ inline int hit(Page p, int x, int y) {
       return i;
   if (widget(44).contains(x, y))
     return 44;
-  if (p == Page::Tone) {
+  if (p == Page::SamplePlayback) {
+    for (int i = 124; i <= 130; ++i)
+      if (widget(i).contains(x, y))
+        return i;
+  } else if (p == Page::Tone) {
     for (int i = 107; i <= 112; ++i)
       if (widget(i).contains(x, y))
         return i;
@@ -930,6 +1020,8 @@ inline int hit(Page p, int x, int y) {
     if (widget(37).contains(x, y))
       return 37;
   } else if (p == Page::Sample) {
+    if (widget(123).contains(x, y))
+      return 123;
     for (int i = 38; i <= 41; ++i)
       if (widget(i).contains(x, y))
         return i;
