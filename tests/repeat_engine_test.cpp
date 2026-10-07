@@ -1,4 +1,5 @@
 #include "../src/app/project.h"
+#include "../src/app/voice_state.h"
 #include <cassert>
 #include <cstdlib>
 #include <iostream>
@@ -110,10 +111,13 @@ int main() {
     e.patterns[0].locks[t][0] = {255, uint8_t(48+t), uint8_t(60+t), int8_t(t-8), uint8_t(t), uint8_t(70+t), uint8_t(30+t), uint8_t(80+t), uint8_t(t)};
   }
   play(e); e.apply({Kind::PerfRepeatStart, 0, 8});
+  VoiceRouting routing;
+  VoiceState sounding[16]{};
   TriggerEvent accepted[16]{}; bool sources[16]{};
   unsigned n = 0;
   e.sample([&](TriggerEvent ev, bool child, bool source) {
-    assert(!child); accepted[n] = ev; sources[n++] = source;
+    assert(!child); routing.trigger(ev.track, source); sounding[ev.track].event = ev;
+    accepted[n] = ev; sources[n++] = source;
   });
   assert(n == 16 && e.performance.repeat.capture.count == 16 && e.repeat_metrics.captured_max == 16);
   const auto capture = e.performance.repeat.capture;
@@ -122,6 +126,7 @@ int main() {
     e.tracks[t].wave = 15; e.tracks[t].filter_cutoff = 1;
     e.tracks[t].filter_resonance = 2; e.tracks[t].delay_send = 3;
     e.tracks[t].slices.reset({}); e.tracks[t].source(!sources[t]);
+    routing.trigger(t, !sources[t]); // Explicit Source edit stops/selects the new route.
     e.patterns[0].locks[t][0] = {}; e.patterns[0].track_steps[t] = 0;
   }
   unsigned audition = 0;
@@ -129,9 +134,24 @@ int main() {
   assert(audition == 1 && !std::memcmp(&capture, &e.performance.repeat.capture, sizeof(capture)));
   n = 0;
   while (n < 16) e.sample([&](TriggerEvent ev, bool child, bool source) {
-    assert(child && same(ev, accepted[ev.track]) && source == sources[ev.track]); ++n;
+    assert(child && same(ev, accepted[ev.track]) && source == sources[ev.track]);
+    routing.trigger(ev.track, source); ++n;
   });
   assert(n == 16 && e.ratchet_events == 0);
+  // A captured voice remains routed after a canonical Source switch, the next
+  // repeat hit, and unrelated live track-control edits in either direction.
+  for (unsigned t = 0; t < 16; ++t) {
+    assert(e.tracks[t].sample != sources[t] && routing.pcm(t) == sources[t]);
+    for (auto kind : {Kind::Volume, Kind::Pan, Kind::Pitch, Kind::Length, Kind::Wave}) {
+      e.apply({kind, uint8_t(t), 3});
+      assert(routing.pcm(t) == sources[t]);
+      const auto effective = sounding[t].effective(e.tracks[t], routing.pcm(t));
+      assert(effective.pitch == accepted[t].pitch && effective.volume == accepted[t].volume &&
+             effective.pan == accepted[t].pan && effective.filter_cutoff == accepted[t].filter_cutoff &&
+             effective.filter_resonance == accepted[t].filter_resonance && effective.delay_send == accepted[t].delay_send);
+      assert(sources[t] ? effective.slice == accepted[t].slice : effective.wave == accepted[t].wave);
+    }
+  }
   // Only current runtime performance masks affect already captured children.
   e.apply({Kind::PerfMute, 1, 1}); e.apply({Kind::PerfSolo, 2, 1});
   unsigned emitted = 0; auto old_hits = e.repeat_metrics.hits;

@@ -15,6 +15,6 @@ with tempfile.TemporaryDirectory() as folder:
             if dependency == 'model.h': source = source.replace('"model.h"', '"m18_model.h"')
             else: source = source.replace('"'+dependency+'"', '"'+(Path('src/app')/dependency).resolve().as_posix()+'"')
         (root / ('m18_' + name)).write_text(source)
-    binary = Path('.pio/m181_equivalence.exe').resolve()
+    binary = root / 'm181_equivalence.exe'
     subprocess.run(['g++','-std=c++17','-O2','-Wall','-Wextra','-Werror','-I'+folder,'tests/no_repeat_equivalence.cpp','-o',str(binary)],check=True)
     subprocess.run([str(binary)],check=True)

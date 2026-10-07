@@ -76,7 +76,7 @@ app::RepeatMetrics repeat_result{};
 uint32_t repeat_worst = 0, x8_worst = 0, x8_blocks = 0,
          x8_active_min = 16, x8_active_max = 0, x8_coefficients = 0,
          x8_avoided = 0, x8_chokes = 0, x8_full_blocks = 0;
-uint16_t voice_sample_mask = 0;
+app::VoiceRouting voice_routing;
 std::atomic<unsigned> repeat_ui_presses{0}, repeat_ui_releases{0}, repeat_ui_edits{0};
 std::atomic<unsigned> perf_ui_entries{0}, perf_ui_pads{0}, perf_ui_fills{0},
     perf_ui_toggles{0}, perf_ui_switches{0};
@@ -163,7 +163,7 @@ apply_voice_tone(int t, const app::TriggerEvent &event, bool tone = true) {
 }
 inline __attribute__((always_inline)) void
 apply_active_voice_tone(int t, bool tone = true) {
-  apply_voice_tone(t, voice_state[t].effective(engine.tracks[t]), tone);
+  apply_voice_tone(t, voice_state[t].effective(engine.tracks[t], voice_routing.pcm(t)), tone);
 }
 sampler::PlaybackMetrics playback_metrics{}, playback_result{};
 uint32_t playback_worst = 0, choke_worst = 0, retrigger_worst = 0;
@@ -205,8 +205,7 @@ void flush_slice_release() {
 void trigger(app::TriggerEvent event, bool ratchet = false, int source = -1) {
   int t = event.track;
   const bool sample = source < 0 ? engine.tracks[t].sample : source != 0;
-  const uint16_t bit = uint16_t(1u << t);
-  voice_sample_mask = uint16_t((voice_sample_mask & ~bit) | (sample ? bit : 0));
+  voice_routing.trigger(t, sample);
   if (!ratchet && event.sequenced && sample) {
     auto &m = slice_lock_metrics;
     if (event.locked_mask & app::SLICE_LOCK) {
@@ -256,8 +255,6 @@ void trigger(app::TriggerEvent event, bool ratchet = false, int source = -1) {
 void trigger(int t) { trigger(app::resolve_event(t, engine.tracks[t], 127)); }
 void update_track(int t) {
   auto &v = engine.tracks[t];
-  const uint16_t bit = uint16_t(1u << t);
-  voice_sample_mask = uint16_t((voice_sample_mask & ~bit) | (v.sample ? bit : 0));
   ROTvalue[t][14] = v.volume;
   ROTvalue[t][13] = v.pan;
   ROTvalue[t][12] = v.pitch;
@@ -265,7 +262,7 @@ void update_track(int t) {
   ROTvalue[t][1] = v.wave;
   // Base edits retain any active voice overrides; unlocked controls remain
   // live.
-  const auto effective = voice_state[t].effective(v);
+  const auto effective = voice_state[t].effective(v, voice_routing.pcm(t));
   synthESP32_setWave(t, effective.wave);
   synthESP32_setEnvelope(t, 3);
   synthESP32_setLength(t, v.length);
@@ -275,7 +272,7 @@ void update_track(int t) {
   apply_voice_tone(t, effective);
   if (PITCH[t] != 255)
     synthESP32_setPitch(t, effective.pitch);
-  if (v.sample)
+  if (voice_routing.pcm(t))
     samples::voices[t].set_increment(sampler::pitch_increment(effective.pitch));
 }
 bool send(app::Command c) {
@@ -2579,6 +2576,7 @@ unsigned project_boundary() {
           AMP[t] = 0;
           FILTROS[t].reset();
           voice_state[t] = {};
+          voice_routing.trigger(t, engine.tracks[t].sample);
           update_track(t);
         }
         memcpy(projects::references, projects::staging->references,
@@ -2636,7 +2634,7 @@ void audio_worker(void *) {
       unsigned t = unsigned(sample_track);
       if (!projects::restoring.load())
         engine.tracks[t].assigned();
-      voice_sample_mask |= uint16_t(1u << t);
+      voice_routing.trigger(t, true);
       projects::assigned(t, samples::voices[t].sample->name);
       PITCH[t] = 255;
       AMP[t] = 0;
@@ -2745,8 +2743,7 @@ void audio_worker(void *) {
       ++applied_commands;
       applied_actions[unsigned(c.kind)].fetch_add(1, std::memory_order_relaxed);
       if (c.kind == app::Kind::Source) {
-        const uint16_t bit = uint16_t(1u << c.track);
-        voice_sample_mask = uint16_t((voice_sample_mask & ~bit) | (engine.tracks[c.track].sample ? bit : 0));
+        voice_routing.trigger(c.track, engine.tracks[c.track].sample);
         voice_state[c.track].event = {};
         apply_active_voice_tone(c.track);
         samples::voices[c.track].stop();
@@ -3016,7 +3013,7 @@ void audio_worker(void *) {
 }
 } // namespace
 static bool app_pcm(int t, int16_t &v) {
-  if (!(voice_sample_mask & (1u << t)))
+  if (!voice_routing.pcm(t))
     return false;
   auto &voice = samples::voices[t];
   const bool natural = voice.active && !voice.releasing;
@@ -3140,6 +3137,7 @@ static void initialize(void *) {
         uint8_t(30 + t * 4);
     engine.tracks[t].filter_resonance = view.tracks[t].filter_resonance = 96;
 #endif
+    voice_routing.trigger(t, engine.tracks[t].sample);
     update_track(t);
   }
   synthESP32_setMVol(60);

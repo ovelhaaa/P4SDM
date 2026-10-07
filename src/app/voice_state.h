@@ -1,6 +1,18 @@
 #pragma once
 #include "model.h"
 namespace app {
+// Routing belongs to the triggered voice, independently of canonical Track edits.
+// Only trigger, explicit source/assignment or reset transitions may select it.
+class VoiceRouting {
+  uint16_t samples_ = 0;
+public:
+  void trigger(unsigned track, bool sample) {
+    const uint16_t bit = uint16_t(1u << track);
+    samples_ = uint16_t((samples_ & ~bit) | (sample ? bit : 0));
+  }
+  bool pcm(unsigned track) const { return samples_ & (1u << track); }
+};
+static_assert(sizeof(VoiceRouting) == 2);
 // Immutable accepted event; base edits reconstruct only its unlocked controls.
 inline StepLocks event_locks(const TriggerEvent &e) {
   return {uint8_t(e.locked_mask & ~SLICE_LOCK),
@@ -25,6 +37,16 @@ struct VoiceState {
     effective.slice = base.sample ? event.slice : 0;
     effective.locked_mask |= base.sample ? event.locked_mask & SLICE_LOCK : 0;
     return effective;
+  }
+  TriggerEvent effective(const Track &base, bool sample) const {
+    if (sample == base.sample) return effective(base);
+    // A captured voice can keep its source after the canonical Source changes.
+    // Resolve live base controls under that voice's source so Wave/Slice lock
+    // applicability and the pitch domain remain attached to the sounding voice.
+    Track sounding = base;
+    sounding.sample = sample;
+    sounding.pitch = sample ? base.sample_pitch : base.synth_pitch;
+    return effective(sounding);
   }
   // Return coefficient/send changes and redundant coefficient work avoided.
   // Compare canonical pairs before mapping: the resolved 0/0 exception stays
