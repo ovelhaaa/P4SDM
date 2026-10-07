@@ -1,0 +1,46 @@
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0x17 (CHIP_USB_UART_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4004cd42
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+E (2493) sdmmc_common: sdmmc_init_ocr: send_op_cond (1) returned[M6 budget] total=33554432 display=2304000 fx_delay=352800 samples=0 reserve=4194304 free=30779004 largest=30408692 internal=300084
+ 0x107
+E (2494) vfs_fat_sdmmc: sdmmc_card_init failed (0x107).
+[   812][E][SD_MMC.cpp:307] begin(): Failed to initialize the card (0x107). Make sure SD card lines have pull-up resistors in place.
+[M6 SD] mounted=0 width=4 clock_khz=20000 mount_us=261828 capacity=0 status=NO CARD / MOUNT ERROR
+[M5] blocks=10337 p50=3370 p95=4110 p99=4208 max=4521 misses=0 failures=0 timeouts=0 peak=6852 nonzero=5172421 rails=0 active_min=0 active_max=16
+[M8 groove] parents=13919 passed=13137 skipped=782 ratchets=37797 pending_max=48 velocity_min=1 velocity_max=127 swing_changes=8
+[M8 worst] blocks=2068 bpm=240 voices=16 ratchet=4 swing=50 delay=1 max=4521 triggers=12304 triggers_per_second=1024
+[MEM] M8 after 60s PSRAM total=33554432 free=30779004 largest=30408692 internal_free=299076
+[M10 locks] locked=13021 unlocked=116 pitch=12791 volume=12785 pan=12773 wave=12795 pattern_bytes=3106 bank_bytes=49696 engine_bytes=52064
+[M11 tone] cutoff=575 resonance=574 send=575 cutoff_min=0 cutoff_max=127 resonance_min=0 resonance_max=127 send_min=0 send_max=127 blocks=568 max=4408 dense=2068 dense_max=4521
+[M12 locks] cutoff=12774 resonance=12764 send=12778 coefficients=13517 avoided=38875 send_changes=13448 coefficient_blocks=984 coefficient_max=4391 edit_blocks=206 edit_max=4391 commands=151 step_bytes=9 event_bytes=20 voice_bytes=384 idle_residue=16
+[M16 project] state_bytes=53128 file_bytes=52637 snapshot_blocks=51 snapshot_max=3971 apply_blocks=312 apply_max=1829 fixtures=3 fixture_errors=0 dirty=1 physical_pending=1
+[M13 dense] blocks=2068 active_min=0
+[M13 playback] triggers=0 reverse=0 gate=0 releases=0 ends=0 choke_ops=0 choked=0 retriggers=0 region_min=0 region_max=0 max=4521 choke_max=0 retrigger_max=0 voice_bytes=64 track_bytes=116 event_bytes=20
+[M15 locks] locked=0 unlocked=0 unsliced=0 requested_min=0 requested_max=0 resolved_min=0 resolved_max=0 clamped=0 edits=0 ui_edits=0 align=1 requested_seen=0 resolved_seen=0
+[M14 slices] triggers=0 auditions=0 index_min=0 index_max=0 frames_min=0 frames_max=0 active_changes=0 divides=0 adds=0 deletes=0 resets=0 edit_blocks=0 edit_max=0 slice_bytes=4 bank_bytes=66 sample_bytes=1556
+[M10 worst] blocks=2068 max=4521
+[M9 tools] rotate=26 reverse=21 copy_track=23 clear_track=14 duplicate=21 euclidean=13 randomize=17 mutate=15 reroll=15 blocks=145 dense_blocks=120 max=4521
+[M5 UI] seconds=63.079 submitted=1284 completed=1284 dirty_avg=117066 dirty_max=768000 full=69 preparation_max_us=158156 touch_errors=0 rejected=0 pads=4 steps=8 drags=47 pages=24 transport=0 bpm=0 skipped=121
+[M7 patterns] switches=8 loops=69 selections=28 copies=4 clears=4 lengths=16 solos=8 mutes=8 normal_frames=1215 dirty_avg=80100 dirty_max=483328 pattern_bytes=3106 command_bytes=12
+[M7 applied] long_to_short=2 short_to_long=0 queue_replacements=10 copies=4 clears=6 lengths=16 solos=8 mutes=8 steps=8
+[M9 UI] entries=4 copies=4 randomize=8 cell_max=16 edit_full=0
+[M12 UI] entries=10 edits=65 widgets_max=6 edit_full=0
+[M11 UI] entries=8 edits=29 widgets_max=1 edit_full=0
+[M10 UI] entries=12 edits=75 widgets_max=6 edit_full=0
+[M13 UI] entries=0 edits=0 widgets_max=0 edit_full=0
+[M14 UI] entries=0 edits=0 edit_full=0 waveform_first_us=0 waveform_redraw_max_us=0 slice_redraw_max_us=0 build_count=0 build_max_us=0 large_us=0 cache_bytes=1440 page_max_us=0 drag_dirty_max=0
+[M5 memory] ps_before=30779004 ps_after=30779004 internal_before=299076 internal_after=299076 largest_before=30408692 largest_after=30408692
