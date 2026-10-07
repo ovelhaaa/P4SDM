@@ -1,3 +1,4 @@
+#include "src/engine/track_tone.h"
 // Tabla de frecuencias MIDI (0-127)
 const float midiFrequencies[128] = {
     8.18, 8.66, 9.18, 9.72, 10.3, 10.91, 11.56, 12.25, 12.98, 13.75, 14.57, 15.43,
@@ -159,8 +160,13 @@ static void render_buffer() {
                 REVERB_SEND_R += sampleR;
               }
               if ((delays >> f) & 1) {
+#if P4SDM_APP
+                DELAY_SEND_L += app_delay_send(f, sampleL);
+                DELAY_SEND_R += app_delay_send(f, sampleR);
+#else
                 DELAY_SEND_L += sampleL;
                 DELAY_SEND_R += sampleR;
+#endif
               }
               if ((choruss >> f) & 1) {
                 CHORUS_SEND_L += sampleL;
@@ -234,8 +240,13 @@ static void render_buffer() {
                 REVERB_SEND_R += sampleR;
               }
               if ((delays >> f) & 1) {
+#if P4SDM_APP
+                DELAY_SEND_L += app_delay_send(f, sampleL);
+                DELAY_SEND_R += app_delay_send(f, sampleR);
+#else
                 DELAY_SEND_L += sampleL;
                 DELAY_SEND_R += sampleR;
+#endif
               }
               if ((choruss >> f) & 1) {
                 CHORUS_SEND_L += sampleL;
@@ -469,6 +480,11 @@ void synthESP32_setMFilter(unsigned char freq)  {
 //*********************************************************************
 //  Setup voice filter [0-255] parameter 0-127
 //*********************************************************************
+
+void synthESP32_setTrackTone(unsigned char voice, unsigned char cutoffValue, unsigned char resonanceValue) {
+  FILTROS[voice].setResonance(p4tone::resonance(cutoffValue, resonanceValue));
+  FILTROS[voice].setCutoffFreq(p4tone::cutoff(cutoffValue));
+}
 
 void synthESP32_setFilter(unsigned char voice, unsigned char freq)  {
   // ya que 0 es no filter hago un map y cambio el rango

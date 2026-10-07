@@ -28,3 +28,5 @@ void synthESP32_setLength(unsigned char voice,unsigned char length);
 void synthESP32_setPitch(unsigned char voice,unsigned char MIDInote);
 void synthESP32_setMod(unsigned char voice,unsigned char mod);
 void move_pattern(int ssound, int dir);
+
+void synthESP32_setTrackTone(unsigned char voice, unsigned char cutoff, unsigned char resonance);

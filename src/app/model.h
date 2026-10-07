@@ -45,6 +45,9 @@ enum class Kind : uint8_t {
   LockWave,
   UnlockParam,
   ClearStepLocks,
+  FilterCutoff,
+  FilterResonance,
+  DelaySend,
   Count
 };
 struct Command {
@@ -84,6 +87,7 @@ template <unsigned N> struct Queue {
 };
 struct Track {
   int volume = 80, pan = 0, pitch = 48, length = 32, wave = 0;
+  uint8_t filter_cutoff = 0, filter_resonance = 0, delay_send = 127;
   bool muted = false, sample = false;
   int synth_pitch = 48, sample_pitch = 60;
   bool sample_configured = false;
@@ -316,6 +320,15 @@ struct Engine {
       break;
     case Kind::Wave:
       t.wave = clamp(c.value, 0, 15);
+      break;
+    case Kind::FilterCutoff:
+      tracks[c.track].filter_cutoff = uint8_t(clamp(c.value, 0, 127));
+      break;
+    case Kind::FilterResonance:
+      tracks[c.track].filter_resonance = uint8_t(clamp(c.value, 0, 127));
+      break;
+    case Kind::DelaySend:
+      tracks[c.track].delay_send = uint8_t(clamp(c.value, 0, 127));
       break;
     case Kind::Delay:
       delay = c.value;
@@ -601,7 +614,17 @@ struct Rect {
     return px >= x && py >= y && px < x + w && py < y + h;
   }
 };
-enum class Page { Sequence, Track, Fx, Sample, Pattern, Step, Tools, Locks };
+enum class Page {
+  Sequence,
+  Track,
+  Fx,
+  Sample,
+  Pattern,
+  Step,
+  Tools,
+  Locks,
+  Tone
+};
 struct Ui {
   Page page = Page::Sequence;
   int selected = 0, bank = 0, selected_step = -1, capture = -1;
@@ -732,6 +755,21 @@ struct Ui {
   }
 };
 inline Rect widget(int id) {
+  if (id == 37)
+    return {24, 368, 200, 52};
+  if (id == 106)
+    return {24, 100, 752, 52}; // source / track
+  if (id >= 107 && id <= 109)
+    return {24, 164 + (id - 107) * 68, 752, 56};
+  if (id == 110)
+    return {24, 368, 240, 52};
+  if (id == 111)
+    return {280, 368, 240, 52};
+  if (id == 112)
+    return {536, 368, 240, 52};
+  if (id == 113)
+    return {24, 310, 200, 52}; // TRACK -> TONE
+
   if (id == 95)
     return {560, 390, 216, 52};
   if (id >= 96 && id <= 103) {
@@ -810,7 +848,11 @@ inline int hit(Page p, int x, int y) {
       return i;
   if (widget(44).contains(x, y))
     return 44;
-  if (p == Page::Locks) {
+  if (p == Page::Tone) {
+    for (int i = 107; i <= 112; ++i)
+      if (widget(i).contains(x, y))
+        return i;
+  } else if (p == Page::Locks) {
     for (int i = 96; i <= 105; ++i)
       if (widget(i).contains(x, y))
         return i;
@@ -836,6 +878,8 @@ inline int hit(Page p, int x, int y) {
       if (widget(i).contains(x, y))
         return i;
   } else if (p == Page::Track) {
+    if (widget(113).contains(x, y))
+      return 113;
     for (int i = 24; i < 29; ++i)
       if (widget(i).contains(x, y))
         return i;

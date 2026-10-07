@@ -414,3 +414,14 @@ o próximo evento sem locks resolve esses valores novamente. Dados continuam em 
 [Arquitetura, testes e qualificação M10](docs/GUITION_M10.md).
 Valide com `python tests/analyze_m10.py <log>` e restaure `guition_app` após stress.
 M10 encerra aqui: filter/FX locks, microtiming, persistência e song mode ficam adiados.
+
+
+### M11 Track tone and Delay send
+
+TRACK -> TONE adds live per-track cutoff, resonance and continuous Delay send
+for both SYNTH and resident SAMPLE. Cutoff's right endpoint is OPEN; resonance
+and send span 0..127. Global DELAY ON/OFF remains separate. Untouched defaults
+preserve M10's filter and full-send output. Tone/routing survive source changes
+and are not copied by sequencer lane/pattern operations. M10 locks remain
+pitch/volume/pan/wave only. See [M11 qualification](docs/GUITION_M11.md) for the
+explicit legacy-default resonance exception, mappings, tests and device evidence.

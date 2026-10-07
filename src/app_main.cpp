@@ -1,9 +1,17 @@
 #include "app/model.h"
+#include "engine/track_tone.h"
+namespace {
+app::Engine engine, view;
+}
 #include "app/qualification.h"
 #include "app/samples.h"
 #include <cstdarg>
 static bool app_pcm(int track, int16_t &value);
 static void app_sample();
+static inline __attribute__((always_inline)) int32_t
+app_delay_send(int track, int32_t sample) {
+  return p4tone::delay_send(sample, engine.tracks[track].delay_send);
+}
 static int16_t app_velocity(int track, int16_t value);
 // clang-format off
 #include <Arduino.h>
@@ -38,7 +46,6 @@ app::Queue<128> input_events;
 app::Queue<32> pad_triggers;
 std::atomic<int> visible_page{0}, visible_bank{0};
 std::atomic<uint32_t> input_errors{0}, input_overflow{0};
-app::Engine engine, view;
 app::Ui ui;
 std::atomic<int> playhead{-1};
 // Acknowledged command count and pattern transport published together. UI only
@@ -52,15 +59,16 @@ std::atomic<uint32_t> diagnostic_p99{0}, diagnostic_max{0},
 std::atomic<uint32_t> flashes[16];
 bool delay_ready = false;
 int sample_index = 0;
-bool dirty[106]{};
+bool dirty[114]{};
 bool full = true;
 uint32_t rejected = 0, touch_errors = 0, frames = 0, full_frames = 0;
-uint32_t actions[106]{}, drags = 0;
+uint32_t actions[114]{}, drags = 0;
 uint64_t dirty_bytes = 0, normal_dirty_bytes = 0;
 unsigned normal_frames = 0;
 uint32_t normal_dirty_max = 0;
 uint32_t dirty_max = 0, prep_max = 0, skipped_frames = 0;
 uint32_t tool_cell_max = 0, tool_edit_full = 0;
+uint32_t tone_ui_edits = 0, tone_ui_full = 0, tone_ui_widgets_max = 0;
 uint32_t lock_ui_edits = 0, lock_ui_full = 0, lock_ui_widgets_max = 0;
 constexpr unsigned capture_blocks = 10337;
 #if P4SDM_SAMPLER_QUALIFICATION
@@ -78,6 +86,11 @@ struct GrooveMetrics {
 };
 GrooveMetrics groove_result{};
 uint32_t lock_result[6]{};
+struct ToneMetrics {
+  uint32_t edits[3]{}, blocks = 0, worst = 0, dense = 0, dense_worst = 0;
+  unsigned minimum[3]{127, 127, 127}, maximum[3]{};
+};
+ToneMetrics tone_metrics{}, tone_result{};
 constexpr unsigned worst_blocks = 2068;
 uint32_t worst_max = 0, worst_triggers = 0;
 uint32_t locked_dense_max = 0, locked_dense_blocks = 0;
@@ -131,7 +144,7 @@ void update_track(int t) {
   synthESP32_setMod(t, 64);
   VOL_L[t] = app::event_channel_gain(effective.volume, effective.pan, false);
   VOL_R[t] = app::event_channel_gain(effective.volume, effective.pan, true);
-  synthESP32_setFilter(t, 0);
+  synthESP32_setTrackTone(t, v.filter_cutoff, v.filter_resonance);
   if (PITCH[t] != 255)
     synthESP32_setPitch(t, effective.pitch);
   if (v.sample)
@@ -154,7 +167,28 @@ void draw(int id) {
   auto r = app::widget(id);
   char s[48]{};
   uint16_t color = panel;
-  if (id >= 95) {
+  if (id >= 106) {
+    const auto &t = view.tracks[ui.selected];
+    if (id == 106)
+      snprintf(s, sizeof(s), "TONE / TRACK %02d / %s", ui.selected + 1,
+               t.sample ? "SAMPLE" : "SYNTH");
+    else if (id == 107) {
+      if (t.filter_cutoff == 0)
+        snprintf(s, sizeof(s), "CUTOFF OPEN");
+      else
+        snprintf(s, sizeof(s), "CUTOFF %d / OPEN ->", 127 - t.filter_cutoff);
+    } else if (id == 108)
+      snprintf(s, sizeof(s), "RESONANCE %d", t.filter_resonance);
+    else if (id == 109)
+      snprintf(s, sizeof(s), "DELAY SEND %d / GLOBAL %s", t.delay_send,
+               view.delay ? "ON" : "OFF");
+    else
+      snprintf(s, sizeof(s), "%s",
+               id == 110   ? "TRACK <"
+               : id == 111 ? "TRACK >"
+               : id == 112 ? "BACK TO TRACK"
+                           : "TONE");
+  } else if (id >= 95) {
     if (id == 95)
       snprintf(s, sizeof(s), "LOCKS");
     else if (id == 104)
@@ -404,7 +438,37 @@ void interact(int id, int x, bool initial) {
     ++actions[id];
   else
     ++drags;
-  if (id >= 95) {
+  if (id >= 106) {
+    if (id == 113 || id == 112) {
+      if (initial) {
+        ui.page = id == 113 ? app::Page::Tone : app::Page::Track;
+        full = true;
+      }
+    } else if (id == 110 || id == 111) {
+      if (initial) {
+        ui.selected = app::clamp(ui.selected + (id == 110 ? -1 : 1), 0, 15);
+        for (int i = 106; i <= 109; ++i)
+          dirty[i] = true;
+        dirty[45] = true;
+      }
+    } else if (id >= 107 && id <= 109) {
+      int value = app::drag(id, x);
+      if (id == 107)
+        value = p4tone::cutoff_from_slider(value);
+      const auto &t = view.tracks[ui.selected];
+      const int current[] = {t.filter_cutoff, t.filter_resonance, t.delay_send};
+      const bool was_full = full;
+      if (current[id - 107] != value &&
+          send({app::Kind(int(app::Kind::FilterCutoff) + id - 107),
+                uint8_t(ui.selected), value})) {
+        dirty[id] = true;
+        ++tone_ui_edits;
+        tone_ui_full += full && !was_full;
+        tone_ui_widgets_max = std::max(tone_ui_widgets_max, uint32_t(1));
+      }
+    }
+    return;
+  } else if (id >= 95) {
     if (id == 95 || id == 105) {
       if (!initial)
         return;
@@ -681,7 +745,7 @@ void ui_task(void *) {
         if (samples::assigned(t)) {
           view.tracks[t].assigned();
           if (int(t) == ui.selected)
-            dirty[43] = true;
+            dirty[43] = dirty[106] = true;
           if (int(t) == ui.selected)
             for (int id = 24; id < 29; ++id)
               dirty[id] = true;
@@ -690,6 +754,26 @@ void ui_task(void *) {
         }
     }
 #if P4SDM_APP_STRESS
+    static uint32_t tone_due = 0;
+    static unsigned tone_edit = 0;
+    if (millis() >= tone_due) {
+      tone_due = millis() + 80; // realistic control rate, bounded commands
+      unsigned n = tone_edit++;
+      uint8_t t = uint8_t(n % 16);
+      bool dense = millis() - started < 12000;
+      send({app::Kind::FilterCutoff, t,
+            dense ? int(20 + n % 91) : int(n % 128)});
+      send({app::Kind::FilterResonance, t,
+            dense ? int(64 + n % 64) : int((n * 7) % 128)});
+      send({app::Kind::DelaySend, t, dense ? 127 : int((n * 13) % 128)});
+      if (!dense && n % 64 == 0)
+        interact(113, 0, true);
+      else if (!dense && ui.page == app::Page::Tone && !full) {
+        interact(107 + int(n % 3), 24 + int(n % 128) * 751 / 127, false);
+        if (n % 8 == 0)
+          interact(111, 0, true);
+      }
+    }
     static uint32_t lock_due = 0;
     static unsigned lock_edit = 0;
     if (millis() - started >= 12000 && millis() >= lock_due) {
@@ -769,14 +853,18 @@ void ui_task(void *) {
       // Continuous transport. Both real loop transitions and queue replacement
       // occur, with a long and a short pattern, under normal UI/command load.
       if (slot == 0) {
+        send({app::Kind::SelectPattern, 0, 0});
         send({app::Kind::Swing, 0, 60});
         interact(44, 0, true);
         interact(46, 0, true);
       } else if (slot == 8) {
+        send({app::Kind::SelectPattern, 0, 2});
+        send({app::Kind::SelectPattern, 0, 1});
         interact(44, 0, true);
         interact(48, 0, true);
         interact(47, 0, true);
       } else if (slot == 20) {
+        send({app::Kind::SelectPattern, 0, 0});
         send({app::Kind::Swing, 0, 75});
         interact(44, 0, true);
         interact(46, 0, true);
@@ -792,6 +880,9 @@ void ui_task(void *) {
         interact(67, 0, true);
         interact(49, 0, true);
       } else if (slot == 30) {
+        app::Command clear{app::Kind::ClearPattern, 0, 0};
+        clear.pattern = 4; // Guarantee coverage despite independent page scripts.
+        send(clear);
         interact(66, 0, true);
         interact(66, 0, true);
       } else if (slot == 31) {
@@ -852,7 +943,8 @@ void ui_task(void *) {
           ui.capture = -1;
         interact(ui.capture, touch_state.x, true);
       } else if (touch_state.pressed &&
-                 ((ui.capture >= 24 && ui.capture < 29) || ui.capture == 69 ||
+                 ((ui.capture >= 107 && ui.capture <= 109) ||
+                  (ui.capture >= 24 && ui.capture < 29) || ui.capture == 69 ||
                   ui.capture == 71 || ui.capture == 73 ||
                   (ui.page == app::Page::Tools && ui.tool_section == 1 &&
                    ((ui.capture >= 83 && ui.capture <= 88) ||
@@ -937,7 +1029,11 @@ void ui_task(void *) {
           draw(95);
           for (int i = 70; i <= 77; ++i)
             draw(i);
+        } else if (ui.page == app::Page::Tone) {
+          for (int i = 106; i <= 112; ++i)
+            draw(i);
         } else if (ui.page == app::Page::Track) {
+          draw(113);
           for (int i = 24; i < 29; ++i)
             draw(i);
           char title[40];
@@ -973,9 +1069,11 @@ void ui_task(void *) {
           snprintf(title, sizeof(title), "P4SDM T%02d", ui.selected + 1);
           display::text(16, 24, title, white, 2);
         }
-        for (int i = 0; i < 106; ++i)
+        for (int i = 0; i < 114; ++i)
           if (dirty[i] &&
-              ((i < 24 && ui.page == app::Page::Sequence) ||
+              (((i >= 106 && i <= 112 && ui.page == app::Page::Tone) ||
+                (i == 113 && ui.page == app::Page::Track)) ||
+               (i < 24 && ui.page == app::Page::Sequence) ||
                (i >= 24 && i < 29 && ui.page == app::Page::Track) ||
                (i >= 29 && i < 34) || (i == 36 && ui.page == app::Page::Fx) ||
                ((i == 37 || i == 42 || i == 43) &&
@@ -985,7 +1083,7 @@ void ui_task(void *) {
                 ui.page == app::Page::Sequence) ||
                ((i == 95 || (i >= 70 && i <= 77)) &&
                 ui.page == app::Page::Step) ||
-               (i >= 96 && ui.page == app::Page::Locks) ||
+               (i >= 96 && i <= 105 && ui.page == app::Page::Locks) ||
                (i >= 79 && i <= 94 && ui.page == app::Page::Tools)))
             draw(i);
       }
@@ -1073,6 +1171,9 @@ void ui_task(void *) {
                      actions[78], actions[86], actions[90], tool_cell_max,
                      tool_edit_full);
       summary_printf(
+          "[M11 UI] entries=%u edits=%u widgets_max=%u edit_full=%u\n",
+          actions[113], tone_ui_edits, tone_ui_widgets_max, tone_ui_full);
+      summary_printf(
           "[M10 UI] entries=%u edits=%u widgets_max=%u edit_full=%u\n",
           actions[95], lock_ui_edits, lock_ui_widgets_max, lock_ui_full);
 
@@ -1152,7 +1253,7 @@ void audio_worker(void *) {
     }
     app::Command c;
     static uint16_t applied_commands = 0;
-    bool transformed = false;
+    bool transformed = false, tone_edited = false;
     for (unsigned n = 0; n < 16 && commands.pop(c); ++n) {
       engine.apply(c);
       transformed |= c.kind >= app::Kind::Rotate && c.kind <= app::Kind::Mutate;
@@ -1170,6 +1271,18 @@ void audio_worker(void *) {
       else if (c.kind == app::Kind::Delay) {
         is_delay = delay_ready && engine.delay;
         delays = is_delay ? 0xffff : 0;
+      } else if (c.kind >= app::Kind::FilterCutoff &&
+                 c.kind <= app::Kind::DelaySend) {
+        tone_edited = true;
+        unsigned i = unsigned(c.kind) - unsigned(app::Kind::FilterCutoff);
+        const auto &track = engine.tracks[c.track];
+        const unsigned values[] = {track.filter_cutoff, track.filter_resonance,
+                                   track.delay_send};
+        ++tone_metrics.edits[i];
+        tone_metrics.minimum[i] = std::min(tone_metrics.minimum[i], values[i]);
+        tone_metrics.maximum[i] = std::max(tone_metrics.maximum[i], values[i]);
+        synthESP32_setTrackTone(c.track, engine.tracks[c.track].filter_cutoff,
+                                engine.tracks[c.track].filter_resonance);
       } else if (c.kind >= app::Kind::Volume && c.kind <= app::Kind::Wave)
         update_track(c.track);
     }
@@ -1179,6 +1292,22 @@ void audio_worker(void *) {
     auto us = uint32_t(esp_timer_get_time() - start);
     unsigned b = captured.load(std::memory_order_relaxed);
     if (b < capture_blocks) {
+      if (tone_edited) {
+        ++tone_metrics.blocks;
+        tone_metrics.worst = std::max(tone_metrics.worst, us);
+      }
+      bool tone_dense = b < worst_blocks && engine.bpm == 240 && engine.delay;
+      for (int t = 0; t < 16 && tone_dense; ++t) {
+        const auto &v = engine.tracks[t];
+        tone_dense &= v.filter_cutoff >= 20 && v.filter_cutoff <= 110 &&
+                      v.filter_resonance >= 64 && v.delay_send == 127;
+      }
+      if (tone_dense) {
+        ++tone_metrics.dense;
+        tone_metrics.dense_worst = std::max(tone_metrics.dense_worst, us);
+      }
+      if (b + 1 == capture_blocks)
+        tone_result = tone_metrics;
       if (transformed) {
         transform_max.store(std::max(transform_max.load(), us));
         transform_blocks.fetch_add(1);
@@ -1313,6 +1442,11 @@ static void initialize(void *) {
 #if P4SDM_APP_STRESS
     engine.tracks[t].length = view.tracks[t].length = 127;
 #endif
+#if P4SDM_APP_STRESS
+    engine.tracks[t].filter_cutoff = view.tracks[t].filter_cutoff =
+        uint8_t(30 + t * 4);
+    engine.tracks[t].filter_resonance = view.tracks[t].filter_resonance = 96;
+#endif
     update_track(t);
   }
   synthESP32_setMVol(60);
@@ -1444,6 +1578,15 @@ void loop() {
         lock_result[0], lock_result[1], lock_result[2], lock_result[3],
         lock_result[4], lock_result[5], unsigned(sizeof(app::Pattern)),
         unsigned(sizeof(engine.patterns)), unsigned(sizeof(engine)));
+    summary_printf(
+        "[M11 tone] cutoff=%u resonance=%u send=%u cutoff_min=%u cutoff_max=%u "
+        "resonance_min=%u resonance_max=%u send_min=%u send_max=%u blocks=%u "
+        "max=%u dense=%u dense_max=%u\n",
+        tone_result.edits[0], tone_result.edits[1], tone_result.edits[2],
+        tone_result.minimum[0], tone_result.maximum[0], tone_result.minimum[1],
+        tone_result.maximum[1], tone_result.minimum[2], tone_result.maximum[2],
+        tone_result.blocks, tone_result.worst, tone_result.dense,
+        tone_result.dense_worst);
     summary_printf("[M10 worst] blocks=%u max=%u\n", locked_dense_blocks,
                    locked_dense_max);
     summary_printf(
