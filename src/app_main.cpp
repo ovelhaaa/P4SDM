@@ -1922,7 +1922,8 @@ void ui_task(void *) {
     touch_errors = input_errors.load(std::memory_order_relaxed);
     uint32_t cs = chain_status.load(std::memory_order_acquire);
     uint32_t status = pattern_status.load(std::memory_order_acquire);
-    if (uint16_t(status >> 16) == sent_commands) {
+    if (uint16_t(status >> 16) == sent_commands &&
+        uint16_t(cs >> 16) == sent_commands) {
       if (view.chain_entry != (cs & 63) ||
           view.chain_repeat != ((cs >> 6) & 31) ||
           view.playing != bool(cs & (1u << 12)) ||
@@ -2592,7 +2593,8 @@ void audio_worker(void *) {
     playhead.store(engine.playing ? engine.step : -1,
                    std::memory_order_relaxed);
     chain_status.store(
-        unsigned(engine.chain_entry) | (unsigned(engine.chain_repeat) << 6) |
+        (uint32_t(applied_commands) << 16) | unsigned(engine.chain_entry) |
+            (unsigned(engine.chain_repeat) << 6) |
             (unsigned(engine.mode) << 11) | (unsigned(engine.playing) << 12),
         std::memory_order_release);
     pattern_status.store((uint32_t(applied_commands) << 16) |
