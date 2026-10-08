@@ -119,3 +119,8 @@ jobs:
       - run: pio run -e guition_ui20_stress -e guition_ui20_synth_stress
       - run: python tests/analyze_m20.py docs/GUITION_M20_SAMPLE_STRESS_SERIAL.log
       - run: python tests/analyze_m20.py docs/GUITION_M20_SYNTH_STRESS_SERIAL.log --synth
+
+      - run: python tests/interpolation_checks.py
+      - run: pip install numpy==2.3.5
+      - run: python tests/interpolation_quality.py
+      - run: pio run -e guition_interp_nearest_stress -e guition_interp_linear_stress -e guition_interp_hermite_stress

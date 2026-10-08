@@ -30,6 +30,13 @@ static int16_t app_velocity(int track, int16_t value);
 #include "../DRUM_2026_VSAMPLER_TAB5_2002.ino"
 #include "../synthESP32.ino"
 // clang-format on
+#if P4SDM_INTERPOLATION_QUALIFICATION
+#include "app/interpolation_qualification.h"
+namespace {
+unsigned interpolation_fractional_blocks = 0, interpolation_full_fractional_blocks = 0;
+uint32_t interpolation_fractional_worst = 0, interpolation_full_fractional_worst = 0;
+}
+#endif
 namespace {
 // Native USB/JTAG can lose 64-byte fragments during burst summaries on this
 // device. Pace only the final report, never command handling or audio
@@ -2759,6 +2766,12 @@ void ui_task(void *) {
                      unsigned(ps_before), unsigned(ps_after),
                      unsigned(in_before), unsigned(in_after),
                      unsigned(largest_before), unsigned(largest_after));
+#if P4SDM_INTERPOLATION_QUALIFICATION || P4SDM_UI20_STRESS
+      // Drain the native USB final packet after the heap row. This report is
+      // outside audio rendering and emitted only once qualification has ended.
+      summary_printf("[M21 capture] complete=1 mode=%u\n",
+                     unsigned(sampler::default_interpolation));
+#endif
     }
     delay(8);
   }
@@ -3057,8 +3070,28 @@ void audio_worker(void *) {
     const bool repeat_active_before = engine.performance.repeat.active != 0;
     const bool x8_before = engine.performance.repeat.active == 8;
     const bool analysis_before = transients::active.load(std::memory_order_acquire);
+#if P4SDM_INTERPOLATION_QUALIFICATION
+    unsigned interp_active = 0, interp_fractional = 0;
+    for (unsigned t = 0; t < 16; ++t) {
+      const auto &v = samples::voices[t];
+      if (voice_routing.pcm(t) && v.active) {
+        ++interp_active;
+        interp_fractional += (v.increment & 65535) != 0;
+      }
+    }
+#endif
     render_buffer();
     auto us = uint32_t(esp_timer_get_time() - start);
+#if P4SDM_INTERPOLATION_QUALIFICATION
+    if (captured.load() < capture_blocks && interp_fractional) {
+      ++interpolation_fractional_blocks;
+      interpolation_fractional_worst = std::max(interpolation_fractional_worst,us);
+      if (interp_active == 16) {
+        ++interpolation_full_fractional_blocks;
+        interpolation_full_fractional_worst = std::max(interpolation_full_fractional_worst,us);
+      }
+    }
+#endif
     if ((analysis_before || transients::active.load(std::memory_order_acquire)) && captured.load() < capture_blocks) {
       ++analysis_blocks; analysis_worst = std::max(analysis_worst, us);
       analysis_misses += us >= 5805;
@@ -3469,6 +3502,11 @@ static void initialize(void *) {
 #if P4SDM_SAMPLE_PLAYBACK_STRESS
   setup_playback_fixture();
 #endif
+#if P4SDM_INTERPOLATION_QUALIFICATION
+  qualify_interpolation(fixture_samples);
+  Serial.printf("[M21 configuration] mode=%u voice_bytes=%u table_bytes=0 scratch_bytes=0\n",
+                unsigned(sampler::default_interpolation), unsigned(sizeof(sampler::Voice)));
+#endif
 #if P4SDM_TRANSIENT_STRESS
   transients::qualification_setup();
 #endif
@@ -3518,6 +3556,12 @@ void loop() {
   static bool reported = false;
   if (!reported && captured.load(std::memory_order_acquire) == capture_blocks) {
     reported = true;
+#if P4SDM_INTERPOLATION_QUALIFICATION
+    summary_printf("[M21 fractional] mode=%u blocks=%u max=%u full_blocks=%u full_max=%u\n",
+                   unsigned(sampler::default_interpolation), interpolation_fractional_blocks,
+                   unsigned(interpolation_fractional_worst), interpolation_full_fractional_blocks,
+                   unsigned(interpolation_full_fractional_worst));
+#endif
     static uint32_t sorted[capture_blocks];
     std::copy(render_times, render_times + capture_blocks, sorted);
     std::sort(sorted, sorted + capture_blocks);

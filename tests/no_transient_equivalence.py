@@ -20,7 +20,15 @@ for signature in ('static bool app_pcm(int t, int16_t &v)', 'static void app_sam
 assert subprocess.check_output(['git', 'show', baseline + ':synthESP32.ino']).decode().replace('\r\n', '\n') == Path('synthESP32.ino').read_text(encoding='utf-8')
 for dependency in ('sample_playback.h', 'slices.h', 'wav.h', 'voice_state.h'):
     accepted = subprocess.check_output(['git', 'show', baseline + ':src/app/' + dependency]).decode()
-    assert accepted == (Path('src/app') / dependency).read_text(encoding='utf-8'), dependency
+    current = (Path('src/app') / dependency).read_text(encoding='utf-8')
+    if dependency == 'wav.h':
+        # M21 changes exactly the reconstruction lookup. Restore only these
+        # three known substitutions, then retain the historical full-source
+        # assertion. interpolation_checks.py compares actual old/new samples.
+        current = current.replace('#include "sample_interpolation.h"\n', '')
+        current = current.replace('inline __attribute__((always_inline)) int16_t next(Interpolation interpolation = default_interpolation)', 'int16_t next()')
+        current = current.replace('lookup_valid(sample->data, region, playback.reverse, position,\n                            interpolation)', 'sample->data[frame_index()]')
+    assert accepted == current, dependency
 with tempfile.TemporaryDirectory() as folder:
     root = Path(folder)
     for name in ('model.h', 'project.h'):
