@@ -274,10 +274,31 @@ void text(int x,int y,const char *value,uint16_t color,int scale) {
         0x5b6f,0x5b6a,0x5bfd,0x5aad,0x5a92,0x72a7
     };
     for(;*value;++value,x+=4*scale) {
-        const int index=*value>='0'&&*value<='9'?*value-'0':*value>='A'&&*value<='Z'?10+*value-'A':-1;
-        if(index<0) continue;
+        const char c=*value>='a'&&*value<='z'?char(*value-'a'+'A'):*value;
+        const int index=c>='0'&&c<='9'?c-'0':c>='A'&&c<='Z'?10+c-'A':-1;
+        uint16_t glyph=index>=0 ? glyphs[index] : 0;
+        // UI punctuation uses the same fixed 3x5 metrics as letters. Previously
+        // BPM +/- and parameter signs consumed width but rendered as blanks.
+        if(index<0) switch(c) {
+        case '-': glyph=0x01c0; break;
+        case '+': glyph=0x05d0; break;
+        case '*': glyph=0x2bea; break;
+        case '.': glyph=0x0002; break;
+        case '/': glyph=0x12a4; break;
+        case '<': glyph=0x1544; break;
+        case '>': glyph=0x4454; break;
+        case '?': glyph=0x7282; break;
+        case '!': glyph=0x2482; break;
+        case '%': glyph=0x52a5; break;
+        case ':': glyph=0x0410; break;
+        case '=': glyph=0x0e38; break;
+        case '_': glyph=0x0007; break;
+        case '[': glyph=0x6926; break;
+        case ']': glyph=0x324b; break;
+        default: break;
+        }
         for(int row=0;row<5;++row) for(int col=0;col<3;++col)
-            if(glyphs[index]&(1u<<(14-row*3-col))) rect(x+col*scale,y+row*scale,scale,scale,color);
+            if(glyph&(1u<<(14-row*3-col))) rect(x+col*scale,y+row*scale,scale,scale,color);
     }
 }
 }

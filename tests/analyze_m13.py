@@ -3,6 +3,7 @@ import argparse
 import re
 import subprocess
 import sys
+import os
 from pathlib import Path
 p = argparse.ArgumentParser()
 p.add_argument('log')
@@ -23,7 +24,14 @@ subprocess.run([sys.executable, 'tests/analyze_m12.py', a.log,
     + (['--normal'] if a.normal else []) + (['--sample'] if not a.normal and not a.synth else []), check=True)
 m = row('[M13 playback]')
 assert m['voice_bytes'] == 64 and m['track_bytes'] == a.track_bytes and m['event_bytes'] == 20
-assert 'NO CARD' in data
+if os.environ.get('P4SDM_PHYSICAL_SD') == '1':
+    # Explicit physical-card mode used by M20. Keep the historical no-card
+    # contract by default, and retain every audio/coverage/heap assertion.
+    sd = row('[M6 SD]')
+    assert sd['mounted'] == 1 and sd['width'] == 4 and sd['clock_khz'] == 20000
+    assert row('[M6 index]')['files'] > 0 and 'status=SD READY' in data
+else:
+    assert 'NO CARD' in data
 assert 'Guru Meditation' not in data and 'task_wdt' not in data
 assert row('[M5]')['blocks'] * 256 / 44100 >= 60
 limit = 256 / 44100 * 1e6 * .8
