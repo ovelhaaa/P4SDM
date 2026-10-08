@@ -14,12 +14,13 @@ with tempfile.TemporaryDirectory() as folder:
     binary = root/'cache.exe'
     for mode in range(3):
         command = ['g++', '-std=c++17', '-O2', '-Wall', '-Wextra', '-Werror',
-                   f'-DP4SDM_INTERPOLATION={mode}', '-I'+folder,
+                   f'-DP4SDM_INTERPOLATION={mode}', '-DP4SDM_LINEAR_32BIT=1', '-I'+folder,
                    'tests/pcm_cache_test.cpp', '-o', str(binary)]
         subprocess.run(command, check=True)
         subprocess.run([str(binary)], check=True)
     if sys.platform != 'win32':
         subprocess.run(['g++', '-std=c++17', '-O1', '-g', '-Wall', '-Wextra', '-Werror',
-                        '-fsanitize=address,undefined', '-fno-omit-frame-pointer', '-I'+folder,
+                        '-fsanitize=address,undefined', '-fno-omit-frame-pointer',
+                        '-DP4SDM_LINEAR_32BIT=1', '-I'+folder,
                         'tests/pcm_cache_test.cpp', '-o', str(binary)], check=True)
         subprocess.run([str(binary)], check=True)

@@ -33,6 +33,10 @@ static int16_t app_velocity(int track, int16_t value);
 #include "hal/display_hal.h"
 #include "hal/guition_board.h"
 #include "hal/touch_hal.h"
+#if P4SDM_BLOCK_PROFILE
+#include "app/block_profile.h"
+namespace { block_profile::Profile block_metrics; }
+#endif
 #include "../DRUM_2026_VSAMPLER_TAB5_2002.ino"
 #include "../synthESP32.ino"
 // clang-format on
@@ -3122,6 +3126,9 @@ void audio_worker(void *) {
 #if P4SDM_PCM_READ_CACHE
     for (auto &cache : pcm_read_cache) cache.invalidate();
 #endif
+#if P4SDM_BLOCK_PROFILE
+    const auto profile_render_start = esp_timer_get_time();
+#endif
     render_buffer();
     const auto render_finished = esp_timer_get_time();
     auto us = uint32_t(render_finished - start);
@@ -3326,7 +3333,22 @@ void audio_worker(void *) {
     long_to_short.store(engine.long_to_short);
     short_to_long.store(engine.short_to_long);
     queue_replacements.store(engine.queue_replacements);
+#if P4SDM_BLOCK_PROFILE
+    const auto profile_write_start = esp_timer_get_time();
+#endif
     auto err = audio::write(out_buf, DMA_BUF_LEN);
+#if P4SDM_BLOCK_PROFILE
+    const auto profile_finished = esp_timer_get_time();
+    if (b < capture_blocks) {
+      block_metrics.stages[0].add(uint32_t(profile_render_start-start));
+      block_metrics.stages[1].add(uint32_t(render_finished-profile_render_start));
+      block_metrics.stages[2].add(uint32_t(profile_write_start-render_finished));
+      block_metrics.stages[3].add(uint32_t(profile_finished-profile_write_start));
+      block_metrics.stages[4].add(uint32_t(profile_finished-start));
+      if (b+1 == capture_blocks)
+        block_metrics.stack_high_water = uxTaskGetStackHighWaterMark(nullptr);
+    }
+#endif
 #if P4SDM_SAMPLER_QUALIFICATION
     if (metric && qualification[metric].count < 4096) {
       auto &m = qualification[metric];
@@ -3588,6 +3610,20 @@ void setup() {
   xTaskCreatePinnedToCore(initialize, "app_init", 8000, nullptr, 1, nullptr, 0);
 }
 void loop() {
+#if P4SDM_BLOCK_PROFILE
+  static bool profile_reported = false;
+  if (!profile_reported && captured.load(std::memory_order_acquire) == capture_blocks) {
+    profile_reported = true;
+    for (unsigned stage=0; stage<5; ++stage) {
+      const auto &m = block_metrics.stages[stage];
+      summary_printf("[M211 block profile] stage=%u blocks=%u mean=%u p50_upper=%u p95_upper=%u p99_upper=%u max=%u\n",
+                     stage, m.count, unsigned(m.total/m.count), m.percentile(50),
+                     m.percentile(95), m.percentile(99), m.maximum);
+    }
+    summary_printf("[M211 profile memory] static_bytes=%u audio_stack_high_water=%u\n",
+                   unsigned(sizeof(block_metrics)), block_metrics.stack_high_water);
+  }
+#endif
 #if P4SDM_SAMPLER_QUALIFICATION
   static unsigned reported_modes = 0;
   unsigned finished = qualification_finished.load(std::memory_order_acquire);

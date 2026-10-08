@@ -39,6 +39,19 @@ inline int16_t quantize_q16(int64_t value) {
 inline int16_t linear_fixed(int16_t x0, int16_t x1, uint16_t fraction) {
   return quantize_q16(int64_t(x0)*65536 + int64_t(int32_t(x1)-x0)*fraction);
 }
+// Convex weighted numerator: each signed product and their sum fit int32.
+// Bounds are [-32768*65536,32767*65536]. Round using the signed remainder
+// rather than adding +/-32768 to a possibly full-scale int32 numerator.
+// This candidate preserves the old Q16/int64 kernel as an independent reference.
+inline int16_t linear_fixed32(int16_t x0, int16_t x1, uint16_t fraction) {
+  const int32_t value = int32_t(x0)*(65536-int32_t(fraction)) +
+                        int32_t(x1)*int32_t(fraction);
+  int32_t rounded = value/65536;
+  const int32_t remainder = value%65536;
+  if (remainder >= 32768) ++rounded;
+  else if (remainder <= -32768) --rounded;
+  return int16_t(rounded); // convex interpolation cannot exceed PCM16 rails
+}
 inline int16_t hermite_fixed(int16_t xm1, int16_t x0, int16_t x1,
                              int16_t x2, uint16_t fraction) {
   const int32_t a = -int32_t(xm1) + 3*int32_t(x0) - 3*int32_t(x1) + x2;
@@ -72,7 +85,13 @@ inline __attribute__((always_inline)) int16_t lookup_valid(const int16_t *pcm, R
   const uint16_t fraction = uint16_t(position);
   if (mode == Interpolation::Nearest || !fraction) return x0;
   const int16_t x1 = interpolation_tap(pcm,region,reverse,k < length-1 ? k+1 : k,cache);
-  if (mode == Interpolation::Linear) return linear_fixed(x0, x1, fraction);
+  if (mode == Interpolation::Linear) {
+#if P4SDM_LINEAR_32BIT
+    return linear_fixed32(x0, x1, fraction);
+#else
+    return linear_fixed(x0, x1, fraction);
+#endif
+  }
   const int16_t xm1 = interpolation_tap(pcm,region,reverse,k ? k-1 : 0,cache);
   const int16_t x2 = interpolation_tap(pcm,region,reverse,length-1-k >= 2 ? k+2 : length-1,cache);
   return quantize(hermite_float(xm1, x0, x1, x2, fraction));

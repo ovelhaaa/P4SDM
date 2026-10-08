@@ -16,6 +16,10 @@ void operator delete(void *p, std::size_t) noexcept { std::free(p); }
 int main() {
   using namespace sampler;
   static_assert(sizeof(Voice) == sizeof(accepted::Voice));
+  for (int16_t a : {int16_t(-32768), int16_t(-32767), int16_t(-1), int16_t(0), int16_t(1), int16_t(32767)})
+    for (int16_t b : {int16_t(-32768), int16_t(-32767), int16_t(-1), int16_t(0), int16_t(1), int16_t(32767)})
+      for (unsigned phase=0; phase<65536; ++phase)
+        assert(linear_fixed32(a,b,uint16_t(phase)) == accepted::linear_fixed(a,b,uint16_t(phase)));
   for (unsigned length : {1u, 2u, 3u, 4u, 31u, 32u, 33u, 65u}) {
     std::vector<int16_t> pcm(length);
     for (unsigned i=0; i<length; ++i) pcm[i]=int16_t((i*7919)%65536-32768);
