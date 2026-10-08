@@ -574,7 +574,7 @@ void draw_content(int id) {
     return;
   }
   auto r = app::page_widget(ui.page, id);
-  char s[48]{};
+  char s[80]{};
   uint16_t color = panel;
   if (id == 132) {
     draw_waveform();
