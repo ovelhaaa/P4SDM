@@ -1,0 +1,244 @@
+{
+  "status": "PARTIAL",
+  "milestone_accepted": false,
+  "production_mode": 0,
+  "production_cache": false,
+  "production_linear32": false,
+  "deadline_us": 5804.989,
+  "required_max_us": 4643.991,
+  "candidates": {
+    "nearest_cache_B": {
+      "log": "docs/GUITION_M211_CACHE_NEAREST_FRACTIONAL_SERIAL.log",
+      "sha256": "41a0de6b6be826c72be5b894d0c3f4280a4a06bbd7f33a4ea6a00630181cdd98",
+      "mode": 0,
+      "blocks": 13782,
+      "active_max": 16,
+      "p50_us": 3615,
+      "p95_us": 3986,
+      "p99_us": 4090,
+      "max_us": 4283,
+      "headroom_percent": 26.218637106805886,
+      "reserve_pass": true,
+      "misses": 0,
+      "failures": 0,
+      "timeouts": 0,
+      "watchdogs": 0,
+      "panics": 0,
+      "chain_loops": 0,
+      "fractional_blocks": 12911,
+      "all_fractional_blocks": 6339,
+      "repeat_full_blocks": 1066,
+      "memory": {
+        "ps_before": 24265252,
+        "ps_after": 24265252,
+        "internal_before": 216476,
+        "internal_after": 216476,
+        "largest_before": 24117236,
+        "largest_after": 24117236
+      },
+      "timing_and_chain_pass": false,
+      "isolated_maxima_us": {
+        "prep_max": 251,
+        "equivalent_max": 4174,
+        "render_max": 4057
+      }
+    },
+    "linear_cache_B": {
+      "log": "docs/GUITION_M211_CACHE_LINEAR_FRACTIONAL_SERIAL.log",
+      "sha256": "ac4a56a1706f3abb176afcafaeef920427d9009f8d76b4b9d545cc6dd4e81523",
+      "mode": 1,
+      "blocks": 13782,
+      "active_max": 16,
+      "p50_us": 4441,
+      "p95_us": 4784,
+      "p99_us": 4858,
+      "max_us": 5058,
+      "headroom_percent": 12.868051946351656,
+      "reserve_pass": false,
+      "misses": 0,
+      "failures": 0,
+      "timeouts": 0,
+      "watchdogs": 0,
+      "panics": 0,
+      "chain_loops": 0,
+      "fractional_blocks": 12959,
+      "all_fractional_blocks": 6429,
+      "repeat_full_blocks": 1066,
+      "memory": {
+        "ps_before": 24265252,
+        "ps_after": 24265252,
+        "internal_before": 216476,
+        "internal_after": 216476,
+        "largest_before": 24117236,
+        "largest_after": 24117236
+      },
+      "timing_and_chain_pass": false,
+      "isolated_maxima_us": {
+        "prep_max": 250,
+        "equivalent_max": 4974,
+        "render_max": 4849
+      }
+    },
+    "nearest_cache_profile_B": {
+      "log": "docs/GUITION_M211_CACHE_NEAREST_PROFILE_SERIAL.log",
+      "sha256": "edba20ec40dc95f5a32579a9a31b45f222cc6d2dc1c7dd040478015f2ba00753",
+      "mode": 0,
+      "blocks": 13782,
+      "active_max": 16,
+      "p50_us": 3589,
+      "p95_us": 3978,
+      "p99_us": 4086,
+      "max_us": 4417,
+      "headroom_percent": 23.910277866159603,
+      "reserve_pass": true,
+      "misses": 0,
+      "failures": 0,
+      "timeouts": 0,
+      "watchdogs": 0,
+      "panics": 0,
+      "chain_loops": 0,
+      "fractional_blocks": 12608,
+      "all_fractional_blocks": 6422,
+      "repeat_full_blocks": 1066,
+      "memory": {
+        "ps_before": 24265252,
+        "ps_after": 24265252,
+        "internal_before": 214348,
+        "internal_after": 214348,
+        "largest_before": 24117236,
+        "largest_after": 24117236
+      },
+      "timing_and_chain_pass": false,
+      "isolated_maxima_us": {
+        "prep_max": 259,
+        "equivalent_max": 4292,
+        "render_max": 4005
+      },
+      "block_profile": [
+        {
+          "stage": 0,
+          "blocks": 13782,
+          "mean": 161,
+          "p50_upper": 199,
+          "p95_upper": 299,
+          "p99_upper": 399,
+          "max": 505
+        },
+        {
+          "stage": 1,
+          "blocks": 13782,
+          "mean": 3113,
+          "p50_upper": 3499,
+          "p95_upper": 3799,
+          "p99_upper": 3899,
+          "max": 4000
+        },
+        {
+          "stage": 2,
+          "blocks": 13782,
+          "mean": 70,
+          "p50_upper": 99,
+          "p95_upper": 199,
+          "p99_upper": 199,
+          "max": 141
+        },
+        {
+          "stage": 3,
+          "blocks": 13782,
+          "mean": 2446,
+          "p50_upper": 2199,
+          "p95_upper": 3699,
+          "p99_upper": 3999,
+          "max": 4069
+        },
+        {
+          "stage": 4,
+          "blocks": 13782,
+          "mean": 5791,
+          "p50_upper": 5799,
+          "p95_upper": 5899,
+          "p99_upper": 5899,
+          "max": 5885
+        }
+      ],
+      "profile_memory": {
+        "static_bytes": 2128,
+        "audio_stack_high_water": 3240
+      }
+    },
+    "linear32_cache_B": {
+      "log": "docs/GUITION_M211_CACHE_LINEAR32_FRACTIONAL_SERIAL.log",
+      "sha256": "ea4efbbfe3fedf6811c8920a695a5567781cd2b5ce1b5e8bb5cfb3c1e51ad336",
+      "mode": 1,
+      "blocks": 13782,
+      "active_max": 16,
+      "p50_us": 4226,
+      "p95_us": 4583,
+      "p99_us": 4674,
+      "max_us": 4927,
+      "headroom_percent": 15.12473150250585,
+      "reserve_pass": false,
+      "misses": 0,
+      "failures": 0,
+      "timeouts": 0,
+      "watchdogs": 0,
+      "panics": 0,
+      "chain_loops": 1,
+      "fractional_blocks": 12736,
+      "all_fractional_blocks": 6430,
+      "repeat_full_blocks": 1066,
+      "memory": {
+        "ps_before": 24265252,
+        "ps_after": 24265252,
+        "internal_before": 216476,
+        "internal_after": 216476,
+        "largest_before": 24117236,
+        "largest_after": 24117236
+      },
+      "timing_and_chain_pass": false,
+      "isolated_maxima_us": {
+        "prep_max": 234,
+        "equivalent_max": 4834,
+        "render_max": 4657
+      }
+    },
+    "nearest_cache_A": {
+      "log": "docs/GUITION_M211_CACHE_NEAREST_MIXED_SERIAL.log",
+      "sha256": "a1ed1f77cb69ce513eebaa32b8e7635f5e552ee93bfe98ce5582caf70265e901",
+      "mode": 0,
+      "blocks": 13782,
+      "active_max": 16,
+      "p50_us": 3422,
+      "p95_us": 3837,
+      "p99_us": 3943,
+      "max_us": 4279,
+      "headroom_percent": 26.28754335279533,
+      "reserve_pass": true,
+      "misses": 0,
+      "failures": 0,
+      "timeouts": 0,
+      "watchdogs": 0,
+      "panics": 0,
+      "chain_loops": 0,
+      "fractional_blocks": 6851,
+      "all_fractional_blocks": 3536,
+      "repeat_full_blocks": 1066,
+      "memory": {
+        "ps_before": 24265252,
+        "ps_after": 24265252,
+        "internal_before": 216492,
+        "internal_after": 216492,
+        "largest_before": 24117236,
+        "largest_after": 24117236
+      },
+      "timing_and_chain_pass": false
+    }
+  },
+  "unresolved": [
+    "historical Store fault matching ELF/root cause",
+    "complete equivalent Chain/event coverage",
+    "scenario C complete application qualification",
+    "extended duration/reset and DMA backlog measurements",
+    "fresh physical SD and SAMPLE/SYNTH candidate regressions"
+  ]
+}

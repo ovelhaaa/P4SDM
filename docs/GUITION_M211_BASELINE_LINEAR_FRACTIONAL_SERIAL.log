@@ -1,0 +1,800 @@
+# Production firmware guition_interp_linear_fractional_stress; fresh esptool flash/hardware reset; UTC 2026-10-08T23:28:37.344658+00:00
+esptool v5.1.0
+Serial port COM13:
+Connecting...
+Connected to ESP32-P4 on COM13:
+Chip type:          ESP32-P4 (revision v1.3)
+Features:           Dual Core + LP Core, 400MHz
+Crystal frequency:  40MHz
+USB mode:           USB-Serial/JTAG
+MAC:                80:f1:b2:d3:cc:86
+
+Uploading stub flasher...
+Running stub flasher...
+Stub flasher running.
+Changing baud rate to 460800...
+Changed.
+
+Configuring flash size...
+Flash will be erased from 0x00002000 to 0x00007fff...
+Flash will be erased from 0x00008000 to 0x00008fff...
+Flash will be erased from 0x0000e000 to 0x0000ffff...
+Flash will be erased from 0x00010000 to 0x000cdfff...
+SHA digest in image updated.
+Compressed 21616 bytes to 13700...
+Writing at 0x00002000 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0.0% 0/13700 bytes... 
+Writing at 0x00007470 [██████████████████████████████] 100.0% 13700/13700 bytes... 
+Wrote 21616 bytes (13700 compressed) at 0x00002000 in 0.3 seconds (626.5 kbit/s).
+Hash of data verified.
+Compressed 3072 bytes to 146...
+Writing at 0x00008000 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0.0% 0/146 bytes... 
+Writing at 0x00008c00 [██████████████████████████████] 100.0% 146/146 bytes... 
+Wrote 3072 bytes (146 compressed) at 0x00008000 in 0.1 seconds (360.2 kbit/s).
+Hash of data verified.
+Compressed 8192 bytes to 47...
+Writing at 0x0000e000 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0.0% 0/47 bytes... 
+Writing at 0x00010000 [██████████████████████████████] 100.0% 47/47 bytes... 
+Wrote 8192 bytes (47 compressed) at 0x0000e000 in 0.1 seconds (659.7 kbit/s).
+Hash of data verified.
+Compressed 774704 bytes to 435195...
+Writing at 0x00010000 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0.0% 0/435195 bytes... 
+Writing at 0x0001b998 [█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   3.8% 16384/435195 bytes... 
+Writing at 0x00027695 [██░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   7.5% 32768/435195 bytes... 
+Writing at 0x0002be0c [███░░░░░░░░░░░░░░░░░░░░░░░░░░░]  11.3% 49152/435195 bytes... 
+Writing at 0x00031d9a [████░░░░░░░░░░░░░░░░░░░░░░░░░░]  15.1% 65536/435195 bytes... 
+Writing at 0x00036b83 [█████░░░░░░░░░░░░░░░░░░░░░░░░░]  18.8% 81920/435195 bytes... 
+Writing at 0x000409c6 [██████░░░░░░░░░░░░░░░░░░░░░░░░]  22.6% 98304/435195 bytes... 
+Writing at 0x0004a28c [███████░░░░░░░░░░░░░░░░░░░░░░░]  26.4% 114688/435195 bytes... 
+Writing at 0x00050056 [█████████░░░░░░░░░░░░░░░░░░░░░]  30.1% 131072/435195 bytes... 
+Writing at 0x0005654a [██████████░░░░░░░░░░░░░░░░░░░░]  33.9% 147456/435195 bytes... 
+Writing at 0x0005bfc8 [███████████░░░░░░░░░░░░░░░░░░░]  37.6% 163840/435195 bytes... 
+Writing at 0x00061d26 [████████████░░░░░░░░░░░░░░░░░░]  41.4% 180224/435195 bytes... 
+Writing at 0x0006737d [█████████████░░░░░░░░░░░░░░░░░]  45.2% 196608/435195 bytes... 
+Writing at 0x0006cecc [██████████████░░░░░░░░░░░░░░░░]  48.9% 212992/435195 bytes... 
+Writing at 0x000741d4 [███████████████░░░░░░░░░░░░░░░]  52.7% 229376/435195 bytes... 
+Writing at 0x0007a355 [████████████████░░░░░░░░░░░░░░]  56.5% 245760/435195 bytes... 
+Writing at 0x00080dc8 [██████████████████░░░░░░░░░░░░]  60.2% 262144/435195 bytes... 
+Writing at 0x00087542 [███████████████████░░░░░░░░░░░]  64.0% 278528/435195 bytes... 
+Writing at 0x0008d942 [████████████████████░░░░░░░░░░]  67.8% 294912/435195 bytes... 
+Writing at 0x00093342 [█████████████████████░░░░░░░░░]  71.5% 311296/435195 bytes... 
+Writing at 0x000997e3 [██████████████████████░░░░░░░░]  75.3% 327680/435195 bytes... 
+Writing at 0x0009f96a [███████████████████████░░░░░░░]  79.1% 344064/435195 bytes... 
+Writing at 0x000a59d1 [████████████████████████░░░░░░]  82.8% 360448/435195 bytes... 
+Writing at 0x000ad7c4 [█████████████████████████░░░░░]  86.6% 376832/435195 bytes... 
+Writing at 0x000b40b4 [███████████████████████████░░░]  90.4% 393216/435195 bytes... 
+Writing at 0x000ba521 [████████████████████████████░░]  94.1% 409600/435195 bytes... 
+Writing at 0x000c0925 [█████████████████████████████░]  97.9% 425984/435195 bytes... 
+Writing at 0x000cd230 [██████████████████████████████] 100.0% 435195/435195 bytes... 
+Wrote 774704 bytes (435195 compressed) at 0x00010000 in 4.3 seconds (1456.2 kbit/s).
+Hash of data verified.
+
+Hard resetting via RTS pin...
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M13 fixture] voices=16 frames=65536 bytes=2097152 psram=1
+[M21 voices] mode=0 scenario=0 blocks=128 max=3132 mean=3050 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=1 blocks=128 max=3126 mean=3057 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=2 blocks=128 max=1186 mean=1102 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=3 blocks=128 max=3104 mean=3028 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=4 blocks=128 max=1437 mean=1414 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=5 blocks=128 max=624 mean=584 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=0 blocks=128 max=3155 mean=3071 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=1 blocks=128 max=3901 mean=3817 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=2 blocks=128 max=1690 mean=1668 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=3 blocks=128 max=3827 mean=3753 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=4 blocks=128 max=1953 mean=1922 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=5 blocks=128 max=890 mean=859 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=0 blocks=128 max=3134 mean=3073 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=1 blocks=128 max=4682 mean=4592 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=2 blocks=128 max=2157 mean=2138 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=3 blocks=128 max=4686 mean=4605 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=4 blocks=128 max=2452 mean=2425 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=5 blocks=128 max=1141 mean=1098 voices=16 frames=256 checksum=0
+[M21 arithmetic] candidate=0 iterations=65536 us=10615 checksum=3394
+[M21 arithmetic] candidate=1 iterations=65536 us=10907 checksum=0
+[M21 arithmetic] candidate=2 iterations=65536 us=23182 checksum=13305
+[M21 arithmetic] candidate=3 iterations=65536 us=19148 checksum=0
+[M21 configuration] mode=1 voice_bytes=64 table_bytes=0 scratch_bytes=0 forced_fractional=1 full_regions=1 forward_only=1
+E (15469) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (15469) task_wdt:  - IDLE0 (CPU 0)
+E (15469) task_wdt: Tasks currently running:
+E (15469) task_wdt: CPU 0: app_audio
+E (15469) task_wdt: CPU 1: IDLE1
+E (15469) task_wdt: Aborting.
+E (15469) task_wdt: Print CPU 0 (current core) registers
+
+
+Core  0 register dump:
+MEPC    : 0x4001397a  RA      : 0x4001385e  SP      : 0x4ff2de50  GP      : 0x4ff12980  
+TP      : 0x4ff2ef50  T0      : 0x0000d520  T1      : 0x00000000  T2      : 0x0000007f  
+S0/FP   : 0xffffff6d  S1      : 0x00000010  A0      : 0xfffffd69  A1      : 0x000000ff  
+A2      : 0x000000ff  A3      : 0x000000ff  A4      : 0xfffffd68  A5      : 0x00000001  
+A6      : 0x0000ffff  A7      : 0x00000000  S2      : 0x4ff5cbd0  S3      : 0x4ff1a000  
+S4      : 0x4ff19350  S5      : 0x4ff5cad0  S6      : 0x4ff5d0f0  S7      : 0x000000ff  
+S8      : 0x4ff5d070  S9      : 0x000002f8  S10     : 0x0110c6c1  S11     : 0x00000000  
+T3      : 0x00000110  T4      : 0x00010000  T5      : 0x000003ed  T6      : 0x00000000  
+MSTATUS : 0xa5a5a5a5  MTVEC   : 0xfffffd94  MCAUSE  : 0x00000000  MTVAL   : 0x00000000  
+MHARTID : 0xfffffe2d  
+
+Stack memory:
+4ff2de50: 0xa5a5a5a5 0xfffffd94 0x00000000 0x00000000 0xfffffe2d 0x00000000 0x00000000 0x00000000
+4ff2de70: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff2de90: 0x00000000 0x4ff5ceb8 0x000003ed 0x0000ffff 0x00000000 0x00000000 0x00000000 0x00000000
+4ff2deb0: 0x00000000 0x00000000 0x0000ffff 0x00000000 0x000003f7 0x00000000 0x00000000 0x00000000
+4ff2ded0: 0x443b7f0f 0x78f70f10 0x0000607f 0x0100ffff 0x05010000 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2def0: 0x10443bff 0x607f780a 0xa5a5a504 0xa5a5a5a5 0xa5a5a5a5 0x443b7f0f 0x78f70f10 0x0000607f
+4ff2df10: 0x0100ffff 0x05010000 0x443b7f0f 0x78f70f10 0x0000607f 0x0100ffff 0x05010000 0x443b7f0f
+4ff2df30: 0x78f70f10 0x0000607f 0x0100ffff 0x05010000 0x443b7f0f 0x78f70f10 0x0000607f 0x0100ffff
+4ff2df50: 0x05010000 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2df70: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0x4ff095e8 0x4ff08c50 0x4ff2e000 0x4ff12980
+4ff2df90: 0x000017a8 0x0000032f 0x4ff6adb0 0x00000010 0x00000004 0x00000400 0x00000000 0x4ff3f2c0
+4ff2dfb0: 0x00000040 0x00000000 0x4ff3ffd8 0x4fc10e5a 0x000017a8 0x0000032f 0x4ff6adb0 0x4ff3efb4
+4ff2dfd0: 0x00000002 0x4ff77b38 0x4ff2e09c 0x00000000 0x00000400 0x00000000 0x4ff3f2c0 0x4fc10ec2
+4ff2dff0: 0x00000400 0x00000000 0x4ff3f2c0 0x4ff0c850 0x4ff3ef8c 0x4ff3f134 0x00000000 0x4ff3f178
+4ff2e010: 0x00000000 0x00000000 0x4ff3f124 0x4ff08ca2 0x000003dc 0x00b200b2 0x00000064 0x00000000
+4ff2e030: 0x4ff2e09c 0x4ff77b38 0x00000001 0x00000003 0x00000002 0x4ff77f38 0x4ff2e09c 0x00000000
+4ff2e050: 0x00000064 0x00000000 0x4ff3ef8c 0x40036b74 0x4fc153d2 0x40011d6e 0x4ff2e0e0 0x00000002
+4ff2e070: 0x4ff78000 0x00000100 0x4ff7b000 0x4ff7b000 0x4ff78000 0x00000400 0x00000000 0x4001c002
+4ff2e090: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff2e0b0: 0x00000102 0x00000100 0x4ff5cff0 0x4ff2dee0 0x00000010 0x00000000 0x4ff6adb0 0x4ff7798a
+4ff2e0d0: 0x00000010 0x00000000 0x00ca3c2a 0x4ff4dd94 0x00000000 0x4ff6b000 0x00000000 0x40016e9c
+4ff2e0f0: 0xa5a5a5a5 0xa5a5a5a5 0x4ff18b44 0x00000000 0x4ff12460 0x00000000 0x00000000 0x00000000
+4ff2e110: 0x00000000 0x00000000 0x00000000 0x00000000 0x000012f0 0x000004c0 0x00000e40 0x00000000
+4ff2e130: 0x00000000 0x00000000 0x00ca3c28 0x4ff2e180 0x00ca3c78 0x00000010 0x00000010 0x00ca3c77
+4ff2e150: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e170: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e190: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e1b0: 0xa5a5a5a5 0xa5a50000 0xa5a5a5a5 0xa5000000 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e1d0: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e1f0: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e210: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e230: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+
+
+
+ELF file SHA256: 2961122e1
+
+Rebooting...
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0xc (SW_CPU_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4ff08366
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M13 fixture] voices=16 frames=65536 bytes=2097152 psram=1
+[M21 voices] mode=0 scenario=0 blocks=128 max=3134 mean=3049 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=1 blocks=128 max=3142 mean=3057 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=2 blocks=128 max=1190 mean=1102 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=3 blocks=128 max=3103 mean=3028 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=4 blocks=128 max=1437 mean=1415 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=5 blocks=128 max=623 mean=584 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=0 blocks=128 max=3150 mean=3072 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=1 blocks=128 max=3899 mean=3818 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=2 blocks=128 max=1689 mean=1667 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=3 blocks=128 max=3827 mean=3754 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=4 blocks=128 max=1954 mean=1921 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=5 blocks=128 max=892 mean=858 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=0 blocks=128 max=3140 mean=3073 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=1 blocks=128 max=4684 mean=4592 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=2 blocks=128 max=2157 mean=2137 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=3 blocks=128 max=4683 mean=4605 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=4 blocks=128 max=2450 mean=2425 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=5 blocks=128 max=1140 mean=1098 voices=16 frames=256 checksum=0
+[M21 arithmetic] candidate=0 iterations=65536 us=10613 checksum=3394
+[M21 arithmetic] candidate=1 iterations=65536 us=10904 checksum=0
+[M21 arithmetic] candidate=2 iterations=65536 us=23194 checksum=13305
+[M21 arithmetic] candidate=3 iterations=65536 us=19138 checksum=0
+[M21 configuration] mode=1 voice_bytes=64 table_bytes=0 scratch_bytes=0 forced_fractional=1 full_regions=1 forward_only=1
+E (15470) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (15470) task_wdt:  - IDLE0 (CPU 0)
+E (15470) task_wdt: Tasks currently running:
+E (15470) task_wdt: CPU 0: app_audio
+E (15470) task_wdt: CPU 1: IDLE1
+E (15470) task_wdt: Aborting.
+E (15470) task_wdt: Print CPU 0 (current core) registers
+
+
+Core  0 register dump:
+MEPC    : 0x4001361e  RA      : 0x4001345c  SP      : 0x4ff2de50  GP      : 0x4ff12980  
+TP      : 0x4ff2ef50  T0      : 0x00004d74  T1      : 0x00000000  T2      : 0x0000007f  
+S0/FP   : 0x4ff12820  S1      : 0x0000000f  A0      : 0x00000136  A1      : 0x00001754  
+A2      : 0x00000090  A3      : 0x00000000  A4      : 0x0000016d  A5      : 0x000001a5  
+A6      : 0x00000000  A7      : 0x00000000  S2      : 0x4ff5cbc0  S3      : 0x0000003c  
+S4      : 0x4ff19300  S5      : 0x4ff5cad0  S6      : 0x4ff5d0e8  S7      : 0x000000ff  
+S8      : 0x4ff5d068  S9      : 0xffffffdf  S10     : 0x00e73f15  S11     : 0x00000000  
+T3      : 0x000000e7  T4      : 0x00010000  T5      : 0xffffffd5  T6      : 0x00000000  
+MSTATUS : 0xa5a5a5a5  MTVEC   : 0x00000262  MCAUSE  : 0x00000000  MTVAL   : 0x00000000  
+MHARTID : 0x000001ce  
+
+Stack memory:
+4ff2de50: 0xa5a5a5a5 0x00000262 0x00000000 0x00000000 0x000001ce 0x00000000 0x00000000 0x00000000
+4ff2de70: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff2de90: 0x00000000 0x4ff5ce08 0x00000000 0x0000ffff 0x00000000 0x00000000 0x00000000 0x00000000
+4ff2deb0: 0x00000000 0x00000000 0x0000ffff 0x00000000 0xfffffe68 0x00000000 0x00000000 0x00000000
+4ff2ded0: 0x443b7f0f 0x78f70f10 0x0000607f 0x0100ffff 0x05010000 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2def0: 0x10443bff 0x607f780a 0xa5a5a504 0xa5a5a5a5 0xa5a5a5a5 0x443b7f0f 0x78f70f10 0x0000607f
+4ff2df10: 0x0100ffff 0x05010000 0x443b7f0f 0x78f70f10 0x0000607f 0x0100ffff 0x05010000 0x443b7f0f
+4ff2df30: 0x78f70f10 0x0000607f 0x0100ffff 0x05010000 0x443b7f0f 0x78f70f10 0x0000607f 0x0100ffff
+4ff2df50: 0x05010000 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2df70: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2df90: 0x000017b1 0x0000032f 0x4ff6adb0 0x00000010 0x00000004 0x00000400 0x00000000 0x4ff3f2c0
+4ff2dfb0: 0x00000040 0x00000000 0x4ff3ffd8 0x4fc10e5a 0x000017b1 0x0000032f 0x4ff6adb0 0x4ff3efb4
+4ff2dfd0: 0x00000002 0x4ff77b38 0x4ff2e09c 0x00000000 0x00000400 0x00000000 0x4ff3f2c0 0x4fc10ec2
+4ff2dff0: 0x00000400 0x00000000 0x4ff3f2c0 0x4ff0c850 0x00000000 0x4ff3f134 0x00000000 0x4ff3f178
+4ff2e010: 0x00000000 0x00000000 0x4ff3f124 0x4ff08ca2 0x004b004b 0x00410041 0x00000064 0x00000000
+4ff2e030: 0x4ff2e09c 0x4ff77b38 0x00000001 0x00000003 0x00000002 0x4ff77f38 0x4ff2e09c 0x00000000
+4ff2e050: 0x00000064 0x00000000 0x4ff3ef8c 0x40036b74 0x4ff5cff0 0x00000100 0x00000400 0x00000002
+4ff2e070: 0x4ff78000 0x00000100 0x4ff7b000 0x4ff7b000 0x4ff78000 0x00000400 0x00000000 0x4001c002
+4ff2e090: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff2e0b0: 0x00000102 0x00000100 0x4ff5cff0 0x4ff2dee0 0x00000010 0x00000000 0x4ff6adb0 0x4ff7798a
+4ff2e0d0: 0x00000010 0x00000000 0x00ca405b 0x4ff4dd94 0x00000000 0x4ff6b000 0x00000000 0x40016e9c
+4ff2e0f0: 0xa5a5a5a5 0xa5a5a5a5 0x4ff18b44 0x00000000 0x4ff12460 0x00000000 0x00000000 0x00000000
+4ff2e110: 0x00000000 0x00000000 0x00000000 0x00000000 0x000012f0 0x000004c0 0x00000e40 0x00000000
+4ff2e130: 0x00000000 0x00000000 0x00ca4058 0x4ff2e180 0x00ca40a8 0x00000010 0x00000010 0x00ca40a7
+4ff2e150: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e170: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e190: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e1b0: 0xa5a5a5a5 0xa5a50000 0xa5a5a5a5 0xa5000000 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e1d0: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e1f0: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e210: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e230: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+
+
+
+ELF file SHA256: 2961122e1
+
+Rebooting...
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0xc (SW_CPU_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4ff08366
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M13 fixture] voices=16 frames=65536 bytes=2097152 psram=1
+[M21 voices] mode=0 scenario=0 blocks=128 max=3130 mean=3048 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=1 blocks=128 max=3124 mean=3056 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=2 blocks=128 max=1186 mean=1102 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=3 blocks=128 max=3103 mean=3028 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=4 blocks=128 max=1437 mean=1413 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=5 blocks=128 max=616 mean=584 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=0 blocks=128 max=3150 mean=3067 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=1 blocks=128 max=3904 mean=3817 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=2 blocks=128 max=1690 mean=1668 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=3 blocks=128 max=3827 mean=3753 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=4 blocks=128 max=1953 mean=1921 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=5 blocks=128 max=894 mean=858 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=0 blocks=128 max=3133 mean=3069 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=1 blocks=128 max=4682 mean=4591 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=2 blocks=128 max=2157 mean=2137 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=3 blocks=128 max=4715 mean=4604 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=4 blocks=128 max=2455 mean=2424 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=5 blocks=128 max=1140 mean=1098 voices=16 frames=256 checksum=0
+[M21 arithmetic] candidate=0 iterations=65536 us=10612 checksum=3394
+[M21 arithmetic] candidate=1 iterations=65536 us=10903 checksum=0
+[M21 arithmetic] candidate=2 iterations=65536 us=23182 checksum=13305
+[M21 arithmetic] candidate=3 iterations=65536 us=19139 checksum=0
+[M21 configuration] mode=1 voice_bytes=64 table_bytes=0 scratch_bytes=0 forced_fractional=1 full_regions=1 forward_only=1
+E (15470) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (15470) task_wdt:  - IDLE0 (CPU 0)
+E (15470) task_wdt: Tasks currently running:
+E (15470) task_wdt: CPU 0: app_audio
+E (15470) task_wdt: CPU 1: IDLE1
+E (15470) task_wdt: Aborting.
+E (15470) task_wdt: Print CPU 0 (current core) registers
+
+
+Core  0 register dump:
+MEPC    : 0x4001358e  RA      : 0x4001345c  SP      : 0x4ff2de50  GP      : 0x4ff12980  
+TP      : 0x4ff2ef50  T0      : 0x00004a0a  T1      : 0x00000000  T2      : 0x0000007f  
+S0/FP   : 0x4ff12720  S1      : 0x0000000b  A0      : 0x00000136  A1      : 0xffffe048  
+A2      : 0x0000000f  A3      : 0xfffffcce  A4      : 0xfd3002d0  A5      : 0xfffffe62  
+A6      : 0x0000ffff  A7      : 0x00000000  S2      : 0x4ff5cb80  S3      : 0x0000002c  
+S4      : 0x4ff191c0  S5      : 0x4ff5cad0  S6      : 0x4ff5d0c8  S7      : 0x000000ff  
+S8      : 0x4ff5d048  S9      : 0x00000193  S10     : 0x01b13bab  S11     : 0x00000000  
+T3      : 0x000001b1  T4      : 0x00010000  T5      : 0x00000216  T6      : 0x00000000  
+MSTATUS : 0xa5a5a5a5  MTVEC   : 0xfffffcce  MCAUSE  : 0x00000000  MTVAL   : 0x00000000  
+MHARTID : 0xfffffecf  
+
+Stack memory:
+4ff2de50: 0xa5a5a5a5 0xfffffcce 0x00000000 0x00000000 0xfffffecf 0x00000000 0x00000000 0x00000000
+4ff2de70: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff2de90: 0x00000000 0x4ff5cd60 0x00000000 0x0000ffff 0x00000000 0x00000000 0x00000000 0x00000000
+4ff2deb0: 0x00000000 0x00000000 0x0000ffff 0x00000000 0x00000216 0x00000000 0x00000000 0x00000000
+4ff2ded0: 0x443b7f0f 0x78f70f10 0x0000607f 0x0100ffff 0x05010000 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2def0: 0x10443bff 0x607f780a 0xa5a5a504 0xa5a5a5a5 0xa5a5a5a5 0x443b7f0f 0x78f70f10 0x0000607f
+4ff2df10: 0x0100ffff 0x05010000 0x443b7f0f 0x78f70f10 0x0000607f 0x0100ffff 0x05010000 0x443b7f0f
+4ff2df30: 0x78f70f10 0x0000607f 0x0100ffff 0x05010000 0x443b7f0f 0x78f70f10 0x0000607f 0x0100ffff
+4ff2df50: 0x05010000 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2df70: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2df90: 0x00001754 0x00000330 0x4ff6adb0 0x00000010 0x00000004 0x00000400 0x00000000 0x4ff3f2c0
+4ff2dfb0: 0x00000040 0x00000000 0x4ff3ffd8 0x4fc10e5a 0x00001754 0x00000330 0x4ff6adb0 0x4ff3efb4
+4ff2dfd0: 0x00000002 0x4ff77b38 0x4ff2e09c 0x00000000 0x00000400 0x00000000 0x4ff3f2c0 0x4fc10ec2
+4ff2dff0: 0x00000400 0x00000000 0x4ff3f2c0 0x4ff0c850 0x014b014b 0x4ff3f134 0x00000000 0x4ff3f178
+4ff2e010: 0x00000000 0x00000000 0x4ff3f124 0x4ff08ca2 0x00000250 0x00db00db 0x00000064 0x00000000
+4ff2e030: 0x4ff2e09c 0x4ff77b38 0x00000001 0x00000003 0x00000002 0x4ff77f38 0x4ff2e09c 0x00000000
+4ff2e050: 0x00000064 0x00000000 0x4ff3ef8c 0x40036b74 0x4ff5cff0 0x00000100 0x00000400 0x00000002
+4ff2e070: 0x4ff78000 0x00000100 0x4ff7b000 0x4ff7b000 0x4ff78000 0x00000400 0x00000000 0x4001c002
+4ff2e090: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff2e0b0: 0x00000102 0x00000100 0x4ff5cff0 0x4ff2dee0 0x00000010 0x00000000 0x4ff6adb0 0x4ff7798a
+4ff2e0d0: 0x00000010 0x00000000 0x00ca442c 0x4ff4dd94 0x00000000 0x4ff6b000 0x00000000 0x40016e9c
+4ff2e0f0: 0xa5a5a5a5 0xa5a5a5a5 0x4ff18b44 0x00000000 0x4ff12460 0x00000000 0x00000000 0x00000000
+4ff2e110: 0x00000000 0x00000000 0x00000000 0x00000000 0x000012f0 0x000004c0 0x00000e40 0x00000000
+4ff2e130: 0x00000000 0x00000000 0x00ca4429 0x4ff2e180 0x00ca4479 0x00000010 0x00000010 0x00ca4478
+4ff2e150: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e170: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e190: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e1b0: 0xa5a5a5a5 0xa5a50000 0xa5a5a5a5 0xa5000000 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e1d0: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e1f0: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e210: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e230: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+
+
+
+ELF file SHA256: 2961122e1
+
+Rebooting...
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0xc (SW_CPU_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4ff08366
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M13 fixture] voices=16 frames=65536 bytes=2097152 psram=1
+[M21 voices] mode=0 scenario=0 blocks=128 max=3134 mean=3049 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=1 blocks=128 max=3126 mean=3057 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=2 blocks=128 max=1225 mean=1103 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=3 blocks=128 max=3102 mean=3028 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=4 blocks=128 max=1457 mean=1416 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=5 blocks=128 max=620 mean=584 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=0 blocks=128 max=3151 mean=3072 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=1 blocks=128 max=3908 mean=3818 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=2 blocks=128 max=1686 mean=1668 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=3 blocks=128 max=3826 mean=3753 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=4 blocks=128 max=1952 mean=1921 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=5 blocks=128 max=891 mean=858 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=0 blocks=128 max=3138 mean=3072 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=1 blocks=128 max=4676 mean=4593 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=2 blocks=128 max=2157 mean=2138 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=3 blocks=128 max=4683 mean=4605 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=4 blocks=128 max=2452 mean=2424 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=5 blocks=128 max=1140 mean=1098 voices=16 frames=256 checksum=0
+[M21 arithmetic] candidate=0 iterations=65536 us=10613 checksum=3394
+[M21 arithmetic] candidate=1 iterations=65536 us=10905 checksum=0
+[M21 arithmetic] candidate=2 iterations=65536 us=23193 checksum=13305
+[M21 arithmetic] candidate=3 iterations=65536 us=19146 checksum=0
+[M21 configuration] mode=1 voice_bytes=64 table_bytes=0 scratch_bytes=0 forced_fractional=1 full_regions=1 forward_only=1
+E (15470) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (15470) task_wdt:  - IDLE0 (CPU 0)
+E (15470) task_wdt: Tasks currently running:
+E (15470) task_wdt: CPU 0: app_audio
+E (15470) task_wdt: CPU 1: IDLE1
+E (15470) task_wdt: Aborting.
+E (15470) task_wdt: Print CPU 0 (current core) registers
+
+
+Core  0 register dump:
+MEPC    : 0x40013840  RA      : 0x4001345c  SP      : 0x4ff2de50  GP      : 0x4ff12980  
+TP      : 0x4ff2ef50  T0      : 0x0000d520  T1      : 0x00000000  T2      : 0x0000007f  
+S0/FP   : 0x4ff12760  S1      : 0x0000000d  A0      : 0x00000136  A1      : 0xffffdfbe  
+A2      : 0xffffff59  A3      : 0x00000000  A4      : 0xfffffd1e  A5      : 0x00000010  
+A6      : 0x0000ffff  A7      : 0x00000000  S2      : 0x4ff5cb90  S3      : 0x00000030  
+S4      : 0x4ff19260  S5      : 0x4ff5cad0  S6      : 0x4ff5d0d0  S7      : 0x000000ff  
+S8      : 0x4ff5d050  S9      : 0x0000020c  S10     : 0x0110c6c1  S11     : 0x00000000  
+T3      : 0x00000110  T4      : 0x00010000  T5      : 0x000002b5  T6      : 0x00000000  
+MSTATUS : 0xa5a5a5a5  MTVEC   : 0xfffffd0e  MCAUSE  : 0x00000000  MTVAL   : 0x00000000  
+MHARTID : 0xfffffdc6  
+
+Stack memory:
+4ff2de50: 0xa5a5a5a5 0xfffffd0e 0x00000000 0x00000000 0xfffffdc6 0x00000000 0x00000000 0x00000000
+4ff2de70: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff2de90: 0x00000000 0x4ff5ceb8 0x00000000 0x0000ffff 0x00000000 0x00000000 0x00000000 0x00000000
+4ff2deb0: 0x00000000 0x00000000 0x0000ffff 0x00000000 0x00000597 0x00000000 0x00000000 0x00000000
+4ff2ded0: 0x443b7f0f 0x78f70f10 0x0000607f 0x0100ffff 0x05010000 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2def0: 0x10443bff 0x607f780a 0xa5a5a504 0xa5a5a5a5 0xa5a5a5a5 0x443b7f0f 0x78f70f10 0x0000607f
+4ff2df10: 0x0100ffff 0x05010000 0x443b7f0f 0x78f70f10 0x0000607f 0x0100ffff 0x05010000 0x443b7f0f
+4ff2df30: 0x78f70f10 0x0000607f 0x0100ffff 0x05010000 0x443b7f0f 0x78f70f10 0x0000607f 0x0100ffff
+4ff2df50: 0x05010000 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2df70: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2df90: 0x000017af 0x0000032f 0x4ff6adb0 0x00000010 0x00000004 0x00000400 0x00000000 0x4ff3f2c0
+4ff2dfb0: 0x00000040 0x00000000 0x4ff3ffd8 0x4fc10e5a 0x000017af 0x0000032f 0x4ff6adb0 0x4ff3efb4
+4ff2dfd0: 0x00000002 0x4ff77b38 0x4ff2e09c 0x00000000 0x00000400 0x00000000 0x4ff3f2c0 0x4fc10ec2
+4ff2dff0: 0x00000400 0x00000000 0x4ff3f2c0 0x4ff0c850 0x00000000 0x4ff3f134 0x00000000 0x4ff3f178
+4ff2e010: 0x00000000 0x00000000 0x4ff3f124 0x4ff08ca2 0x000001e4 0x00500050 0x00000064 0x00000000
+4ff2e030: 0x4ff2e09c 0x4ff77b38 0x00000001 0x00000003 0x00000002 0x4ff77f38 0x4ff2e09c 0x00000000
+4ff2e050: 0x00000064 0x00000000 0x4ff3ef8c 0x40036b74 0x4ff5cff0 0x00000100 0x00000400 0x00000002
+4ff2e070: 0x4ff78000 0x00000100 0x4ff7b000 0x4ff7b000 0x4ff78000 0x00000400 0x00000000 0x4001c002
+4ff2e090: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff2e0b0: 0x00000102 0x00000100 0x4ff5cff0 0x4ff2dee0 0x00000010 0x00000000 0x4ff6adb0 0x4ff7798a
+4ff2e0d0: 0x00000010 0x00000000 0x00ca3c60 0x4ff4dd94 0x00000000 0x4ff6b000 0x00000000 0x40016e9c
+4ff2e0f0: 0xa5a5a5a5 0xa5a5a5a5 0x4ff18b44 0x00000000 0x4ff12460 0x00000000 0x00000000 0x00000000
+4ff2e110: 0x00000000 0x00000000 0x00000000 0x00000000 0x000012f0 0x000004c0 0x00000e40 0x00000000
+4ff2e130: 0x00000000 0x00000000 0x00ca3c5d 0x4ff2e180 0x00ca3cad 0x00000010 0x00000010 0x00ca3cac
+4ff2e150: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e170: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e190: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e1b0: 0xa5a5a5a5 0xa5a50000 0xa5a5a5a5 0xa5000000 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e1d0: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e1f0: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e210: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e230: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+
+
+
+ELF file SHA256: 2961122e1
+
+Rebooting...
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0xc (SW_CPU_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4ff08366
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M13 fixture] voices=16 frames=65536 bytes=2097152 psram=1
+[M21 voices] mode=0 scenario=0 blocks=128 max=3132 mean=3045 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=1 blocks=128 max=3126 mean=3055 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=2 blocks=128 max=1160 mean=1102 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=3 blocks=128 max=3104 mean=3027 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=4 blocks=128 max=1435 mean=1415 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=5 blocks=128 max=621 mean=584 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=0 blocks=128 max=3132 mean=3064 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=1 blocks=128 max=3908 mean=3813 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=2 blocks=128 max=1687 mean=1668 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=3 blocks=128 max=3825 mean=3750 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=4 blocks=128 max=1942 mean=1922 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=5 blocks=128 max=890 mean=858 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=0 blocks=128 max=3126 mean=3065 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=1 blocks=128 max=4665 mean=4586 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=2 blocks=128 max=2154 mean=2137 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=3 blocks=128 max=4678 mean=4600 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=4 blocks=128 max=2449 mean=2424 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=5 blocks=128 max=1138 mean=1098 voices=16 frames=256 checksum=0
+[M21 arithmetic] candidate=0 iterations=65536 us=10665 checksum=3394
+[M21 arithmetic] candidate=1 iterations=65536 us=10881 checksum=0
+[M21 arithmetic] candidate=2 iterations=65536 us=23194 checksum=13305
+[M21 arithmetic] candidate=3 iterations=65536 us=19155 checksum=0
+[M21 configuration] mode=1 voice_bytes=64 table_bytes=0 scratch_bytes=0 forced_fractional=1 full_regions=1 forward_only=1
+E (15460) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (15460) task_wdt:  - IDLE0 (CPU 0)
+E (15460) task_wdt: Tasks currently running:
+E (15460) task_wdt: CPU 0: app_audio
+E (15460) task_wdt: CPU 1: IDLE1
+E (15460) task_wdt: Aborting.
+E (15460) task_wdt: Print CPU 0 (current core) registers
+
+
+Core  0 register dump:
+MEPC    : 0x40013426  RA      : 0x4001345c  SP      : 0x4ff2de50  GP      : 0x4ff12980  
+TP      : 0x4ff2ef50  T0      : 0x000088e2  T1      : 0x00000000  T2      : 0x0000007f  
+S0/FP   : 0x4ff124a0  S1      : 0x00000001  A0      : 0x00000be0  A1      : 0x482abcba  
+A2      : 0x4ff18b44  A3      : 0x00000000  A4      : 0x0000018a  A5      : 0x00000c80  
+A6      : 0x0000ffff  A7      : 0x00000000  S2      : 0x4ff5cae0  S3      : 0x00000004  
+S4      : 0x4ff18ea0  S5      : 0x4ff5cad0  S6      : 0x4ff5d078  S7      : 0x000000ff  
+S8      : 0x4ff5cff8  S9      : 0x00000325  S10     : 0x018a88e2  S11     : 0x00010d98  
+T3      : 0x0000018b  T4      : 0x00010000  T5      : 0x0000042a  T6      : 0x00000000  
+MSTATUS : 0xa5a5a5a5  MTVEC   : 0x000004d4  MCAUSE  : 0x00000000  MTVAL   : 0x00000000  
+MHARTID : 0x000003a6  
+
+Stack memory:
+4ff2de50: 0xa5a5a5a5 0x000004d4 0x00000000 0x00000000 0x000003a6 0x00000000 0x00000000 0x00000000
+4ff2de70: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff2de90: 0x00000000 0x4ff5ccc0 0x00000000 0x0000ffff 0x00000000 0x00000000 0x00000000 0x00000000
+4ff2deb0: 0x00000000 0x00000000 0x0000ffff 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff2ded0: 0x443b7f0f 0x78f70f10 0x0000607f 0x0100ffff 0x05010000 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2def0: 0x10443bff 0x607f780a 0xa5a5a504 0xa5a5a5a5 0xa5a5a5a5 0x443b7f0f 0x78f70f10 0x0000607f
+4ff2df10: 0x0100ffff 0x05010000 0x443b7f0f 0x78f70f10 0x0000607f 0x0100ffff 0x05010000 0x443b7f0f
+4ff2df30: 0x78f70f10 0x0000607f 0x0100ffff 0x05010000 0x443b7f0f 0x78f70f10 0x0000607f 0x0100ffff
+4ff2df50: 0x05010000 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2df70: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2df90: 0x0000175b 0x00000330 0x4ff6adb0 0x00000010 0x00000004 0x00000400 0x00000000 0x4ff298c0
+4ff2dfb0: 0x00000040 0x00000000 0x4ff3ffd8 0x4fc10e5a 0x0000175b 0x00000330 0x4ff6adb0 0x4ff3efb4
+4ff2dfd0: 0x00000002 0x4ff77b38 0x4ff2e09c 0x00000000 0x00000400 0x00000000 0x4ff298c0 0x4fc10ec2
+4ff2dff0: 0x00000400 0x00000000 0x4ff298c0 0x4ff0c850 0x4ff6adb0 0x4ff3f134 0x00000000 0x4ff3f178
+4ff2e010: 0x00000000 0x00000000 0x4ff3f124 0x4ff08ca2 0x00000004 0x00000000 0x00000064 0x00000000
+4ff2e030: 0x4ff2e09c 0x4ff77b38 0x00000001 0x00000003 0x00000002 0x4ff77f38 0x4ff2e09c 0x00000000
+4ff2e050: 0x00000064 0x00000000 0x4ff3ef8c 0x40036b74 0x4ff5cff0 0x00000100 0x00000400 0x00000002
+4ff2e070: 0x4ff78000 0x00000100 0x4ff7b000 0x4ff7b000 0x4ff78000 0x00000400 0x00000000 0x4001c002
+4ff2e090: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff2e0b0: 0x00000102 0x00000100 0x4ff5cff0 0x4ff2dee0 0x00000010 0x00000000 0x4ff6adb0 0x4ff7798a
+4ff2e0d0: 0x00000010 0x00000000 0x00ca3440 0x4ff4dd94 0x00000000 0x4ff6b000 0x00000000 0x40016e9c
+4ff2e0f0: 0xa5a5a5a5 0xa5a5a5a5 0x4ff18b44 0x00000000 0x4ff12460 0x00000000 0x00000000 0x00000000
+4ff2e110: 0x00000000 0x00000000 0x00000000 0x00000000 0x000012f0 0x000004c0 0x00000e40 0x00000000
+4ff2e130: 0x00000000 0x00000000 0x00ca343e 0x4ff2e180 0x00ca348d 0x00000010 0x00000010 0x00ca348c
+4ff2e150: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e170: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e190: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e1b0: 0xa5a5a5a5 0xa5a50000 0xa5a5a5a5 0xa5000000 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e1d0: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e1f0: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e210: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e230: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+
+
+
+ELF file SHA256: 2961122e1
+
+Rebooting...
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0xc (SW_CPU_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4ff08366
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M13 fixture] voices=16 frames=65536 bytes=2097152 psram=1
+[M21 voices] mode=0 scenario=0 blocks=128 max=3131 mean=3044 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=1 blocks=128 max=3130 mean=3055 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=2 blocks=128 max=1160 mean=1102 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=3 blocks=128 max=3103 mean=3027 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=4 blocks=128 max=1434 mean=1415 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=5 blocks=128 max=614 mean=584 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=0 blocks=128 max=3133 mean=3064 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=1 blocks=128 max=3908 mean=3814 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=2 blocks=128 max=1686 mean=1667 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=3 blocks=128 max=3826 mean=3750 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=4 blocks=128 max=1942 mean=1922 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=5 blocks=128 max=886 mean=859 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=0 blocks=128 max=3126 mean=3065 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=1 blocks=128 max=4665 mean=4586 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=2 blocks=128 max=2158 mean=2138 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=3 blocks=128 max=4677 mean=4599 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=4 blocks=128 max=2450 mean=2424 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=5 blocks=128 max=1138 mean=1098 voices=16 frames=256 checksum=0
+[M21 arithmetic] candidate=0 iterations=65536 us=10665 checksum=3394
+[M21 arithmetic] candidate=1 iterations=65536 us=10885 checksum=0
+[M21 arithmetic] candidate=2 iterations=65536 us=23193 checksum=13305
+[M21 arithmetic] candidate=3 iterations=65536 us=19150 checksum=0
+[M21 configuration] mode=1 voice_bytes=64 table_bytes=0 scratch_bytes=0 forced_fractional=1 full_regions=1 forward_only=1
+E (15459) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (15459) task_wdt:  - IDLE0 (CPU 0)
+E (15459) task_wdt: Tasks currently running:
+E (15459) task_wdt: CPU 0: app_audio
+E (15459) task_wdt: CPU 1: IDLE1
+E (15459) task_wdt: Aborting.
+E (15459) task_wdt: Print CPU 0 (current core) registers
+
+
+Core  0 register dump:
+MEPC    : 0x40013426  RA      : 0x40014796  SP      : 0x4ff2de50  GP      : 0x4ff12980  
+TP      : 0x4ff2ef50  T0      : 0x000054c2  T1      : 0x00000000  T2      : 0x0000007f  
+S0/FP   : 0x4ff12460  S1      : 0x00000000  A0      : 0x00000fa0  A1      : 0x4828bc7e  
+A2      : 0x4ff18b44  A3      : 0x00000000  A4      : 0x0000016c  A5      : 0x00001040  
+A6      : 0x0000ffff  A7      : 0x00000000  S2      : 0x4ff5cad0  S3      : 0x00000000  
+S4      : 0x4ff18e50  S5      : 0x4ff5cad0  S6      : 0x4ff5d070  S7      : 0x000000ff  
+S8      : 0x4ff5cff0  S9      : 0x00000000  S10     : 0x016c54c2  S11     : 0x00010db8  
+T3      : 0x0000016d  T4      : 0x00010000  T5      : 0x00000000  T6      : 0x00000000  
+MSTATUS : 0xa5a5a5a5  MTVEC   : 0x00000000  MCAUSE  : 0x00000000  MTVAL   : 0x00000000  
+MHARTID : 0x00000000  
+
+Stack memory:
+4ff2de50: 0xa5a5a5a5 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff2de70: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff2de90: 0x00000000 0x4ff5cc40 0x00000000 0x0000ffff 0x00000000 0x00000000 0x00000000 0x00000000
+4ff2deb0: 0x00000000 0x00000000 0x0000ffff 0x00000000 0x000004d0 0x00000000 0x00000000 0x00000000
+4ff2ded0: 0x443b7f0f 0x78f70f10 0x0000607f 0x0100ffff 0x05010000 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2def0: 0x10443bff 0x607f780a 0xa5a5a504 0xa5a5a5a5 0xa5a5a5a5 0x443b7f0f 0x78f70f10 0x0000607f
+4ff2df10: 0x0100ffff 0x05010000 0x443b7f0f 0x78f70f10 0x0000607f 0x0100ffff 0x05010000 0x443b7f0f
+4ff2df30: 0x78f70f10 0x0000607f 0x0100ffff 0x05010000 0x443b7f0f 0x78f70f10 0x0000607f 0x0100ffff
+4ff2df50: 0x05010000 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2df70: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2df90: 0x0000175a 0x00000330 0x4ff6adb0 0x00000010 0x00000004 0x00000400 0x00000000 0x4ff298c0
+4ff2dfb0: 0x00000040 0x00000000 0x4ff3ffd8 0x4fc10e5a 0x0000175a 0x00000330 0x4ff6adb0 0x4ff3efb4
+4ff2dfd0: 0x00000002 0x4ff77b38 0x4ff2e09c 0x00000000 0x00000400 0x00000000 0x4ff298c0 0x4fc10ec2
+4ff2dff0: 0x00000400 0x00000000 0x4ff298c0 0x4ff0c850 0x00050005 0x4ff3f134 0x00000000 0x4ff3f178
+4ff2e010: 0x00000000 0x00000000 0x4ff3f124 0x4ff08ca2 0x00b700b7 0x00bf00bf 0x00000064 0x00000000
+4ff2e030: 0x4ff2e09c 0x4ff77b38 0x00000001 0x00000003 0x00000002 0x4ff77f38 0x4ff2e09c 0x00000000
+4ff2e050: 0x00000064 0x00000000 0x4ff3ef8c 0x40036b74 0x40011d2e 0x40016e28 0x4ff2e0e0 0x00000002
+4ff2e070: 0x4ff78000 0x00000100 0x4ff7b000 0x4ff7b000 0x4ff78000 0x00000400 0x00000000 0x4001c002
+4ff2e090: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff2e0b0: 0x00000102 0x00000100 0x4ff5cff0 0x4ff2dee0 0x00000010 0x00000000 0x4ff6adb0 0x4ff7798a
+4ff2e0d0: 0x00000010 0x00000000 0x00ca371e 0x4ff4dd94 0x00000000 0x4ff6b000 0x00000000 0x40016e9c
+4ff2e0f0: 0xa5a5a5a5 0xa5a5a5a5 0x4ff18b44 0x00000000 0x4ff12460 0x00000000 0x00000000 0x00000000
+4ff2e110: 0x00000000 0x00000000 0x00000000 0x00000000 0x000012f0 0x000004c0 0x00000e40 0x00000000
+4ff2e130: 0x00000000 0x00000000 0x00ca371c 0x4ff2e180 0x00ca376c 0x00000010 0x00000010 0x00ca376a
+4ff2e150: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e170: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e190: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e1b0: 0xa5a5a5a5 0xa5a50000 0xa5a5a5a5 0xa5000000 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e1d0: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e1f0: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e210: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e230: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+
+
+
+ELF file SHA256: 2961122e1
+
+Rebooting...
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0xc (SW_CPU_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4ff08366
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M13 fixture] voices=16 frames=65536 bytes=2097152 psram=1
+[M21 voices] mode=0 scenario=0 blocks=128 max=3134 mean=3049 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=1 blocks=128 max=3124 mean=3056 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=2 blocks=128 max=1184 mean=1102 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=3 blocks=128 max=3104 mean=3028 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=4 blocks=128 max=1437 mean=1415 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=5 blocks=128 max=621 mean=584 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=0 blocks=128 max=3150 mean=3072 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=1 blocks=128 max=3908 mean=3818 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=2 blocks=128 max=1689 mean=1666 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=3 blocks=128 max=3829 mean=3753 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=4 blocks=128 max=1953 mean=1922 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=5 blocks=128 max=896 mean=858 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=0 blocks=128 max=3142 mean=3073 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=1 blocks=128 max=4713 mean=4593 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=2 blocks=128 max=2158 mean=2138 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=3 blocks=128 max=4694 mean=4605 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=4 blocks=128 max=2452 mean=2425 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=5 blocks=128 max=1140 mean=1098 voices=16 frames=256 checksum=0
+[M21 arithmetic] candidate=0 iterations=65536 us=10613 checksum=3394
+[M21 arithmetic] candidate=1 iterations=65536 us=10904 checksum=0
+[M21 arithmetic] candidate=2 iterations=65536 us=23193 checksum=13305
+[M21 arithmetic] candidate=3 iterations=65536 us=19143 checksum=0
+[M21 configuration] mode=1 voice_bytes=64 table_bytes=0 scratch_bytes=0 forced_fractional=1 full_regions=1 forward_only=1
+E (15470) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (15470) task_wdt:  - IDLE0 (CPU 0)
+E (15470) task_wdt: Tasks currently running:
+E (15470) task_wdt: CPU 0: app_audio
+E (15470) task_wdt: CPU 1: IDLE1
+E (15470) task_wdt: Aborting.
+E (15470) task_wdt: Print CPU 0 (current core) registers
+
+
+Core  0 register dump:
+MEPC    : 0x40013426  RA      : 0x4001345c  SP      : 0x4ff2de50  GP      : 0x4ff12980  
+TP      : 0x4ff2ef50  T0      : 0x000031af  T1      : 0x00000000  T2      : 0x0000007f  
+S0/FP   : 0x4ff12620  S1      : 0x00000007  A0      : 0x00000a00  A1      : 0x4836bc1e  
+A2      : 0x4ff18b44  A3      : 0x00000000  A4      : 0x0000013c  A5      : 0x00000aa0  
+A6      : 0x0000ffff  A7      : 0x00000000  S2      : 0x4ff5cb40  S3      : 0x0000001c  
+S4      : 0x4ff19080  S5      : 0x4ff5cad0  S6      : 0x4ff5d0a8  S7      : 0x000000ff  
+S8      : 0x4ff5d028  S9      : 0x00000015  S10     : 0x013c31af  S11     : 0x00010deb  
+T3      : 0x0000013d  T4      : 0x00010000  T5      : 0x0000001c  T6      : 0x00000000  
+MSTATUS : 0xa5a5a5a5  MTVEC   : 0x000004c0  MCAUSE  : 0x00000000  MTVAL   : 0x00000000  
+MHARTID : 0x00000396  
+
+Stack memory:
+4ff2de50: 0xa5a5a5a5 0x000004c0 0x00000000 0x00000000 0x00000396 0x00000000 0x00000000 0x00000000
+4ff2de70: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff2de90: 0x00000000 0x4ff5cf74 0x00000000 0x0000ffff 0x00000000 0x00000000 0x00000000 0x00000000
+4ff2deb0: 0x00000000 0x00000000 0x0000ffff 0x00000000 0xffffff67 0x00000000 0x00000000 0x00000000
+4ff2ded0: 0x443b7f0f 0x78f70f10 0x0000607f 0x0100ffff 0x05010000 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2def0: 0x10443bff 0x607f780a 0xa5a5a504 0xa5a5a5a5 0xa5a5a5a5 0x443b7f0f 0x78f70f10 0x0000607f
+4ff2df10: 0x0100ffff 0x05010000 0x443b7f0f 0x78f70f10 0x0000607f 0x0100ffff 0x05010000 0x443b7f0f
+4ff2df30: 0x78f70f10 0x0000607f 0x0100ffff 0x05010000 0x443b7f0f 0x78f70f10 0x0000607f 0x0100ffff
+4ff2df50: 0x05010000 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2df70: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2df90: 0x000017a7 0x0000032f 0x4ff6adb0 0x00000010 0x00000004 0x00000400 0x00000000 0x4ff298c0
+4ff2dfb0: 0x00000040 0x00000000 0x4ff3ffd8 0x4fc10e5a 0x000017a7 0x0000032f 0x4ff6adb0 0x4ff3efb4
+4ff2dfd0: 0x00000002 0x4ff77b38 0x4ff2e09c 0x00000000 0x00000400 0x00000000 0x4ff298c0 0x4fc10ec2
+4ff2dff0: 0x00000400 0x00000000 0x4ff298c0 0x4ff0c850 0xff59ff59 0x4ff3f134 0x00000000 0x4ff3f178
+4ff2e010: 0x00000000 0x00000000 0x4ff3f124 0x4ff08ca2 0x00000208 0xff52ff52 0x00000064 0x00000000
+4ff2e030: 0x4ff2e09c 0x4ff77b38 0x00000001 0x00000003 0x00000002 0x4ff77f38 0x4ff2e09c 0x00000000
+4ff2e050: 0x00000064 0x00000000 0x4ff3ef8c 0x40036b74 0x40011d20 0x40016e28 0x4ff2e0e0 0x00000002
+4ff2e070: 0x4ff78000 0x00000100 0x4ff7b000 0x4ff7b000 0x4ff78000 0x00000400 0x00000000 0x4001c002
+4ff2e090: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+4ff2e0b0: 0x00000102 0x00000100 0x4ff5cff0 0x4ff2dee0 0x00000010 0x00000000 0x4ff6adb0 0x4ff7798a
+4ff2e0d0: 0x00000010 0x00000000 0x00ca3837 0x4ff4dd94 0x00000000 0x4ff6b000 0x00000000 0x40016e9c
+4ff2e0f0: 0xa5a5a5a5 0xa5a5a5a5 0x4ff18b44 0x00000000 0x4ff12460 0x00000000 0x00000000 0x00000000
+4ff2e110: 0x00000000 0x00000000 0x00000000 0x00000000 0x000012f0 0x000004c0 0x00000e40 0x00000000
+4ff2e130: 0x00000000 0x00000000 0x00ca3834 0x4ff2e180 0x00ca3884 0x00000010 0x00000010 0x00ca3883
+4ff2e150: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e170: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e190: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e1b0: 0xa5a5a5a5 0xa5a50000 0xa5a5a5a5 0xa5000000 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e1d0: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e1f0: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e210: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+4ff2e230: 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+
+
+
+ELF file SHA256: 2961122e1
+
+Rebooting...
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0xc (SW_CPU_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4ff08366
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M13 fixture] voices=16 frames=65536 bytes=2097152 psram=1
+[M21 voices] mode=0 scenario=0 blocks=128 max=3134 mean=3049 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=1 blocks=128 max=3125 mean=3057 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=2 blocks=128 max=1190 mean=1102 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=3 blocks=128 max=3103 mean=3028 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=4 blocks=128 max=1439 mean=1416 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=5 blocks=128 max=620 mean=584 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=0 blocks=128 max=3155 mean=3072 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=1 blocks=128 max=3904 mean=3818 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=2 blocks=128 max=1689 mean=1667 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=3 blocks=128 max=3827 mean=3753 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=4 blocks=128 max=1975 mean=1922 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=5 blocks=128 max=892 mean=858 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=0 blocks=128 max=3143 mean=3073 voices=16 frames=256 checksum=0
+[M21 voices] mode=2 scenario=1 blocks=128 max=4683 mean=4593 voices=16 frames=256 checksum=0
