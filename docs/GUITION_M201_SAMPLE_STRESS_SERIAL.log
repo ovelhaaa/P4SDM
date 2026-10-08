@@ -1,0 +1,76 @@
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0x17 (CHIP_USB_UART_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x40012fa8
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M13 fixture] voices=16 frames=65536 bytes=2097152 psram=1
+[M6 budget] total=33554432 display=2304000 fx_delay=352800 samples=0 reserve=4194304 free=24290932 largest=24117236 internal=219156
+[M6 SD] mounted=1 width=4 clock_khz=20000 mount_us=251298 capacity=8053063680 status=SD READY
+[M6 index] files=9 entries=9 limited=0 scan_us=44570 ps_free=24264640 largest=24117236 internal=217532
+[M5] blocks=13782 p50=2915 p95=3390 p99=3515 max=4384 misses=0 failures=0 timeouts=0 peak=4305 nonzero=7034828 rails=0 active_min=0 active_max=16
+[M8 groove] parents=9458 passed=8991 skipped=467 ratchets=25912 pending_max=48 velocity_min=1 velocity_max=127 swing_changes=8
+[M8 worst] blocks=2068 bpm=240 voices=16 ratchet=4 swing=50 delay=1 max=3657 triggers=12304 triggers_per_second=1024
+[MEM] M8 after 60s PSRAM total=33554432 free=24265252 largest=24117236 internal_free=217852
+[M10 locks] locked=8953 unlocked=38 pitch=8922 volume=8929 pan=8918 wave=0 pattern_bytes=3106 bank_bytes=49696 engine_bytes=52616
+[M11 tone] cutoff=668 resonance=667 send=667 cutoff_min=0 cutoff_max=127 resonance_min=0 resonance_max=127 send_min=0 send_max=127 blocks=666 max=3566 dense=2068 dense_max=3657
+[M12 locks] cutoff=8929 resonance=8928 send=8916 coefficients=7210 avoided=42871 send_changes=6907 coefficient_blocks=831 coefficient_max=3546 edit_blocks=174 edit_max=3557 commands=134 step_bytes=9 event_bytes=20 voice_bytes=384 idle_residue=16
+[M17 chain] starts=5 advances=128 repeats=19 loops=1 stops=1 switches=127 min_length=1 max_length=16 boundary_max=3501 seen=4294967295 entry_bytes=2 chain_bytes=66 engine_bytes=52616
+[M18 performance] override_requests=6 override_accepts=2 override_loops=7 override_cancels=5 returns=4 fill_requests=6 fill_accepts=5 fill_completions=5 fill_to_override=2 fill_to_arrangement=3 mute_edits=17 solo_edits=49 boundaries=18 boundary_max=3960 state_bytes=352 engine_bytes=52616 publication_bytes=24
+[M181 repeat] requests=3 accepts=2 cancelled=1 x2_windows=9 x4_windows=8 x8_windows=99 hits=13410 x8_hits=12672 changes=3 releases=2 empty=0 captured_max=16 suppressed=15 worst=4233 capture_bytes=324 repeat_bytes=336
+[M181 x8] blocks=1067 worst=4233 active_min=16 active_max=16 coefficients=0 avoided=12704 chokes=0 full_blocks=1066
+[M181 runtime] requested=0 active=0 count=0 ui_presses=1 ui_releases=1 ui_edits=2
+[M18 runtime] override_target=0 override_active=0 fill_pending=0 fill_active=0 return_pattern=0 return_end=0 mutes=0 solos=0 ui_bytes=116
+[M19 analysis] requests=3 completed=3 cancelled=1 stale_discarded=1 frames=2514260 candidates=0 selected=1 proposals=3 apply=1 cancel=1 min_count=1 max_count=1 sensitivity=1 target=8 duration_max_us=1098101 chunk_max_us=68108
+[M19 overlap] blocks=324 worst=4233 misses=0 x8_blocks=324 ui_interval_max_us=98760 detector_bytes=616 candidate_bytes=512 proposal_bytes=84 status_bytes=100 storage_stack=7000 stack_free_min=4596
+[M19 timing] one_second_us=23038 loop_us=89262 large_us=1098101 chunk_max_us=4471 completed=3 pcm_bytes=4194304
+[M18 UI] entries=13 pads=7 fills=3 toggles=64 switches=1
+[M17 UI] entries=18 edits=10 rows=9 scrolls=3
+[M16 project] state_bytes=53192 file_bytes=52704 snapshot_blocks=51 snapshot_max=3516 apply_blocks=312 apply_max=1950 fixtures=3 fixture_errors=0 dirty=1 physical_pending=1
+[M13 dense] blocks=2068 active_min=16
+[M13 playback] triggers=48695 reverse=12108 gate=25237 releases=5574 ends=76 choke_ops=1880 choked=904 retriggers=47459 region_min=1 region_max=65536 max=4384 choke_max=3546 retrigger_max=4384 voice_bytes=64 track_bytes=116 event_bytes=20
+[M15 locks] locked=7270 unlocked=1608 unsliced=113 requested_min=0 requested_max=15 resolved_min=0 resolved_max=15 clamped=435 edits=209 ui_edits=44 align=1 requested_seen=65535 resolved_seen=65535
+[M14 slices] triggers=48193 auditions=22 index_min=0 index_max=15 frames_min=1 frames_max=65536 active_changes=40 divides=103 adds=22 deletes=21 resets=22 edit_blocks=358 edit_max=3557 slice_bytes=4 bank_bytes=66 sample_bytes=1556
+[M10 worst] blocks=2068 max=3657
+[M9 tools] rotate=25 reverse=21 copy_track=23 clear_track=13 duplicate=21 euclidean=13 randomize=17 mutate=14 reroll=12 blocks=143 dense_blocks=61 max=3657
+[M20 page] page=0 frames=6 render_us=111597 dirty_bytes=768000
+[M20 page] page=1 frames=7 render_us=120449 dirty_bytes=768000
+[M20 page] page=2 frames=5 render_us=117592 dirty_bytes=768000
+[M20 page] page=3 frames=1 render_us=115635 dirty_bytes=768000
+[M20 page] page=4 frames=9 render_us=121219 dirty_bytes=768000
+[M20 page] page=5 frames=4 render_us=117273 dirty_bytes=768000
+[M20 page] page=6 frames=3 render_us=116592 dirty_bytes=768000
+[M20 page] page=7 frames=14 render_us=117335 dirty_bytes=768000
+[M20 page] page=8 frames=5 render_us=117307 dirty_bytes=768000
+[M20 page] page=9 frames=6 render_us=112254 dirty_bytes=768000
+[M20 page] page=10 frames=13 render_us=112280 dirty_bytes=768000
+[M20 page] page=11 frames=107 render_us=124211 dirty_bytes=768000
+[M20 page] page=12 frames=12 render_us=114775 dirty_bytes=768000
+[M20 page] page=13 frames=1 render_us=106646 dirty_bytes=768000
+[M20 page] page=14 frames=13 render_us=114719 dirty_bytes=768000
+[M20 page] page=15 frames=13 render_us=117841 dirty_bytes=768000
+[M20 page] page=16 frames=2 render_us=110719 dirty_bytes=768000
+[M20 page] page=17 frames=2 render_us=128365 dirty_bytes=768000
+[M20 page] page=18 frames=1 render_us=116075 dirty_bytes=768000
+[M20 updates] slider_us=47895 slider_bytes=49152 playhead_us=44832 playhead_bytes=24576 interval_us=139311
+[M5 UI] seconds=80.757 submitted=1663 completed=1663 dirty_avg=226707 dirty_max=768000 full=224 preparation_max_us=128365 touch_errors=0 rejected=0 pads=3 steps=6 drags=70 pages=18 transport=0 bpm=0 skipped=219
+[M7 patterns] switches=129 loops=355 selections=27 copies=4 clears=3 lengths=16 solos=6 mutes=6 normal_frames=1439 dirty_avg=142447 dirty_max=471040 pattern_bytes=3106 command_bytes=12
+[M7 applied] long_to_short=1 short_to_long=1 queue_replacements=3 copies=3 clears=2 lengths=61 solos=5 mutes=4 steps=5
+[M9 UI] entries=3 copies=3 randomize=6 cell_max=16 edit_full=0
+[M12 UI] entries=16 edits=36 widgets_max=2 edit_full=0
+[M11 UI] entries=12 edits=28 widgets_max=1 edit_full=0
+[M10 UI] entries=32 edits=84 widgets_max=2 edit_full=0
+[M13 UI] entries=16 edits=30 widgets_max=3 edit_full=0
+[M14 UI] entries=95 edits=231 edit_full=0 waveform_first_us=112649 waveform_redraw_max_us=21174 slice_redraw_max_us=65260 build_count=17 build_max_us=359569 large_us=359569 cache_bytes=1440 page_max_us=124204 drag_dirty_max=292864
+[M5 memory] ps_before=24265252 ps_after=24265252 internal_before=217852 internal_after=217852 largest_before=24117236 largest_after=24117236
