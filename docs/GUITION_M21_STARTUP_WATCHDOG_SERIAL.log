@@ -1,0 +1,1511 @@
+# Production firmware guition_interp_nearest_stress; fresh esptool flash/hardware reset; UTC 2026-10-08T20:09:06.415301+00:00
+esptool v5.1.0
+Serial port COM13:
+Connecting...
+Connected to ESP32-P4 on COM13:
+Chip type:          ESP32-P4 (revision v1.3)
+Features:           Dual Core + LP Core, 400MHz
+Crystal frequency:  40MHz
+USB mode:           USB-Serial/JTAG
+MAC:                80:f1:b2:d3:cc:86
+
+Uploading stub flasher...
+Running stub flasher...
+Stub flasher running.
+Changing baud rate to 460800...
+Changed.
+
+Configuring flash size...
+Flash will be erased from 0x00002000 to 0x00007fff...
+Flash will be erased from 0x00008000 to 0x00008fff...
+Flash will be erased from 0x0000e000 to 0x0000ffff...
+Flash will be erased from 0x00010000 to 0x000ccfff...
+SHA digest in image updated.
+Compressed 21616 bytes to 13700...
+Writing at 0x00002000 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0.0% 0/13700 bytes... 
+Writing at 0x00007470 [██████████████████████████████] 100.0% 13700/13700 bytes... 
+Wrote 21616 bytes (13700 compressed) at 0x00002000 in 0.3 seconds (628.8 kbit/s).
+Hash of data verified.
+Compressed 3072 bytes to 146...
+Writing at 0x00008000 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0.0% 0/146 bytes... 
+Writing at 0x00008c00 [██████████████████████████████] 100.0% 146/146 bytes... 
+Wrote 3072 bytes (146 compressed) at 0x00008000 in 0.1 seconds (356.5 kbit/s).
+Hash of data verified.
+Compressed 8192 bytes to 47...
+Writing at 0x0000e000 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0.0% 0/47 bytes... 
+Writing at 0x00010000 [██████████████████████████████] 100.0% 47/47 bytes... 
+Wrote 8192 bytes (47 compressed) at 0x0000e000 in 0.1 seconds (655.1 kbit/s).
+Hash of data verified.
+Compressed 771264 bytes to 433090...
+Writing at 0x00010000 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0.0% 0/433090 bytes... 
+Writing at 0x0001b9db [█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   3.8% 16384/433090 bytes... 
+Writing at 0x000275f4 [██░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   7.6% 32768/433090 bytes... 
+Writing at 0x0002bd6e [███░░░░░░░░░░░░░░░░░░░░░░░░░░░]  11.3% 49152/433090 bytes... 
+Writing at 0x00031cfb [████░░░░░░░░░░░░░░░░░░░░░░░░░░]  15.1% 65536/433090 bytes... 
+Writing at 0x00036aea [█████░░░░░░░░░░░░░░░░░░░░░░░░░]  18.9% 81920/433090 bytes... 
+Writing at 0x00040983 [██████░░░░░░░░░░░░░░░░░░░░░░░░]  22.7% 98304/433090 bytes... 
+Writing at 0x0004a18e [███████░░░░░░░░░░░░░░░░░░░░░░░]  26.5% 114688/433090 bytes... 
+Writing at 0x0004ff92 [█████████░░░░░░░░░░░░░░░░░░░░░]  30.3% 131072/433090 bytes... 
+Writing at 0x00056460 [██████████░░░░░░░░░░░░░░░░░░░░]  34.0% 147456/433090 bytes... 
+Writing at 0x0005bee1 [███████████░░░░░░░░░░░░░░░░░░░]  37.8% 163840/433090 bytes... 
+Writing at 0x00061c4e [████████████░░░░░░░░░░░░░░░░░░]  41.6% 180224/433090 bytes... 
+Writing at 0x00067219 [█████████████░░░░░░░░░░░░░░░░░]  45.4% 196608/433090 bytes... 
+Writing at 0x0006cc43 [██████████████░░░░░░░░░░░░░░░░]  49.2% 212992/433090 bytes... 
+Writing at 0x00074276 [███████████████░░░░░░░░░░░░░░░]  53.0% 229376/433090 bytes... 
+Writing at 0x0007a1ae [█████████████████░░░░░░░░░░░░░]  56.7% 245760/433090 bytes... 
+Writing at 0x00080cfb [██████████████████░░░░░░░░░░░░]  60.5% 262144/433090 bytes... 
+Writing at 0x00087497 [███████████████████░░░░░░░░░░░]  64.3% 278528/433090 bytes... 
+Writing at 0x0008d8b3 [████████████████████░░░░░░░░░░]  68.1% 294912/433090 bytes... 
+Writing at 0x00093269 [█████████████████████░░░░░░░░░]  71.9% 311296/433090 bytes... 
+Writing at 0x00099792 [██████████████████████░░░░░░░░]  75.7% 327680/433090 bytes... 
+Writing at 0x0009f8a2 [███████████████████████░░░░░░░]  79.4% 344064/433090 bytes... 
+Writing at 0x000a5ac1 [████████████████████████░░░░░░]  83.2% 360448/433090 bytes... 
+Writing at 0x000ad6d2 [██████████████████████████░░░░]  87.0% 376832/433090 bytes... 
+Writing at 0x000b406b [███████████████████████████░░░]  90.8% 393216/433090 bytes... 
+Writing at 0x000ba33b [████████████████████████████░░]  94.6% 409600/433090 bytes... 
+Writing at 0x000c07a3 [█████████████████████████████░]  98.4% 425984/433090 bytes... 
+Writing at 0x000cc4c0 [██████████████████████████████] 100.0% 433090/433090 bytes... 
+Wrote 771264 bytes (433090 compressed) at 0x00010000 in 4.2 seconds (1465.2 kbit/s).
+Hash of data verified.
+
+Hard resetting via RTS pin...
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M13 fixture] voices=16 frames=65536 bytes=2097152 psram=1
+[M21 voices] mode=0 scenario=0 blocks=128 max=3906 mean=3808 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=1 blocks=128 max=3887 mean=3810 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=2 blocks=128 max=1890 mean=1801 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=3 blocks=128 max=3892 mean=3797 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=4 blocks=128 max=2169 mean=2147 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=5 blocks=128 max=1130 mean=1111 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=0 blocks=128 max=3919 mean=3834 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=1 blocks=128 max=4743 mean=4666 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=2 blocks=128 max=2402 mean=2388 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=3 blocks=128 max=4742 mean=4657 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=4 blocks=128 max=2760 mean=2738 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=5 blocks=128 max=1454 mean=1418 voices=16 frames=256 checksum=0
+E (13100) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (13100) task_wdt:  - IDLE0 (CPU 0)
+E (13100) task_wdt: Tasks currently running:
+E (13100) task_wdt: CPU 0: app_init
+E (13100) task_wdt: CPU 1: IDLE1
+E (13100) task_wdt: Aborting.
+E (13100) task_wdt: Print CPU 0 (current core) registers
+
+
+Core  0 register dump:
+MEPC    : 0x40011e90  RA      : 0x40011e8e  SP      : 0x4ff2c9e0  GP      : 0x4ff12980  
+TP      : 0x4ff2cf50  T0      : 0x616d2038  T1      : 0x7fff8000  T2      : 0x32313d73  
+S0/FP   : 0x4ff2cde0  S1      : 0xfffffb00  A0      : 0xfffffb00  A1      : 0x000001fa  
+A2      : 0x00000000  A3      : 0x00000000  A4      : 0x4844b9a4  A5      : 0x4844bb9e  
+A6      : 0x80000000  A7      : 0x00000001  S2      : 0x000000fd  S3      : 0x0000ff03  
+S4      : 0x00fd0000  S5      : 0x00000000  S6      : 0x00000000  S7      : 0x00010000  
+S8      : 0x00000002  S9      : 0x005d26b9  S10     : 0x00000004  S11     : 0x4ff2ce20  
+T3      : 0x38313431  T4      : 0x3d6e6165  T5      : 0x6d203435  T6      : 0x34313d78  
+MSTATUS : 0x00000000  MTVEC   : 0x0000002b  MCAUSE  : 0x4844b9a4  MTVAL   : 0x00000000  
+MHARTID : 0x00010000  
+
+Stack memory:
+4ff2c9e0: 0x00000000 0x0000002b 0x4844b9a4 0x00000000 0x00010000 0x4ff2c9e8 0x4ff2c9e7 0x4ff2c9ec
+4ff2ca00: 0x80000000 0x00000000 0x00000000 0x00000000 0x00000000 0x005d26b9 0x000000fd 0x00000001
+4ff2ca20: 0x00000000 0x00000f4d 0x00000000 0x00000002 0x0004f922 0x0000002b 0x00000000 0x40014b52
+4ff2ca40: 0xffffe93e 0x16c00000 0x4ff12908 0x00000002 0x5b044444 0x00001680 0xffff0000 0x00000100
+4ff2ca60: 0x4ff12908 0x00000000 0x00fe0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2ca80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff02 0x00000000 0x00200020 0x00000000
+4ff2caa0: 0x4ff12f1c 0x00000000 0x00fe0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cac0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff02 0x00000000 0x00200020 0x00000000
+4ff2cae0: 0x4ff13530 0x00000000 0x00fe0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff02 0x00000000 0x00200020 0x00000000
+4ff2cb20: 0x4ff13b44 0x00000000 0x00fe0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff02 0x00000000 0x00200020 0x00000000
+4ff2cb60: 0x4ff14158 0x00000000 0x00fe0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff02 0x00000000 0x00200020 0x00000000
+4ff2cba0: 0x4ff1476c 0x00000000 0x00fe0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cbc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff02 0x00000000 0x00200020 0x00000000
+4ff2cbe0: 0x4ff14d80 0x00000000 0x00fe0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff02 0x00000000 0x00200020 0x00000000
+4ff2cc20: 0x4ff15394 0x00000000 0x00fe0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff02 0x00000000 0x00200020 0x00000000
+4ff2cc60: 0x4ff159a8 0x00000000 0x00fe0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff02 0x00000000 0x00200020 0x00000000
+4ff2cca0: 0x4ff15fbc 0x00000000 0x00fe0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2ccc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff02 0x00000000 0x00200020 0x00000000
+4ff2cce0: 0x4ff165d0 0x00000000 0x00fe0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff02 0x00000000 0x00200020 0x00000000
+4ff2cd20: 0x4ff16be4 0x00000000 0x00fe0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff02 0x00000000 0x00200020 0x00000000
+4ff2cd60: 0x4ff171f8 0x00000000 0x00fe0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff02 0x00000000 0x00200020 0x00000000
+4ff2cda0: 0x4ff1780c 0x00000000 0x00fe0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cdc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff02 0x00000000 0x00200020 0x00000000
+
+
+
+ELF file SHA256: 9f7ea1f44
+
+Rebooting...
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0xc (SW_CPU_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4ff08366
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M13 fixture] voices=16 frames=65536 bytes=2097152 psram=1
+[M21 voices] mode=0 scenario=0 blocks=128 max=3911 mean=3807 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=1 blocks=128 max=3889 mean=3810 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=2 blocks=128 max=1890 mean=1800 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=3 blocks=128 max=3892 mean=3797 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=4 blocks=128 max=2166 mean=2144 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=5 blocks=128 max=1132 mean=1112 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=0 blocks=128 max=3918 mean=3834 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=1 blocks=128 max=4755 mean=4666 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=2 blocks=128 max=2406 mean=2386 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=3 blocks=128 max=4732 mean=4658 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=4 blocks=128 max=2768 mean=2734 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=5 blocks=128 max=1490 mean=1419 voices=16 frames=256 checksum=0
+E (13094) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (13094) task_wdt:  - IDLE0 (CPU 0)
+E (13094) task_wdt: Tasks currently running:
+E (13094) task_wdt: CPU 0: app_init
+E (13094) task_wdt: CPU 1: IDLE1
+E (13094) task_wdt: Aborting.
+E (13094) task_wdt: Print CPU 0 (current core) registers
+
+
+Core  0 register dump:
+MEPC    : 0x40011de6  RA      : 0x40014b52  SP      : 0x4ff2c9e0  GP      : 0x4ff12980  
+TP      : 0x4ff2cf50  T0      : 0x616d2038  T1      : 0x7fff8000  T2      : 0x32313d73  
+S0/FP   : 0x00000000  S1      : 0x0000002a  A0      : 0x4ff2cc20  A1      : 0x00000002  
+A2      : 0x00000020  A3      : 0x00000020  A4      : 0x00000bdb  A5      : 0x00000001  
+A6      : 0x80000000  A7      : 0x00000001  S2      : 0x00050876  S3      : 0x00000002  
+S4      : 0x00000000  S5      : 0x00000f54  S6      : 0x00000000  S7      : 0x00000001  
+S8      : 0x00000041  S9      : 0x005d1ae5  S10     : 0x00000004  S11     : 0x4ff2cc60  
+T3      : 0x39313431  T4      : 0x3d6e6165  T5      : 0x6d203039  T6      : 0x34313d78  
+MSTATUS : 0x00000000  MTVEC   : 0x0000002c  MCAUSE  : 0x4834b9a4  MTVAL   : 0x00000000  
+MHARTID : 0x00010000  
+
+Stack memory:
+4ff2c9e0: 0x00000000 0x0000002c 0x4834b9a4 0x00000000 0x00010000 0x4ff2c9e8 0x4ff2c9e7 0x4ff2c9ec
+4ff2ca00: 0x80000000 0x00000000 0x00000000 0x00000000 0x00000000 0x005d1ae5 0x00000041 0x00000001
+4ff2ca20: 0x00000000 0x00000f54 0x00000000 0x00000002 0x00050876 0x0000002a 0x00000000 0x40014b52
+4ff2ca40: 0xffffe93e 0x16c00000 0x4ff12908 0x00000002 0x5b044444 0xfffff73b 0xffff0000 0x00000100
+4ff2ca60: 0x4ff12908 0x00000000 0x00420000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2ca80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ffbe 0x00000000 0x00200020 0x00000000
+4ff2caa0: 0x4ff12f1c 0x00000000 0x00420000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cac0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ffbe 0x00000000 0x00200020 0x00000000
+4ff2cae0: 0x4ff13530 0x00000000 0x00420000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ffbe 0x00000000 0x00200020 0x00000000
+4ff2cb20: 0x4ff13b44 0x00000000 0x00420000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ffbe 0x00000000 0x00200020 0x00000000
+4ff2cb60: 0x4ff14158 0x00000000 0x00420000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ffbe 0x00000000 0x00200020 0x00000000
+4ff2cba0: 0x4ff1476c 0x00000000 0x00420000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cbc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ffbe 0x00000000 0x00200020 0x00000000
+4ff2cbe0: 0x4ff14d80 0x00000000 0x00420000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ffbe 0x00000000 0x00200020 0x00000000
+4ff2cc20: 0x4ff15394 0x00000000 0x00410000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ffbf 0x00000000 0x00200020 0x00000000
+4ff2cc60: 0x4ff159a8 0x00000000 0x00410000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ffbf 0x00000000 0x00200020 0x00000000
+4ff2cca0: 0x4ff15fbc 0x00000000 0x00410000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2ccc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ffbf 0x00000000 0x00200020 0x00000000
+4ff2cce0: 0x4ff165d0 0x00000000 0x00410000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ffbf 0x00000000 0x00200020 0x00000000
+4ff2cd20: 0x4ff16be4 0x00000000 0x00410000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ffbf 0x00000000 0x00200020 0x00000000
+4ff2cd60: 0x4ff171f8 0x00000000 0x00410000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ffbf 0x00000000 0x00200020 0x00000000
+4ff2cda0: 0x4ff1780c 0x00000000 0x00410000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cdc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ffbf 0x00000000 0x00200020 0x00000000
+
+
+
+ELF file SHA256: 9f7ea1f44
+
+Rebooting...
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0xc (SW_CPU_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4ff08366
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M13 fixture] voices=16 frames=65536 bytes=2097152 psram=1
+[M21 voices] mode=0 scenario=0 blocks=128 max=3904 mean=3809 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=1 blocks=128 max=3887 mean=3811 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=2 blocks=128 max=1897 mean=1801 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=3 blocks=128 max=3879 mean=3798 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=4 blocks=128 max=2167 mean=2148 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=5 blocks=128 max=1154 mean=1112 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=0 blocks=128 max=3917 mean=3834 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=1 blocks=128 max=4742 mean=4668 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=2 blocks=128 max=2410 mean=2387 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=3 blocks=128 max=4736 mean=4661 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=4 blocks=128 max=2749 mean=2728 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=5 blocks=128 max=1496 mean=1419 voices=16 frames=256 checksum=0
+E (13093) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (13093) task_wdt:  - IDLE0 (CPU 0)
+E (13093) task_wdt: Tasks currently running:
+E (13093) task_wdt: CPU 0: app_init
+E (13093) task_wdt: CPU 1: IDLE1
+E (13093) task_wdt: Aborting.
+E (13093) task_wdt: Print CPU 0 (current core) registers
+
+
+Core  0 register dump:
+MEPC    : 0x40014b4e  RA      : 0x40014b52  SP      : 0x4ff2ca40  GP      : 0x4ff12980  
+TP      : 0x4ff2cf50  T0      : 0x616d2038  T1      : 0x7fff8000  T2      : 0x32313d73  
+S0/FP   : 0x00000000  S1      : 0x0000002a  A0      : 0x4ff2cc20  A1      : 0x00000002  
+A2      : 0x00000020  A3      : 0x00000005  A4      : 0xfffffdbc  A5      : 0x00000005  
+A6      : 0x80000000  A7      : 0x00000001  S2      : 0x000508a0  S3      : 0x00000002  
+S4      : 0x00000000  S5      : 0x00000f4e  S6      : 0x00000000  S7      : 0x00000001  
+S8      : 0x00000004  S9      : 0x005d1e82  S10     : 0x00000004  S11     : 0x4ff2cc60  
+T3      : 0x39313431  T4      : 0x3d6e6165  T5      : 0x6d203639  T6      : 0x34313d78  
+MSTATUS : 0xffffe93e  MTVEC   : 0x16c00000  MCAUSE  : 0x4ff12908  MTVAL   : 0x00000002  
+MHARTID : 0x5b044444  
+
+Stack memory:
+4ff2ca40: 0xffffe93e 0x16c00000 0x4ff12908 0x00000002 0x5b044444 0xffffffd0 0xffff0000 0x00000100
+4ff2ca60: 0x4ff12908 0x00000000 0x00050000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2ca80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fffb 0x00000000 0x00200005 0x00000000
+4ff2caa0: 0x4ff12f1c 0x00000000 0x00050000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cac0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fffb 0x00000000 0x00200005 0x00000000
+4ff2cae0: 0x4ff13530 0x00000000 0x00050000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fffb 0x00000000 0x00200005 0x00000000
+4ff2cb20: 0x4ff13b44 0x00000000 0x00050000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fffb 0x00000000 0x00200005 0x00000000
+4ff2cb60: 0x4ff14158 0x00000000 0x00050000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fffb 0x00000000 0x00200005 0x00000000
+4ff2cba0: 0x4ff1476c 0x00000000 0x00050000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cbc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fffb 0x00000000 0x00200005 0x00000000
+4ff2cbe0: 0x4ff14d80 0x00000000 0x00050000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fffb 0x00000000 0x00200005 0x00000000
+4ff2cc20: 0x4ff15394 0x00000000 0x00040000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fffc 0x00000000 0x00200004 0x00000000
+4ff2cc60: 0x4ff159a8 0x00000000 0x00040000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fffc 0x00000000 0x00200004 0x00000000
+4ff2cca0: 0x4ff15fbc 0x00000000 0x00040000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2ccc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fffc 0x00000000 0x00200004 0x00000000
+4ff2cce0: 0x4ff165d0 0x00000000 0x00040000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fffc 0x00000000 0x00200004 0x00000000
+4ff2cd20: 0x4ff16be4 0x00000000 0x00040000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fffc 0x00000000 0x00200004 0x00000000
+4ff2cd60: 0x4ff171f8 0x00000000 0x00040000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fffc 0x00000000 0x00200004 0x00000000
+4ff2cda0: 0x4ff1780c 0x00000000 0x00040000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cdc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fffc 0x00000000 0x00200004 0x00000000
+4ff2cde0: 0x4ff17e20 0x00000000 0x00040000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2ce00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fffc 0x00000000 0x00200004 0x00000000
+4ff2ce20: 0x4ff18434 0x00000000 0x00040000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+
+
+
+ELF file SHA256: 9f7ea1f44
+
+Rebooting...
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0xc (SW_CPU_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4ff08366
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M13 fixture] voices=16 frames=65536 bytes=2097152 psram=1
+[M21 voices] mode=0 scenario=0 blocks=128 max=3905 mean=3809 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=1 blocks=128 max=3887 mean=3810 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=2 blocks=128 max=1893 mean=1800 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=3 blocks=128 max=3890 mean=3798 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=4 blocks=128 max=2168 mean=2148 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=5 blocks=128 max=1132 mean=1113 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=0 blocks=128 max=3914 mean=3834 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=1 blocks=128 max=4745 mean=4668 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=2 blocks=128 max=2406 mean=2387 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=3 blocks=128 max=4738 mean=4660 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=4 blocks=128 max=2751 mean=2732 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=5 blocks=128 max=1454 mean=1419 voices=16 frames=256 checksum=0
+E (13093) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (13093) task_wdt:  - IDLE0 (CPU 0)
+E (13093) task_wdt: Tasks currently running:
+E (13093) task_wdt: CPU 0: app_init
+E (13093) task_wdt: CPU 1: IDLE1
+E (13093) task_wdt: Aborting.
+E (13093) task_wdt: Print CPU 0 (current core) registers
+
+
+Core  0 register dump:
+MEPC    : 0x40011e90  RA      : 0x40011e8e  SP      : 0x4ff2c9e0  GP      : 0x4ff12980  
+TP      : 0x4ff2cf50  T0      : 0x616d2038  T1      : 0x7fff8000  T2      : 0x32313d73  
+S0/FP   : 0x4ff2cde0  S1      : 0xffffefc0  A0      : 0xffffefc0  A1      : 0x000001d6  
+A2      : 0x00000000  A3      : 0x00000000  A4      : 0x4844b9a4  A5      : 0x4844bb7a  
+A6      : 0x80000000  A7      : 0x00000001  S2      : 0x000000eb  S3      : 0x0000ff15  
+S4      : 0x00eb0000  S5      : 0x00000000  S6      : 0x00000000  S7      : 0x00010000  
+S8      : 0x00000002  S9      : 0x005d1074  S10     : 0x00000004  S11     : 0x4ff2ce20  
+T3      : 0x39313431  T4      : 0x3d6e6165  T5      : 0x6d203435  T6      : 0x34313d78  
+MSTATUS : 0x00000000  MTVEC   : 0x00000035  MCAUSE  : 0x4844b9a4  MTVAL   : 0x00000000  
+MHARTID : 0x00010000  
+
+Stack memory:
+4ff2c9e0: 0x00000000 0x00000035 0x4844b9a4 0x00000000 0x00010000 0x4ff2c9e8 0x4ff2c9e7 0x4ff2c9ec
+4ff2ca00: 0x80000000 0x00000000 0x00000000 0x00000000 0x00000000 0x005d1074 0x000000eb 0x00000001
+4ff2ca20: 0x00000000 0x00000f66 0x00000000 0x00000002 0x0004f969 0x0000002b 0x00000000 0x40014b52
+4ff2ca40: 0xffffe93e 0x16c00000 0x4ff12908 0x00000002 0x5b044444 0xfffff9e0 0xffff0000 0x00000100
+4ff2ca60: 0x4ff12908 0x00000000 0x00ec0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2ca80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff14 0x00000000 0x00200020 0x00000000
+4ff2caa0: 0x4ff12f1c 0x00000000 0x00ec0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cac0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff14 0x00000000 0x00200020 0x00000000
+4ff2cae0: 0x4ff13530 0x00000000 0x00ec0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff14 0x00000000 0x00200020 0x00000000
+4ff2cb20: 0x4ff13b44 0x00000000 0x00ec0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff14 0x00000000 0x00200020 0x00000000
+4ff2cb60: 0x4ff14158 0x00000000 0x00ec0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff14 0x00000000 0x00200020 0x00000000
+4ff2cba0: 0x4ff1476c 0x00000000 0x00ec0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cbc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff14 0x00000000 0x00200020 0x00000000
+4ff2cbe0: 0x4ff14d80 0x00000000 0x00ec0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff14 0x00000000 0x00200020 0x00000000
+4ff2cc20: 0x4ff15394 0x00000000 0x00ec0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff14 0x00000000 0x00200020 0x00000000
+4ff2cc60: 0x4ff159a8 0x00000000 0x00ec0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff14 0x00000000 0x00200020 0x00000000
+4ff2cca0: 0x4ff15fbc 0x00000000 0x00ec0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2ccc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff14 0x00000000 0x00200020 0x00000000
+4ff2cce0: 0x4ff165d0 0x00000000 0x00ec0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff14 0x00000000 0x00200020 0x00000000
+4ff2cd20: 0x4ff16be4 0x00000000 0x00ec0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff14 0x00000000 0x00200020 0x00000000
+4ff2cd60: 0x4ff171f8 0x00000000 0x00ec0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff14 0x00000000 0x00200020 0x00000000
+4ff2cda0: 0x4ff1780c 0x00000000 0x00ec0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cdc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff14 0x00000000 0x00200020 0x00000000
+
+
+
+ELF file SHA256: 9f7ea1f44
+
+Rebooting...
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0xc (SW_CPU_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4ff08366
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M13 fixture] voices=16 frames=65536 bytes=2097152 psram=1
+[M21 voices] mode=0 scenario=0 blocks=128 max=3906 mean=3807 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=1 blocks=128 max=3887 mean=3810 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=2 blocks=128 max=1894 mean=1801 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=3 blocks=128 max=3884 mean=3797 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=4 blocks=128 max=2168 mean=2148 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=5 blocks=128 max=1131 mean=1111 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=0 blocks=128 max=3920 mean=3835 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=1 blocks=128 max=4743 mean=4665 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=2 blocks=128 max=2405 mean=2387 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=3 blocks=128 max=4742 mean=4658 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=4 blocks=128 max=2761 mean=2738 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=5 blocks=128 max=1464 mean=1419 voices=16 frames=256 checksum=0
+E (13094) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (13094) task_wdt:  - IDLE0 (CPU 0)
+E (13094) task_wdt: Tasks currently running:
+E (13094) task_wdt: CPU 0: app_init
+E (13094) task_wdt: CPU 1: IDLE1
+E (13094) task_wdt: Aborting.
+E (13094) task_wdt: Print CPU 0 (current core) registers
+
+
+Core  0 register dump:
+MEPC    : 0x4fc15434  RA      : 0x40011d38  SP      : 0x4ff2ca10  GP      : 0x4ff12980  
+TP      : 0x4ff2cf50  T0      : 0x616d2038  T1      : 0x00000000  T2      : 0x32313d73  
+S0/FP   : 0x4ff2cde0  S1      : 0x00010000  A0      : 0x0000ffff  A1      : 0x0000ffff  
+A2      : 0x00000000  A3      : 0x00000000  A4      : 0x00000000  A5      : 0x00000000  
+A6      : 0xffff0000  A7      : 0x000000ff  S2      : 0x00000000  S3      : 0x00000000  
+S4      : 0x00010000  S5      : 0x00000020  S6      : 0x4ff17e20  S7      : 0x00000001  
+S8      : 0x0000000e  S9      : 0x4ff2cde0  S10     : 0x00000003  S11     : 0xffff0000  
+T3      : 0x39313431  T4      : 0x3d6e6165  T5      : 0x6d203436  T6      : 0x34313d78  
+MSTATUS : 0x00000000  MTVEC   : 0x005d0f79  MCAUSE  : 0xffff0000  MTVAL   : 0x00000100  
+MHARTID : 0x00000000  
+
+Stack memory:
+4ff2ca10: 0x00000000 0x005d0f79 0xffff0000 0x00000100 0x00000000 0x00000f4f 0x00000000 0x00000002
+4ff2ca30: 0x00050848 0x0000002a 0x00000000 0x40014ace 0xffffe93e 0x16c00000 0x4ff12908 0x00000002
+4ff2ca50: 0x5b044444 0x00000000 0xffff0000 0x00000100 0x4ff12908 0x00000000 0x00000000 0x00000000
+4ff2ca70: 0x00010000 0x00000000 0x00000001 0x0100ffff 0x00000000 0x00000000 0x00010000 0x00000000
+4ff2ca90: 0x00010000 0x00000000 0x00200000 0x00000000 0x4ff12f1c 0x00000000 0x00000000 0x00000000
+4ff2cab0: 0x00010000 0x00000000 0x00000001 0x0100ffff 0x00000000 0x00000000 0x00010000 0x00000000
+4ff2cad0: 0x00010000 0x00000000 0x00200000 0x00000000 0x4ff13530 0x00000000 0x00000000 0x00000000
+4ff2caf0: 0x00010000 0x00000000 0x00000001 0x0100ffff 0x00000000 0x00000000 0x00010000 0x00000000
+4ff2cb10: 0x00010000 0x00000000 0x00200000 0x00000000 0x4ff13b44 0x00000000 0x00000000 0x00000000
+4ff2cb30: 0x00010000 0x00000000 0x00000001 0x0100ffff 0x00000000 0x00000000 0x00010000 0x00000000
+4ff2cb50: 0x00010000 0x00000000 0x00200000 0x00000000 0x4ff14158 0x00000000 0x00000000 0x00000000
+4ff2cb70: 0x00010000 0x00000000 0x00000001 0x0100ffff 0x00000000 0x00000000 0x00010000 0x00000000
+4ff2cb90: 0x00010000 0x00000000 0x00200000 0x00000000 0x4ff1476c 0x00000000 0x00000000 0x00000000
+4ff2cbb0: 0x00010000 0x00000000 0x00000001 0x0100ffff 0x00000000 0x00000000 0x00010000 0x00000000
+4ff2cbd0: 0x00010000 0x00000000 0x00200000 0x00000000 0x4ff14d80 0x00000000 0x00000000 0x00000000
+4ff2cbf0: 0x00010000 0x00000000 0x00000001 0x0100ffff 0x00000000 0x00000000 0x00010000 0x00000000
+4ff2cc10: 0x00010000 0x00000000 0x00200000 0x00000000 0x4ff15394 0x00000000 0x00000000 0x00000000
+4ff2cc30: 0x00010000 0x00000000 0x00000001 0x0100ffff 0x00000000 0x00000000 0x00010000 0x00000000
+4ff2cc50: 0x00010000 0x00000000 0x00200000 0x00000000 0x4ff159a8 0x00000000 0x00000000 0x00000000
+4ff2cc70: 0x00010000 0x00000000 0x00000001 0x0100ffff 0x00000000 0x00000000 0x00010000 0x00000000
+4ff2cc90: 0x00010000 0x00000000 0x00200000 0x00000000 0x4ff15fbc 0x00000000 0x00000000 0x00000000
+4ff2ccb0: 0x00010000 0x00000000 0x00000001 0x0100ffff 0x00000000 0x00000000 0x00010000 0x00000000
+4ff2ccd0: 0x00010000 0x00000000 0x00200000 0x00000000 0x4ff165d0 0x00000000 0x00000000 0x00000000
+4ff2ccf0: 0x00010000 0x00000000 0x00000001 0x0100ffff 0x00000000 0x00000000 0x00010000 0x00000000
+4ff2cd10: 0x00010000 0x00000000 0x00200000 0x00000000 0x4ff16be4 0x00000000 0x00000000 0x00000000
+4ff2cd30: 0x00010000 0x00000000 0x00000001 0x0100ffff 0x00000000 0x00000000 0x00010000 0x00000000
+4ff2cd50: 0x00010000 0x00000000 0x00200000 0x00000000 0x4ff171f8 0x00000000 0x00000000 0x00000000
+4ff2cd70: 0x00010000 0x00000000 0x00000001 0x0100ffff 0x00000000 0x00000000 0x00010000 0x00000000
+4ff2cd90: 0x00010000 0x00000000 0x00200000 0x00000000 0x4ff1780c 0x00000000 0x00000000 0x00000000
+4ff2cdb0: 0x00010000 0x00000000 0x00000001 0x0100ffff 0x00000000 0x00000000 0x00010000 0x00000000
+4ff2cdd0: 0x00010000 0x00000000 0x00200000 0x00000000 0x4ff17e20 0x00000000 0x00000000 0x00000000
+4ff2cdf0: 0x00010000 0x00000000 0x00000000 0x0100ffff 0x00000000 0x00000000 0x00010000 0x00000000
+
+
+
+ELF file SHA256: 9f7ea1f44
+
+Rebooting...
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0xc (SW_CPU_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4ff08366
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M13 fixture] voices=16 frames=65536 bytes=2097152 psram=1
+[M21 voices] mode=0 scenario=0 blocks=128 max=3908 mean=3808 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=1 blocks=128 max=3889 mean=3810 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=2 blocks=128 max=1888 mean=1801 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=3 blocks=128 max=3885 mean=3797 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=4 blocks=128 max=2174 mean=2148 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=5 blocks=128 max=1132 mean=1113 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=0 blocks=128 max=3917 mean=3834 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=1 blocks=128 max=4741 mean=4665 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=2 blocks=128 max=2407 mean=2388 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=3 blocks=128 max=4743 mean=4658 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=4 blocks=128 max=2757 mean=2733 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=5 blocks=128 max=1472 mean=1420 voices=16 frames=256 checksum=0
+E (13093) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (13093) task_wdt:  - IDLE0 (CPU 0)
+E (13093) task_wdt: Tasks currently running:
+E (13093) task_wdt: CPU 0: app_init
+E (13093) task_wdt: CPU 1: IDLE1
+E (13093) task_wdt: Aborting.
+E (13093) task_wdt: Print CPU 0 (current core) registers
+
+
+Core  0 register dump:
+MEPC    : 0x40011e90  RA      : 0x40011e8e  SP      : 0x4ff2c9e0  GP      : 0x4ff12980  
+TP      : 0x4ff2cf50  T0      : 0x616d2038  T1      : 0x7fff8000  T2      : 0x32313d73  
+S0/FP   : 0x4ff2cb60  S1      : 0x00001720  A0      : 0x00001720  A1      : 0x000001ca  
+A2      : 0x00000000  A3      : 0x00000000  A4      : 0x4830b9a4  A5      : 0x4830bb6e  
+A6      : 0x80000000  A7      : 0x00000001  S2      : 0x000000e5  S3      : 0x0000ff1b  
+S4      : 0x00e50000  S5      : 0x00000000  S6      : 0x00000000  S7      : 0x00010000  
+S8      : 0x00000002  S9      : 0x005d10ed  S10     : 0x00000004  S11     : 0x4ff2cba0  
+T3      : 0x30323431  T4      : 0x3d6e6165  T5      : 0x6d203237  T6      : 0x34313d78  
+MSTATUS : 0x00010000  MTVEC   : 0x00000020  MCAUSE  : 0x4830b9a4  MTVAL   : 0x00000000  
+MHARTID : 0x00010000  
+
+Stack memory:
+4ff2c9e0: 0x00010000 0x00000020 0x4830b9a4 0x00000000 0x00010000 0x4ff2c9e8 0x4ff2c9e7 0x4ff2c9ec
+4ff2ca00: 0x30323431 0x00000000 0x00000000 0x00000000 0x00000000 0x005d10ed 0x000000e5 0x00000001
+4ff2ca20: 0x00000000 0x00000f53 0x00000000 0x00000002 0x0004face 0x0000002b 0x00000000 0x40014b52
+4ff2ca40: 0xffffe93e 0x16c00000 0x4ff12908 0x00000002 0x5b044444 0xffffe200 0xffff0000 0x00000100
+4ff2ca60: 0x4ff12908 0x00000000 0x00e60000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2ca80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff1a 0x00000000 0x00200020 0x00000000
+4ff2caa0: 0x4ff12f1c 0x00000000 0x00e60000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cac0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff1a 0x00000000 0x00200020 0x00000000
+4ff2cae0: 0x4ff13530 0x00000000 0x00e60000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff1a 0x00000000 0x00200020 0x00000000
+4ff2cb20: 0x4ff13b44 0x00000000 0x00e60000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff1a 0x00000000 0x00200020 0x00000000
+4ff2cb60: 0x4ff14158 0x00000000 0x00e50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff1b 0x00000000 0x00200020 0x00000000
+4ff2cba0: 0x4ff1476c 0x00000000 0x00e50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cbc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff1b 0x00000000 0x00200020 0x00000000
+4ff2cbe0: 0x4ff14d80 0x00000000 0x00e50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff1b 0x00000000 0x00200020 0x00000000
+4ff2cc20: 0x4ff15394 0x00000000 0x00e50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff1b 0x00000000 0x00200020 0x00000000
+4ff2cc60: 0x4ff159a8 0x00000000 0x00e50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff1b 0x00000000 0x00200020 0x00000000
+4ff2cca0: 0x4ff15fbc 0x00000000 0x00e50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2ccc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff1b 0x00000000 0x00200020 0x00000000
+4ff2cce0: 0x4ff165d0 0x00000000 0x00e50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff1b 0x00000000 0x00200020 0x00000000
+4ff2cd20: 0x4ff16be4 0x00000000 0x00e50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff1b 0x00000000 0x00200020 0x00000000
+4ff2cd60: 0x4ff171f8 0x00000000 0x00e50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff1b 0x00000000 0x00200020 0x00000000
+4ff2cda0: 0x4ff1780c 0x00000000 0x00e50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cdc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff1b 0x00000000 0x00200020 0x00000000
+
+
+
+ELF file SHA256: 9f7ea1f44
+
+Rebooting...
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0xc (SW_CPU_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4ff08366
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M13 fixture] voices=16 frames=65536 bytes=2097152 psram=1
+[M21 voices] mode=0 scenario=0 blocks=128 max=3902 mean=3808 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=1 blocks=128 max=3892 mean=3810 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=2 blocks=128 max=1895 mean=1800 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=3 blocks=128 max=3891 mean=3797 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=4 blocks=128 max=2168 mean=2147 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=5 blocks=128 max=1131 mean=1111 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=0 blocks=128 max=3912 mean=3835 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=1 blocks=128 max=4745 mean=4667 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=2 blocks=128 max=2405 mean=2388 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=3 blocks=128 max=4738 mean=4658 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=4 blocks=128 max=2760 mean=2734 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=5 blocks=128 max=1475 mean=1419 voices=16 frames=256 checksum=0
+E (13094) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (13094) task_wdt:  - IDLE0 (CPU 0)
+E (13094) task_wdt: Tasks currently running:
+E (13094) task_wdt: CPU 0: app_init
+E (13094) task_wdt: CPU 1: IDLE1
+E (13094) task_wdt: Aborting.
+E (13094) task_wdt: Print CPU 0 (current core) registers
+
+
+Core  0 register dump:
+MEPC    : 0x40011e90  RA      : 0x40011e8e  SP      : 0x4ff2c9e0  GP      : 0x4ff12980  
+TP      : 0x4ff2cf50  T0      : 0x616d2038  T1      : 0x7fff8000  T2      : 0x32313d73  
+S0/FP   : 0x4ff2cde0  S1      : 0x00001b80  A0      : 0x00001b80  A1      : 0x0000001c  
+A2      : 0x00000000  A3      : 0x00000000  A4      : 0x4844b9a4  A5      : 0x4844b9c0  
+A6      : 0x80000000  A7      : 0x00000001  S2      : 0x0000000e  S3      : 0x0000fff2  
+S4      : 0x000e0000  S5      : 0x00000000  S6      : 0x00000000  S7      : 0x00010000  
+S8      : 0x00000002  S9      : 0x005d1de1  S10     : 0x00000004  S11     : 0x4ff2ce20  
+T3      : 0x39313431  T4      : 0x3d6e6165  T5      : 0x6d203537  T6      : 0x34313d78  
+MSTATUS : 0x00000000  MTVEC   : 0x00000031  MCAUSE  : 0x4844b9a4  MTVAL   : 0x00000000  
+MHARTID : 0x00010000  
+
+Stack memory:
+4ff2c9e0: 0x00000000 0x00000031 0x4844b9a4 0x00000000 0x00010000 0x4ff2c9e8 0x4ff2c9e7 0x4ff2c9ec
+4ff2ca00: 0x80000000 0x00000000 0x00000000 0x00000000 0x00000000 0x005d1de1 0x0000000e 0x00000001
+4ff2ca20: 0x00000000 0x00000f4c 0x00000000 0x00000002 0x0005085a 0x0000002a 0x00000000 0x40014b52
+4ff2ca40: 0xffffe93e 0x16c00000 0x4ff12908 0x00000002 0x5b044444 0x00000dc1 0xffff0000 0x00000100
+4ff2ca60: 0x4ff12908 0x00000000 0x000f0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2ca80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fff1 0x00000000 0x0020000f 0x00000000
+4ff2caa0: 0x4ff12f1c 0x00000000 0x000f0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cac0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fff1 0x00000000 0x0020000f 0x00000000
+4ff2cae0: 0x4ff13530 0x00000000 0x000f0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fff1 0x00000000 0x0020000f 0x00000000
+4ff2cb20: 0x4ff13b44 0x00000000 0x000f0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fff1 0x00000000 0x0020000f 0x00000000
+4ff2cb60: 0x4ff14158 0x00000000 0x000f0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fff1 0x00000000 0x0020000f 0x00000000
+4ff2cba0: 0x4ff1476c 0x00000000 0x000f0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cbc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fff1 0x00000000 0x0020000f 0x00000000
+4ff2cbe0: 0x4ff14d80 0x00000000 0x000f0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fff1 0x00000000 0x0020000f 0x00000000
+4ff2cc20: 0x4ff15394 0x00000000 0x000f0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fff1 0x00000000 0x0020000f 0x00000000
+4ff2cc60: 0x4ff159a8 0x00000000 0x000f0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fff1 0x00000000 0x0020000f 0x00000000
+4ff2cca0: 0x4ff15fbc 0x00000000 0x000f0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2ccc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fff1 0x00000000 0x0020000f 0x00000000
+4ff2cce0: 0x4ff165d0 0x00000000 0x000f0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fff1 0x00000000 0x0020000f 0x00000000
+4ff2cd20: 0x4ff16be4 0x00000000 0x000f0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fff1 0x00000000 0x0020000f 0x00000000
+4ff2cd60: 0x4ff171f8 0x00000000 0x000f0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fff1 0x00000000 0x0020000f 0x00000000
+4ff2cda0: 0x4ff1780c 0x00000000 0x000f0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cdc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fff1 0x00000000 0x0020000f 0x00000000
+
+
+
+ELF file SHA256: 9f7ea1f44
+
+Rebooting...
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0xc (SW_CPU_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4ff08366
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M13 fixture] voices=16 frames=65536 bytes=2097152 psram=1
+[M21 voices] mode=0 scenario=0 blocks=128 max=3909 mean=3809 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=1 blocks=128 max=3890 mean=3811 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=2 blocks=128 max=1900 mean=1801 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=3 blocks=128 max=3881 mean=3798 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=4 blocks=128 max=2169 mean=2148 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=5 blocks=128 max=1136 mean=1112 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=0 blocks=128 max=3919 mean=3835 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=1 blocks=128 max=4747 mean=4668 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=2 blocks=128 max=2406 mean=2387 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=3 blocks=128 max=4734 mean=4661 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=4 blocks=128 max=2750 mean=2726 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=5 blocks=128 max=1471 mean=1419 voices=16 frames=256 checksum=0
+E (13094) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (13094) task_wdt:  - IDLE0 (CPU 0)
+E (13094) task_wdt: Tasks currently running:
+E (13094) task_wdt: CPU 0: app_init
+E (13094) task_wdt: CPU 1: IDLE1
+E (13094) task_wdt: Aborting.
+E (13094) task_wdt: Print CPU 0 (current core) registers
+
+
+Core  0 register dump:
+MEPC    : 0x40011e90  RA      : 0x40011e8e  SP      : 0x4ff2c9e0  GP      : 0x4ff12980  
+TP      : 0x4ff2cf50  T0      : 0x616d2038  T1      : 0x7fff8000  T2      : 0x32313d73  
+S0/FP   : 0x4ff2cc60  S1      : 0xffffe5c0  A0      : 0xffffe5c0  A1      : 0x00000006  
+A2      : 0x00000000  A3      : 0x00000000  A4      : 0x4838b9a4  A5      : 0x4838b9aa  
+A6      : 0x80000000  A7      : 0x00000001  S2      : 0x00000003  S3      : 0x0000fffd  
+S4      : 0x00030000  S5      : 0x00000000  S6      : 0x00000000  S7      : 0x00010000  
+S8      : 0x00000002  S9      : 0x005d1ea1  S10     : 0x00000004  S11     : 0x4ff2cca0  
+T3      : 0x39313431  T4      : 0x3d6e6165  T5      : 0x6d203137  T6      : 0x34313d78  
+MSTATUS : 0x00000000  MTVEC   : 0x0000002d  MCAUSE  : 0x4838b9a4  MTVAL   : 0x00000000  
+MHARTID : 0x00010000  
+
+Stack memory:
+4ff2c9e0: 0x00000000 0x0000002d 0x4838b9a4 0x00000000 0x00010000 0x4ff2c9e8 0x4ff2c9e7 0x4ff2c9ec
+4ff2ca00: 0x80000000 0x00000000 0x00000000 0x00000000 0x00000000 0x005d1ea1 0x00000003 0x00000001
+4ff2ca20: 0x00000000 0x00000f4c 0x00000000 0x00000002 0x000508b0 0x0000002a 0x00000000 0x40014b52
+4ff2ca40: 0xffffe93e 0x16c00000 0x4ff12908 0x00000002 0x5b044444 0x0000017e 0xffff0000 0x00000100
+4ff2ca60: 0x4ff12908 0x00000000 0x00040000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2ca80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fffc 0x00000000 0x00200004 0x00000000
+4ff2caa0: 0x4ff12f1c 0x00000000 0x00040000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cac0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fffc 0x00000000 0x00200004 0x00000000
+4ff2cae0: 0x4ff13530 0x00000000 0x00040000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fffc 0x00000000 0x00200004 0x00000000
+4ff2cb20: 0x4ff13b44 0x00000000 0x00040000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fffc 0x00000000 0x00200004 0x00000000
+4ff2cb60: 0x4ff14158 0x00000000 0x00040000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fffc 0x00000000 0x00200004 0x00000000
+4ff2cba0: 0x4ff1476c 0x00000000 0x00040000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cbc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fffc 0x00000000 0x00200004 0x00000000
+4ff2cbe0: 0x4ff14d80 0x00000000 0x00040000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fffc 0x00000000 0x00200004 0x00000000
+4ff2cc20: 0x4ff15394 0x00000000 0x00040000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fffc 0x00000000 0x00200004 0x00000000
+4ff2cc60: 0x4ff159a8 0x00000000 0x00030000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fffd 0x00000000 0x00200003 0x00000000
+4ff2cca0: 0x4ff15fbc 0x00000000 0x00030000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2ccc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fffd 0x00000000 0x00200003 0x00000000
+4ff2cce0: 0x4ff165d0 0x00000000 0x00030000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fffd 0x00000000 0x00200003 0x00000000
+4ff2cd20: 0x4ff16be4 0x00000000 0x00030000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fffd 0x00000000 0x00200003 0x00000000
+4ff2cd60: 0x4ff171f8 0x00000000 0x00030000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fffd 0x00000000 0x00200003 0x00000000
+4ff2cda0: 0x4ff1780c 0x00000000 0x00030000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cdc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000fffd 0x00000000 0x00200003 0x00000000
+
+
+
+ELF file SHA256: 9f7ea1f44
+
+Rebooting...
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0xc (SW_CPU_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4ff08366
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M13 fixture] voices=16 frames=65536 bytes=2097152 psram=1
+[M21 voices] mode=0 scenario=0 blocks=128 max=3903 mean=3809 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=1 blocks=128 max=3889 mean=3810 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=2 blocks=128 max=1885 mean=1801 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=3 blocks=128 max=3886 mean=3798 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=4 blocks=128 max=2167 mean=2142 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=5 blocks=128 max=1131 mean=1112 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=0 blocks=128 max=3916 mean=3836 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=1 blocks=128 max=4743 mean=4668 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=2 blocks=128 max=2405 mean=2387 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=3 blocks=128 max=4738 mean=4660 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=4 blocks=128 max=2755 mean=2734 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=5 blocks=128 max=1453 mean=1419 voices=16 frames=256 checksum=0
+E (13094) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (13094) task_wdt:  - IDLE0 (CPU 0)
+E (13094) task_wdt: Tasks currently running:
+E (13094) task_wdt: CPU 0: app_init
+E (13094) task_wdt: CPU 1: IDLE1
+E (13094) task_wdt: Aborting.
+E (13094) task_wdt: Print CPU 0 (current core) registers
+
+
+Core  0 register dump:
+MEPC    : 0x40011e90  RA      : 0x40011e8e  SP      : 0x4ff2c9e0  GP      : 0x4ff12980  
+TP      : 0x4ff2cf50  T0      : 0x616d2038  T1      : 0x7fff8000  T2      : 0x32313d73  
+S0/FP   : 0x4ff2ca60  S1      : 0x000010e0  A0      : 0x000010e0  A1      : 0x00000158  
+A2      : 0x00000000  A3      : 0x00000000  A4      : 0x4828b9a4  A5      : 0x4828bafc  
+A6      : 0x80000000  A7      : 0x00000001  S2      : 0x000000ac  S3      : 0x0000ff54  
+S4      : 0x00ac0000  S5      : 0x00000000  S6      : 0x00000000  S7      : 0x00010000  
+S8      : 0x00000002  S9      : 0x005d1490  S10     : 0x00000004  S11     : 0x4ff2caa0  
+T3      : 0x39313431  T4      : 0x3d6e6165  T5      : 0x6d203335  T6      : 0x34313d78  
+MSTATUS : 0x00000000  MTVEC   : 0x0000002c  MCAUSE  : 0x4828b9a4  MTVAL   : 0x00000000  
+MHARTID : 0x00010000  
+
+Stack memory:
+4ff2c9e0: 0x00000000 0x0000002c 0x4828b9a4 0x00000000 0x00010000 0x4ff2c9e8 0x4ff2c9e7 0x4ff2c9ec
+4ff2ca00: 0x80000000 0x00000000 0x00000000 0x00000000 0x00000000 0x005d1490 0x000000ac 0x00000001
+4ff2ca20: 0x00000000 0x00000f60 0x00000000 0x00000002 0x0004fdc6 0x0000002b 0x00000000 0x40014b52
+4ff2ca40: 0xffffe93e 0x16c00000 0x4ff12908 0x00000002 0x5b044444 0x000000e0 0xffff0000 0x00000100
+4ff2ca60: 0x4ff12908 0x00000000 0x00ac0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2ca80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff54 0x00000000 0x00200020 0x00000000
+4ff2caa0: 0x4ff12f1c 0x00000000 0x00ac0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cac0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff54 0x00000000 0x00200020 0x00000000
+4ff2cae0: 0x4ff13530 0x00000000 0x00ac0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff54 0x00000000 0x00200020 0x00000000
+4ff2cb20: 0x4ff13b44 0x00000000 0x00ac0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff54 0x00000000 0x00200020 0x00000000
+4ff2cb60: 0x4ff14158 0x00000000 0x00ac0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff54 0x00000000 0x00200020 0x00000000
+4ff2cba0: 0x4ff1476c 0x00000000 0x00ac0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cbc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff54 0x00000000 0x00200020 0x00000000
+4ff2cbe0: 0x4ff14d80 0x00000000 0x00ac0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff54 0x00000000 0x00200020 0x00000000
+4ff2cc20: 0x4ff15394 0x00000000 0x00ac0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff54 0x00000000 0x00200020 0x00000000
+4ff2cc60: 0x4ff159a8 0x00000000 0x00ac0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff54 0x00000000 0x00200020 0x00000000
+4ff2cca0: 0x4ff15fbc 0x00000000 0x00ac0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2ccc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff54 0x00000000 0x00200020 0x00000000
+4ff2cce0: 0x4ff165d0 0x00000000 0x00ac0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff54 0x00000000 0x00200020 0x00000000
+4ff2cd20: 0x4ff16be4 0x00000000 0x00ac0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff54 0x00000000 0x00200020 0x00000000
+4ff2cd60: 0x4ff171f8 0x00000000 0x00ac0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff54 0x00000000 0x00200020 0x00000000
+4ff2cda0: 0x4ff1780c 0x00000000 0x00ac0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cdc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff54 0x00000000 0x00200020 0x00000000
+
+
+
+ELF file SHA256: 9f7ea1f44
+
+Rebooting...
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0xc (SW_CPU_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4ff08366
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M13 fixture] voices=16 frames=65536 bytes=2097152 psram=1
+[M21 voices] mode=0 scenario=0 blocks=128 max=3906 mean=3809 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=1 blocks=128 max=3890 mean=3810 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=2 blocks=128 max=1902 mean=1801 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=3 blocks=128 max=3882 mean=3798 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=4 blocks=128 max=2167 mean=2146 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=5 blocks=128 max=1131 mean=1111 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=0 blocks=128 max=3919 mean=3835 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=1 blocks=128 max=4742 mean=4668 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=2 blocks=128 max=2406 mean=2387 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=3 blocks=128 max=4734 mean=4660 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=4 blocks=128 max=2760 mean=2736 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=5 blocks=128 max=1462 mean=1418 voices=16 frames=256 checksum=0
+E (13094) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (13094) task_wdt:  - IDLE0 (CPU 0)
+E (13094) task_wdt: Tasks currently running:
+E (13094) task_wdt: CPU 0: app_init
+E (13094) task_wdt: CPU 1: IDLE1
+E (13094) task_wdt: Aborting.
+E (13094) task_wdt: Print CPU 0 (current core) registers
+
+
+Core  0 register dump:
+MEPC    : 0x40011bd0  RA      : 0x40011e8e  SP      : 0x4ff2c9e0  GP      : 0x4ff12980  
+TP      : 0x4ff2cf50  T0      : 0x616d2038  T1      : 0x7fff8000  T2      : 0x32313d73  
+S0/FP   : 0x4ff2ca60  S1      : 0x00000000  A0      : 0x4ff2c9f4  A1      : 0x000000cc  
+A2      : 0x00000000  A3      : 0x00000000  A4      : 0x4828b9a4  A5      : 0x00000000  
+A6      : 0x80000000  A7      : 0x00000001  S2      : 0x000000cc  S3      : 0x0000ff34  
+S4      : 0x00cc0000  S5      : 0x00000000  S6      : 0x00000000  S7      : 0x00010000  
+S8      : 0x00000002  S9      : 0x005d12b2  S10     : 0x00000004  S11     : 0x4ff2caa0  
+T3      : 0x38313431  T4      : 0x3d6e6165  T5      : 0x6d203236  T6      : 0x34313d78  
+MSTATUS : 0x00000000  MTVEC   : 0x00000030  MCAUSE  : 0x4828b9a4  MTVAL   : 0x00000000  
+MHARTID : 0x00010000  
+
+Stack memory:
+4ff2c9e0: 0x00000000 0x00000030 0x4828b9a4 0x00000000 0x00010000 0x4ff2c9e8 0x4ff2c9e7 0x4ff2c9ec
+4ff2ca00: 0x80000000 0x00000000 0x00000000 0x00000000 0x00000000 0x005d12b2 0x000000cc 0x00000001
+4ff2ca20: 0x00000000 0x00000f50 0x00000000 0x00000002 0x0004f9be 0x0000002b 0x00000000 0x40014b52
+4ff2ca40: 0xffffe93e 0x16c00000 0x4ff12908 0x00000002 0x5b044444 0xffffe020 0xffff0000 0x00000100
+4ff2ca60: 0x4ff12908 0x00000000 0x00cc0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2ca80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff34 0x00000000 0x00200020 0x00000000
+4ff2caa0: 0x4ff12f1c 0x00000000 0x00cc0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cac0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff34 0x00000000 0x00200020 0x00000000
+4ff2cae0: 0x4ff13530 0x00000000 0x00cc0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff34 0x00000000 0x00200020 0x00000000
+4ff2cb20: 0x4ff13b44 0x00000000 0x00cc0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff34 0x00000000 0x00200020 0x00000000
+4ff2cb60: 0x4ff14158 0x00000000 0x00cc0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff34 0x00000000 0x00200020 0x00000000
+4ff2cba0: 0x4ff1476c 0x00000000 0x00cc0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cbc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff34 0x00000000 0x00200020 0x00000000
+4ff2cbe0: 0x4ff14d80 0x00000000 0x00cc0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff34 0x00000000 0x00200020 0x00000000
+4ff2cc20: 0x4ff15394 0x00000000 0x00cc0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff34 0x00000000 0x00200020 0x00000000
+4ff2cc60: 0x4ff159a8 0x00000000 0x00cc0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff34 0x00000000 0x00200020 0x00000000
+4ff2cca0: 0x4ff15fbc 0x00000000 0x00cc0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2ccc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff34 0x00000000 0x00200020 0x00000000
+4ff2cce0: 0x4ff165d0 0x00000000 0x00cc0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff34 0x00000000 0x00200020 0x00000000
+4ff2cd20: 0x4ff16be4 0x00000000 0x00cc0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff34 0x00000000 0x00200020 0x00000000
+4ff2cd60: 0x4ff171f8 0x00000000 0x00cc0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff34 0x00000000 0x00200020 0x00000000
+4ff2cda0: 0x4ff1780c 0x00000000 0x00cc0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cdc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff34 0x00000000 0x00200020 0x00000000
+
+
+
+ELF file SHA256: 9f7ea1f44
+
+Rebooting...
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0xc (SW_CPU_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4ff08366
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M13 fixture] voices=16 frames=65536 bytes=2097152 psram=1
+[M21 voices] mode=0 scenario=0 blocks=128 max=3903 mean=3809 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=1 blocks=128 max=3887 mean=3810 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=2 blocks=128 max=1891 mean=1800 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=3 blocks=128 max=3888 mean=3798 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=4 blocks=128 max=2166 mean=2143 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=5 blocks=128 max=1130 mean=1112 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=0 blocks=128 max=3917 mean=3835 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=1 blocks=128 max=4745 mean=4668 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=2 blocks=128 max=2405 mean=2387 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=3 blocks=128 max=4737 mean=4660 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=4 blocks=128 max=2764 mean=2738 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=5 blocks=128 max=1458 mean=1419 voices=16 frames=256 checksum=0
+E (13093) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (13093) task_wdt:  - IDLE0 (CPU 0)
+E (13093) task_wdt: Tasks currently running:
+E (13093) task_wdt: CPU 0: app_init
+E (13093) task_wdt: CPU 1: IDLE1
+E (13093) task_wdt: Aborting.
+E (13093) task_wdt: Print CPU 0 (current core) registers
+
+
+Core  0 register dump:
+MEPC    : 0x40011e90  RA      : 0x40011e8e  SP      : 0x4ff2c9e0  GP      : 0x4ff12980  
+TP      : 0x4ff2cf50  T0      : 0x616d2038  T1      : 0x7fff8000  T2      : 0x32313d73  
+S0/FP   : 0x4ff2cba0  S1      : 0xfffff6a0  A0      : 0xfffff6a0  A1      : 0x000001aa  
+A2      : 0x00000000  A3      : 0x00000000  A4      : 0x4832b9a4  A5      : 0x4832bb4e  
+A6      : 0x80000000  A7      : 0x00000001  S2      : 0x000000d5  S3      : 0x0000ff2b  
+S4      : 0x00d50000  S5      : 0x00000000  S6      : 0x00000000  S7      : 0x00010000  
+S8      : 0x00000002  S9      : 0x005d1216  S10     : 0x00000004  S11     : 0x4ff2cbe0  
+T3      : 0x39313431  T4      : 0x3d6e6165  T5      : 0x6d203835  T6      : 0x34313d78  
+MSTATUS : 0x00000000  MTVEC   : 0x00000031  MCAUSE  : 0x4832b9a4  MTVAL   : 0x00000000  
+MHARTID : 0x00010000  
+
+Stack memory:
+4ff2c9e0: 0x00000000 0x00000031 0x4832b9a4 0x00000000 0x00010000 0x4ff2c9e8 0x4ff2c9e7 0x4ff2c9ec
+4ff2ca00: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x005d1216 0x000000d5 0x00000001
+4ff2ca20: 0x00000000 0x00000f55 0x00000000 0x00000002 0x0004f98d 0x0000002b 0x00000000 0x40014b52
+4ff2ca40: 0xffffe93e 0x16c00000 0x4ff12908 0x00000002 0x5b044444 0xffffe040 0xffff0000 0x00000100
+4ff2ca60: 0x4ff12908 0x00000000 0x00d60000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2ca80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff2a 0x00000000 0x00200020 0x00000000
+4ff2caa0: 0x4ff12f1c 0x00000000 0x00d60000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cac0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff2a 0x00000000 0x00200020 0x00000000
+4ff2cae0: 0x4ff13530 0x00000000 0x00d60000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff2a 0x00000000 0x00200020 0x00000000
+4ff2cb20: 0x4ff13b44 0x00000000 0x00d60000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff2a 0x00000000 0x00200020 0x00000000
+4ff2cb60: 0x4ff14158 0x00000000 0x00d60000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff2a 0x00000000 0x00200020 0x00000000
+4ff2cba0: 0x4ff1476c 0x00000000 0x00d50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cbc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff2b 0x00000000 0x00200020 0x00000000
+4ff2cbe0: 0x4ff14d80 0x00000000 0x00d50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff2b 0x00000000 0x00200020 0x00000000
+4ff2cc20: 0x4ff15394 0x00000000 0x00d50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff2b 0x00000000 0x00200020 0x00000000
+4ff2cc60: 0x4ff159a8 0x00000000 0x00d50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff2b 0x00000000 0x00200020 0x00000000
+4ff2cca0: 0x4ff15fbc 0x00000000 0x00d50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2ccc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff2b 0x00000000 0x00200020 0x00000000
+4ff2cce0: 0x4ff165d0 0x00000000 0x00d50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff2b 0x00000000 0x00200020 0x00000000
+4ff2cd20: 0x4ff16be4 0x00000000 0x00d50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff2b 0x00000000 0x00200020 0x00000000
+4ff2cd60: 0x4ff171f8 0x00000000 0x00d50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff2b 0x00000000 0x00200020 0x00000000
+4ff2cda0: 0x4ff1780c 0x00000000 0x00d50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cdc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff2b 0x00000000 0x00200020 0x00000000
+
+
+
+ELF file SHA256: 9f7ea1f44
+
+Rebooting...
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0xc (SW_CPU_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4ff08366
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M13 fixture] voices=16 frames=65536 bytes=2097152 psram=1
+[M21 voices] mode=0 scenario=0 blocks=128 max=3897 mean=3802 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=1 blocks=128 max=3882 mean=3803 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=2 blocks=128 max=1890 mean=1801 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=3 blocks=128 max=3885 mean=3793 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=4 blocks=128 max=2178 mean=2148 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=5 blocks=128 max=1142 mean=1111 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=0 blocks=128 max=3916 mean=3834 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=1 blocks=128 max=4747 mean=4665 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=2 blocks=128 max=2405 mean=2387 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=3 blocks=128 max=4741 mean=4656 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=4 blocks=128 max=2762 mean=2735 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=5 blocks=128 max=1442 mean=1419 voices=16 frames=256 checksum=0
+E (13094) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (13094) task_wdt:  - IDLE0 (CPU 0)
+E (13094) task_wdt: Tasks currently running:
+E (13094) task_wdt: CPU 0: app_init
+E (13094) task_wdt: CPU 1: IDLE1
+E (13094) task_wdt: Aborting.
+E (13094) task_wdt: Print CPU 0 (current core) registers
+
+
+Core  0 register dump:
+MEPC    : 0x40011e90  RA      : 0x40011e8e  SP      : 0x4ff2c9e0  GP      : 0x4ff12980  
+TP      : 0x4ff2cf50  T0      : 0x616d2038  T1      : 0x7fff8000  T2      : 0x32313d73  
+S0/FP   : 0x4ff2cd60  S1      : 0xfffff380  A0      : 0xfffff380  A1      : 0x00000152  
+A2      : 0x00000000  A3      : 0x00000000  A4      : 0x4840b9a4  A5      : 0x4840baf6  
+A6      : 0x80000000  A7      : 0x00000001  S2      : 0x000000a9  S3      : 0x0000ff57  
+S4      : 0x00a90000  S5      : 0x00000000  S6      : 0x00000000  S7      : 0x00010000  
+S8      : 0x00000002  S9      : 0x005d14b0  S10     : 0x00000004  S11     : 0x4ff2cda0  
+T3      : 0x39313431  T4      : 0x3d6e6165  T5      : 0x6d203234  T6      : 0x34313d78  
+MSTATUS : 0x00000000  MTVEC   : 0x0000002e  MCAUSE  : 0x4840b9a4  MTVAL   : 0x00000000  
+MHARTID : 0x00010000  
+
+Stack memory:
+4ff2c9e0: 0x00000000 0x0000002e 0x4840b9a4 0x00000000 0x00010000 0x4ff2c9e8 0x4ff2c9e7 0x4ff2c9ec
+4ff2ca00: 0x80000000 0x00000000 0x00000000 0x00000000 0x00000000 0x005d14b0 0x000000a9 0x00000001
+4ff2ca20: 0x00000000 0x00000f49 0x00000000 0x00000002 0x000508ce 0x0000002a 0x00000000 0x40014b52
+4ff2ca40: 0xffffe93e 0x16c00000 0x4ff12908 0x00000002 0x5b044444 0x0000097b 0xffff0000 0x00000100
+4ff2ca60: 0x4ff12908 0x00000000 0x00aa0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2ca80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff56 0x00000000 0x00200020 0x00000000
+4ff2caa0: 0x4ff12f1c 0x00000000 0x00aa0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cac0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff56 0x00000000 0x00200020 0x00000000
+4ff2cae0: 0x4ff13530 0x00000000 0x00aa0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff56 0x00000000 0x00200020 0x00000000
+4ff2cb20: 0x4ff13b44 0x00000000 0x00aa0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff56 0x00000000 0x00200020 0x00000000
+4ff2cb60: 0x4ff14158 0x00000000 0x00aa0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff56 0x00000000 0x00200020 0x00000000
+4ff2cba0: 0x4ff1476c 0x00000000 0x00aa0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cbc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff56 0x00000000 0x00200020 0x00000000
+4ff2cbe0: 0x4ff14d80 0x00000000 0x00aa0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff56 0x00000000 0x00200020 0x00000000
+4ff2cc20: 0x4ff15394 0x00000000 0x00aa0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff56 0x00000000 0x00200020 0x00000000
+4ff2cc60: 0x4ff159a8 0x00000000 0x00aa0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff56 0x00000000 0x00200020 0x00000000
+4ff2cca0: 0x4ff15fbc 0x00000000 0x00aa0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2ccc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff56 0x00000000 0x00200020 0x00000000
+4ff2cce0: 0x4ff165d0 0x00000000 0x00aa0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff56 0x00000000 0x00200020 0x00000000
+4ff2cd20: 0x4ff16be4 0x00000000 0x00aa0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff56 0x00000000 0x00200020 0x00000000
+4ff2cd60: 0x4ff171f8 0x00000000 0x00a90000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff57 0x00000000 0x00200020 0x00000000
+4ff2cda0: 0x4ff1780c 0x00000000 0x00a90000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cdc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff57 0x00000000 0x00200020 0x00000000
+
+
+
+ELF file SHA256: 9f7ea1f44
+
+Rebooting...
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0xc (SW_CPU_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4ff08366
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M13 fixture] voices=16 frames=65536 bytes=2097152 psram=1
+[M21 voices] mode=0 scenario=0 blocks=128 max=3905 mean=3807 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=1 blocks=128 max=3889 mean=3810 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=2 blocks=128 max=1912 mean=1801 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=3 blocks=128 max=3891 mean=3797 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=4 blocks=128 max=2174 mean=2148 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=5 blocks=128 max=1131 mean=1111 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=0 blocks=128 max=3918 mean=3835 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=1 blocks=128 max=4744 mean=4665 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=2 blocks=128 max=2402 mean=2387 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=3 blocks=128 max=4740 mean=4657 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=4 blocks=128 max=2759 mean=2737 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=5 blocks=128 max=1474 mean=1420 voices=16 frames=256 checksum=0
+E (13094) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (13094) task_wdt:  - IDLE0 (CPU 0)
+E (13094) task_wdt: Tasks currently running:
+E (13094) task_wdt: CPU 0: app_init
+E (13094) task_wdt: CPU 1: IDLE1
+E (13094) task_wdt: Aborting.
+E (13094) task_wdt: Print CPU 0 (current core) registers
+
+
+Core  0 register dump:
+MEPC    : 0x40011e90  RA      : 0x40011e8e  SP      : 0x4ff2c9e0  GP      : 0x4ff12980  
+TP      : 0x4ff2cf50  T0      : 0x616d2038  T1      : 0x7fff8000  T2      : 0x32313d73  
+S0/FP   : 0x4ff2ca60  S1      : 0x00000780  A0      : 0x00000780  A1      : 0x000001fc  
+A2      : 0x00000000  A3      : 0x00000000  A4      : 0x4828b9a4  A5      : 0x4828bba0  
+A6      : 0x80000000  A7      : 0x00000001  S2      : 0x000000fe  S3      : 0x0000ff02  
+S4      : 0x00fe0000  S5      : 0x00000000  S6      : 0x00000000  S7      : 0x00010000  
+S8      : 0x00000002  S9      : 0x005d0fb0  S10     : 0x00000004  S11     : 0x4ff2caa0  
+T3      : 0x30323431  T4      : 0x3d6e6165  T5      : 0x6d203437  T6      : 0x34313d78  
+MSTATUS : 0x00000000  MTVEC   : 0x00000033  MCAUSE  : 0x4828b9a4  MTVAL   : 0x00000000  
+MHARTID : 0x00010000  
+
+Stack memory:
+4ff2c9e0: 0x00000000 0x00000033 0x4828b9a4 0x00000000 0x00010000 0x4ff2c9e8 0x4ff2c9e7 0x4ff2c9ec
+4ff2ca00: 0x80000000 0x00000000 0x00000000 0x00000000 0x00000000 0x005d0fb0 0x000000fe 0x00000001
+4ff2ca20: 0x00000000 0x00000f4d 0x00000000 0x00000002 0x0004f908 0x0000002b 0x00000000 0x40014b52
+4ff2ca40: 0xffffe93e 0x16c00000 0x4ff12908 0x00000002 0x5b044444 0x00000900 0xffff0000 0x00000100
+4ff2ca60: 0x4ff12908 0x00000000 0x00fe0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2ca80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff02 0x00000000 0x00200020 0x00000000
+4ff2caa0: 0x4ff12f1c 0x00000000 0x00fe0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cac0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff02 0x00000000 0x00200020 0x00000000
+4ff2cae0: 0x4ff13530 0x00000000 0x00fe0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff02 0x00000000 0x00200020 0x00000000
+4ff2cb20: 0x4ff13b44 0x00000000 0x00fe0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff02 0x00000000 0x00200020 0x00000000
+4ff2cb60: 0x4ff14158 0x00000000 0x00fe0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff02 0x00000000 0x00200020 0x00000000
+4ff2cba0: 0x4ff1476c 0x00000000 0x00fe0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cbc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff02 0x00000000 0x00200020 0x00000000
+4ff2cbe0: 0x4ff14d80 0x00000000 0x00fe0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff02 0x00000000 0x00200020 0x00000000
+4ff2cc20: 0x4ff15394 0x00000000 0x00fe0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff02 0x00000000 0x00200020 0x00000000
+4ff2cc60: 0x4ff159a8 0x00000000 0x00fe0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff02 0x00000000 0x00200020 0x00000000
+4ff2cca0: 0x4ff15fbc 0x00000000 0x00fe0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2ccc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff02 0x00000000 0x00200020 0x00000000
+4ff2cce0: 0x4ff165d0 0x00000000 0x00fe0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff02 0x00000000 0x00200020 0x00000000
+4ff2cd20: 0x4ff16be4 0x00000000 0x00fe0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff02 0x00000000 0x00200020 0x00000000
+4ff2cd60: 0x4ff171f8 0x00000000 0x00fe0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff02 0x00000000 0x00200020 0x00000000
+4ff2cda0: 0x4ff1780c 0x00000000 0x00fe0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cdc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff02 0x00000000 0x00200020 0x00000000
+
+
+
+ELF file SHA256: 9f7ea1f44
+
+Rebooting...
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0xc (SW_CPU_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4ff08366
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M13 fixture] voices=16 frames=65536 bytes=2097152 psram=1
+[M21 voices] mode=0 scenario=0 blocks=128 max=3907 mean=3809 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=1 blocks=128 max=3889 mean=3811 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=2 blocks=128 max=1885 mean=1801 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=3 blocks=128 max=3881 mean=3798 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=4 blocks=128 max=2168 mean=2148 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=5 blocks=128 max=1131 mean=1111 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=0 blocks=128 max=3915 mean=3834 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=1 blocks=128 max=4741 mean=4668 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=2 blocks=128 max=2407 mean=2388 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=3 blocks=128 max=4738 mean=4660 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=4 blocks=128 max=2759 mean=2737 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=5 blocks=128 max=1476 mean=1419 voices=16 frames=256 checksum=0
+E (13094) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (13094) task_wdt:  - IDLE0 (CPU 0)
+E (13094) task_wdt: Tasks currently running:
+E (13094) task_wdt: CPU 0: app_init
+E (13094) task_wdt: CPU 1: IDLE1
+E (13094) task_wdt: Aborting.
+E (13094) task_wdt: Print CPU 0 (current core) registers
+
+
+Core  0 register dump:
+MEPC    : 0x40011df2  RA      : 0x40014b52  SP      : 0x4ff2c9e0  GP      : 0x4ff12980  
+TP      : 0x4ff2cf50  T0      : 0x616d2038  T1      : 0x7fff8000  T2      : 0x32313d73  
+S0/FP   : 0x00000000  S1      : 0x0000002b  A0      : 0x4ff2ca60  A1      : 0x00000002  
+A2      : 0x00000020  A3      : 0x00000020  A4      : 0xffffe040  A5      : 0x00000001  
+A6      : 0x80000000  A7      : 0x00000001  S2      : 0x0004f931  S3      : 0x00000002  
+S4      : 0x00000000  S5      : 0x00000f52  S6      : 0x00000000  S7      : 0x00000001  
+S8      : 0x000000b5  S9      : 0x005d1409  S10     : 0x00000004  S11     : 0x4ff2caa0  
+T3      : 0x39313431  T4      : 0x3d6e6165  T5      : 0x6d203637  T6      : 0x34313d78  
+MSTATUS : 0x00000000  MTVEC   : 0x0000002c  MCAUSE  : 0x4846b9a4  MTVAL   : 0x00000000  
+MHARTID : 0x00010000  
+
+Stack memory:
+4ff2c9e0: 0x00000000 0x0000002c 0x4846b9a4 0x00000000 0x00010000 0x4ff2c9e8 0x4ff2c9e7 0x4ff2c9ec
+4ff2ca00: 0x80000000 0x00000000 0x00000000 0x00000000 0x00000000 0x005d1409 0x000000b5 0x00000001
+4ff2ca20: 0x00000000 0x00000f52 0x00000000 0x00000002 0x0004f931 0x0000002b 0x00000000 0x40014b52
+4ff2ca40: 0xffffe93e 0x16c00000 0x4ff12908 0x00000002 0x5b044444 0x000013c0 0xffff0000 0x00000100
+4ff2ca60: 0x4ff12908 0x00000000 0x00b50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2ca80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff4b 0x00000000 0x00200020 0x00000000
+4ff2caa0: 0x4ff12f1c 0x00000000 0x00b50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cac0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff4b 0x00000000 0x00200020 0x00000000
+4ff2cae0: 0x4ff13530 0x00000000 0x00b50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff4b 0x00000000 0x00200020 0x00000000
+4ff2cb20: 0x4ff13b44 0x00000000 0x00b50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff4b 0x00000000 0x00200020 0x00000000
+4ff2cb60: 0x4ff14158 0x00000000 0x00b50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff4b 0x00000000 0x00200020 0x00000000
+4ff2cba0: 0x4ff1476c 0x00000000 0x00b50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cbc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff4b 0x00000000 0x00200020 0x00000000
+4ff2cbe0: 0x4ff14d80 0x00000000 0x00b50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff4b 0x00000000 0x00200020 0x00000000
+4ff2cc20: 0x4ff15394 0x00000000 0x00b50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff4b 0x00000000 0x00200020 0x00000000
+4ff2cc60: 0x4ff159a8 0x00000000 0x00b50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff4b 0x00000000 0x00200020 0x00000000
+4ff2cca0: 0x4ff15fbc 0x00000000 0x00b50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2ccc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff4b 0x00000000 0x00200020 0x00000000
+4ff2cce0: 0x4ff165d0 0x00000000 0x00b50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff4b 0x00000000 0x00200020 0x00000000
+4ff2cd20: 0x4ff16be4 0x00000000 0x00b50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff4b 0x00000000 0x00200020 0x00000000
+4ff2cd60: 0x4ff171f8 0x00000000 0x00b50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff4b 0x00000000 0x00200020 0x00000000
+4ff2cda0: 0x4ff1780c 0x00000000 0x00b50000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cdc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff4b 0x00000000 0x00200020 0x00000000
+
+
+
+ELF file SHA256: 9f7ea1f44
+
+Rebooting...
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0xc (SW_CPU_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4ff08366
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M13 fixture] voices=16 frames=65536 bytes=2097152 psram=1
+[M21 voices] mode=0 scenario=0 blocks=128 max=3907 mean=3808 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=1 blocks=128 max=3891 mean=3811 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=2 blocks=128 max=1886 mean=1801 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=3 blocks=128 max=3893 mean=3798 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=4 blocks=128 max=2168 mean=2147 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=5 blocks=128 max=1134 mean=1111 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=0 blocks=128 max=3914 mean=3835 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=1 blocks=128 max=4742 mean=4668 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=2 blocks=128 max=2409 mean=2387 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=3 blocks=128 max=4735 mean=4660 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=4 blocks=128 max=2765 mean=2737 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=5 blocks=128 max=1458 mean=1419 voices=16 frames=256 checksum=0
+E (13094) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (13094) task_wdt:  - IDLE0 (CPU 0)
+E (13094) task_wdt: Tasks currently running:
+E (13094) task_wdt: CPU 0: app_init
+E (13094) task_wdt: CPU 1: IDLE1
+E (13094) task_wdt: Aborting.
+E (13094) task_wdt: Print CPU 0 (current core) registers
+
+
+Core  0 register dump:
+MEPC    : 0x40011ee2  RA      : 0x40011e8e  SP      : 0x4ff2c9e0  GP      : 0x4ff12980  
+TP      : 0x4ff2cf50  T0      : 0x616d2038  T1      : 0x7fff8000  T2      : 0x32313d73  
+S0/FP   : 0x4ff2ce20  S1      : 0x000001e0  A0      : 0x000001e0  A1      : 0x00000196  
+A2      : 0x00000020  A3      : 0x00000000  A4      : 0x0000ff34  A5      : 0x4846bb3a  
+A6      : 0x80000000  A7      : 0x00000001  S2      : 0x000000cb  S3      : 0x0000ff35  
+S4      : 0x00cb0000  S5      : 0x00000000  S6      : 0x00000000  S7      : 0x00010000  
+S8      : 0x00000002  S9      : 0x00000000  S10     : 0x00000004  S11     : 0x4ff2ce60  
+T3      : 0x39313431  T4      : 0x3d6e6165  T5      : 0x6d203835  T6      : 0x34313d78  
+MSTATUS : 0x00000000  MTVEC   : 0x0000002c  MCAUSE  : 0x4846b9a4  MTVAL   : 0x00000000  
+MHARTID : 0x00010000  
+
+Stack memory:
+4ff2c9e0: 0x00000000 0x0000002c 0x4846b9a4 0x00000000 0x00010000 0x4ff2c9e8 0x4ff2c9e7 0x4ff2c9ec
+4ff2ca00: 0x80000000 0x00000000 0x00000000 0x00000000 0x00000000 0x005d12a9 0x000000cb 0x00000001
+4ff2ca20: 0x00000000 0x00000f49 0x00000000 0x00000002 0x0004f940 0x0000002b 0x00000000 0x40014b52
+4ff2ca40: 0xffffe93e 0x16c00000 0x4ff12908 0x00000002 0x5b044444 0xffffe1c0 0xffff0000 0x00000100
+4ff2ca60: 0x4ff12908 0x00000000 0x00cc0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2ca80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff34 0x00000000 0x00200020 0x00000000
+4ff2caa0: 0x4ff12f1c 0x00000000 0x00cc0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cac0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff34 0x00000000 0x00200020 0x00000000
+4ff2cae0: 0x4ff13530 0x00000000 0x00cc0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff34 0x00000000 0x00200020 0x00000000
+4ff2cb20: 0x4ff13b44 0x00000000 0x00cc0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff34 0x00000000 0x00200020 0x00000000
+4ff2cb60: 0x4ff14158 0x00000000 0x00cc0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff34 0x00000000 0x00200020 0x00000000
+4ff2cba0: 0x4ff1476c 0x00000000 0x00cc0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cbc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff34 0x00000000 0x00200020 0x00000000
+4ff2cbe0: 0x4ff14d80 0x00000000 0x00cc0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff34 0x00000000 0x00200020 0x00000000
+4ff2cc20: 0x4ff15394 0x00000000 0x00cc0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff34 0x00000000 0x00200020 0x00000000
+4ff2cc60: 0x4ff159a8 0x00000000 0x00cc0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff34 0x00000000 0x00200020 0x00000000
+4ff2cca0: 0x4ff15fbc 0x00000000 0x00cc0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2ccc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff34 0x00000000 0x00200020 0x00000000
+4ff2cce0: 0x4ff165d0 0x00000000 0x00cc0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff34 0x00000000 0x00200020 0x00000000
+4ff2cd20: 0x4ff16be4 0x00000000 0x00cc0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff34 0x00000000 0x00200020 0x00000000
+4ff2cd60: 0x4ff171f8 0x00000000 0x00cc0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff34 0x00000000 0x00200020 0x00000000
+4ff2cda0: 0x4ff1780c 0x00000000 0x00cc0000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cdc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff34 0x00000000 0x00200020 0x00000000
+
+
+
+ELF file SHA256: 9f7ea1f44
+
+Rebooting...
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0xc (SW_CPU_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4ff08366
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M13 fixture] voices=16 frames=65536 bytes=2097152 psram=1
+[M21 voices] mode=0 scenario=0 blocks=128 max=3902 mean=3801 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=1 blocks=128 max=3881 mean=3804 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=2 blocks=128 max=1875 mean=1800 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=3 blocks=128 max=3886 mean=3793 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=4 blocks=128 max=2179 mean=2148 voices=16 frames=256 checksum=0
+[M21 voices] mode=0 scenario=5 blocks=128 max=1181 mean=1111 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=0 blocks=128 max=3918 mean=3834 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=1 blocks=128 max=4749 mean=4665 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=2 blocks=128 max=2407 mean=2387 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=3 blocks=128 max=4744 mean=4656 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=4 blocks=128 max=2763 mean=2737 voices=16 frames=256 checksum=0
+[M21 voices] mode=1 scenario=5 blocks=128 max=1455 mean=1419 voices=16 frames=256 checksum=0
+E (13094) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+E (13094) task_wdt:  - IDLE0 (CPU 0)
+E (13094) task_wdt: Tasks currently running:
+E (13094) task_wdt: CPU 0: app_init
+E (13094) task_wdt: CPU 1: IDLE1
+E (13094) task_wdt: Aborting.
+E (13094) task_wdt: Print CPU 0 (current core) registers
+
+
+Core  0 register dump:
+MEPC    : 0x40011e90  RA      : 0x40011e8e  SP      : 0x4ff2c9e0  GP      : 0x4ff12980  
+TP      : 0x4ff2cf50  T0      : 0x616d2038  T1      : 0x7fff8000  T2      : 0x32313d73  
+S0/FP   : 0x4ff2cce0  S1      : 0x00001220  A0      : 0x00001220  A1      : 0x00000124  
+A2      : 0x00000000  A3      : 0x00000000  A4      : 0x483cb9a4  A5      : 0x483cbac8  
+A6      : 0x80000000  A7      : 0x00000001  S2      : 0x00000092  S3      : 0x0000ff6e  
+S4      : 0x00920000  S5      : 0x00000000  S6      : 0x00000000  S7      : 0x00010000  
+S8      : 0x00000002  S9      : 0x005d160d  S10     : 0x00000004  S11     : 0x4ff2cd20  
+T3      : 0x39313431  T4      : 0x3d6e6165  T5      : 0x6d203535  T6      : 0x34313d78  
+MSTATUS : 0x00000000  MTVEC   : 0x0000002b  MCAUSE  : 0x483cb9a4  MTVAL   : 0x00000000  
+MHARTID : 0x00010000  
+
+Stack memory:
+4ff2c9e0: 0x00000000 0x0000002b 0x483cb9a4 0x00000000 0x00010000 0x4ff2c9e8 0x4ff2c9e7 0x4ff2c9ec
+4ff2ca00: 0x80000000 0x00000000 0x00000000 0x00000000 0x00000000 0x005d160d 0x00000092 0x00000001
+4ff2ca20: 0x00000000 0x00000f4f 0x00000000 0x00000002 0x000508c6 0x0000002a 0x00000000 0x40014b52
+4ff2ca40: 0xffffe93e 0x16c00000 0x4ff12908 0x00000002 0x5b044444 0xfffffc9b 0xffff0000 0x00000100
+4ff2ca60: 0x4ff12908 0x00000000 0x00930000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2ca80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff6d 0x00000000 0x00200020 0x00000000
+4ff2caa0: 0x4ff12f1c 0x00000000 0x00930000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cac0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff6d 0x00000000 0x00200020 0x00000000
+4ff2cae0: 0x4ff13530 0x00000000 0x00930000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff6d 0x00000000 0x00200020 0x00000000
+4ff2cb20: 0x4ff13b44 0x00000000 0x00930000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff6d 0x00000000 0x00200020 0x00000000
+4ff2cb60: 0x4ff14158 0x00000000 0x00930000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cb80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff6d 0x00000000 0x00200020 0x00000000
+4ff2cba0: 0x4ff1476c 0x00000000 0x00930000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cbc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff6d 0x00000000 0x00200020 0x00000000
+4ff2cbe0: 0x4ff14d80 0x00000000 0x00930000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff6d 0x00000000 0x00200020 0x00000000
+4ff2cc20: 0x4ff15394 0x00000000 0x00930000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff6d 0x00000000 0x00200020 0x00000000
+4ff2cc60: 0x4ff159a8 0x00000000 0x00930000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cc80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff6d 0x00000000 0x00200020 0x00000000
+4ff2cca0: 0x4ff15fbc 0x00000000 0x00930000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2ccc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff6d 0x00000000 0x00200020 0x00000000
+4ff2cce0: 0x4ff165d0 0x00000000 0x00920000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd00: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff6e 0x00000000 0x00200020 0x00000000
+4ff2cd20: 0x4ff16be4 0x00000000 0x00920000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd40: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff6e 0x00000000 0x00200020 0x00000000
+4ff2cd60: 0x4ff171f8 0x00000000 0x00920000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cd80: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff6e 0x00000000 0x00200020 0x00000000
+4ff2cda0: 0x4ff1780c 0x00000000 0x00920000 0x00000000 0x00010000 0x00000000 0x00000001 0x0100ffff
+4ff2cdc0: 0x00000000 0x00000000 0x00010000 0x00000000 0x0000ff6e 0x00000000 0x00200020 0x00000000
+
+
+
+ELF file SHA256: 9f7ea1f44
+
+Rebooting...
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0xc (SW_CPU_RESET),boot:0x30f (SPI_FAST_FLASH_BOOT)
+Core0 Saved PC:0x4ff08366
+Core1 Saved PC:0x4ff02d26
+SPI mode:DIO, clock div:1
+load:0x4ff33ce0,len:0x11dc
+load:0x4ff29ed0,len:0xccc
+load:0x4ff2cbd0,len:0x3568
+entry 0x4ff29ed0

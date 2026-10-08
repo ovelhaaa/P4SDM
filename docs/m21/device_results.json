@@ -1,0 +1,69 @@
+{
+  "mixed": [
+    {
+      "mode": "NEAREST",
+      "max_us": 4118,
+      "headroom_percent": 29.061019753870333,
+      "realtime_qualified": true,
+      "chain_cycle_covered": true,
+      "qualified": true,
+      "fractional_max_us": 3592,
+      "full_fractional_max_us": 3592,
+      "full_fractional_blocks": 3299,
+      "psram_free": 24265252,
+      "largest_free": 24117236,
+      "internal_free": 217836
+    },
+    {
+      "mode": "LINEAR",
+      "max_us": 4426,
+      "headroom_percent": 23.755238812683366,
+      "realtime_qualified": true,
+      "chain_cycle_covered": false,
+      "qualified": false,
+      "fractional_max_us": 4267,
+      "full_fractional_max_us": 4267,
+      "full_fractional_blocks": 3468,
+      "psram_free": 24265252,
+      "largest_free": 24117236,
+      "internal_free": 217836
+    },
+    {
+      "mode": "HERMITE",
+      "max_us": 4963,
+      "headroom_percent": 14.504575288600885,
+      "realtime_qualified": false,
+      "chain_cycle_covered": false,
+      "qualified": false,
+      "fractional_max_us": 4963,
+      "full_fractional_max_us": 4963,
+      "full_fractional_blocks": 3691,
+      "psram_free": 24265252,
+      "largest_free": 24117236,
+      "internal_free": 217836
+    }
+  ],
+  "worst_fractional": [
+    {
+      "mode": "NEAREST",
+      "complete": true,
+      "watchdog": false,
+      "panic": false,
+      "prep_max": 272,
+      "equivalent_max": 5643,
+      "render_max": 5514,
+      "full_fractional_blocks": 7017,
+      "total_max_us": 5732,
+      "equivalent_headroom_percent": 2.7905134703958834
+    },
+    {
+      "mode": "LINEAR",
+      "complete": false,
+      "watchdog": true,
+      "panic": true,
+      "result": "watchdog/panic; rejected"
+    }
+  ],
+  "production_mode": 0,
+  "milestone_accepted": false
+}
