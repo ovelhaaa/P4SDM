@@ -1,0 +1,30 @@
+[
+  {
+    "fixture": "positive_plateau",
+    "pre_min": 32767.0,
+    "pre_max": 40958.875,
+    "saturated": 65535,
+    "clipping_rms": 5982.499634350177
+  },
+  {
+    "fixture": "negative_plateau",
+    "pre_min": -40959.875,
+    "pre_max": -32768.0,
+    "saturated": 65535,
+    "clipping_rms": 5982.499634350177
+  },
+  {
+    "fixture": "alternating",
+    "pre_min": -32767.999954224797,
+    "pre_max": 32767.0,
+    "saturated": 0,
+    "clipping_rms": 0.0
+  },
+  {
+    "fixture": "step",
+    "pre_min": -32768.0,
+    "pre_max": 32766.499984741793,
+    "saturated": 0,
+    "clipping_rms": 0.0
+  }
+]

@@ -1,5 +1,6 @@
 #pragma once
 #include "sample_playback.h"
+#include "sample_interpolation.h"
 #include "waveform.h"
 #include <atomic>
 #include <cstdint>
@@ -157,14 +158,15 @@ struct Voice {
     uint32_t offset = uint32_t(position >> 16);
     return playback.reverse ? region.end - 1 - offset : region.start + offset;
   }
-  int16_t next() {
+  inline __attribute__((always_inline)) int16_t next(Interpolation interpolation = default_interpolation) {
     if (!active || !sample)
       return 0;
     if ((position >> 16) >= region.end - region.start || !remaining) {
       active = false;
       return 0;
     }
-    int16_t result = sample->data[frame_index()];
+    int16_t result = lookup_valid(sample->data, region, playback.reverse, position,
+                            interpolation);
     if (fade) {
       unsigned gain = attack;
       if (remaining <= fade)
