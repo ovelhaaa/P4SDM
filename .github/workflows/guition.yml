@@ -111,3 +111,4 @@ jobs:
       - run: python tests/analyze_m19.py docs/GUITION_M19_SAMPLE_STRESS_SERIAL.log
       - run: python tests/analyze_m19.py docs/GUITION_M19_SYNTH_STRESS_SERIAL.log --synth
       - run: python tests/analyze_m19.py docs/GUITION_M19_NORMAL_SERIAL.log --normal
+      - run: python tests/physical_sd/analyze.py

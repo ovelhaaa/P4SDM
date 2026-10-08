@@ -1,0 +1,40 @@
+impulses expected=4 matched=4 missed=0 false_positive=0 tolerance=64
+ 4000 11000 21000 36000
+kicks expected=4 matched=4 missed=0 false_positive=0 tolerance=64
+ 4001 11001 21001 36001
+snares expected=4 matched=4 missed=0 false_positive=0 tolerance=64
+ 4000 11000 21000 36000
+hats expected=4 matched=4 missed=0 false_positive=0 tolerance=64
+ 4000 11000 21000 36000
+stereo expected=4 matched=4 missed=0 false_positive=0 tolerance=64
+ 4000 11000 21000 36000
+background_noise expected=4 matched=4 missed=0 false_positive=0 tolerance=64
+ 4000 10999 21000 36000
+compressed_attack expected=4 matched=4 missed=0 false_positive=0 tolerance=64
+ 4000 11000 21000 36000
+four_on_floor expected=4 matched=4 missed=0 false_positive=0 tolerance=64
+ 4001 14001 24001 34001
+four_on_floor differs_from_equal=1
+syncopated_break expected=4 matched=4 missed=0 false_positive=0 tolerance=64
+ 4000 15000 21000 32500
+syncopated_break differs_from_equal=1
+ghost_hats expected=6 matched=6 missed=0 false_positive=0 tolerance=64
+ 4000 8500 15000 22500 29000 36000
+ghost_hats differs_from_equal=1
+percussion expected=5 matched=5 missed=0 false_positive=0 tolerance=64
+ 4000 11000 17500 26000 36000
+percussion differs_from_equal=1
+vocal_consonants expected=4 matched=4 missed=0 false_positive=0 tolerance=64
+ 4000 12500 23500 36000
+vocal_consonants differs_from_equal=1
+fade_in candidates=0
+trim expected=1 matched=1 missed=0 false_positive=0 tolerance=64
+ 11000
+timing frames=44100 us=143 detector_bytes=624 candidates_bytes=512 proposal_bytes=84
+timing frames=176400 us=507 detector_bytes=624 candidates_bytes=512 proposal_bytes=84
+timing frames=2097152 us=6210 detector_bytes=624 candidates_bytes=512 proposal_bytes=84
+M19 detector PASS
+M19 proposal/cancel/owner/stale/SliceLock/reverse/Gate/Repeat PASS
+Actual M18.1 inactive-transient (including Repeat) PATTERN/CHAIN/Override/Fill/mix and V2 bytes PASS (7200000 samples, all eight locks)
+Engine accepted=52616 M19=52616 Ui accepted=116 M19=116
+M19 inactive M18.1 event/RNG/Repeat and V2 byte equivalence PASS

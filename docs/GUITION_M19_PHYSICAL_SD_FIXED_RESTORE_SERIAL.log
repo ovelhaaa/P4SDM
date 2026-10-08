@@ -1,0 +1,963 @@
+
+# HOST SESSION UTC 2026-10-07T21:47:28.857011+00:00 mode=fixed_restore
+
+# HOST PROJECT M19P_SD_QUAL
+[Q COMMAND] PROJECT M19P_SD_QUAL
+[Q ACK] project=1
+[M6 read] bytes=352800 read_us=725155 bytes_per_second=486516 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=352844 pcm_bytes=352800 load_publish_us=1157718 payload=352800 transient=352800 peak_payload=352800 ps_free=30392872 largest=29884404 internal=220788 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M6 read] bytes=352800 read_us=684955 bytes_per_second=515070 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=1 file_bytes=352844 pcm_bytes=352800 load_publish_us=1117896 payload=705600 transient=352800 peak_payload=705600 ps_free=30032420 largest=29884404 internal=219184 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+
+# HOST STATE
+[Q COMMAND] STATE
+[Q STATE] bpm=143 swing=63 playing=0 mode=1 chain_length=4 chain_loop=1 project_busy=0 restoring=0 sample_busy=0 project_status=PROJECT READY / 0 MISSING sample_status=SAMPLE READY
+[Q CHAIN] index=0 pattern=0 repeats=2
+[Q CHAIN] index=1 pattern=1 repeats=1
+[Q CHAIN] index=2 pattern=2 repeats=3
+[Q CHAIN] index=3 pattern=3 repeats=1
+[Q TRACK] track=0 source=1 pitch=64 synth_pitch=36 sample_pitch=64 mute=0 solo=0 start=1024 end=62000 reverse=0 mode=1 choke=1 cutoff=48 resonance=37 send=91 slices=8 enabled=1 selected=0 frames=176400 waveform=0720701a name=m19p_mixed.wav
+[Q SLICE] track=0 index=0 start=1024 end=8646
+[Q SLICE] track=0 index=1 start=9400 end=19000
+[Q SLICE] track=0 index=2 start=16268 end=23890
+[Q SLICE] track=0 index=3 start=23890 end=31512
+[Q SLICE] track=0 index=4 start=31512 end=39134
+[Q SLICE] track=0 index=5 start=39134 end=46756
+[Q SLICE] track=0 index=6 start=46756 end=54378
+[Q SLICE] track=0 index=7 start=54378 end=62000
+[Q TRACK] track=1 source=1 pitch=58 synth_pitch=39 sample_pitch=58 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=1 cutoff=72 resonance=0 send=44 slices=1 enabled=0 selected=0 frames=176400 waveform=5e370bb2 name=m19p_snare.wav
+[Q SLICE] track=1 index=0 start=0 end=65535
+[Q TRACK] track=2 source=0 pitch=51 synth_pitch=51 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=2 index=0 start=0 end=65535
+[Q TRACK] track=3 source=0 pitch=45 synth_pitch=45 sample_pitch=60 mute=1 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=3 index=0 start=0 end=65535
+[Q PATTERN] index=0 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=0 step=0 mask=128 slice=0
+[Q LOCK] pattern=0 step=1 mask=128 slice=1
+[Q LOCK] pattern=0 step=2 mask=128 slice=2
+[Q LOCK] pattern=0 step=3 mask=128 slice=3
+[Q PATTERN] index=1 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=1 step=0 mask=128 slice=0
+[Q LOCK] pattern=1 step=1 mask=128 slice=1
+[Q LOCK] pattern=1 step=2 mask=128 slice=2
+[Q LOCK] pattern=1 step=3 mask=128 slice=3
+[Q PATTERN] index=2 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=2 step=0 mask=128 slice=0
+[Q LOCK] pattern=2 step=1 mask=128 slice=1
+[Q LOCK] pattern=2 step=2 mask=128 slice=2
+[Q LOCK] pattern=2 step=3 mask=128 slice=3
+[Q PATTERN] index=3 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=3 step=0 mask=128 slice=0
+[Q LOCK] pattern=3 step=1 mask=128 slice=1
+[Q LOCK] pattern=3 step=2 mask=128 slice=2
+[Q LOCK] pattern=3 step=3 mask=128 slice=3
+[Q TRANSIENT] state=0 request=0 progress=0 count=1 stale_discarded=0 apply=0 cancel=0 duration_max_us=0 chunk_max_us=0
+[Q PROPOSAL] index=0 start=0 end=65535
+[Q HEAP] tag=state internal=219184 free=30032420 largest=29884404
+[Q PLAYBACK] triggers=0 reverse=0 gate=0 releases=0 chokes=0 retriggers=0 repeat_accepts=0 repeat_hits=0 chain_loops=0
+
+# HOST STATE
+[Q COMMAND] STATE
+[Q STATE] bpm=143 swing=63 playing=0 mode=1 chain_length=4 chain_loop=1 project_busy=0 restoring=0 sample_busy=0 project_status=PROJECT READY / 0 MISSING sample_status=SAMPLE READY
+[Q CHAIN] index=0 pattern=0 repeats=2
+[Q CHAIN] index=1 pattern=1 repeats=1
+[Q CHAIN] index=2 pattern=2 repeats=3
+[Q CHAIN] index=3 pattern=3 repeats=1
+[Q TRACK] track=0 source=1 pitch=64 synth_pitch=36 sample_pitch=64 mute=0 solo=0 start=1024 end=62000 reverse=0 mode=1 choke=1 cutoff=48 resonance=37 send=91 slices=8 enabled=1 selected=0 frames=176400 waveform=0720701a name=m19p_mixed.wav
+[Q SLICE] track=0 index=0 start=1024 end=8646
+[Q SLICE] track=0 index=1 start=9400 end=19000
+[Q SLICE] track=0 index=2 start=16268 end=23890
+[Q SLICE] track=0 index=3 start=23890 end=31512
+[Q SLICE] track=0 index=4 start=31512 end=39134
+[Q SLICE] track=0 index=5 start=39134 end=46756
+[Q SLICE] track=0 index=6 start=46756 end=54378
+[Q SLICE] track=0 index=7 start=54378 end=62000
+[Q TRACK] track=1 source=1 pitch=58 synth_pitch=39 sample_pitch=58 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=1 cutoff=72 resonance=0 send=44 slices=1 enabled=0 selected=0 frames=176400 waveform=5e370bb2 name=m19p_snare.wav
+[Q SLICE] track=1 index=0 start=0 end=65535
+[Q TRACK] track=2 source=0 pitch=51 synth_pitch=51 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=2 index=0 start=0 end=65535
+[Q TRACK] track=3 source=0 pitch=45 synth_pitch=45 sample_pitch=60 mute=1 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=3 index=0 start=0 end=65535
+[Q PATTERN] index=0 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=0 step=0 mask=128 slice=0
+[Q LOCK] pattern=0 step=1 mask=128 slice=1
+[Q LOCK] pattern=0 step=2 mask=128 slice=2
+[Q LOCK] pattern=0 step=3 mask=128 slice=3
+[Q PATTERN] index=1 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=1 step=0 mask=128 slice=0
+[Q LOCK] pattern=1 step=1 mask=128 slice=1
+[Q LOCK] pattern=1 step=2 mask=128 slice=2
+[Q LOCK] pattern=1 step=3 mask=128 slice=3
+[Q PATTERN] index=2 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=2 step=0 mask=128 slice=0
+[Q LOCK] pattern=2 step=1 mask=128 slice=1
+[Q LOCK] pattern=2 step=2 mask=128 slice=2
+[Q LOCK] pattern=2 step=3 mask=128 slice=3
+[Q PATTERN] index=3 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=3 step=0 mask=128 slice=0
+[Q LOCK] pattern=3 step=1 mask=128 slice=1
+[Q LOCK] pattern=3 step=2 mask=128 slice=2
+[Q LOCK] pattern=3 step=3 mask=128 slice=3
+[Q TRANSIENT] state=0 request=0 progress=0 count=1 stale_discarded=0 apply=0 cancel=0 duration_max_us=0 chunk_max_us=0
+[Q PROPOSAL] index=0 start=0 end=65535
+[Q HEAP] tag=state internal=219184 free=30032420 largest=29884404
+[Q PLAYBACK] triggers=0 reverse=0 gate=0 releases=0 chokes=0 retriggers=0 repeat_accepts=0 repeat_hits=0 chain_loops=0
+
+# HOST MEASURE 1
+[Q COMMAND] MEASURE 1
+
+# HOST CMD 0 0 1 0 0
+[Q COMMAND] CMD 0 0 1 0 0
+[Q ACK] sent=1
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=0 mode=1 playing=1 pattern=0 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=0 mode=1 playing=1 pattern=0 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=0 mode=1 playing=1 pattern=0 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=1 mode=1 playing=1 pattern=0 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=1 mode=1 playing=1 pattern=0 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=1 mode=1 playing=1 pattern=0 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=1 repeat=0 mode=1 playing=1 pattern=1 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=1 repeat=0 mode=1 playing=1 pattern=1 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=1 repeat=0 mode=1 playing=1 pattern=1 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=1 repeat=0 mode=1 playing=1 pattern=1 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=0 mode=1 playing=1 pattern=2 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=0 mode=1 playing=1 pattern=2 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=0 mode=1 playing=1 pattern=2 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=1 mode=1 playing=1 pattern=2 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=1 mode=1 playing=1 pattern=2 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=1 mode=1 playing=1 pattern=2 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=2 mode=1 playing=1 pattern=2 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=2 mode=1 playing=1 pattern=2 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=2 mode=1 playing=1 pattern=2 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=3 repeat=0 mode=1 playing=1 pattern=3 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=3 repeat=0 mode=1 playing=1 pattern=3 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=3 repeat=0 mode=1 playing=1 pattern=3 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=0 mode=1 playing=1 pattern=0 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=0 mode=1 playing=1 pattern=0 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=0 mode=1 playing=1 pattern=0 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=1 mode=1 playing=1 pattern=0 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=1 mode=1 playing=1 pattern=0 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=1 mode=1 playing=1 pattern=0 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=1 repeat=0 mode=1 playing=1 pattern=1 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=1 repeat=0 mode=1 playing=1 pattern=1 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=1 repeat=0 mode=1 playing=1 pattern=1 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=0 mode=1 playing=1 pattern=2 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=0 mode=1 playing=1 pattern=2 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=0 mode=1 playing=1 pattern=2 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=1 mode=1 playing=1 pattern=2 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=1 mode=1 playing=1 pattern=2 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=1 mode=1 playing=1 pattern=2 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=2 mode=1 playing=1 pattern=2 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=2 mode=1 playing=1 pattern=2 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=2 mode=1 playing=1 pattern=2 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=3 repeat=0 mode=1 playing=1 pattern=3 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=3 repeat=0 mode=1 playing=1 pattern=3 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=3 repeat=0 mode=1 playing=1 pattern=3 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=0 mode=1 playing=1 pattern=0 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=0 mode=1 playing=1 pattern=0 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=0 mode=1 playing=1 pattern=0 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=1 mode=1 playing=1 pattern=0 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=1 mode=1 playing=1 pattern=0 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=1 mode=1 playing=1 pattern=0 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=1 repeat=0 mode=1 playing=1 pattern=1 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=1 repeat=0 mode=1 playing=1 pattern=1 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=1 repeat=0 mode=1 playing=1 pattern=1 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=0 mode=1 playing=1 pattern=2 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+[M5] blocks=10337 p50=1781 p95=1997 p99=2177 max=2260 misses=0 failures=0 timeouts=0 peak=1426 nonzero=2525128 rails=0 active_min=0 active_max=3
+[M8 groove] parents=207 passed=207 skipped=0 ratchets=0 pending_max=0 velocity_min=100 velocity_max=100 swing_changes=0
+[MEM] M8 after 60s PSRAM total=33554432 free=30032420 largest=29884404 internal_free=219184
+[M10 locks] locked=18 unlocked=189 pitch=0 volume=0 pan=0 wave=0 pattern_bytes=3106 bank_bytes=49696 engine_bytes=52616
+[M11 tone] cutoff=0 resonance=0 send=0 cutoff_min=127 cutoff_max
+# HOST TRANSPORT
+=0 resonance_min=127 resonance_m[Q COMMAND] TRANSPORT
+ax=0 send_min=127 send_max=0 blo[Q TRANSPORT] entry=2 repeat=0 mcks=0 max=0 dense=0 dense_max=0
+ode=1 playing=1 pattern=2 chain_[M12 locks] cutoff=0 resonance=0loops=2 repeat_requested=0 repea send=0 coefficients=16 avoided=t_active=0 capture_count=0
+209 send_changes=2 coefficient_blocks=1 coefficient_max=1722 edit_blocks=0 edit_max=0 commands=0 step_bytes=9 event_bytes=20 voice_bytes=384 idle_residue=0
+[M17 chain] starts=1 advances=10 repeats=7 loops=2 stops=0 switches=10 min_length=16 max_length=16 boundary_max=2150 seen=15 entry_bytes=2 chain_bytes=66 engine_bytes=52616
+[M18 performance] override_requests=0 override_accepts=0 override_loops=0 override_cancels=0 returns=0 fill_requests=0 fill_accepts=0 fill_completions=0 fill_to_override=0 fill_to_arrangement=0 mute_edits=0 solo_edits=0 boundaries=0 boundary_max=0 state_bytes=352 engine_bytes=52616 publication_bytes=24
+[M181 repeat] requests=0 accepts=0 cancelled=0 x2_windows=0 x4_windows=0 x8_windows=0 hits=0 x8_hits=0 changes=0 releases=0 empty=0 captured_max=0 suppressed=0 worst=0 capture_bytes=324 repeat_bytes=336
+[M181 x8] blocks=0 worst=0 active_min=0 active_max=0 coefficients=0 avoided=0 chokes=0 full_blocks=0
+[M181 runtime] requested=0 active=0 count=0 ui_presses=0 ui_releases=0 ui_edits=0
+[M18 runtime] override_target=0 override_active=0 fill_pending=0 fill_active=0 return_pattern=0 return_end=0 mutes=0 solos=0 ui_bytes=116
+[M19 analysis] requests=0 completed=0 cancelled=0 stale_discarded=0 frames=0 candidates=0 selected=0 proposals=0 apply=0 cancel=0 min_count=0 max_count=0 sensitivity=0 target=0 duration_max_us=0 chunk_max_us=0
+[M19 overlap] blocks=0 worst=0 misses=0 x8_blocks=0 ui_interval_max_us=0 detector_bytes=616 candidate_bytes=512 proposal_bytes=84 status_bytes=100 storage_stack=7000 stack_free_min=0
+[M18 UI] entries=0 pads=0 fills=0 toggles=0 switches=0
+[M17 UI] entries=0 edits=0 rows=0 scrolls=0
+[M16 project] state_bytes=53192 file_bytes=52704 snapshot_blocks=0 snapshot_max=0 apply_blocks=104 apply_max=1763 fixtures=0 fixture_errors=0 dirty=0 physical_pending=1
+[M13 dense] blocks=2068 active_min=0
+[M13 playback] triggers=138 reverse=0 gate=69 releases=137 ends=0 choke_ops=138 choked=137 retriggers=68 region_min=20516 region_max=176400 max=2260 choke_max=2219 retrigger_max=2150 voice_bytes=64 track_bytes=116 event_bytes=20
+[M15 locks] locked=18 unlocked=51 unsliced=69 requested_min=0 requested_max=0 resolved_min=0 resolved_max=0 clamped=0 edits=0 ui_edits=0 align=1 requested_seen=1 resolved_seen=1
+[M14 slices] triggers=69 auditions=0 index_min=0 index_max=0 frames_min=20516 frames_max=20516 active_changes=0 divides=0 adds=0 deletes=0 resets=0 edit_blocks=0 edit_max=0 slice_bytes=4 bank_bytes=66 sample_bytes=1556
+[M10 worst] blocks=0 max=0
+[M9 tools] rotate=0 reverse=0 copy_track=0 clear_track=0 duplicate=0 euclidean=0 randomize=0 mutate=0 reroll=0 blocks=0 dense_blocks=0 max=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=0 mode=1 playing=1 pattern=2 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=1 mode=1 playing=1 pattern=2 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=1 mode=1 playing=1 pattern=2 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=1 mode=1 playing=1 pattern=2 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=2 mode=1 playing=1 pattern=2 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+[M5 UI] seconds=63.006 submitted=231 completed=231 dirty_avg=81361 dirty_max=768000 full=2 preparation_max_us=71527 touch_errors=0 rejected=0 pads=0 steps=0 drags=0 pages=0 transport=0 bpm=0 skipped=2
+[M7 patterns] switches=10 loops=19 selections=0 copies=0 clears=0 lengths=0 solos=0 mutes=0 normal_frames=229 dirty_avg=75364 dirty_max=165888 pattern_bytes=3106 command_bytes=12
+[M7 applied] long_to_short=0 short_to_long=0 queue_replacements=0 copies=0 clears=0 lengths=0 solos=0 mutes=0 steps=0
+[M9 UI] entries=0 copies=0 randomize=0 cell_max=0 edit_full=0
+[M12 UI] entries=0 edits=0 widgets_max=0 edit_full=0
+[M11 UI] entries=0 edits=0 widgets_max=0 edit_full=0
+[M10 UI] entries=0 edits=0 widgets_max=0 edit_full=0
+[M13 UI] entries=0 edits=0 widgets_max=0 edit_full=0
+[M14 UI] entries=0 edits=0 edit_full=0 waveform_first_us=0 waveform_redraw_max_us=0 slice_redraw_max_us=0 build_count=2 build_max_us=426838 large_us=0 cache_bytes=1440 page_max_us=0 drag_dirty_max=0
+[M5 memory] ps_before=30753324 ps_after=30032420 internal_before=222392 internal_after=219184 largest_before=30408692 largest_after=29884404
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=2 mode=1 playing=1 pattern=2 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST CMD 0 0 0 0 0
+[Q COMMAND] CMD 0 0 0 0 0
+[Q ACK] sent=1
+
+# HOST MEASURE 0
+[Q COMMAND] MEASURE 0
+
+# HOST METRICS
+[Q COMMAND] METRICS
+[Q METRICS] blocks=5765 stored=5765 p99=2194 max=2260 misses=0 failures=0 timeouts=0 nonzero=2917140 overlap=0 overlap_max=0 active_max=2
+
+# HOST STATE
+[Q COMMAND] STATE
+[Q STATE] bpm=143 swing=63 playing=0 mode=1 chain_length=4 chain_loop=1 project_busy=0 restoring=0 sample_busy=0 project_status=PROJECT READY / 0 MISSING sample_status=SAMPLE READY
+[Q CHAIN] index=0 pattern=0 repeats=2
+[Q CHAIN] index=1 pattern=1 repeats=1
+[Q CHAIN] index=2 pattern=2 repeats=3
+[Q CHAIN] index=3 pattern=3 repeats=1
+[Q TRACK] track=0 source=1 pitch=64 synth_pitch=36 sample_pitch=64 mute=0 solo=0 start=1024 end=62000 reverse=0 mode=1 choke=1 cutoff=48 resonance=37 send=91 slices=8 enabled=1 selected=0 frames=176400 waveform=0720701a name=m19p_mixed.wav
+[Q SLICE] track=0 index=0 start=1024 end=8646
+[Q SLICE] track=0 index=1 start=9400 end=19000
+[Q SLICE] track=0 index=2 start=16268 end=23890
+[Q SLICE] track=0 index=3 start=23890 end=31512
+[Q SLICE] track=0 index=4 start=31512 end=39134
+[Q SLICE] track=0 index=5 start=39134 end=46756
+[Q SLICE] track=0 index=6 start=46756 end=54378
+[Q SLICE] track=0 index=7 start=54378 end=62000
+[Q TRACK] track=1 source=1 pitch=58 synth_pitch=39 sample_pitch=58 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=1 cutoff=72 resonance=0 send=44 slices=1 enabled=0 selected=0 frames=176400 waveform=5e370bb2 name=m19p_snare.wav
+[Q SLICE] track=1 index=0 start=0 end=65535
+[Q TRACK] track=2 source=0 pitch=51 synth_pitch=51 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=2 index=0 start=0 end=65535
+[Q TRACK] track=3 source=0 pitch=45 synth_pitch=45 sample_pitch=60 mute=1 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=3 index=0 start=0 end=65535
+[Q PATTERN] index=0 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=0 step=0 mask=128 slice=0
+[Q LOCK] pattern=0 step=1 mask=128 slice=1
+[Q LOCK] pattern=0 step=2 mask=128 slice=2
+[Q LOCK] pattern=0 step=3 mask=128 slice=3
+[Q PATTERN] index=1 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=1 step=0 mask=128 slice=0
+[Q LOCK] pattern=1 step=1 mask=128 slice=1
+[Q LOCK] pattern=1 step=2 mask=128 slice=2
+[Q LOCK] pattern=1 step=3 mask=128 slice=3
+[Q PATTERN] index=2 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=2 step=0 mask=128 slice=0
+[Q LOCK] pattern=2 step=1 mask=128 slice=1
+[Q LOCK] pattern=2 step=2 mask=128 slice=2
+[Q LOCK] pattern=2 step=3 mask=128 slice=3
+[Q PATTERN] index=3 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=3 step=0 mask=128 slice=0
+[Q LOCK] pattern=3 step=1 mask=128 slice=1
+[Q LOCK] pattern=3 step=2 mask=128 slice=2
+[Q LOCK] pattern=3 step=3 mask=128 slice=3
+[Q TRANSIENT] state=0 request=0 progress=0 count=1 stale_discarded=0 apply=0 cancel=0 duration_max_us=0 chunk_max_us=0
+[Q PROPOSAL] index=0 start=0 end=65535
+[Q HEAP] tag=state internal=218908 free=30032420 largest=29884404
+[Q PLAYBACK] triggers=158 reverse=0 gate=79 releases=157 chokes=158 retriggers=78 repeat_accepts=0 repeat_hits=0 chain_loops=2
+
+# HOST STORE 7
+[Q COMMAND] STORE 7
+[Q FS] total=8050966528 used=7471104
+[Q DIR] path=/P4SDM accessible=1
+[Q FILE] path=/P4SDM/SAMPLES bytes=0 directory=1
+[Q DIR] path=/P4SDM/SAMPLES accessible=1
+[Q FILE] path=/P4SDM/SAMPLES/m19p_impulses.wav bytes=352844 directory=0
+[Q WAV] name=m19p_impulses.wav accepted_format=1 reason=PCM16 frames=176400 channels=1 rate=44100 pcm_bytes=352800
+[Q FILE] path=/P4SDM/SAMPLES/m19p_kick.wav bytes=352844 directory=0
+[Q WAV] name=m19p_kick.wav accepted_format=1 reason=PCM16 frames=176400 channels=1 rate=44100 pcm_bytes=352800
+[Q FILE] path=/P4SDM/SAMPLES/m19p_snare.wav bytes=352844 directory=0
+[Q WAV] name=m19p_snare.wav accepted_format=1 reason=PCM16 frames=176400 channels=1 rate=44100 pcm_bytes=352800
+[Q FILE] path=/P4SDM/SAMPLES/m19p_mixed.wav bytes=352844 directory=0
+[Q WAV] name=m19p_mixed.wav accepted_format=1 reason=PCM16 frames=176400 channels=1 rate=44100 pcm_bytes=352800
+[Q FILE] path=/P4SDM/SAMPLES/m19p_stereo.wav bytes=705644 directory=0
+[Q WAV] name=m19p_stereo.wav accepted_format=1 reason=PCM16 frames=176400 channels=2 rate=44100 pcm_bytes=705600
+[Q FILE] path=/P4SDM/SAMPLES/m19p_large.wav bytes=4194348 directory=0
+[Q WAV] name=m19p_large.wav accepted_format=1 reason=PCM16 frames=2097152 channels=1 rate=44100 pcm_bytes=4194304
+[Q FILE] path=/P4SDM/SAMPLES/m19p_bad_depth.wav bytes=352844 directory=0
+[Q WAV] name=m19p_bad_depth.wav accepted_format=0 reason=unsupported depth (16-bit only) frames=0 channels=1 rate=44100 pcm_bytes=0
+[Q FILE] path=/P4SDM/SAMPLES/m19p_truncated.wav bytes=352841 directory=0
+[Q WAV] name=m19p_truncated.wav accepted_format=0 reason=invalid RIFF length frames=0 channels=0 rate=0 pcm_bytes=0
+[Q FILE] path=/P4SDM/SAMPLES/m19p_oneshot.wav bytes=44144 directory=0
+[Q WAV] name=m19p_oneshot.wav accepted_format=1 reason=PCM16 frames=22050 channels=1 rate=44100 pcm_bytes=44100
+[Q FILE] path=/P4SDM/PROJECTS bytes=0 directory=1
+[Q DIR] path=/P4SDM/PROJECTS accessible=1
+[Q FILE] path=/P4SDM/PROJECTS/M19P_SD_QUAL bytes=0 directory=1
+[Q DIR] path=/P4SDM/PROJECTS/M19P_SD_QUAL accessible=1
+[Q FILE] path=/P4SDM/PROJECTS/M19P_SD_QUAL/A.P4P bytes=52704 directory=0
+[Q SLOT] path=/P4SDM/PROJECTS/M19P_SD_QUAL/A.P4P version=2 generation=3 crc=3850630c valid=1 reason=READY bpm=137 swing=63 chain_length=4 mode=1 ref0=m19p_mixed.wav ref1=m19p_snare.wav
+[Q FILE] path=/P4SDM/PROJECTS/M19P_SD_QUAL/B.P4P bytes=52704 directory=0
+[Q SLOT] path=/P4SDM/PROJECTS/M19P_SD_QUAL/B.P4P version=2 generation=4 crc=ae47d8f2 valid=1 reason=READY bpm=143 swing=63 chain_length=4 mode=1 ref0=m19p_mixed.wav ref1=m19p_snare.wav
+[Q HEAP] tag=store_done internal=218908 free=30032420 largest=29884404 payload=705600
+[Q STORE DONE] op=7
+
+# HOST SESSION UTC 2026-10-07T21:52:18.946355+00:00 mode=fixed_restore
+ESP-ROM:esp32p4-eco2-20240710
+Build:Jul 10 2024
+rst:0x17 (CHIP_USB_UART_RESET),boot:0x307 (DOWNLOAD(USB/UART0/SPI))
+Core0 Saved PC:0x4ff02d26
+Core1 Saved PC:0x4ff02d26
+waiting for download
+
+# HOST SESSION UTC 2026-10-07T21:54:39.973529+00:00 mode=fixed_restore
+
+# HOST ESPrun reset
+esptool v5.1.0
+Serial port COM13:
+Connecting...
+Connected to ESP32-P4 on COM13:
+Chip type:          ESP32-P4 (revision v1.3)
+Features:           Dual Core + LP Core, 400MHz
+Crystal frequency:  40MHz
+USB mode:           USB-Serial/JTAG
+MAC:                80:f1:b2:d3:cc:86
+
+Uploading stub flasher...
+Running stub flasher...
+Stub flasher running.
+
+Warning: ESP32-P4 has no chip ID. Reading MAC address instead.
+MAC:                80:f1:b2:d3:cc:86
+
+Hard resetting via RTS pin...
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M6 budget] total=33554432 display=2304000 fx_delay=352800 samples=0 reserve=4194304 free=30779004 largest=30408692 internal=223684
+[M6 SD] mounted=1 width=4 clock_khz=20000 mount_us=245089 capacity=8053063680 status=SD READY
+[M6 index] files=9 entries=9 limited=0 scan_us=29161 ps_free=30752712 largest=30408692 internal=222072
+
+# HOST PROJECT M19P_SD_QUAL
+[Q COMMAND] PROJECT M19P_SD_QUAL
+[Q ACK] project=1
+[M6 read] bytes=352800 read_us=731081 bytes_per_second=482573 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=352844 pcm_bytes=352800 load_publish_us=1163738 payload=352800 transient=352800 peak_payload=352800 ps_free=30392872 largest=29884404 internal=220788 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M6 read] bytes=352800 read_us=688264 bytes_per_second=512594 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=1 file_bytes=352844 pcm_bytes=352800 load_publish_us=1118203 payload=705600 transient=352800 peak_payload=705600 ps_free=30032420 largest=29884404 internal=219184 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+
+# HOST STATE
+[Q COMMAND] STATE
+[Q STATE] bpm=143 swing=63 playing=0 mode=1 chain_length=4 chain_loop=1 project_busy=0 restoring=0 sample_busy=0 project_status=PROJECT READY / 0 MISSING sample_status=SAMPLE READY
+[Q CHAIN] index=0 pattern=0 repeats=2
+[Q CHAIN] index=1 pattern=1 repeats=1
+[Q CHAIN] index=2 pattern=2 repeats=3
+[Q CHAIN] index=3 pattern=3 repeats=1
+[Q TRACK] track=0 source=1 pitch=64 synth_pitch=36 sample_pitch=64 mute=0 solo=0 start=1024 end=62000 reverse=0 mode=1 choke=1 cutoff=48 resonance=37 send=91 slices=8 enabled=1 selected=0 frames=176400 waveform=0720701a name=m19p_mixed.wav
+[Q SLICE] track=0 index=0 start=1024 end=8646
+[Q SLICE] track=0 index=1 start=9400 end=19000
+[Q SLICE] track=0 index=2 start=16268 end=23890
+[Q SLICE] track=0 index=3 start=23890 end=31512
+[Q SLICE] track=0 index=4 start=31512 end=39134
+[Q SLICE] track=0 index=5 start=39134 end=46756
+[Q SLICE] track=0 index=6 start=46756 end=54378
+[Q SLICE] track=0 index=7 start=54378 end=62000
+[Q TRACK] track=1 source=1 pitch=58 synth_pitch=39 sample_pitch=58 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=1 cutoff=72 resonance=0 send=44 slices=1 enabled=0 selected=0 frames=176400 waveform=5e370bb2 name=m19p_snare.wav
+[Q SLICE] track=1 index=0 start=0 end=65535
+[Q TRACK] track=2 source=0 pitch=51 synth_pitch=51 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=2 index=0 start=0 end=65535
+[Q TRACK] track=3 source=0 pitch=45 synth_pitch=45 sample_pitch=60 mute=1 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=3 index=0 start=0 end=65535
+[Q PATTERN] index=0 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=0 step=0 mask=128 slice=0
+[Q LOCK] pattern=0 step=1 mask=128 slice=1
+[Q LOCK] pattern=0 step=2 mask=128 slice=2
+[Q LOCK] pattern=0 step=3 mask=128 slice=3
+[Q PATTERN] index=1 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=1 step=0 mask=128 slice=0
+[Q LOCK] pattern=1 step=1 mask=128 slice=1
+[Q LOCK] pattern=1 step=2 mask=128 slice=2
+[Q LOCK] pattern=1 step=3 mask=128 slice=3
+[Q PATTERN] index=2 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=2 step=0 mask=128 slice=0
+[Q LOCK] pattern=2 step=1 mask=128 slice=1
+[Q LOCK] pattern=2 step=2 mask=128 slice=2
+[Q LOCK] pattern=2 step=3 mask=128 slice=3
+[Q PATTERN] index=3 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=3 step=0 mask=128 slice=0
+[Q LOCK] pattern=3 step=1 mask=128 slice=1
+[Q LOCK] pattern=3 step=2 mask=128 slice=2
+[Q LOCK] pattern=3 step=3 mask=128 slice=3
+[Q TRANSIENT] state=0 request=0 progress=0 count=1 stale_discarded=0 apply=0 cancel=0 duration_max_us=0 chunk_max_us=0
+[Q PROPOSAL] index=0 start=0 end=65535
+[Q HEAP] tag=state internal=219184 free=30032420 largest=29884404
+[Q PLAYBACK] triggers=0 reverse=0 gate=0 releases=0 chokes=0 retriggers=0 repeat_accepts=0 repeat_hits=0 chain_loops=0
+
+# HOST STATE
+[Q COMMAND] STATE
+[Q STATE] bpm=143 swing=63 playing=0 mode=1 chain_length=4 chain_loop=1 project_busy=0 restoring=0 sample_busy=0 project_status=PROJECT READY / 0 MISSING sample_status=SAMPLE READY
+[Q CHAIN] index=0 pattern=0 repeats=2
+[Q CHAIN] index=1 pattern=1 repeats=1
+[Q CHAIN] index=2 pattern=2 repeats=3
+[Q CHAIN] index=3 pattern=3 repeats=1
+[Q TRACK] track=0 source=1 pitch=64 synth_pitch=36 sample_pitch=64 mute=0 solo=0 start=1024 end=62000 reverse=0 mode=1 choke=1 cutoff=48 resonance=37 send=91 slices=8 enabled=1 selected=0 frames=176400 waveform=0720701a name=m19p_mixed.wav
+[Q SLICE] track=0 index=0 start=1024 end=8646
+[Q SLICE] track=0 index=1 start=9400 end=19000
+[Q SLICE] track=0 index=2 start=16268 end=23890
+[Q SLICE] track=0 index=3 start=23890 end=31512
+[Q SLICE] track=0 index=4 start=31512 end=39134
+[Q SLICE] track=0 index=5 start=39134 end=46756
+[Q SLICE] track=0 index=6 start=46756 end=54378
+[Q SLICE] track=0 index=7 start=54378 end=62000
+[Q TRACK] track=1 source=1 pitch=58 synth_pitch=39 sample_pitch=58 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=1 cutoff=72 resonance=0 send=44 slices=1 enabled=0 selected=0 frames=176400 waveform=5e370bb2 name=m19p_snare.wav
+[Q SLICE] track=1 index=0 start=0 end=65535
+[Q TRACK] track=2 source=0 pitch=51 synth_pitch=51 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=2 index=0 start=0 end=65535
+[Q TRACK] track=3 source=0 pitch=45 synth_pitch=45 sample_pitch=60 mute=1 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=3 index=0 start=0 end=65535
+[Q PATTERN] index=0 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=0 step=0 mask=128 slice=0
+[Q LOCK] pattern=0 step=1 mask=128 slice=1
+[Q LOCK] pattern=0 step=2 mask=128 slice=2
+[Q LOCK] pattern=0 step=3 mask=128 slice=3
+[Q PATTERN] index=1 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=1 step=0 mask=128 slice=0
+[Q LOCK] pattern=1 step=1 mask=128 slice=1
+[Q LOCK] pattern=1 step=2 mask=128 slice=2
+[Q LOCK] pattern=1 step=3 mask=128 slice=3
+[Q PATTERN] index=2 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=2 step=0 mask=128 slice=0
+[Q LOCK] pattern=2 step=1 mask=128 slice=1
+[Q LOCK] pattern=2 step=2 mask=128 slice=2
+[Q LOCK] pattern=2 step=3 mask=128 slice=3
+[Q PATTERN] index=3 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=3 step=0 mask=128 slice=0
+[Q LOCK] pattern=3 step=1 mask=128 slice=1
+[Q LOCK] pattern=3 step=2 mask=128 slice=2
+[Q LOCK] pattern=3 step=3 mask=128 slice=3
+[Q TRANSIENT] state=0 request=0 progress=0 count=1 stale_discarded=0 apply=0 cancel=0 duration_max_us=0 chunk_max_us=0
+[Q PROPOSAL] index=0 start=0 end=65535
+[Q HEAP] tag=state internal=219184 free=30032420 largest=29884404
+[Q PLAYBACK] triggers=0 reverse=0 gate=0 releases=0 chokes=0 retriggers=0 repeat_accepts=0 repeat_hits=0 chain_loops=0
+
+# HOST MEASURE 1
+[Q COMMAND] MEASURE 1
+
+# HOST CMD 0 0 1 0 0
+[Q COMMAND] CMD 0 0 1 0 0
+[Q ACK] sent=1
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=0 mode=1 playing=1 pattern=0 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=0 mode=1 playing=1 pattern=0 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=0 mode=1 playing=1 pattern=0 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=1 mode=1 playing=1 pattern=0 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=1 mode=1 playing=1 pattern=0 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=1 mode=1 playing=1 pattern=0 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=1 repeat=0 mode=1 playing=1 pattern=1 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=1 repeat=0 mode=1 playing=1 pattern=1 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=1 repeat=0 mode=1 playing=1 pattern=1 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=0 mode=1 playing=1 pattern=2 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=0 mode=1 playing=1 pattern=2 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=0 mode=1 playing=1 pattern=2 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=1 mode=1 playing=1 pattern=2 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=1 mode=1 playing=1 pattern=2 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=1 mode=1 playing=1 pattern=2 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=2 mode=1 playing=1 pattern=2 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=2 mode=1 playing=1 pattern=2 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=2 mode=1 playing=1 pattern=2 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=2 mode=1 playing=1 pattern=2 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=3 repeat=0 mode=1 playing=1 pattern=3 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=3 repeat=0 mode=1 playing=1 pattern=3 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=3 repeat=0 mode=1 playing=1 pattern=3 chain_loops=0 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=0 mode=1 playing=1 pattern=0 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=0 mode=1 playing=1 pattern=0 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=0 mode=1 playing=1 pattern=0 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=1 mode=1 playing=1 pattern=0 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=1 mode=1 playing=1 pattern=0 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=1 mode=1 playing=1 pattern=0 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=1 repeat=0 mode=1 playing=1 pattern=1 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=1 repeat=0 mode=1 playing=1 pattern=1 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=1 repeat=0 mode=1 playing=1 pattern=1 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=0 mode=1 playing=1 pattern=2 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=0 mode=1 playing=1 pattern=2 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=0 mode=1 playing=1 pattern=2 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=1 mode=1 playing=1 pattern=2 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=1 mode=1 playing=1 pattern=2 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=1 mode=1 playing=1 pattern=2 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=2 mode=1 playing=1 pattern=2 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=2 mode=1 playing=1 pattern=2 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=2 mode=1 playing=1 pattern=2 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=3 repeat=0 mode=1 playing=1 pattern=3 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=3 repeat=0 mode=1 playing=1 pattern=3 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=3 repeat=0 mode=1 playing=1 pattern=3 chain_loops=1 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=0 mode=1 playing=1 pattern=0 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=0 mode=1 playing=1 pattern=0 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=0 mode=1 playing=1 pattern=0 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=1 mode=1 playing=1 pattern=0 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=1 mode=1 playing=1 pattern=0 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=0 repeat=1 mode=1 playing=1 pattern=0 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=1 repeat=0 mode=1 playing=1 pattern=1 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=1 repeat=0 mode=1 playing=1 pattern=1 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=1 repeat=0 mode=1 playing=1 pattern=1 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=0 mode=1 playing=1 pattern=2 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=0 mode=1 playing=1 pattern=2 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=0 mode=1 playing=1 pattern=2 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=1 mode=1 playing=1 pattern=2 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=1 mode=1 playing=1 pattern=2 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=1 mode=1 playing=1 pattern=2 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=2 mode=1 playing=1 pattern=2 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST TRANSPORT
+[Q COMMAND] TRANSPORT
+[Q TRANSPORT] entry=2 repeat=2 mode=1 playing=1 pattern=2 chain_loops=2 repeat_requested=0 repeat_active=0 capture_count=0
+
+# HOST CMD 0 0 0 0 0
+[Q COMMAND] CMD 0 0 0 0 0
+[Q ACK] sent=1
+
+# HOST MEASURE 0
+[Q COMMAND] MEASURE 0
+
+# HOST METRICS
+[Q COMMAND] METRICS
+[Q METRICS] blocks=5793 stored=5793 p99=2192 max=2258 misses=0 failures=0 timeouts=0 nonzero=2931972 overlap=0 overlap_max=0 active_max=2
+
+# HOST STATE
+[Q COMMAND] STATE
+[Q STATE] bpm=143 swing=63 playing=0 mode=1 chain_length=4 chain_loop=1 project_busy=0 restoring=0 sample_busy=0 project_status=PROJECT READY / 0 MISSING sample_status=SAMPLE READY
+[Q CHAIN] index=0 pattern=0 repeats=2
+[Q CHAIN] index=1 pattern=1 repeats=1
+[Q CHAIN] index=2 pattern=2 repeats=3
+[Q CHAIN] index=3 pattern=3 repeats=1
+[Q TRACK] track=0 source=1 pitch=64 synth_pitch=36 sample_pitch=64 mute=0 solo=0 start=1024 end=62000 reverse=0 mode=1 choke=1 cutoff=48 resonance=37 send=91 slices=8 enabled=1 selected=0 frames=176400 waveform=0720701a name=m19p_mixed.wav
+[Q SLICE] track=0 index=0 start=1024 end=8646
+[Q SLICE] track=0 index=1 start=9400 end=19000
+[Q SLICE] track=0 index=2 start=16268 end=23890
+[Q SLICE] track=0 index=3 start=23890 end=31512
+[Q SLICE] track=0 index=4 start=31512 end=39134
+[Q SLICE] track=0 index=5 start=39134 end=46756
+[Q SLICE] track=0 index=6 start=46756 end=54378
+[Q SLICE] track=0 index=7 start=54378 end=62000
+[Q TRACK] track=1 source=1 pitch=58 synth_pitch=39 sample_pitch=58 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=1 cutoff=72 resonance=0 send=44 slices=1 enabled=0 selected=0 frames=176400 waveform=5e370bb2 name=m19p_snare.wav
+[Q SLICE] track=1 index=0 start=0 end=65535
+[Q TRACK] track=2 source=0 pitch=51 synth_pitch=51 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=2 index=0 start=0 end=65535
+[Q TRACK] track=3 source=0 pitch=45 synth_pitch=45 sample_pitch=60 mute=1 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=3 index=0 start=0 end=65535
+[Q PATTERN] index=0 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=0 step=0 mask=128 slice=0
+[Q LOCK] pattern=0 step=1 mask=128 slice=1
+[Q LOCK] pattern=0 step=2 mask=128 slice=2
+[Q LOCK] pattern=0 step=3 mask=128 slice=3
+[Q PATTERN] index=1 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=1 step=0 mask=128 slice=0
+[Q LOCK] pattern=1 step=1 mask=128 slice=1
+[Q LOCK] pattern=1 step=2 mask=128 slice=2
+[Q LOCK] pattern=1 step=3 mask=128 slice=3
+[Q PATTERN] index=2 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=2 step=0 mask=128 slice=0
+[Q LOCK] pattern=2 step=1 mask=128 slice=1
+[Q LOCK] pattern=2 step=2 mask=128 slice=2
+[Q LOCK] pattern=2 step=3 mask=128 slice=3
+[Q PATTERN] index=3 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=3 step=0 mask=128 slice=0
+[Q LOCK] pattern=3 step=1 mask=128 slice=1
+[Q LOCK] pattern=3 step=2 mask=128 slice=2
+[Q LOCK] pattern=3 step=3 mask=128 slice=3
+[Q TRANSIENT] state=0 request=0 progress=0 count=1 stale_discarded=0 apply=0 cancel=0 duration_max_us=0 chunk_max_us=0
+[Q PROPOSAL] index=0 start=0 end=65535
+[Q HEAP] tag=state internal=219184 free=30032420 largest=29884404
+[Q PLAYBACK] triggers=160 reverse=0 gate=80 releases=159 chokes=160 retriggers=79 repeat_accepts=0 repeat_hits=0 chain_loops=2
+
+# HOST STORE 7
+[Q COMMAND] STORE 7
+[Q FS] total=8050966528 used=7471104
+[Q DIR] path=/P4SDM accessible=1
+[Q FILE] path=/P4SDM/SAMPLES bytes=0 directory=1
+[Q DIR] path=/P4SDM/SAMPLES accessible=1
+[Q FILE] path=/P4SDM/SAMPLES/m19p_impulses.wav bytes=352844 directory=0
+[Q WAV] name=m19p_impulses.wav accepted_format=1 reason=PCM16 frames=176400 channels=1 rate=44100 pcm_bytes=352800
+[Q FILE] path=/P4SDM/SAMPLES/m19p_kick.wav bytes=352844 directory=0
+[Q WAV] name=m19p_kick.wav accepted_format=1 reason=PCM16 frames=176400 channels=1 rate=44100 pcm_bytes=352800
+[Q FILE] path=/P4SDM/SAMPLES/m19p_snare.wav bytes=352844 directory=0
+[Q WAV] name=m19p_snare.wav accepted_format=1 reason=PCM16 frames=176400 channels=1 rate=44100 pcm_bytes=352800
+[Q FILE] path=/P4SDM/SAMPLES/m19p_mixed.wav bytes=352844 directory=0
+[Q WAV] name=m19p_mixed.wav accepted_format=1 reason=PCM16 frames=176400 channels=1 rate=44100 pcm_bytes=352800
+[Q FILE] path=/P4SDM/SAMPLES/m19p_stereo.wav bytes=705644 directory=0
+[Q WAV] name=m19p_stereo.wav accepted_format=1 reason=PCM16 frames=176400 channels=2 rate=44100 pcm_bytes=705600
+[Q FILE] path=/P4SDM/SAMPLES/m19p_large.wav bytes=4194348 directory=0
+[Q WAV] name=m19p_large.wav accepted_format=1 reason=PCM16 frames=2097152 channels=1 rate=44100 pcm_bytes=4194304
+[Q FILE] path=/P4SDM/SAMPLES/m19p_bad_depth.wav bytes=352844 directory=0
+[Q WAV] name=m19p_bad_depth.wav accepted_format=0 reason=unsupported depth (16-bit only) frames=0 channels=1 rate=44100 pcm_bytes=0
+[Q FILE] path=/P4SDM/SAMPLES/m19p_truncated.wav bytes=352841 directory=0
+[Q WAV] name=m19p_truncated.wav accepted_format=0 reason=invalid RIFF length frames=0 channels=0 rate=0 pcm_bytes=0
+[Q FILE] path=/P4SDM/SAMPLES/m19p_oneshot.wav bytes=44144 directory=0
+[Q WAV] name=m19p_oneshot.wav accepted_format=1 reason=PCM16 frames=22050 channels=1 rate=44100 pcm_bytes=44100
+[Q FILE] path=/P4SDM/PROJECTS bytes=0 directory=1
+[Q DIR] path=/P4SDM/PROJECTS accessible=1
+[Q FILE] path=/P4SDM/PROJECTS/M19P_SD_QUAL bytes=0 directory=1
+[Q DIR] path=/P4SDM/PROJECTS/M19P_SD_QUAL accessible=1
+[Q FILE] path=/P4SDM/PROJECTS/M19P_SD_QUAL/A.P4P bytes=52704 directory=0
+[Q SLOT] path=/P4SDM/PROJECTS/M19P_SD_QUAL/A.P4P version=2 generation=3 crc=3850630c valid=1 reason=READY bpm=137 swing=63 chain_length=4 mode=1 ref0=m19p_mixed.wav ref1=m19p_snare.wav
+[Q FILE] path=/P4SDM/PROJECTS/M19P_SD_QUAL/B.P4P bytes=52704 directory=0
+[Q SLOT] path=/P4SDM/PROJECTS/M19P_SD_QUAL/B.P4P version=2 generation=4 crc=ae47d8f2 valid=1 reason=READY bpm=143 swing=63 chain_length=4 mode=1 ref0=m19p_mixed.wav ref1=m19p_snare.wav
+[Q HEAP] tag=store_done internal=219184 free=30032420 largest=29884404 payload=705600
+[Q STORE DONE] op=7

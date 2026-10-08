@@ -1,0 +1,1150 @@
+
+# HOST CMD 0 0 0 0 0
+[Q COMMAND] CMD 0 0 0 0 0
+[Q ACK] sent=1
+
+# HOST LOAD 0 3
+[Q COMMAND] LOAD 0 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=680646 bytes_per_second=518331 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=352844 pcm_bytes=352800 load_publish_us=1107591 payload=705600 transient=352800 peak_payload=1058400 ps_free=30032420 largest=29360116 internal=223004 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+
+# HOST LOAD 1 2
+[Q COMMAND] LOAD 1 2
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=687163 bytes_per_second=513415 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=1 file_bytes=352844 pcm_bytes=352800 load_publish_us=1111312 payload=705600 transient=352800 peak_payload=1058400 ps_free=30032420 largest=29360116 internal=223004 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+
+# HOST CMD 11 2 0 0 0
+[Q COMMAND] CMD 11 2 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 6 0 64 0 0
+[Q COMMAND] CMD 6 0 64 0 0
+[Q ACK] sent=1
+
+# HOST CMD 6 1 58 0 0
+[Q COMMAND] CMD 6 1 58 0 0
+[Q ACK] sent=1
+
+# HOST CMD 6 2 51 0 0
+[Q COMMAND] CMD 6 2 51 0 0
+[Q ACK] sent=1
+
+# HOST CMD 1 0 137 0 0
+[Q COMMAND] CMD 1 0 137 0 0
+[Q ACK] sent=1
+
+# HOST CMD 21 0 63 0 0
+[Q COMMAND] CMD 21 0 63 0 0
+[Q ACK] sent=1
+
+# HOST CMD 41 0 48 0 0
+[Q COMMAND] CMD 41 0 48 0 0
+[Q ACK] sent=1
+
+# HOST CMD 42 0 37 0 0
+[Q COMMAND] CMD 42 0 37 0 0
+[Q ACK] sent=1
+
+# HOST CMD 43 0 91 0 0
+[Q COMMAND] CMD 43 0 91 0 0
+[Q ACK] sent=1
+
+# HOST CMD 41 1 72 0 0
+[Q COMMAND] CMD 41 1 72 0 0
+[Q ACK] sent=1
+
+# HOST CMD 43 1 44 0 0
+[Q COMMAND] CMD 43 1 44 0 0
+[Q ACK] sent=1
+
+# HOST CMD 44 0 1024 0 0
+[Q COMMAND] CMD 44 0 1024 0 0
+[Q ACK] sent=1
+
+# HOST CMD 45 0 62000 0 0
+[Q COMMAND] CMD 45 0 62000 0 0
+[Q ACK] sent=1
+
+# HOST CMD 55 0 8 0 0
+[Q COMMAND] CMD 55 0 8 0 0
+[Q ACK] sent=1
+
+# HOST CMD 53 0 9400 0 1
+[Q COMMAND] CMD 53 0 9400 0 1
+[Q ACK] sent=1
+
+# HOST CMD 54 0 19000 0 1
+[Q COMMAND] CMD 54 0 19000 0 1
+[Q ACK] sent=1
+
+# HOST CMD 2 0 1 0 0
+[Q COMMAND] CMD 2 0 1 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 0 1 0 4
+[Q COMMAND] CMD 2 0 1 0 4
+[Q ACK] sent=1
+
+# HOST CMD 2 0 1 0 8
+[Q COMMAND] CMD 2 0 1 0 8
+[Q ACK] sent=1
+
+# HOST CMD 2 0 1 0 12
+[Q COMMAND] CMD 2 0 1 0 12
+[Q ACK] sent=1
+
+# HOST CMD 2 1 1 0 0
+[Q COMMAND] CMD 2 1 1 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 1 1 0 4
+[Q COMMAND] CMD 2 1 1 0 4
+[Q ACK] sent=1
+
+# HOST CMD 2 1 1 0 8
+[Q COMMAND] CMD 2 1 1 0 8
+[Q ACK] sent=1
+
+# HOST CMD 2 1 1 0 12
+[Q COMMAND] CMD 2 1 1 0 12
+[Q ACK] sent=1
+
+# HOST CMD 2 2 1 0 0
+[Q COMMAND] CMD 2 2 1 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 2 1 0 4
+[Q COMMAND] CMD 2 2 1 0 4
+[Q ACK] sent=1
+
+# HOST CMD 2 2 1 0 8
+[Q COMMAND] CMD 2 2 1 0 8
+[Q ACK] sent=1
+
+# HOST CMD 2 2 1 0 12
+[Q COMMAND] CMD 2 2 1 0 12
+[Q ACK] sent=1
+
+# HOST CMD 38 0 0 0 0
+[Q COMMAND] CMD 38 0 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 38 0 1 0 1
+[Q COMMAND] CMD 38 0 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 38 0 2 0 2
+[Q COMMAND] CMD 38 0 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 38 0 3 0 3
+[Q COMMAND] CMD 38 0 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 2 0 1 1 0
+[Q COMMAND] CMD 2 0 1 1 0
+[Q ACK] sent=1
+
+# HOST CMD 2 0 1 1 4
+[Q COMMAND] CMD 2 0 1 1 4
+[Q ACK] sent=1
+
+# HOST CMD 2 0 1 1 8
+[Q COMMAND] CMD 2 0 1 1 8
+[Q ACK] sent=1
+
+# HOST CMD 2 0 1 1 12
+[Q COMMAND] CMD 2 0 1 1 12
+[Q ACK] sent=1
+
+# HOST CMD 2 1 1 1 0
+[Q COMMAND] CMD 2 1 1 1 0
+[Q ACK] sent=1
+
+# HOST CMD 2 1 1 1 4
+[Q COMMAND] CMD 2 1 1 1 4
+[Q ACK] sent=1
+
+# HOST CMD 2 1 1 1 8
+[Q COMMAND] CMD 2 1 1 1 8
+[Q ACK] sent=1
+
+# HOST CMD 2 1 1 1 12
+[Q COMMAND] CMD 2 1 1 1 12
+[Q ACK] sent=1
+
+# HOST CMD 2 2 1 1 0
+[Q COMMAND] CMD 2 2 1 1 0
+[Q ACK] sent=1
+
+# HOST CMD 2 2 1 1 4
+[Q COMMAND] CMD 2 2 1 1 4
+[Q ACK] sent=1
+
+# HOST CMD 2 2 1 1 8
+[Q COMMAND] CMD 2 2 1 1 8
+[Q ACK] sent=1
+
+# HOST CMD 2 2 1 1 12
+[Q COMMAND] CMD 2 2 1 1 12
+[Q ACK] sent=1
+
+# HOST CMD 38 0 0 1 0
+[Q COMMAND] CMD 38 0 0 1 0
+[Q ACK] sent=1
+
+# HOST CMD 38 0 1 1 1
+[Q COMMAND] CMD 38 0 1 1 1
+[Q ACK] sent=1
+
+# HOST CMD 38 0 2 1 2
+[Q COMMAND] CMD 38 0 2 1 2
+[Q ACK] sent=1
+
+# HOST CMD 38 0 3 1 3
+[Q COMMAND] CMD 38 0 3 1 3
+[Q ACK] sent=1
+
+# HOST CMD 2 0 1 2 0
+[Q COMMAND] CMD 2 0 1 2 0
+[Q ACK] sent=1
+
+# HOST CMD 2 0 1 2 4
+[Q COMMAND] CMD 2 0 1 2 4
+[Q ACK] sent=1
+
+# HOST CMD 2 0 1 2 8
+[Q COMMAND] CMD 2 0 1 2 8
+[Q ACK] sent=1
+
+# HOST CMD 2 0 1 2 12
+[Q COMMAND] CMD 2 0 1 2 12
+[Q ACK] sent=1
+
+# HOST CMD 2 1 1 2 0
+[Q COMMAND] CMD 2 1 1 2 0
+[Q ACK] sent=1
+
+# HOST CMD 2 1 1 2 4
+[Q COMMAND] CMD 2 1 1 2 4
+[Q ACK] sent=1
+
+# HOST CMD 2 1 1 2 8
+[Q COMMAND] CMD 2 1 1 2 8
+[Q ACK] sent=1
+
+# HOST CMD 2 1 1 2 12
+[Q COMMAND] CMD 2 1 1 2 12
+[Q ACK] sent=1
+
+# HOST CMD 2 2 1 2 0
+[Q COMMAND] CMD 2 2 1 2 0
+[Q ACK] sent=1
+
+# HOST CMD 2 2 1 2 4
+[Q COMMAND] CMD 2 2 1 2 4
+[Q ACK] sent=1
+
+# HOST CMD 2 2 1 2 8
+[Q COMMAND] CMD 2 2 1 2 8
+[Q ACK] sent=1
+
+# HOST CMD 2 2 1 2 12
+[Q COMMAND] CMD 2 2 1 2 12
+[Q ACK] sent=1
+
+# HOST CMD 38 0 0 2 0
+[Q COMMAND] CMD 38 0 0 2 0
+[Q ACK] sent=1
+
+# HOST CMD 38 0 1 2 1
+[Q COMMAND] CMD 38 0 1 2 1
+[Q ACK] sent=1
+
+# HOST CMD 38 0 2 2 2
+[Q COMMAND] CMD 38 0 2 2 2
+[Q ACK] sent=1
+
+# HOST CMD 38 0 3 2 3
+[Q COMMAND] CMD 38 0 3 2 3
+[Q ACK] sent=1
+
+# HOST CMD 2 0 1 3 0
+[Q COMMAND] CMD 2 0 1 3 0
+[Q ACK] sent=1
+
+# HOST CMD 2 0 1 3 4
+[Q COMMAND] CMD 2 0 1 3 4
+[Q ACK] sent=1
+
+# HOST CMD 2 0 1 3 8
+[Q COMMAND] CMD 2 0 1 3 8
+[Q ACK] sent=1
+
+# HOST CMD 2 0 1 3 12
+[Q COMMAND] CMD 2 0 1 3 12
+[Q ACK] sent=1
+
+# HOST CMD 2 1 1 3 0
+[Q COMMAND] CMD 2 1 1 3 0
+[Q ACK] sent=1
+
+# HOST CMD 2 1 1 3 4
+[Q COMMAND] CMD 2 1 1 3 4
+[Q ACK] sent=1
+
+# HOST CMD 2 1 1 3 8
+[Q COMMAND] CMD 2 1 1 3 8
+[Q ACK] sent=1
+
+# HOST CMD 2 1 1 3 12
+[Q COMMAND] CMD 2 1 1 3 12
+[Q ACK] sent=1
+
+# HOST CMD 2 2 1 3 0
+[Q COMMAND] CMD 2 2 1 3 0
+[Q ACK] sent=1
+
+# HOST CMD 2 2 1 3 4
+[Q COMMAND] CMD 2 2 1 3 4
+[Q ACK] sent=1
+
+# HOST CMD 2 2 1 3 8
+[Q COMMAND] CMD 2 2 1 3 8
+[Q ACK] sent=1
+
+# HOST CMD 2 2 1 3 12
+[Q COMMAND] CMD 2 2 1 3 12
+[Q ACK] sent=1
+
+# HOST CMD 38 0 0 3 0
+[Q COMMAND] CMD 38 0 0 3 0
+[Q ACK] sent=1
+
+# HOST CMD 38 0 1 3 1
+[Q COMMAND] CMD 38 0 1 3 1
+[Q ACK] sent=1
+
+# HOST CMD 38 0 2 3 2
+[Q COMMAND] CMD 38 0 2 3 2
+[Q ACK] sent=1
+
+# HOST CMD 38 0 3 3 3
+[Q COMMAND] CMD 38 0 3 3 3
+[Q ACK] sent=1
+
+# HOST CMD 10 3 1 0 0
+[Q COMMAND] CMD 10 3 1 0 0
+[Q ACK] sent=1
+
+# HOST CMD 12 2 1 0 0
+[Q COMMAND] CMD 12 2 1 0 0
+[Q ACK] sent=1
+
+# HOST CMD 67 0 0 0 0
+[Q COMMAND] CMD 67 0 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 61 0 0 0 0
+[Q COMMAND] CMD 61 0 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 65 0 2 0 0
+[Q COMMAND] CMD 65 0 2 0 0
+[Q ACK] sent=1
+
+# HOST CMD 61 0 1 0 1
+[Q COMMAND] CMD 61 0 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 65 0 1 0 1
+[Q COMMAND] CMD 65 0 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 61 0 2 0 2
+[Q COMMAND] CMD 61 0 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 65 0 3 0 2
+[Q COMMAND] CMD 65 0 3 0 2
+[Q ACK] sent=1
+
+# HOST CMD 61 0 3 0 3
+[Q COMMAND] CMD 61 0 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 65 0 1 0 3
+[Q COMMAND] CMD 65 0 1 0 3
+[Q ACK] sent=1
+
+# HOST CMD 66 0 1 0 0
+[Q COMMAND] CMD 66 0 1 0 0
+[Q ACK] sent=1
+
+# HOST CMD 60 0 1 0 0
+[Q COMMAND] CMD 60 0 1 0 0
+[Q ACK] sent=1
+
+# HOST STATE
+[Q COMMAND] STATE
+[Q STATE] bpm=137 swing=63 playing=0 mode=1 chain_length=4 chain_loop=1 project_busy=0 restoring=0 sample_busy=0 project_status=PROJECT READY sample_status=SAMPLE READY
+[Q CHAIN] index=0 pattern=0 repeats=2
+[Q CHAIN] index=1 pattern=1 repeats=1
+[Q CHAIN] index=2 pattern=2 repeats=3
+[Q CHAIN] index=3 pattern=3 repeats=1
+[Q TRACK] track=0 source=1 pitch=64 synth_pitch=36 sample_pitch=64 mute=0 solo=0 start=1024 end=62000 reverse=0 mode=1 choke=1 cutoff=48 resonance=37 send=91 slices=8 enabled=0 selected=0 frames=176400 waveform=0720701a name=m19p_mixed.wav
+[Q SLICE] track=0 index=0 start=1024 end=8646
+[Q SLICE] track=0 index=1 start=9400 end=19000
+[Q SLICE] track=0 index=2 start=16268 end=23890
+[Q SLICE] track=0 index=3 start=23890 end=31512
+[Q SLICE] track=0 index=4 start=31512 end=39134
+[Q SLICE] track=0 index=5 start=39134 end=46756
+[Q SLICE] track=0 index=6 start=46756 end=54378
+[Q SLICE] track=0 index=7 start=54378 end=62000
+[Q TRACK] track=1 source=1 pitch=58 synth_pitch=39 sample_pitch=58 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=1 cutoff=72 resonance=0 send=44 slices=1 enabled=0 selected=0 frames=176400 waveform=5e370bb2 name=m19p_snare.wav
+[Q SLICE] track=1 index=0 start=0 end=65535
+[Q TRACK] track=2 source=0 pitch=51 synth_pitch=51 sample_pitch=60 mute=0 solo=1 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=2 index=0 start=0 end=65535
+[Q TRACK] track=3 source=0 pitch=45 synth_pitch=45 sample_pitch=60 mute=1 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=3 index=0 start=0 end=65535
+[Q PATTERN] index=0 length=16 masks=0002,0000,0000
+[Q LOCK] pattern=0 step=0 mask=128 slice=0
+[Q LOCK] pattern=0 step=1 mask=128 slice=1
+[Q LOCK] pattern=0 step=2 mask=128 slice=2
+[Q LOCK] pattern=0 step=3 mask=128 slice=3
+[Q PATTERN] index=1 length=16 masks=0000,0000,0000
+[Q LOCK] pattern=1 step=0 mask=128 slice=0
+[Q LOCK] pattern=1 step=1 mask=128 slice=1
+[Q LOCK] pattern=1 step=2 mask=128 slice=2
+[Q LOCK] pattern=1 step=3 mask=128 slice=3
+[Q PATTERN] index=2 length=16 masks=0000,0000,0000
+[Q LOCK] pattern=2 step=0 mask=128 slice=0
+[Q LOCK] pattern=2 step=1 mask=128 slice=1
+[Q LOCK] pattern=2 step=2 mask=128 slice=2
+[Q LOCK] pattern=2 step=3 mask=128 slice=3
+[Q PATTERN] index=3 length=16 masks=0000,0000,0000
+[Q LOCK] pattern=3 step=0 mask=128 slice=0
+[Q LOCK] pattern=3 step=1 mask=128 slice=1
+[Q LOCK] pattern=3 step=2 mask=128 slice=2
+[Q LOCK] pattern=3 step=3 mask=128 slice=3
+[Q TRANSIENT] state=0 request=0 progress=0 count=1 stale_discarded=0 apply=0 cancel=0 duration_max_us=0 chunk_max_us=0
+[Q PROPOSAL] index=0 start=0 end=65535
+[Q HEAP] tag=state internal=223004 free=30032420 largest=29360116
+[Q PLAYBACK] triggers=9 reverse=2 gate=4 releases=5 chokes=6 retriggers=3 repeat_accepts=0 repeat_hits=0 chain_loops=0
+
+# HOST SAVE M19P_SD_QUAL
+[Q COMMAND] SAVE M19P_SD_QUAL
+[Q ACK] save=1
+
+# HOST STORE 7
+[Q COMMAND] STORE 7
+[Q FS] total=8050966528 used=7405568
+[Q DIR] path=/P4SDM accessible=1
+[Q FILE] path=/P4SDM/SAMPLES bytes=0 directory=1
+[Q DIR] path=/P4SDM/SAMPLES accessible=1
+[Q FILE] path=/P4SDM/SAMPLES/m19p_impulses.wav bytes=352844 directory=0
+[Q WAV] name=m19p_impulses.wav accepted_format=1 reason=PCM16 frames=176400 channels=1 rate=44100 pcm_bytes=352800
+[Q FILE] path=/P4SDM/SAMPLES/m19p_kick.wav bytes=352844 directory=0
+[Q WAV] name=m19p_kick.wav accepted_format=1 reason=PCM16 frames=176400 channels=1 rate=44100 pcm_bytes=352800
+[Q FILE] path=/P4SDM/SAMPLES/m19p_snare.wav bytes=352844 directory=0
+[Q WAV] name=m19p_snare.wav accepted_format=1 reason=PCM16 frames=176400 channels=1 rate=44100 pcm_bytes=352800
+[Q FILE] path=/P4SDM/SAMPLES/m19p_mixed.wav bytes=352844 directory=0
+[Q WAV] name=m19p_mixed.wav accepted_format=1 reason=PCM16 frames=176400 channels=1 rate=44100 pcm_bytes=352800
+[Q FILE] path=/P4SDM/SAMPLES/m19p_stereo.wav bytes=705644 directory=0
+[Q WAV] name=m19p_stereo.wav accepted_format=1 reason=PCM16 frames=176400 channels=2 rate=44100 pcm_bytes=705600
+[Q FILE] path=/P4SDM/SAMPLES/m19p_large.wav bytes=4194348 directory=0
+[Q WAV] name=m19p_large.wav accepted_format=1 reason=PCM16 frames=2097152 channels=1 rate=44100 pcm_bytes=4194304
+[Q FILE] path=/P4SDM/SAMPLES/m19p_bad_depth.wav bytes=352844 directory=0
+[Q WAV] name=m19p_bad_depth.wav accepted_format=0 reason=unsupported depth (16-bit only) frames=0 channels=1 rate=44100 pcm_bytes=0
+[Q FILE] path=/P4SDM/SAMPLES/m19p_truncated.wav bytes=352841 directory=0
+[Q WAV] name=m19p_truncated.wav accepted_format=0 reason=invalid RIFF length frames=0 channels=0 rate=0 pcm_bytes=0
+[Q FILE] path=/P4SDM/SAMPLES/m19p_oneshot.wav bytes=44144 directory=0
+[Q WAV] name=m19p_oneshot.wav accepted_format=1 reason=PCM16 frames=22050 channels=1 rate=44100 pcm_bytes=44100
+[Q FILE] path=/P4SDM/PROJECTS bytes=0 directory=1
+[Q DIR] path=/P4SDM/PROJECTS accessible=1
+[Q FILE] path=/P4SDM/PROJECTS/M19P_SD_QUAL bytes=0 directory=1
+[Q DIR] path=/P4SDM/PROJECTS/M19P_SD_QUAL accessible=1
+[Q FILE] path=/P4SDM/PROJECTS/M19P_SD_QUAL/A.P4P bytes=52704 directory=0
+[Q SLOT] path=/P4SDM/PROJECTS/M19P_SD_QUAL/A.P4P version=2 generation=1 crc=fa9d3166 valid=1 reason=READY bpm=137 swing=63 chain_length=4 mode=1 ref0=m19p_mixed.wav ref1=m19p_snare.wav
+[Q HEAP] tag=store_done internal=222788 free=30032420 largest=29360116 payload=705600
+[Q STORE DONE] op=7
+
+# HOST CMD 1 0 143 0 0
+[Q COMMAND] CMD 1 0 143 0 0
+[Q ACK] sent=1
+
+# HOST SAVE M19P_SD_QUAL
+[Q COMMAND] SAVE M19P_SD_QUAL
+[Q ACK] save=1
+
+# HOST STORE 7
+[Q COMMAND] STORE 7
+[Q FS] total=8050966528 used=7471104
+[Q DIR] path=/P4SDM accessible=1
+[Q FILE] path=/P4SDM/SAMPLES bytes=0 directory=1
+[Q DIR] path=/P4SDM/SAMPLES accessible=1
+[Q FILE] path=/P4SDM/SAMPLES/m19p_impulses.wav bytes=352844 directory=0
+[Q WAV] name=m19p_impulses.wav accepted_format=1 reason=PCM16 frames=176400 channels=1 rate=44100 pcm_bytes=352800
+[Q FILE] path=/P4SDM/SAMPLES/m19p_kick.wav bytes=352844 directory=0
+[Q WAV] name=m19p_kick.wav accepted_format=1 reason=PCM16 frames=176400 channels=1 rate=44100 pcm_bytes=352800
+[Q FILE] path=/P4SDM/SAMPLES/m19p_snare.wav bytes=352844 directory=0
+[Q WAV] name=m19p_snare.wav accepted_format=1 reason=PCM16 frames=176400 channels=1 rate=44100 pcm_bytes=352800
+[Q FILE] path=/P4SDM/SAMPLES/m19p_mixed.wav bytes=352844 directory=0
+[Q WAV] name=m19p_mixed.wav accepted_format=1 reason=PCM16 frames=176400 channels=1 rate=44100 pcm_bytes=352800
+[Q FILE] path=/P4SDM/SAMPLES/m19p_stereo.wav bytes=705644 directory=0
+[Q WAV] name=m19p_stereo.wav accepted_format=1 reason=PCM16 frames=176400 channels=2 rate=44100 pcm_bytes=705600
+[Q FILE] path=/P4SDM/SAMPLES/m19p_large.wav bytes=4194348 directory=0
+[Q WAV] name=m19p_large.wav accepted_format=1 reason=PCM16 frames=2097152 channels=1 rate=44100 pcm_bytes=4194304
+[Q FILE] path=/P4SDM/SAMPLES/m19p_bad_depth.wav bytes=352844 directory=0
+[Q WAV] name=m19p_bad_depth.wav accepted_format=0 reason=unsupported depth (16-bit only) frames=0 channels=1 rate=44100 pcm_bytes=0
+[Q FILE] path=/P4SDM/SAMPLES/m19p_truncated.wav bytes=352841 directory=0
+[Q WAV] name=m19p_truncated.wav accepted_format=0 reason=invalid RIFF length frames=0 channels=0 rate=0 pcm_bytes=0
+[Q FILE] path=/P4SDM/SAMPLES/m19p_oneshot.wav bytes=44144 directory=0
+[Q WAV] name=m19p_oneshot.wav accepted_format=1 reason=PCM16 frames=22050 channels=1 rate=44100 pcm_bytes=44100
+[Q FILE] path=/P4SDM/PROJECTS bytes=0 directory=1
+[Q DIR] path=/P4SDM/PROJECTS accessible=1
+[Q FILE] path=/P4SDM/PROJECTS/M19P_SD_QUAL bytes=0 directory=1
+[Q DIR] path=/P4SDM/PROJECTS/M19P_SD_QUAL accessible=1
+[Q FILE] path=/P4SDM/PROJECTS/M19P_SD_QUAL/A.P4P bytes=52704 directory=0
+[Q SLOT] path=/P4SDM/PROJECTS/M19P_SD_QUAL/A.P4P version=2 generation=1 crc=fa9d3166 valid=1 reason=READY bpm=137 swing=63 chain_length=4 mode=1 ref0=m19p_mixed.wav ref1=m19p_snare.wav
+[Q FILE] path=/P4SDM/PROJECTS/M19P_SD_QUAL/B.P4P bytes=52704 directory=0
+[Q SLOT] path=/P4SDM/PROJECTS/M19P_SD_QUAL/B.P4P version=2 generation=2 crc=6c8a8a98 valid=1 reason=READY bpm=143 swing=63 chain_length=4 mode=1 ref0=m19p_mixed.wav ref1=m19p_snare.wav
+[Q HEAP] tag=store_done internal=222788 free=30032420 largest=29360116 payload=705600
+[Q STORE DONE] op=7
+
+# HOST STATE
+[Q COMMAND] STATE
+[Q STATE] bpm=143 swing=63 playing=0 mode=1 chain_length=4 chain_loop=1 project_busy=0 restoring=0 sample_busy=0 project_status=PROJECT SAVED sample_status=SAMPLE READY
+[Q CHAIN] index=0 pattern=0 repeats=2
+[Q CHAIN] index=1 pattern=1 repeats=1
+[Q CHAIN] index=2 pattern=2 repeats=3
+[Q CHAIN] index=3 pattern=3 repeats=1
+[Q TRACK] track=0 source=1 pitch=64 synth_pitch=36 sample_pitch=64 mute=0 solo=0 start=1024 end=62000 reverse=0 mode=1 choke=1 cutoff=48 resonance=37 send=91 slices=8 enabled=0 selected=0 frames=176400 waveform=0720701a name=m19p_mixed.wav
+[Q SLICE] track=0 index=0 start=1024 end=8646
+[Q SLICE] track=0 index=1 start=9400 end=19000
+[Q SLICE] track=0 index=2 start=16268 end=23890
+[Q SLICE] track=0 index=3 start=23890 end=31512
+[Q SLICE] track=0 index=4 start=31512 end=39134
+[Q SLICE] track=0 index=5 start=39134 end=46756
+[Q SLICE] track=0 index=6 start=46756 end=54378
+[Q SLICE] track=0 index=7 start=54378 end=62000
+[Q TRACK] track=1 source=1 pitch=58 synth_pitch=39 sample_pitch=58 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=1 cutoff=72 resonance=0 send=44 slices=1 enabled=0 selected=0 frames=176400 waveform=5e370bb2 name=m19p_snare.wav
+[Q SLICE] track=1 index=0 start=0 end=65535
+[Q TRACK] track=2 source=0 pitch=51 synth_pitch=51 sample_pitch=60 mute=0 solo=1 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=2 index=0 start=0 end=65535
+[Q TRACK] track=3 source=0 pitch=45 synth_pitch=45 sample_pitch=60 mute=1 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=3 index=0 start=0 end=65535
+[Q PATTERN] index=0 length=16 masks=0002,0000,0000
+[Q LOCK] pattern=0 step=0 mask=128 slice=0
+[Q LOCK] pattern=0 step=1 mask=128 slice=1
+[Q LOCK] pattern=0 step=2 mask=128 slice=2
+[Q LOCK] pattern=0 step=3 mask=128 slice=3
+[Q PATTERN] index=1 length=16 masks=0000,0000,0000
+[Q LOCK] pattern=1 step=0 mask=128 slice=0
+[Q LOCK] pattern=1 step=1 mask=128 slice=1
+[Q LOCK] pattern=1 step=2 mask=128 slice=2
+[Q LOCK] pattern=1 step=3 mask=128 slice=3
+[Q PATTERN] index=2 length=16 masks=0000,0000,0000
+[Q LOCK] pattern=2 step=0 mask=128 slice=0
+[Q LOCK] pattern=2 step=1 mask=128 slice=1
+[Q LOCK] pattern=2 step=2 mask=128 slice=2
+[Q LOCK] pattern=2 step=3 mask=128 slice=3
+[Q PATTERN] index=3 length=16 masks=0000,0000,0000
+[Q LOCK] pattern=3 step=0 mask=128 slice=0
+[Q LOCK] pattern=3 step=1 mask=128 slice=1
+[Q LOCK] pattern=3 step=2 mask=128 slice=2
+[Q LOCK] pattern=3 step=3 mask=128 slice=3
+[Q TRANSIENT] state=0 request=0 progress=0 count=1 stale_discarded=0 apply=0 cancel=0 duration_max_us=0 chunk_max_us=0
+[Q PROPOSAL] index=0 start=0 end=65535
+[Q HEAP] tag=state internal=222788 free=30032420 largest=29360116
+[Q PLAYBACK] triggers=9 reverse=2 gate=4 releases=5 chokes=6 retriggers=3 repeat_accepts=0 repeat_hits=0 chain_loops=0
+
+# HOST CMD 0 0 0 0 0
+[Q COMMAND] CMD 0 0 0 0 0
+[Q ACK] sent=1
+
+# HOST LOAD 0 3
+[Q COMMAND] LOAD 0 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=703167 bytes_per_second=501730 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=352844 pcm_bytes=352800 load_publish_us=1130495 payload=705600 transient=352800 peak_payload=1058400 ps_free=30032420 largest=29884404 internal=222788 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+
+# HOST LOAD 1 2
+[Q COMMAND] LOAD 1 2
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=678789 bytes_per_second=519749 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=1 file_bytes=352844 pcm_bytes=352800 load_publish_us=1105551 payload=705600 transient=352800 peak_payload=1058400 ps_free=30032420 largest=29360116 internal=222788 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+
+# HOST CMD 11 2 0 0 0
+[Q COMMAND] CMD 11 2 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 6 0 64 0 0
+[Q COMMAND] CMD 6 0 64 0 0
+[Q ACK] sent=1
+
+# HOST CMD 6 1 58 0 0
+[Q COMMAND] CMD 6 1 58 0 0
+[Q ACK] sent=1
+
+# HOST CMD 6 2 51 0 0
+[Q COMMAND] CMD 6 2 51 0 0
+[Q ACK] sent=1
+
+# HOST CMD 1 0 137 0 0
+[Q COMMAND] CMD 1 0 137 0 0
+[Q ACK] sent=1
+
+# HOST CMD 21 0 63 0 0
+[Q COMMAND] CMD 21 0 63 0 0
+[Q ACK] sent=1
+
+# HOST CMD 41 0 48 0 0
+[Q COMMAND] CMD 41 0 48 0 0
+[Q ACK] sent=1
+
+# HOST CMD 42 0 37 0 0
+[Q COMMAND] CMD 42 0 37 0 0
+[Q ACK] sent=1
+
+# HOST CMD 43 0 91 0 0
+[Q COMMAND] CMD 43 0 91 0 0
+[Q ACK] sent=1
+
+# HOST CMD 41 1 72 0 0
+[Q COMMAND] CMD 41 1 72 0 0
+[Q ACK] sent=1
+
+# HOST CMD 43 1 44 0 0
+[Q COMMAND] CMD 43 1 44 0 0
+[Q ACK] sent=1
+
+# HOST CMD 44 0 1024 0 0
+[Q COMMAND] CMD 44 0 1024 0 0
+[Q ACK] sent=1
+
+# HOST CMD 45 0 62000 0 0
+[Q COMMAND] CMD 45 0 62000 0 0
+[Q ACK] sent=1
+
+# HOST CMD 55 0 8 0 0
+[Q COMMAND] CMD 55 0 8 0 0
+[Q ACK] sent=1
+
+# HOST CMD 53 0 9400 0 1
+[Q COMMAND] CMD 53 0 9400 0 1
+[Q ACK] sent=1
+
+# HOST CMD 54 0 19000 0 1
+[Q COMMAND] CMD 54 0 19000 0 1
+[Q ACK] sent=1
+
+# HOST CMD 51 0 1 0 0
+[Q COMMAND] CMD 51 0 1 0 0
+[Q ACK] sent=1
+
+# HOST CMD 17 0 0 0 0
+[Q COMMAND] CMD 17 0 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 0 0 0 0
+[Q COMMAND] CMD 2 0 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 0 4 0 4
+[Q COMMAND] CMD 2 0 4 0 4
+[Q ACK] sent=1
+
+# HOST CMD 2 0 8 0 8
+[Q COMMAND] CMD 2 0 8 0 8
+[Q ACK] sent=1
+
+# HOST CMD 2 0 12 0 12
+[Q COMMAND] CMD 2 0 12 0 12
+[Q ACK] sent=1
+
+# HOST CMD 2 1 0 0 0
+[Q COMMAND] CMD 2 1 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 1 4 0 4
+[Q COMMAND] CMD 2 1 4 0 4
+[Q ACK] sent=1
+
+# HOST CMD 2 1 8 0 8
+[Q COMMAND] CMD 2 1 8 0 8
+[Q ACK] sent=1
+
+# HOST CMD 2 1 12 0 12
+[Q COMMAND] CMD 2 1 12 0 12
+[Q ACK] sent=1
+
+# HOST CMD 2 2 0 0 0
+[Q COMMAND] CMD 2 2 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 2 4 0 4
+[Q COMMAND] CMD 2 2 4 0 4
+[Q ACK] sent=1
+
+# HOST CMD 2 2 8 0 8
+[Q COMMAND] CMD 2 2 8 0 8
+[Q ACK] sent=1
+
+# HOST CMD 2 2 12 0 12
+[Q COMMAND] CMD 2 2 12 0 12
+[Q ACK] sent=1
+
+# HOST CMD 38 0 0 0 0
+[Q COMMAND] CMD 38 0 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 38 0 1 0 1
+[Q COMMAND] CMD 38 0 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 38 0 2 0 2
+[Q COMMAND] CMD 38 0 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 38 0 3 0 3
+[Q COMMAND] CMD 38 0 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 17 0 0 1 0
+[Q COMMAND] CMD 17 0 0 1 0
+[Q ACK] sent=1
+
+# HOST CMD 2 0 0 1 0
+[Q COMMAND] CMD 2 0 0 1 0
+[Q ACK] sent=1
+
+# HOST CMD 2 0 4 1 4
+[Q COMMAND] CMD 2 0 4 1 4
+[Q ACK] sent=1
+
+# HOST CMD 2 0 8 1 8
+[Q COMMAND] CMD 2 0 8 1 8
+[Q ACK] sent=1
+
+# HOST CMD 2 0 12 1 12
+[Q COMMAND] CMD 2 0 12 1 12
+[Q ACK] sent=1
+
+# HOST CMD 2 1 0 1 0
+[Q COMMAND] CMD 2 1 0 1 0
+[Q ACK] sent=1
+
+# HOST CMD 2 1 4 1 4
+[Q COMMAND] CMD 2 1 4 1 4
+[Q ACK] sent=1
+
+# HOST CMD 2 1 8 1 8
+[Q COMMAND] CMD 2 1 8 1 8
+[Q ACK] sent=1
+
+# HOST CMD 2 1 12 1 12
+[Q COMMAND] CMD 2 1 12 1 12
+[Q ACK] sent=1
+
+# HOST CMD 2 2 0 1 0
+[Q COMMAND] CMD 2 2 0 1 0
+[Q ACK] sent=1
+
+# HOST CMD 2 2 4 1 4
+[Q COMMAND] CMD 2 2 4 1 4
+[Q ACK] sent=1
+
+# HOST CMD 2 2 8 1 8
+[Q COMMAND] CMD 2 2 8 1 8
+[Q ACK] sent=1
+
+# HOST CMD 2 2 12 1 12
+[Q COMMAND] CMD 2 2 12 1 12
+[Q ACK] sent=1
+
+# HOST CMD 38 0 0 1 0
+[Q COMMAND] CMD 38 0 0 1 0
+[Q ACK] sent=1
+
+# HOST CMD 38 0 1 1 1
+[Q COMMAND] CMD 38 0 1 1 1
+[Q ACK] sent=1
+
+# HOST CMD 38 0 2 1 2
+[Q COMMAND] CMD 38 0 2 1 2
+[Q ACK] sent=1
+
+# HOST CMD 38 0 3 1 3
+[Q COMMAND] CMD 38 0 3 1 3
+[Q ACK] sent=1
+
+# HOST CMD 17 0 0 2 0
+[Q COMMAND] CMD 17 0 0 2 0
+[Q ACK] sent=1
+
+# HOST CMD 2 0 0 2 0
+[Q COMMAND] CMD 2 0 0 2 0
+[Q ACK] sent=1
+
+# HOST CMD 2 0 4 2 4
+[Q COMMAND] CMD 2 0 4 2 4
+[Q ACK] sent=1
+
+# HOST CMD 2 0 8 2 8
+[Q COMMAND] CMD 2 0 8 2 8
+[Q ACK] sent=1
+
+# HOST CMD 2 0 12 2 12
+[Q COMMAND] CMD 2 0 12 2 12
+[Q ACK] sent=1
+
+# HOST CMD 2 1 0 2 0
+[Q COMMAND] CMD 2 1 0 2 0
+[Q ACK] sent=1
+
+# HOST CMD 2 1 4 2 4
+[Q COMMAND] CMD 2 1 4 2 4
+[Q ACK] sent=1
+
+# HOST CMD 2 1 8 2 8
+[Q COMMAND] CMD 2 1 8 2 8
+[Q ACK] sent=1
+
+# HOST CMD 2 1 12 2 12
+[Q COMMAND] CMD 2 1 12 2 12
+[Q ACK] sent=1
+
+# HOST CMD 2 2 0 2 0
+[Q COMMAND] CMD 2 2 0 2 0
+[Q ACK] sent=1
+
+# HOST CMD 2 2 4 2 4
+[Q COMMAND] CMD 2 2 4 2 4
+[Q ACK] sent=1
+
+# HOST CMD 2 2 8 2 8
+[Q COMMAND] CMD 2 2 8 2 8
+[Q ACK] sent=1
+
+# HOST CMD 2 2 12 2 12
+[Q COMMAND] CMD 2 2 12 2 12
+[Q ACK] sent=1
+
+# HOST CMD 38 0 0 2 0
+[Q COMMAND] CMD 38 0 0 2 0
+[Q ACK] sent=1
+
+# HOST CMD 38 0 1 2 1
+[Q COMMAND] CMD 38 0 1 2 1
+[Q ACK] sent=1
+
+# HOST CMD 38 0 2 2 2
+[Q COMMAND] CMD 38 0 2 2 2
+[Q ACK] sent=1
+
+# HOST CMD 38 0 3 2 3
+[Q COMMAND] CMD 38 0 3 2 3
+[Q ACK] sent=1
+
+# HOST CMD 17 0 0 3 0
+[Q COMMAND] CMD 17 0 0 3 0
+[Q ACK] sent=1
+
+# HOST CMD 2 0 0 3 0
+[Q COMMAND] CMD 2 0 0 3 0
+[Q ACK] sent=1
+
+# HOST CMD 2 0 4 3 4
+[Q COMMAND] CMD 2 0 4 3 4
+[Q ACK] sent=1
+
+# HOST CMD 2 0 8 3 8
+[Q COMMAND] CMD 2 0 8 3 8
+[Q ACK] sent=1
+
+# HOST CMD 2 0 12 3 12
+[Q COMMAND] CMD 2 0 12 3 12
+[Q ACK] sent=1
+
+# HOST CMD 2 1 0 3 0
+[Q COMMAND] CMD 2 1 0 3 0
+[Q ACK] sent=1
+
+# HOST CMD 2 1 4 3 4
+[Q COMMAND] CMD 2 1 4 3 4
+[Q ACK] sent=1
+
+# HOST CMD 2 1 8 3 8
+[Q COMMAND] CMD 2 1 8 3 8
+[Q ACK] sent=1
+
+# HOST CMD 2 1 12 3 12
+[Q COMMAND] CMD 2 1 12 3 12
+[Q ACK] sent=1
+
+# HOST CMD 2 2 0 3 0
+[Q COMMAND] CMD 2 2 0 3 0
+[Q ACK] sent=1
+
+# HOST CMD 2 2 4 3 4
+[Q COMMAND] CMD 2 2 4 3 4
+[Q ACK] sent=1
+
+# HOST CMD 2 2 8 3 8
+[Q COMMAND] CMD 2 2 8 3 8
+[Q ACK] sent=1
+
+# HOST CMD 2 2 12 3 12
+[Q COMMAND] CMD 2 2 12 3 12
+[Q ACK] sent=1
+
+# HOST CMD 38 0 0 3 0
+[Q COMMAND] CMD 38 0 0 3 0
+[Q ACK] sent=1
+
+# HOST CMD 38 0 1 3 1
+[Q COMMAND] CMD 38 0 1 3 1
+[Q ACK] sent=1
+
+# HOST CMD 38 0 2 3 2
+[Q COMMAND] CMD 38 0 2 3 2
+[Q ACK] sent=1
+
+# HOST CMD 38 0 3 3 3
+[Q COMMAND] CMD 38 0 3 3 3
+[Q ACK] sent=1
+
+# HOST CMD 10 3 1 0 0
+[Q COMMAND] CMD 10 3 1 0 0
+[Q ACK] sent=1
+
+# HOST CMD 12 2 1 0 0
+[Q COMMAND] CMD 12 2 1 0 0
+[Q ACK] sent=1
+
+# HOST CMD 67 0 0 0 0
+[Q COMMAND] CMD 67 0 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 61 0 0 0 0
+[Q COMMAND] CMD 61 0 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 65 0 2 0 0
+[Q COMMAND] CMD 65 0 2 0 0
+[Q ACK] sent=1
+
+# HOST CMD 61 0 1 0 1
+[Q COMMAND] CMD 61 0 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 65 0 1 0 1
+[Q COMMAND] CMD 65 0 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 61 0 2 0 2
+[Q COMMAND] CMD 61 0 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 65 0 3 0 2
+[Q COMMAND] CMD 65 0 3 0 2
+[Q ACK] sent=1
+
+# HOST CMD 61 0 3 0 3
+[Q COMMAND] CMD 61 0 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 65 0 1 0 3
+[Q COMMAND] CMD 65 0 1 0 3
+[Q ACK] sent=1
+
+# HOST CMD 66 0 1 0 0
+[Q COMMAND] CMD 66 0 1 0 0
+[Q ACK] sent=1
+
+# HOST CMD 60 0 1 0 0
+[Q COMMAND] CMD 60 0 1 0 0
+[Q ACK] sent=1
+
+# HOST STATE
+[Q COMMAND] STATE
+[Q STATE] bpm=137 swing=63 playing=0 mode=1 chain_length=4 chain_loop=1 project_busy=0 restoring=0 sample_busy=0 project_status=PROJECT SAVED sample_status=SAMPLE READY
+[Q CHAIN] index=0 pattern=0 repeats=2
+[Q CHAIN] index=1 pattern=1 repeats=1
+[Q CHAIN] index=2 pattern=2 repeats=3
+[Q CHAIN] index=3 pattern=3 repeats=1
+[Q TRACK] track=0 source=1 pitch=64 synth_pitch=36 sample_pitch=64 mute=0 solo=0 start=1024 end=62000 reverse=0 mode=1 choke=1 cutoff=48 resonance=37 send=91 slices=8 enabled=1 selected=0 frames=176400 waveform=0720701a name=m19p_mixed.wav
+[Q SLICE] track=0 index=0 start=1024 end=8646
+[Q SLICE] track=0 index=1 start=9400 end=19000
+[Q SLICE] track=0 index=2 start=16268 end=23890
+[Q SLICE] track=0 index=3 start=23890 end=31512
+[Q SLICE] track=0 index=4 start=31512 end=39134
+[Q SLICE] track=0 index=5 start=39134 end=46756
+[Q SLICE] track=0 index=6 start=46756 end=54378
+[Q SLICE] track=0 index=7 start=54378 end=62000
+[Q TRACK] track=1 source=1 pitch=58 synth_pitch=39 sample_pitch=58 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=1 cutoff=72 resonance=0 send=44 slices=1 enabled=0 selected=0 frames=176400 waveform=5e370bb2 name=m19p_snare.wav
+[Q SLICE] track=1 index=0 start=0 end=65535
+[Q TRACK] track=2 source=0 pitch=51 synth_pitch=51 sample_pitch=60 mute=0 solo=1 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=2 index=0 start=0 end=65535
+[Q TRACK] track=3 source=0 pitch=45 synth_pitch=45 sample_pitch=60 mute=1 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=3 index=0 start=0 end=65535
+[Q PATTERN] index=0 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=0 step=0 mask=128 slice=0
+[Q LOCK] pattern=0 step=1 mask=128 slice=1
+[Q LOCK] pattern=0 step=2 mask=128 slice=2
+[Q LOCK] pattern=0 step=3 mask=128 slice=3
+[Q PATTERN] index=1 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=1 step=0 mask=128 slice=0
+[Q LOCK] pattern=1 step=1 mask=128 slice=1
+[Q LOCK] pattern=1 step=2 mask=128 slice=2
+[Q LOCK] pattern=1 step=3 mask=128 slice=3
+[Q PATTERN] index=2 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=2 step=0 mask=128 slice=0
+[Q LOCK] pattern=2 step=1 mask=128 slice=1
+[Q LOCK] pattern=2 step=2 mask=128 slice=2
+[Q LOCK] pattern=2 step=3 mask=128 slice=3
+[Q PATTERN] index=3 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=3 step=0 mask=128 slice=0
+[Q LOCK] pattern=3 step=1 mask=128 slice=1
+[Q LOCK] pattern=3 step=2 mask=128 slice=2
+[Q LOCK] pattern=3 step=3 mask=128 slice=3
+[Q TRANSIENT] state=0 request=0 progress=0 count=1 stale_discarded=0 apply=0 cancel=0 duration_max_us=0 chunk_max_us=0
+[Q PROPOSAL] index=0 start=0 end=65535
+[Q HEAP] tag=state internal=222788 free=30032420 largest=29360116
+[Q PLAYBACK] triggers=9 reverse=2 gate=4 releases=5 chokes=6 retriggers=3 repeat_accepts=0 repeat_hits=0 chain_loops=0
+
+# HOST SAVE M19P_SD_QUAL
+[Q COMMAND] SAVE M19P_SD_QUAL
+[Q ACK] save=1
+
+# HOST STORE 7
+[Q COMMAND] STORE 7
+[Q FS] total=8050966528 used=7471104
+[Q DIR] path=/P4SDM accessible=1
+[Q FILE] path=/P4SDM/SAMPLES bytes=0 directory=1
+[Q DIR] path=/P4SDM/SAMPLES accessible=1
+[Q FILE] path=/P4SDM/SAMPLES/m19p_impulses.wav bytes=352844 directory=0
+[Q WAV] name=m19p_impulses.wav accepted_format=1 reason=PCM16 frames=176400 channels=1 rate=44100 pcm_bytes=352800
+[Q FILE] path=/P4SDM/SAMPLES/m19p_kick.wav bytes=352844 directory=0
+[Q WAV] name=m19p_kick.wav accepted_format=1 reason=PCM16 frames=176400 channels=1 rate=44100 pcm_bytes=352800
+[Q FILE] path=/P4SDM/SAMPLES/m19p_snare.wav bytes=352844 directory=0
+[Q WAV] name=m19p_snare.wav accepted_format=1 reason=PCM16 frames=176400 channels=1 rate=44100 pcm_bytes=352800
+[Q FILE] path=/P4SDM/SAMPLES/m19p_mixed.wav bytes=352844 directory=0
+[Q WAV] name=m19p_mixed.wav accepted_format=1 reason=PCM16 frames=176400 channels=1 rate=44100 pcm_bytes=352800
+[Q FILE] path=/P4SDM/SAMPLES/m19p_stereo.wav bytes=705644 directory=0
+[Q WAV] name=m19p_stereo.wav accepted_format=1 reason=PCM16 frames=176400 channels=2 rate=44100 pcm_bytes=705600
+[Q FILE] path=/P4SDM/SAMPLES/m19p_large.wav bytes=4194348 directory=0
+[Q WAV] name=m19p_large.wav accepted_format=1 reason=PCM16 frames=2097152 channels=1 rate=44100 pcm_bytes=4194304
+[Q FILE] path=/P4SDM/SAMPLES/m19p_bad_depth.wav bytes=352844 directory=0
+[Q WAV] name=m19p_bad_depth.wav accepted_format=0 reason=unsupported depth (16-bit only) frames=0 channels=1 rate=44100 pcm_bytes=0
+[Q FILE] path=/P4SDM/SAMPLES/m19p_truncated.wav bytes=352841 directory=0
+[Q WAV] name=m19p_truncated.wav accepted_format=0 reason=invalid RIFF length frames=0 channels=0 rate=0 pcm_bytes=0
+[Q FILE] path=/P4SDM/SAMPLES/m19p_oneshot.wav bytes=44144 directory=0
+[Q WAV] name=m19p_oneshot.wav accepted_format=1 reason=PCM16 frames=22050 channels=1 rate=44100 pcm_bytes=44100
+[Q FILE] path=/P4SDM/PROJECTS bytes=0 directory=1
+[Q DIR] path=/P4SDM/PROJECTS accessible=1
+[Q FILE] path=/P4SDM/PROJECTS/M19P_SD_QUAL bytes=0 directory=1
+[Q DIR] path=/P4SDM/PROJECTS/M19P_SD_QUAL accessible=1
+[Q FILE] path=/P4SDM/PROJECTS/M19P_SD_QUAL/A.P4P bytes=52704 directory=0
+[Q SLOT] path=/P4SDM/PROJECTS/M19P_SD_QUAL/A.P4P version=2 generation=3 crc=3850630c valid=1 reason=READY bpm=137 swing=63 chain_length=4 mode=1 ref0=m19p_mixed.wav ref1=m19p_snare.wav
+[Q FILE] path=/P4SDM/PROJECTS/M19P_SD_QUAL/B.P4P bytes=52704 directory=0
+[Q SLOT] path=/P4SDM/PROJECTS/M19P_SD_QUAL/B.P4P version=2 generation=2 crc=6c8a8a98 valid=1 reason=READY bpm=143 swing=63 chain_length=4 mode=1 ref0=m19p_mixed.wav ref1=m19p_snare.wav
+[Q HEAP] tag=store_done internal=222788 free=30032420 largest=29360116 payload=705600
+[Q STORE DONE] op=7
+
+# HOST CMD 1 0 143 0 0
+[Q COMMAND] CMD 1 0 143 0 0
+[Q ACK] sent=1
+
+# HOST SAVE M19P_SD_QUAL
+[Q COMMAND] SAVE M19P_SD_QUAL
+[Q ACK] save=1
+
+# HOST STORE 7
+[Q COMMAND] STORE 7
+[Q FS] total=8050966528 used=7471104
+[Q DIR] path=/P4SDM accessible=1
+[Q FILE] path=/P4SDM/SAMPLES bytes=0 directory=1
+[Q DIR] path=/P4SDM/SAMPLES accessible=1
+[Q FILE] path=/P4SDM/SAMPLES/m19p_impulses.wav bytes=352844 directory=0
+[Q WAV] name=m19p_impulses.wav accepted_format=1 reason=PCM16 frames=176400 channels=1 rate=44100 pcm_bytes=352800
+[Q FILE] path=/P4SDM/SAMPLES/m19p_kick.wav bytes=352844 directory=0
+[Q WAV] name=m19p_kick.wav accepted_format=1 reason=PCM16 frames=176400 channels=1 rate=44100 pcm_bytes=352800
+[Q FILE] path=/P4SDM/SAMPLES/m19p_snare.wav bytes=352844 directory=0
+[Q WAV] name=m19p_snare.wav accepted_format=1 reason=PCM16 frames=176400 channels=1 rate=44100 pcm_bytes=352800
+[Q FILE] path=/P4SDM/SAMPLES/m19p_mixed.wav bytes=352844 directory=0
+[Q WAV] name=m19p_mixed.wav accepted_format=1 reason=PCM16 frames=176400 channels=1 rate=44100 pcm_bytes=352800
+[Q FILE] path=/P4SDM/SAMPLES/m19p_stereo.wav bytes=705644 directory=0
+[Q WAV] name=m19p_stereo.wav accepted_format=1 reason=PCM16 frames=176400 channels=2 rate=44100 pcm_bytes=705600
+[Q FILE] path=/P4SDM/SAMPLES/m19p_large.wav bytes=4194348 directory=0
+[Q WAV] name=m19p_large.wav accepted_format=1 reason=PCM16 frames=2097152 channels=1 rate=44100 pcm_bytes=4194304
+[Q FILE] path=/P4SDM/SAMPLES/m19p_bad_depth.wav bytes=352844 directory=0
+[Q WAV] name=m19p_bad_depth.wav accepted_format=0 reason=unsupported depth (16-bit only) frames=0 channels=1 rate=44100 pcm_bytes=0
+[Q FILE] path=/P4SDM/SAMPLES/m19p_truncated.wav bytes=352841 directory=0
+[Q WAV] name=m19p_truncated.wav accepted_format=0 reason=invalid RIFF length frames=0 channels=0 rate=0 pcm_bytes=0
+[Q FILE] path=/P4SDM/SAMPLES/m19p_oneshot.wav bytes=44144 directory=0
+[Q WAV] name=m19p_oneshot.wav accepted_format=1 reason=PCM16 frames=22050 channels=1 rate=44100 pcm_bytes=44100
+[Q FILE] path=/P4SDM/PROJECTS bytes=0 directory=1
+[Q DIR] path=/P4SDM/PROJECTS accessible=1
+[Q FILE] path=/P4SDM/PROJECTS/M19P_SD_QUAL bytes=0 directory=1
+[Q DIR] path=/P4SDM/PROJECTS/M19P_SD_QUAL accessible=1
+[Q FILE] path=/P4SDM/PROJECTS/M19P_SD_QUAL/A.P4P bytes=52704 directory=0
+[Q SLOT] path=/P4SDM/PROJECTS/M19P_SD_QUAL/A.P4P version=2 generation=3 crc=3850630c valid=1 reason=READY bpm=137 swing=63 chain_length=4 mode=1 ref0=m19p_mixed.wav ref1=m19p_snare.wav
+[Q FILE] path=/P4SDM/PROJECTS/M19P_SD_QUAL/B.P4P bytes=52704 directory=0
+[Q SLOT] path=/P4SDM/PROJECTS/M19P_SD_QUAL/B.P4P version=2 generation=4 crc=ae47d8f2 valid=1 reason=READY bpm=143 swing=63 chain_length=4 mode=1 ref0=m19p_mixed.wav ref1=m19p_snare.wav
+[Q HEAP] tag=store_done internal=222788 free=30032420 largest=29360116 payload=705600
+[Q STORE DONE] op=7
+
+# HOST STATE
+[Q COMMAND] STATE
+[Q STATE] bpm=143 swing=63 playing=0 mode=1 chain_length=4 chain_loop=1 project_busy=0 restoring=0 sample_busy=0 project_status=PROJECT SAVED sample_status=SAMPLE READY
+[Q CHAIN] index=0 pattern=0 repeats=2
+[Q CHAIN] index=1 pattern=1 repeats=1
+[Q CHAIN] index=2 pattern=2 repeats=3
+[Q CHAIN] index=3 pattern=3 repeats=1
+[Q TRACK] track=0 source=1 pitch=64 synth_pitch=36 sample_pitch=64 mute=0 solo=0 start=1024 end=62000 reverse=0 mode=1 choke=1 cutoff=48 resonance=37 send=91 slices=8 enabled=1 selected=0 frames=176400 waveform=0720701a name=m19p_mixed.wav
+[Q SLICE] track=0 index=0 start=1024 end=8646
+[Q SLICE] track=0 index=1 start=9400 end=19000
+[Q SLICE] track=0 index=2 start=16268 end=23890
+[Q SLICE] track=0 index=3 start=23890 end=31512
+[Q SLICE] track=0 index=4 start=31512 end=39134
+[Q SLICE] track=0 index=5 start=39134 end=46756
+[Q SLICE] track=0 index=6 start=46756 end=54378
+[Q SLICE] track=0 index=7 start=54378 end=62000
+[Q TRACK] track=1 source=1 pitch=58 synth_pitch=39 sample_pitch=58 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=1 cutoff=72 resonance=0 send=44 slices=1 enabled=0 selected=0 frames=176400 waveform=5e370bb2 name=m19p_snare.wav
+[Q SLICE] track=1 index=0 start=0 end=65535
+[Q TRACK] track=2 source=0 pitch=51 synth_pitch=51 sample_pitch=60 mute=0 solo=1 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=2 index=0 start=0 end=65535
+[Q TRACK] track=3 source=0 pitch=45 synth_pitch=45 sample_pitch=60 mute=1 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=3 index=0 start=0 end=65535
+[Q PATTERN] index=0 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=0 step=0 mask=128 slice=0
+[Q LOCK] pattern=0 step=1 mask=128 slice=1
+[Q LOCK] pattern=0 step=2 mask=128 slice=2
+[Q LOCK] pattern=0 step=3 mask=128 slice=3
+[Q PATTERN] index=1 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=1 step=0 mask=128 slice=0
+[Q LOCK] pattern=1 step=1 mask=128 slice=1
+[Q LOCK] pattern=1 step=2 mask=128 slice=2
+[Q LOCK] pattern=1 step=3 mask=128 slice=3
+[Q PATTERN] index=2 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=2 step=0 mask=128 slice=0
+[Q LOCK] pattern=2 step=1 mask=128 slice=1
+[Q LOCK] pattern=2 step=2 mask=128 slice=2
+[Q LOCK] pattern=2 step=3 mask=128 slice=3
+[Q PATTERN] index=3 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=3 step=0 mask=128 slice=0
+[Q LOCK] pattern=3 step=1 mask=128 slice=1
+[Q LOCK] pattern=3 step=2 mask=128 slice=2
+[Q LOCK] pattern=3 step=3 mask=128 slice=3
+[Q TRANSIENT] state=0 request=0 progress=0 count=1 stale_discarded=0 apply=0 cancel=0 duration_max_us=0 chunk_max_us=0
+[Q PROPOSAL] index=0 start=0 end=65535
+[Q HEAP] tag=state internal=222788 free=30032420 largest=29360116
+[Q PLAYBACK] triggers=9 reverse=2 gate=4 releases=5 chokes=6 retriggers=3 repeat_accepts=0 repeat_hits=0 chain_loops=0

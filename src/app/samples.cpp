@@ -136,7 +136,10 @@ bool load_name(const char *name) {
   payload += bytes;
   size_t peak_payload = payload;
   strlcpy(s->name, name, sizeof(s->name));
-  uint8_t chunk[4096];
+  // Browser and project restoration loads share the single storage owner.
+  // Keep its fixed read buffer off the 7000-byte task stack: restoring a WAV
+  // adds the project activation frames above this loader and the SD driver.
+  alignas(4) static uint8_t chunk[4096];
   unsigned frame = 0;
   if (!file.seek(wav.offset)) {
     destroy(s);

@@ -1,5 +1,11 @@
 # M17 - Pattern Chain and project V2
 
+2026-10-07 supplement: [M19P](GUITION_M19_PHYSICAL_SD.md) verifies exact Chain
+V2 restoration from physical SD after hardware reset and two complete loops.
+Physical V1→V2 migration, electrical power-cycle and musical/touch checks remain
+pending. The original qualification and its historical pending statuses below
+are preserved.
+
 Baseline: accepted M16 merge `dbc9505`. Chain is arrangement metadata above the unchanged Pattern structure and existing rational sample clock. No timeline, performance override, scenes, fills, automation or MIDI.
 
 ## Representation

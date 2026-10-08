@@ -223,7 +223,10 @@ evidence remain.
 Remote verification is available on the
 [M19 branch Actions page](https://github.com/ovelhaaa/P4SDM/actions?query=branch%3Acodex%2Fm19-transient-slicing).
 
-**PHYSICAL TRANSIENT AUTO-SLICING VALIDATION PENDING.** No SD card is mounted.
+**PHYSICAL TRANSIENT AUTO-SLICING VALIDATION PENDING.** At this original
+qualification no SD card was mounted. The later
+[M19P supplement](GUITION_M19_PHYSICAL_SD.md) records actual synthetic SD
+fixtures, project/Chain persistence, render metrics and the WAV-load stack fix.
 Drum-break/percussion/vocal loading, musical listening, physical touch usability
 and subjective MED tuning are unperformed. Synthetic tests and scripted device
 captures do not establish those results.

@@ -1,0 +1,82 @@
+[M5 UI] seconds=63.003 submitted=1 completed=1 dirty_avg=768000 dirty_max=768000 full=1 preparation_max_us=72587 touch_errors=0 rejected=0 pads=0 steps=0 drags=[Q SEED] name=m19p_large.wav created=1
+0 pages=0 transport=0 bpm=0 skipped=1
+[M7 patterns] switches=0 loops=0 selections=0 copies=0 clears=0 lengths=0 solos=0 mutes=0 normal_frames=0 dirty_avg=0 dirty_max=0 pattern_bytes=3106 command_bytes=12
+[M7 applied] long_to_short=0 short_to_long=0 queue_replacements=0 copies=0 clears=0 lengths=0 solos=0 mutes=0 steps=0
+[M9 UI] entries=0 copies=0 randomize=0 cell_max=0 edit_full=0
+[M12 UI] entries=0 edits=0 widgets_max=0 edit_full=0
+[M11 UI] entries=0 edits=0 widgets_max=0 edit_full=0
+[M10 UI] entries=0 edits=0 widgets_max=0 edit_full=0
+[M13 UI] entries=0 edits=0 widgets_max=0 edit_full=0
+[M14 UI] entries=0 edits=0 edit_full=0 waveform_first_us=0 waveform_redraw_max_us=0 slice_redraw_max_us=0 build_count=0 build_max_us=0 large_us=0 cache_bytes=1440 page_max_us=0 drag_dirty_max=0
+[M5 memory] ps_before=30753324 ps_after=30753324 internal_before=226068 internal_after=220944 largest_before=30408692 largest_after=30408692
+[Q SEED] name=m19p_bad_depth.wav created=1
+[Q SEED] name=m19p_truncated.wav created=1
+[Q SEED] name=m19p_oneshot.wav created=1
+[M6 index] files=9 entries=9 limited=0 scan_us=29048 ps_free=30752712 largest=30408692 internal=225672
+[Q HEAP] tag=store_done internal=225992 free=30753324 largest=30408692 payload=0
+[Q STORE DONE] op=1
+
+# HOST STORE 2
+[Q COMMAND] STORE 2
+[Q FS] total=8050966528 used=7307264
+[Q DIR] path=/P4SDM accessible=1
+[Q FILE] path=/P4SDM/SAMPLES bytes=0 directory=1
+[Q DIR] path=/P4SDM/SAMPLES accessible=1
+[Q FILE] path=/P4SDM/SAMPLES/m19p_impulses.wav bytes=352844 directory=0
+[Q WAV] name=m19p_impulses.wav accepted_format=1 reason=PCM16 frames=176400 channels=1 rate=44100 pcm_bytes=352800
+[Q FILE] path=/P4SDM/SAMPLES/m19p_kick.wav bytes=352844 directory=0
+[Q WAV] name=m19p_kick.wav accepted_format=1 reason=PCM16 frames=176400 channels=1 rate=44100 pcm_bytes=352800
+[Q FILE] path=/P4SDM/SAMPLES/m19p_snare.wav bytes=352844 directory=0
+[Q WAV] name=m19p_snare.wav accepted_format=1 reason=PCM16 frames=176400 channels=1 rate=44100 pcm_bytes=352800
+[Q FILE] path=/P4SDM/SAMPLES/m19p_mixed.wav bytes=352844 directory=0
+[Q WAV] name=m19p_mixed.wav accepted_format=1 reason=PCM16 frames=176400 channels=1 rate=44100 pcm_bytes=352800
+[Q FILE] path=/P4SDM/SAMPLES/m19p_stereo.wav bytes=705644 directory=0
+[Q WAV] name=m19p_stereo.wav accepted_format=1 reason=PCM16 frames=176400 channels=2 rate=44100 pcm_bytes=705600
+[Q FILE] path=/P4SDM/SAMPLES/m19p_large.wav bytes=4194348 directory=0
+[Q WAV] name=m19p_large.wav accepted_format=1 reason=PCM16 frames=2097152 channels=1 rate=44100 pcm_bytes=4194304
+[Q FILE] path=/P4SDM/SAMPLES/m19p_bad_depth.wav bytes=352844 directory=0
+[Q WAV] name=m19p_bad_depth.wav accepted_format=0 reason=unsupported depth (16-bit only) frames=0 channels=1 rate=44100 pcm_bytes=0
+[Q FILE] path=/P4SDM/SAMPLES/m19p_truncated.wav bytes=352841 directory=0
+[Q WAV] name=m19p_truncated.wav accepted_format=0 reason=invalid RIFF length frames=0 channels=0 rate=0 pcm_bytes=0
+[Q FILE] path=/P4SDM/SAMPLES/m19p_oneshot.wav bytes=44144 directory=0
+[Q WAV] name=m19p_oneshot.wav accepted_format=1 reason=PCM16 frames=22050 channels=1 rate=44100 pcm_bytes=44100
+[Q FILE] path=/P4SDM/PROJECTS bytes=0 directory=1
+[Q DIR] path=/P4SDM/PROJECTS accessible=1
+[Q HEAP] tag=store_done internal=225992 free=30753324 largest=30408692 payload=0
+[Q STORE DONE] op=2
+
+# HOST STATE
+[Q COMMAND] STATE
+[Q STATE] bpm=120 swing=50 playing=0 mode=0 chain_length=0 chain_loop=0 project_busy=0 restoring=0 sample_busy=0 project_status=PROJECT READY sample_status=9 WAV files
+[Q TRACK] track=0 source=0 pitch=36 synth_pitch=36 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=0 index=0 start=0 end=65535
+[Q TRACK] track=1 source=0 pitch=39 synth_pitch=39 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=1 index=0 start=0 end=65535
+[Q TRACK] track=2 source=0 pitch=42 synth_pitch=42 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=2 index=0 start=0 end=65535
+[Q TRACK] track=3 source=0 pitch=45 synth_pitch=45 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=3 index=0 start=0 end=65535
+[Q PATTERN] index=0 length=16 masks=0000,0000,0000
+[Q LOCK] pattern=0 step=0 mask=0 slice=0
+[Q LOCK] pattern=0 step=1 mask=0 slice=0
+[Q LOCK] pattern=0 step=2 mask=0 slice=0
+[Q LOCK] pattern=0 step=3 mask=0 slice=0
+[Q PATTERN] index=1 length=16 masks=0000,0000,0000
+[Q LOCK] pattern=1 step=0 mask=0 slice=0
+[Q LOCK] pattern=1 step=1 mask=0 slice=0
+[Q LOCK] pattern=1 step=2 mask=0 slice=0
+[Q LOCK] pattern=1 step=3 mask=0 slice=0
+[Q PATTERN] index=2 length=16 masks=0000,0000,0000
+[Q LOCK] pattern=2 step=0 mask=0 slice=0
+[Q LOCK] pattern=2 step=1 mask=0 slice=0
+[Q LOCK] pattern=2 step=2 mask=0 slice=0
+[Q LOCK] pattern=2 step=3 mask=0 slice=0
+[Q PATTERN] index=3 length=16 masks=0000,0000,0000
+[Q LOCK] pattern=3 step=0 mask=0 slice=0
+[Q LOCK] pattern=3 step=1 mask=0 slice=0
+[Q LOCK] pattern=3 step=2 mask=0 slice=0
+[Q LOCK] pattern=3 step=3 mask=0 slice=0
+[Q TRANSIENT] state=0 request=0 progress=0 count=1 stale_discarded=0 apply=0 cancel=0 duration_max_us=0 chunk_max_us=0
+[Q PROPOSAL] index=0 start=0 end=65535
+[Q HEAP] tag=state internal=225992 free=30753324 largest=30408692
+[Q PLAYBACK] triggers=0 reverse=0 gate=0 releases=0 chokes=0 retriggers=0 repeat_accepts=0 repeat_hits=0 chain_loops=0

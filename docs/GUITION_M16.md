@@ -1,5 +1,11 @@
 # M16 — Project Save/Load + Versioned Persistence
 
+2026-10-07 supplement: [M19P](GUITION_M19_PHYSICAL_SD.md) verifies actual SD
+SAVE/hardware-reset/LOAD with sample restoration and controlled corrupt-slot
+fallback, and fixes a nested WAV-load stack overflow. The original no-card
+qualification below is preserved. Electrical power-cycle, abrupt power-loss,
+touch and listening gates remain pending.
+
 M15 was merged through PR #4 into `main` at `ef6f7e792544b2c3566a3718a8c08f774928df19`, after both accepted-head pipelines passed. M16 starts from that merge on `codex/m16-project-persistence`.
 
 **PHYSICAL PROJECT SAVE/LOAD PENDING.** The connected board reports `NO CARD / MOUNT ERROR`. Host corruption/recovery and genuine device RAM serialization/boundary qualification do not establish FAT durability, audible quality, physical touch usability, or power-cycle restoration on an actual SD card.
