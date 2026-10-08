@@ -1,5 +1,6 @@
 #pragma once
 #include "sample_playback.h"
+#include "pcm_read_cache.h"
 #include <cstdint>
 
 #ifndef P4SDM_INTERPOLATION
@@ -55,22 +56,25 @@ inline int16_t hermite_fixed(int16_t xm1, int16_t x0, int16_t x1,
 // coordinates return silence without touching PCM. Taps replicate region edges
 // in logical playback order, never wrap into an adjacent slice.
 inline __attribute__((always_inline)) int16_t interpolation_tap(
-    const int16_t *pcm, Region region, bool reverse, uint32_t logical) {
-  return pcm[reverse ? region.end-1-logical : region.start+logical];
+    const int16_t *pcm, Region region, bool reverse, uint32_t logical,
+    PcmReadCache *cache = nullptr) {
+  const uint32_t frame = reverse ? region.end-1-logical : region.start+logical;
+  return cache ? cache->read(pcm, region, frame) : pcm[frame];
 }
 // Voice validates transport before entering this hot path. No duplicated
 // allocation/region checks per output frame; ownership stays with Voice.
 inline __attribute__((always_inline)) int16_t lookup_valid(const int16_t *pcm, Region region, bool reverse,
-                      uint64_t position, Interpolation mode = default_interpolation) {
+                      uint64_t position, Interpolation mode = default_interpolation,
+                      PcmReadCache *cache = nullptr) {
   const uint32_t length = region.end - region.start;
   const uint32_t k = uint32_t(position >> 16);
-  const int16_t x0 = interpolation_tap(pcm,region,reverse,k);
+  const int16_t x0 = interpolation_tap(pcm,region,reverse,k,cache);
   const uint16_t fraction = uint16_t(position);
   if (mode == Interpolation::Nearest || !fraction) return x0;
-  const int16_t x1 = interpolation_tap(pcm,region,reverse,k < length-1 ? k+1 : k);
+  const int16_t x1 = interpolation_tap(pcm,region,reverse,k < length-1 ? k+1 : k,cache);
   if (mode == Interpolation::Linear) return linear_fixed(x0, x1, fraction);
-  const int16_t xm1 = interpolation_tap(pcm,region,reverse,k ? k-1 : 0);
-  const int16_t x2 = interpolation_tap(pcm,region,reverse,length-1-k >= 2 ? k+2 : length-1);
+  const int16_t xm1 = interpolation_tap(pcm,region,reverse,k ? k-1 : 0,cache);
+  const int16_t x2 = interpolation_tap(pcm,region,reverse,length-1-k >= 2 ? k+2 : length-1,cache);
   return quantize(hermite_float(xm1, x0, x1, x2, fraction));
 }
 inline int16_t lookup(const int16_t *pcm, Region region, bool reverse,

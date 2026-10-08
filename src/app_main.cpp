@@ -1,10 +1,16 @@
 #include "app/model.h"
 #include "app/voice_state.h"
 #include "engine/track_tone.h"
+#if P4SDM_PCM_READ_CACHE
+#include "app/pcm_read_cache.h"
+#endif
 namespace {
 app::Engine engine, view;
 app::VoiceState voice_state[16]{};
 uint8_t voice_delay_send[16]{};
+#if P4SDM_PCM_READ_CACHE
+sampler::PcmReadCache pcm_read_cache[16]{};
+#endif
 } // namespace
 #include "app/project_ui.h"
 #include "app/projects.h"
@@ -32,6 +38,9 @@ static int16_t app_velocity(int track, int16_t value);
 // clang-format on
 #if P4SDM_INTERPOLATION_QUALIFICATION
 #include "app/interpolation_qualification.h"
+#if P4SDM_PCM_LOCALITY_QUALIFICATION
+#include "app/pcm_locality_qualification.h"
+#endif
 #ifndef P4SDM_INTERPOLATION_FRACTIONAL_STRESS
 #define P4SDM_INTERPOLATION_FRACTIONAL_STRESS 0
 #endif
@@ -3110,6 +3119,9 @@ void audio_worker(void *) {
 #if P4SDM_INTERPOLATION_FRACTIONAL_STRESS
     const auto interpolation_render_start = esp_timer_get_time();
 #endif
+#if P4SDM_PCM_READ_CACHE
+    for (auto &cache : pcm_read_cache) cache.invalidate();
+#endif
     render_buffer();
     const auto render_finished = esp_timer_get_time();
     auto us = uint32_t(render_finished - start);
@@ -3357,7 +3369,11 @@ static bool app_pcm(int t, int16_t &v) {
     return false;
   auto &voice = samples::voices[t];
   const bool natural = voice.active && !voice.releasing;
+#if P4SDM_PCM_READ_CACHE
+  v = voice.next(sampler::default_interpolation, &pcm_read_cache[t]);
+#else
   v = voice.next();
+#endif
   playback_metrics.ends += natural && !voice.active;
   return true;
 }
@@ -3546,6 +3562,9 @@ static void initialize(void *) {
 #endif
 #if P4SDM_INTERPOLATION_QUALIFICATION
   qualify_interpolation(fixture_samples);
+#if P4SDM_PCM_LOCALITY_QUALIFICATION
+  qualify_pcm_locality(fixture_samples);
+#endif
   summary_printf("[M21 configuration] mode=%u voice_bytes=%u table_bytes=0 scratch_bytes=0 forced_fractional=%u full_regions=%u forward_only=%u\n",
                 unsigned(sampler::default_interpolation), unsigned(sizeof(sampler::Voice)),
                 unsigned(P4SDM_INTERPOLATION_FRACTIONAL_STRESS),
