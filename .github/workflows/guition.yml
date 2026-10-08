@@ -112,3 +112,10 @@ jobs:
       - run: python tests/analyze_m19.py docs/GUITION_M19_SYNTH_STRESS_SERIAL.log --synth
       - run: python tests/analyze_m19.py docs/GUITION_M19_NORMAL_SERIAL.log --normal
       - run: python tests/physical_sd/analyze.py
+
+      - run: g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/ui_layout_test.cpp -o /tmp/ui_layout_test && /tmp/ui_layout_test
+      - run: python tests/no_ui_equivalence.py
+      - run: python tests/render_ui.py
+      - run: pio run -e guition_ui20_stress -e guition_ui20_synth_stress
+      - run: python tests/analyze_m20.py docs/GUITION_M20_SAMPLE_STRESS_SERIAL.log
+      - run: python tests/analyze_m20.py docs/GUITION_M20_SYNTH_STRESS_SERIAL.log --synth

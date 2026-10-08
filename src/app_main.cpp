@@ -53,6 +53,8 @@ app::Queue<32> pad_triggers;
 std::atomic<int> visible_page{0}, visible_bank{0};
 std::atomic<uint32_t> input_errors{0}, input_overflow{0};
 app::Ui ui;
+app::ui20::Confirmation ui_confirmation;
+app::ui20::Notification ui_notification;
 std::atomic<int> playhead{-1};
 // Acknowledged command count and pattern transport published together. UI only
 // accepts snapshots after all its optimistic edits have reached audio.
@@ -89,7 +91,7 @@ std::atomic<uint32_t> diagnostic_p99{0}, diagnostic_max{0},
 std::atomic<uint32_t> flashes[16];
 bool delay_ready = false;
 int sample_index = 0;
-bool dirty[222]{};
+bool dirty[224]{};
 transients::Status transient_view;
 unsigned transient_mode = 0, transient_sensitivity = 1;
 bool transient_apply_pending = false;
@@ -104,6 +106,10 @@ uint64_t dirty_bytes = 0, normal_dirty_bytes = 0;
 unsigned normal_frames = 0;
 uint32_t normal_dirty_max = 0;
 uint32_t dirty_max = 0, prep_max = 0, skipped_frames = 0;
+#if P4SDM_UI20_STRESS
+struct UiRenderMetric { uint32_t frames=0, render_us=0, dirty_bytes=0; } ui_metrics[19];
+uint32_t ui20_slider_us=0, ui20_slider_bytes=0, ui20_head_us=0, ui20_head_bytes=0, ui20_interval_us=0, ui20_previous=0;
+#endif
 uint32_t tool_cell_max = 0, tool_edit_full = 0;
 uint32_t tone_ui_edits = 0, tone_ui_full = 0, tone_ui_widgets_max = 0;
 uint32_t lock_ui_edits = 0, lock_ui_full = 0, lock_ui_widgets_max = 0;
@@ -148,7 +154,7 @@ uint32_t misses = 0, write_errors = 0, timeouts = 0, rails = 0, nonzero = 0,
 uint32_t flash_until[16]{};
 int old_head = -1;
 [[maybe_unused]] uint32_t diagnostic_due = 0;
-constexpr uint16_t bg = 0x1082, panel = 0x2104, accent = 0x07d3, white = 0xffff;
+constexpr uint16_t bg = app::ui20::theme::background, panel = app::ui20::theme::surface, accent = app::ui20::theme::primary, white = app::ui20::theme::text;
 uint16_t event_gain[16]{};
 struct ToneLockMetrics {
   uint32_t coefficients = 0, avoided = 0, sends = 0;
@@ -283,21 +289,24 @@ void update_track(int t) {
     samples::voices[t].set_increment(sampler::pitch_increment(effective.pitch));
 }
 bool send(app::Command c) {
-  if (projects::locked())
-    return false;
+  if (projects::locked()) { ui_notification.show("PROJECT BUSY",millis()); dirty[45]=true; return false; }
   if (c.kind == app::Kind::Pitch)
     c.pitch_source = view.tracks[c.track].sample
                          ? app::Command::PitchSource::Sample
                          : app::Command::PitchSource::Synth;
   if (!commands.push(c)) {
     ++rejected;
+    ui_notification.show("QUEUE FULL",millis()); dirty[45]=true;
     return false;
   }
   ++sent_commands;
   view.apply(c);
+  if (c.kind == app::Kind::Source) { full = true; dirty[45] = true; }
   return true;
 }
 void draw_waveform() {
+  const auto bounds = app::page_widget(ui.page, 132);
+  const int center = bounds.y + bounds.h / 2;
   const auto started = esp_timer_get_time();
   const unsigned revision = samples::revision();
   if (wave_track != ui.selected || wave_revision != revision) {
@@ -308,31 +317,31 @@ void draw_waveform() {
   const auto &bank = view.tracks[ui.selected].slices;
   const unsigned inspected = bank.index(ui.inspected_slice[ui.selected]);
   const auto &region = bank.slices[inspected];
-  display::rect(40, 100, 720, 116, bg);
+  display::rect(bounds.x, bounds.y, bounds.w, bounds.h, bg);
   const int a = 40 + uint32_t(region.start) * 719 / 65535;
   const int b = 40 + uint32_t(region.end) * 719 / 65535;
-  display::rect(a, 102, std::max(1, b - a), 112, panel);
-  display::rect(40, 158, 720, 1, 0x4208);
+  display::rect(a, bounds.y + 2, std::max(1, b - a), bounds.h - 4, panel);
+  display::rect(40, center, 720, 1, app::ui20::theme::disabled);
   for (unsigned i = 0; i < sampler::waveform_columns; ++i) {
     const auto c = wave_preview.waveform.columns[i];
     const int x = 40 + int(i) * 2;
-    const int top = 158 - int(c.max) * 48 / 32768;
-    const int bottom = 158 - int(c.min) * 48 / 32768;
+    const int top = center - int(c.max) * (bounds.h / 2 - 8) / 32768;
+    const int bottom = center - int(c.min) * (bounds.h / 2 - 8) / 32768;
     display::rect(x, top, 2, bottom - top + 1, white);
   }
   for (unsigned i = 0; i < std::min(16u, unsigned(bank.count)); ++i) {
     const auto r = bank.slices[i];
-    const uint16_t color = i == inspected      ? 0xffe0
+    const uint16_t color = i == inspected      ? app::ui20::theme::warning
                            : i == bank.index() ? accent
-                                               : 0x6318;
+                                               : app::ui20::theme::boundary;
     const int x = 40 + uint32_t(r.start) * 719 / 65535;
-    display::rect(x, 104, 1, 109, color);
+    display::rect(x, bounds.y + 4, 1, bounds.h - 8, color);
     const int end = 40 + uint32_t(r.end) * 719 / 65535;
-    display::rect(end, 104, 1, 109, color);
+    display::rect(end, bounds.y + 4, 1, bounds.h - 8, color);
     // A short cyan marker remains visible even when active and inspected
     // coincide.
     if (i == bank.index())
-      display::rect(x, 208, std::max(1, end - x), 6, accent);
+      display::rect(x, bounds.y + bounds.h - 8, std::max(1, end - x), 6, accent);
   }
   if (transient_view.state == transients::State::Ready &&
       transient_view.proposal.owner.track == ui.selected) {
@@ -340,8 +349,8 @@ void draw_waveform() {
     for (unsigned i = 0; i < proposal.count; ++i) {
       const int x = 40 + uint32_t(proposal.slices[i].start) * 719 / 65535;
       // Magenta dashed, thick markers differ from solid current yellow/cyan.
-      for (int y = 116; y < 200; y += 12) display::rect(x, y, 3, 6, 0xf81f);
-      display::rect(x - 3, 112, 9, 4, 0xf81f);
+      for (int y = bounds.y + 12; y < bounds.y + bounds.h - 12; y += 12) display::rect(x, y, 3, 6, app::ui20::theme::proposal);
+      display::rect(x - 3, bounds.y + 8, 9, 4, app::ui20::theme::proposal);
     }
   }
   char name[96];
@@ -350,29 +359,38 @@ void draw_waveform() {
   for (char &c : name)
     if (c >= 'a' && c <= 'z')
       c = char(c - 'a' + 'A');
-  display::text(44, 102, name, white, 1);
+  display::text(44, bounds.y + 2, name, white, 1);
   waveform_redraw_max =
       std::max(waveform_redraw_max, uint32_t(esp_timer_get_time() - started));
 }
-void draw(int id) {
+app::Rect text_bounds{};
+void ui_text(int x, int y, const char *text, uint16_t color, int scale) {
+  char bounded[128];
+  app::ui20::bounded_text(bounded, sizeof(bounded), text,
+      std::max(0, text_bounds.x + text_bounds.w - x - 8), scale);
+  display::text(x, y, bounded, color, scale);
+}
+void draw(int id);
+void draw_content(int id) {
   if (id >= 210 && id <= 221) {
     char label[64]{};
     if (id == 221) {
-      display::rect(40, 82, 720, 16, bg);
+      const auto notice = app::page_widget(ui.page, id);
+    display::rect(notice.x, notice.y, notice.w, notice.h, bg);
       const char *states[] = {"AUTO TRANSIENTS", "ANALYZING...", "ANALYZING...", "FOUND", "APPLIED", "CANCELLED", "STALE / ANALYZE AGAIN", "NO RESIDENT SAMPLE"};
       if (transient_view.state == transients::State::Ready)
         snprintf(label, sizeof(label), "FOUND %u/%u / MAGENTA PROPOSAL", transient_view.proposal.bank.count,
                  transient_mode ? transient_mode : transient_view.proposal.bank.count);
       else snprintf(label, sizeof(label), "%s %u%%", states[unsigned(transient_view.state)], transient_view.progress);
-      display::text(40, 82, label, white, 1); return;
+      ui_text(24, app::page_widget(ui.page, id).y + 8, label, white, app::ui20::control_scale); return;
     }
-    auto r = app::widget(id);
+    auto r = app::page_widget(ui.page, id);
     const unsigned modes[] = {0, 4, 8, 16};
     uint16_t color = panel;
     if (id == 210) snprintf(label, sizeof(label), "TRANSIENTS");
     else if (id >= 211 && id <= 214) {
       if (id == 211) snprintf(label, sizeof(label), "NATURAL");
-      else snprintf(label, sizeof(label), "AUTO %u", modes[id - 211]);
+      else snprintf(label, sizeof(label), "%u", modes[id - 211]);
       if (transient_mode == modes[id - 211]) color = accent;
     } else if (id == 215 || id == 216) {
       const char *levels[] = {"LOW", "MED", "HIGH"};
@@ -380,13 +398,13 @@ void draw(int id) {
     } else {
       const char *labels[] = {"ANALYZE", "APPLY", "CANCEL", "BACK"};
       snprintf(label, sizeof(label), "%s", labels[id - 217]);
-      if (id == 218 && transient_view.state != transients::State::Ready) color = bg;
+      if (id == 218 && (transient_view.state != transients::State::Ready || transient_view.proposal.owner.track != ui.selected)) color = app::ui20::theme::disabled;
     }
     display::rect(r.x, r.y, r.w, r.h, color);
-    display::text(r.x + 8, r.y + 18, label, white, 1); return;
+    ui_text(r.x + 8, r.y + 18, label, white, app::ui20::control_scale); return;
   }
   if (id >= 183 && id <= 209) {
-    auto r = app::widget(id);
+    auto r = app::page_widget(ui.page, id);
     char line[96]{};
     const auto &p = view.performance;
     uint16_t color = white;
@@ -395,7 +413,7 @@ void draw(int id) {
       const auto &rpt = p.repeat;
       snprintf(line, sizeof(line), "x%u (1/%u)%s", rate, rate,
           rpt.active == rate ? (rpt.requested ? " ACTIVE" : " RELEASE") : rpt.requested == rate ? " PENDING" : " HOLD");
-      color = rpt.active == rate ? accent : rpt.requested == rate ? 0xffe0 : white;
+      color = rpt.active == rate ? accent : rpt.requested == rate ? app::ui20::theme::warning : white;
     } else if (id == 206) strlcpy(line, view.playing ? "STOP" : "PLAY", sizeof(line));
     else if (id == 183) strlcpy(line, "PERFORMANCE", sizeof(line));
     else if (id == 205) {
@@ -425,7 +443,7 @@ void draw(int id) {
                  view.tracks[n].muted ? " B" : "",
                  view.solos & bit ? " S" : "",
                  p.mutes & bit ? " M" : "", p.solos & bit ? " +S" : "");
-        color = !view.sequence_enabled(n) ? 0x8410 : accent;
+        color = !view.sequence_enabled(n) ? app::ui20::theme::muted : accent;
       } else {
         snprintf(line, sizeof(line), "P%02d%s%s%s%s%s", n + 1,
                  view.selected_pattern == n ? " E" : "",
@@ -433,7 +451,7 @@ void draw(int id) {
                  p.override_target == n ? " O?" : "",
                  p.override_active == n ? " O" : "",
                  p.fill_pending == n ? " F?" : p.fill_active == n ? " F" : "");
-        color = p.fill_active == n ? 0xffe0 : p.override_active == n ? accent : white;
+        color = p.fill_active == n ? app::ui20::theme::warning : p.override_active == n ? accent : white;
       }
     } else {
       const char *labels[] = {ui.page == app::Page::PerformanceRepeat ? "PATTERNS" : ui.perf_mixer ? "REPEAT" : "MIXER",
@@ -441,8 +459,12 @@ void draw(int id) {
           ui.perf_mixer ? "CLEAR MIX" : "CANCEL O", "CANCEL F", "BACK"};
       strlcpy(line, labels[id-200], sizeof(line));
     }
-    display::rect(r.x, r.y, r.w, r.h, bg);
-    display::text(r.x + 6, r.y + (id == 205 ? 6 : 18), line, color, id == 205 ? 1 : 2);
+    display::rect(r.x, r.y, r.w, r.h, id>=207 ? panel : bg);
+    if(id>=207 && id<=209) {
+      char rate[8]; snprintf(rate,sizeof(rate),"X%u",2u<<(id-207));
+      ui_text(r.x+24,r.y+64,rate,color,8);
+      ui_text(r.x+12,r.y+r.h-32,line,color,1);
+    } else ui_text(r.x + 6, r.y + (id == 205 ? 6 : 18), line, color, id == 205 ? 1 : 2);
     if (id >= 184 && id <= 199) {
       const int n = id - 184;
       if (!ui.perf_mixer && view.playing && view.playing_pattern == n) {
@@ -452,13 +474,13 @@ void draw(int id) {
       if (!ui.perf_mixer && view.selected_pattern == n)
         display::rect(r.x, r.y, 4, r.h, white);
       if (ui.perf_mixer && view.tracks[n].muted)
-        display::rect(r.x, r.y + r.h - 4, r.w, 4, 0xf800);
+        display::rect(r.x, r.y + r.h - 4, r.w, 4, app::ui20::theme::danger);
     }
     return;
   }
 
   if (id >= 162 && id <= 182) {
-    auto r = app::widget(id);
+    auto r = app::page_widget(ui.page, id);
     char line[80]{};
     if (id == 162)
       strlcpy(line, "CHAIN", sizeof(line));
@@ -500,14 +522,14 @@ void draw(int id) {
         strlcpy(line, labels[id - 169], sizeof(line));
     }
     display::rect(r.x, r.y, r.w, r.h, panel);
-    display::text(r.x + 6, r.y + 12, line, white, id == 182 ? 1 : 2);
+    ui_text(r.x + 6, r.y + 12, line, white, id == 182 ? 1 : app::ui20::control_scale);
     return;
   }
   if (id >= 153 && id <= 161) {
     char text[128]{};
-    const auto r = app::widget(id);
+    const auto r = app::page_widget(ui.page, id);
     if (id == 161) {
-      projects::status(text, sizeof(text));
+      strlcpy(text, ui_notification.active ? ui_notification.text : "READY", sizeof(text));
     } else if (id == 153)
       strlcpy(text, "PROJECT", sizeof(text));
     else if (project_ui.mode == project::Workflow::Mode::Confirm) {
@@ -542,15 +564,16 @@ void draw(int id) {
     if (id == 160)
       strlcpy(text, "BACK", sizeof(text));
     display::rect(r.x, r.y, r.w, r.h, panel);
-    display::text(r.x + 8, r.y + 12, text, white, id == 161 ? 1 : 2);
+    ui_text(r.x + 8, r.y + 12, text, white, id == 161 ? 2 : app::ui20::control_scale);
     return;
   }
   if (id == 147) {
-    display::rect(40, 82, 720, 16, bg);
-    display::text(40, 82, slice_notice, white, 1);
+    const auto notice = app::page_widget(ui.page, id);
+    display::rect(notice.x, notice.y, notice.w, notice.h, bg);
+    ui_text(24, app::page_widget(ui.page, id).y + 8, slice_notice, white, 1);
     return;
   }
-  auto r = app::widget(id);
+  auto r = app::page_widget(ui.page, id);
   char s[48]{};
   uint16_t color = panel;
   if (id == 132) {
@@ -563,10 +586,10 @@ void draw(int id) {
     const unsigned inspected = bank.index(ui.inspected_slice[ui.selected]);
     const auto region = bank.slices[inspected];
     if (id == 133 || id == 134)
-      snprintf(s, sizeof(s), "%s %u/%u", id == 133 ? "VIEW PREV" : "VIEW NEXT",
+      snprintf(s, sizeof(s), "%s %u/%u", id == 133 ? "SLICE <" : "SLICE >",
                inspected + 1, bank.count);
     if (id == 135)
-      snprintf(s, sizeof(s), "USE %u [ACT %u]", inspected + 1,
+      snprintf(s, sizeof(s), "USE %u ACT %u", inspected + 1,
                bank.index() + 1);
     if (id == 136)
       snprintf(s, sizeof(s), "SLICES %s", t.slice_enabled ? "ON" : "OFF");
@@ -574,13 +597,13 @@ void draw(int id) {
       snprintf(s, sizeof(s), "%s %u / 65535", id == 137 ? "START" : "END",
                id == 137 ? region.start : region.end);
     if (id == 139)
-      snprintf(s, sizeof(s), "AUTO %u",
+      snprintf(s, sizeof(s), "DIVIDE %u",
                bank.count < 2    ? 2
                : bank.count < 4  ? 4
                : bank.count < 8  ? 8
                : bank.count < 16 ? 16
                                  : 2);
-    const char *labels[] = {"ADD",      "DELETE",     "RESET SLICES",
+    const char *labels[] = {"ADD",      "DELETE",     "RESET",
                             "AUDITION", "TRACK PREV", "TRACK NEXT",
                             "BACK"};
     if (id >= 140)
@@ -624,7 +647,7 @@ void draw(int id) {
       snprintf(s, sizeof(s), "SLICE - SAMPLE ONLY");
     else if (id == 149)
       snprintf(s, sizeof(s), "%s",
-               l.mask & app::SLICE_LOCK ? "UNLOCK" : "ENABLE LOCK");
+               l.mask & app::SLICE_LOCK ? "UNLOCK" : "LOCK");
     else if (id == 150 || id == 151)
       snprintf(s, sizeof(s), "SLICE %s", id == 150 ? "PREV" : "NEXT");
     else if (!(l.mask & app::SLICE_LOCK))
@@ -652,7 +675,7 @@ void draw(int id) {
       const int values[] = {l.filter_cutoff, l.filter_resonance, l.delay_send};
       const bool locked = l.mask & (16 << param);
       if (id % 2)
-        snprintf(s, sizeof(s), "%s", locked ? "UNLOCK" : "ENABLE LOCK");
+        snprintf(s, sizeof(s), "%s", locked ? "UNLOCK" : "LOCK");
       else if (!locked)
         snprintf(s, sizeof(s), "%s -- UNLOCKED", names[param]);
       else if (param == 0 && values[param] == 0)
@@ -669,11 +692,11 @@ void draw(int id) {
       if (t.filter_cutoff == 0)
         snprintf(s, sizeof(s), "CUTOFF OPEN");
       else
-        snprintf(s, sizeof(s), "CUTOFF %d / OPEN ->", 127 - t.filter_cutoff);
+        snprintf(s, sizeof(s), "CUTOFF %d", 127 - t.filter_cutoff);
     } else if (id == 108)
       snprintf(s, sizeof(s), "RESONANCE %d", t.filter_resonance);
     else if (id == 109)
-      snprintf(s, sizeof(s), "DELAY SEND %d / GLOBAL %s", t.delay_send,
+      snprintf(s, sizeof(s), "SEND %d / %s", t.delay_send,
                view.delay ? "ON" : "OFF");
     else
       snprintf(s, sizeof(s), "%s",
@@ -699,7 +722,7 @@ void draw(int id) {
                  id % 2 ? "UNAVAILABLE" : "WAVE - SYNTH ONLY");
       else if (id % 2)
         snprintf(s, sizeof(s), "%s",
-                 l.mask & (1 << param) ? "UNLOCK" : "ENABLE LOCK");
+                 l.mask & (1 << param) ? "UNLOCK" : "LOCK");
       else if (l.mask & (1 << param))
         snprintf(s, sizeof(s), "%s %d LOCKED", names[param], values[param]);
       else
@@ -790,18 +813,13 @@ void draw(int id) {
                view.selected_pattern + 1,
                view.mode == app::TransportMode::Chain ? "CHAIN" : "PATTERN");
   } else if (id == 43) {
-    char title[40];
-    display::rect(24, 90, 216, 60, bg);
-    snprintf(title, sizeof(title), "TRACK %02d / %s", ui.selected + 1,
-             view.tracks[ui.selected].sample ? "SAMPLE" : "SYNTH");
-    display::text(24, 100, title, white, 1);
     snprintf(s, sizeof(s), "%s",
              view.solos & (1u << ui.selected) ? "UNSOLO" : "SOLO");
   } else if (id >= 46 && id <= 61) {
     int p = id - 46;
-    color = p == view.playing_pattern ? 0x03c0 : panel;
+    color = p == view.playing_pattern ? app::ui20::theme::current : panel;
     if (p == view.queued_pattern)
-      color = 0x820f;
+      color = app::ui20::theme::queued;
     snprintf(s, sizeof(s), "P%02d %s%s", p + 1,
              p == view.playing_pattern ? "PLAY" : "",
              p == view.queued_pattern ? "NEXT" : "");
@@ -811,7 +829,7 @@ void draw(int id) {
                             "+",
                             ui.copy_source >= 0 ? "CANCEL COPY" : "COPY",
                             ui.clear_pattern >= 0 ? "CONFIRM CLEAR" : "CLEAR",
-                            ui.inspect ? "INSPECT" : "QUEUE / PLAY"};
+                            ui.inspect ? "EDIT" : "QUEUE"};
     snprintf(s, sizeof(s), "%s", labels[id - 62]);
     if (id == 63)
       snprintf(s, sizeof(s), "%02d",
@@ -820,24 +838,24 @@ void draw(int id) {
     const char *labels[] = {"PREVIOUS", "NEXT", "LOAD / ASSIGN",
                             view.tracks[ui.selected].sample ? "USE SYNTH"
                                                             : "USE SAMPLE",
-                            "SAMPLE PAGE"};
+                            "EDIT SAMPLE"};
     snprintf(s, sizeof(s), "%s", labels[id - 38]);
   } else if (id < 16) {
     bool on = view.patterns[view.selected_pattern].track_steps[ui.selected] &
               (1u << id);
     color = on ? accent : panel;
     if (id >= view.patterns[view.selected_pattern].length)
-      color = 0x1082;
+      color = app::ui20::theme::background;
     if (id == old_head)
-      color = 0xffe0;
+      color = app::ui20::theme::warning;
     if (id == ui.selected_step && !on)
-      color = 0x528a;
+      color = app::ui20::theme::secondary;
     snprintf(s, sizeof(s), "%02d", id + 1);
   } else if (id < 24) {
     int t = ui.bank * 8 + id - 16;
     color = t == ui.selected ? accent : panel;
     if (millis() < flash_until[t])
-      color = 0xffe0;
+      color = app::ui20::theme::warning;
     snprintf(s, sizeof(s), "%02d %s%s", t + 1,
              view.tracks[t].muted    ? "MUTE"
              : view.tracks[t].sample ? "SAMPLE"
@@ -866,8 +884,9 @@ void draw(int id) {
                            view.tracks[ui.selected].muted ? "UNMUTE" : "MUTE"};
     snprintf(s, sizeof(s), "%s", names[id - 29]);
   }
+  if(view.tracks[ui.selected].sample && (id==27||id==28||id==102||id==103)) color=app::ui20::theme::disabled;
   display::rect(r.x, r.y, r.w, r.h, color);
-  display::text(r.x + 8, r.y + 16, s, white, 2);
+  ui_text(r.x + 8, r.y + 16, s, white, app::ui20::control_scale);
   if (id < 16 &&
       view.patterns[view.selected_pattern].locks[ui.selected][id].mask)
     display::rect(r.x + r.w - 12, r.y + 8, 6, 6, white);
@@ -877,67 +896,208 @@ void draw(int id) {
   }
   if (id == 65 && ui.copy_source >= 0) {
     snprintf(s, sizeof(s), "FROM P%02d: TAP DEST", ui.copy_source + 1);
-    display::text(r.x + 8, r.y + 44, s, accent, 1);
+    ui_text(r.x + 8, r.y + 44, s, accent, 1);
   }
   if (id >= 46 && id <= 61 && id - 46 == view.selected_pattern) {
     display::rect(r.x, r.y, r.w, 3, accent);
     display::rect(r.x, r.y + r.h - 3, r.w, 3, accent);
-    display::text(r.x + 8, r.y + 44, "EDIT", accent, 1);
+    ui_text(r.x + 8, r.y + 44, "EDIT", accent, 1);
   }
 }
 void sample_status() {
+  const auto r = app::page_widget(ui.page, 222);
+  if (!r.w) return;
+  text_bounds = r; display::clip(r.x,r.y,r.w,r.h);
+  display::rect(r.x,r.y,r.w,r.h,bg);
   char line[128];
-  display::rect(24, 330, 752, 80, bg);
-  samples::describe(sample_index, line, sizeof(line));
-  display::text(24, 330, line, white, 1);
-  samples::track_name(ui.selected, line, sizeof(line));
-  display::text(24, 350, line, accent, 1);
-  samples::message(line, sizeof(line));
-  display::text(24, 370, line, white, 1);
-  display::text(24, 390,
-                view.tracks[ui.selected].sample ? "SOURCE SAMPLE / C4=UNITY"
-                                                : "SOURCE SYNTH",
-                white, 1);
+  samples::describe(sample_index,line,sizeof(line)); ui_text(r.x+8,r.y+8,line,white,1);
+  samples::track_name(ui.selected,line,sizeof(line)); ui_text(r.x+8,r.y+32,line,accent,2);
+  ui_text(r.x+8,r.y+60,ui_notification.active ? ui_notification.text : "",white,2);
+  ui_text(r.x+8,r.y+88,view.tracks[ui.selected].sample ? "SOURCE SAMPLE" : "SELECT A WAV AND LOAD TO USE SAMPLE",white,2);
+  display::reset_clip();
+}
+void draw_segments(int id,const char *const *labels,int count,int active,int scale=3) {
+  const auto parent=app::page_widget(ui.page,id);
+  const bool enabled=!(id==126||id==127||id==215) || view.tracks[ui.selected].sample;
+  for(int n=0;n<count;++n) {
+    const auto cell=app::ui20::segment(parent,n,count);
+    text_bounds=cell; display::clip(cell.x,cell.y,cell.w,cell.h);
+    display::rect(cell.x,cell.y,cell.w,cell.h,!enabled ? app::ui20::theme::disabled : n==active ? accent : panel);
+    ui_text(cell.x+8,cell.y+(cell.h-5*scale)/2,labels[n],white,scale);
+  }
+  text_bounds=parent; display::clip(parent.x,parent.y,parent.w,parent.h);
+}
+void draw(int id) {
+  const auto r = app::page_widget(ui.page,id);
+  if (!r.w) return;
+  if(!app::ui20::actionable(ui,id)) { display::clip(r.x,r.y,r.w,r.h); display::rect(r.x,r.y,r.w,r.h,bg); display::reset_clip(); return; }
+  text_bounds=r; display::clip(r.x,r.y,r.w,r.h);
+  if (id==222) { sample_status(); return; }
+  if (id==223) {
+    char name[64],line[96]; projects::current(name,sizeof(name));
+    snprintf(line,sizeof(line),"%s%s",name,projects::dirty() ? " *" : "");
+    display::rect(r.x,r.y,r.w,r.h,bg); ui_text(r.x+8,r.y+20,line,accent,3);
+  } else if (id>=300 || id==178 || id==29 || id==34 || id==35) {
+    char line[48]{}; uint16_t color=panel;
+    const auto section=app::ui20::section(ui.page);
+    if(id>=300 && id<=305) {
+      static const char *names[]={"SEQ","TRACK","SAMPLE","PATTERN","PERFORM","PROJECT"};
+      strlcpy(line,names[id-300],sizeof(line));
+      if(int(section)==id-300) color=accent;
+      else if(id==302 && !view.tracks[ui.selected].sample) color=app::ui20::theme::disabled;
+    } else if(id==306 || id==307) strlcpy(line,id==306 ? "< T" : "T >",sizeof(line));
+    else if(id>=308 && id<=311) {
+      strlcpy(line,app::ui20::tab_label(section,id-308),sizeof(line));
+      if(app::ui20::active_tab(ui)==id-308) color=accent;
+    } else if(id>=312 && id<=314) {
+      const char *names[]={"BASIC","TONE","SAMPLE"}; strlcpy(line,names[id-312],sizeof(line));
+      if((ui.page==app::Page::Locks && id==312)||(ui.page==app::Page::ToneLocks && id==313)||(ui.page==app::Page::SampleLocks && id==314)) color=accent;
+    } else if(id==315) strlcpy(line,"SLICE TOOLS",sizeof(line));
+    else if(id==29) strlcpy(line,view.playing ? "STOP" : "PLAY",sizeof(line));
+    else if(id==178) strlcpy(line,view.mode==app::TransportMode::Chain ? "CHAIN" : "PATTERN",sizeof(line));
+    else strlcpy(line,id==34 ? "-" : "+",sizeof(line));
+    display::rect(r.x,r.y,r.w,r.h,color); ui_text(r.x+8,r.y+(r.h-10)/2,line,white,app::ui20::control_scale);
+  } else if(id>=184 && id<=199 && ui.page==app::Page::Performance) {
+    const int n=id-184; const auto &p=view.performance; const unsigned bit=1u<<n;
+    const bool audible=view.playing && view.playing_pattern==n;
+    uint16_t color=ui.perf_mixer && !view.sequence_enabled(n) ? app::ui20::theme::disabled : panel;
+    if(!ui.perf_mixer && p.fill_active==n) color=app::ui20::theme::warning;
+    else if(!ui.perf_mixer && audible) color=app::ui20::theme::current;
+    display::rect(r.x,r.y,r.w,r.h,color);
+    char line[48]; snprintf(line,sizeof(line),"%c%02d",ui.perf_mixer ? 'T' : 'P',n+1);
+    ui_text(r.x+8,r.y+6,line,white,4);
+    if(ui.perf_mixer) snprintf(line,sizeof(line),"%s %s%s%s%s",view.tracks[n].sample ? "SMP" : "SYN",view.tracks[n].muted ? "M " : "",view.solos&bit ? "S " : "",p.mutes&bit ? "+M " : "",p.solos&bit ? "+S" : "");
+    else snprintf(line,sizeof(line),"%s%s%s%s",view.selected_pattern==n ? "E " : "",(p.owns() ? p.return_pattern : view.playing_pattern)==n ? "ARR " : "",p.override_target==n || p.override_active==n ? "OVR " : "",p.fill_pending==n ? "F?" : p.fill_active==n ? "F" : "");
+    ui_text(r.x+8,r.y+32,line,white,2);
+    if(!ui.perf_mixer && view.selected_pattern==n) display::rect(r.x,r.y,3,r.h,white);
+    if(!ui.perf_mixer && (view.queued_pattern==n || p.fill_pending==n)) display::rect(r.x,r.y+r.h-4,r.w,4,app::ui20::theme::queued);
+  } else {
+    // Unsupported editors retain navigation and an explicit disabled state.
+    const bool sample_edit = ui.page==app::Page::SamplePlayback || ui.page==app::Page::SampleSlice || ui.page==app::Page::SliceTools || ui.page==app::Page::AutoSlice;
+    if(sample_edit && !view.tracks[ui.selected].sample) {
+      display::rect(r.x,r.y,r.w,r.h,app::ui20::theme::disabled);
+      ui_text(r.x+8,r.y+16,"LOAD SAMPLE IN BROWSER",white,1);
+    } else {
+      draw_content(id);
+      if(app::ui20::slider(ui,id)) {
+        int value=0;
+        const auto &t=view.tracks[ui.selected];
+        const auto &meta=view.patterns[view.selected_pattern].meta[ui.selected][std::max(0,ui.selected_step)];
+        if(id>=24 && id<=28) { int values[]={t.volume,(t.pan+127)/2,t.pitch,t.length,t.wave*127/15}; value=values[id-24]; }
+        else if(id>=107 && id<=109) { int values[]={127-t.filter_cutoff,t.filter_resonance,t.delay_send}; value=values[id-107]; }
+        else if(id==124||id==125) value=(id==124?t.playback.start:t.playback.end)*127u/65535;
+        else if(id==137||id==138) { auto region=t.slices.slices[t.slices.index(ui.inspected_slice[ui.selected])]; value=(id==137?region.start:region.end)*127u/65535; }
+        else if(id==69) value=(view.swing-50)*127/25;
+        else if(id==71) value=meta.velocity;
+        else if(id==73) value=meta.probability*127/100;
+        else if((id>=96&&id<=102)||(id>=114&&id<=118)) {
+          auto l=view.patterns[view.selected_pattern].locks[ui.selected][std::max(0,ui.selected_step)];
+          int values[]={l.pitch,l.volume,(l.pan+127)/2,l.wave*127/15,127-l.filter_cutoff,l.filter_resonance,l.delay_send};
+          value=values[id>=114?4+(id-114)/2:(id-96)/2];
+        } else if(ui.page==app::Page::Tools) { int values[]={ui.pulses*127/16,ui.rotation*127/15,ui.density*127/100,ui.vel_var*127/100,ui.prob_var*127/100,ui.ratchet_chance*127/100}; value=id==93?ui.mutate_amount*127/100:values[id-83]; }
+        const bool disabled=(id==27||id==28||id==102) && t.sample;
+        display::rect(r.x+8,r.y+r.h-10,r.w-16,4,app::ui20::theme::disabled);
+        if(!disabled) display::rect(r.x+8,r.y+r.h-10,(r.w-16)*app::clamp(value,0,127)/127,4,accent);
+      }
+    }
+  }
+  if(id==201 || id==202 || id==203) {
+    const char *label=id==201 ? (ui.perf_mixer ? (ui.perf_solo ? "SOLO" : "MUTE") : (ui.perf_fill ? "FILL NEXT" : "OVERRIDE")) : id==202 ? (ui.perf_mixer ? "CLEAR MIX" : "CANCEL O") : "CANCEL F";
+    display::rect(r.x,r.y,r.w,r.h,id==201 ? accent : panel); ui_text(r.x+8,r.y+16,label,white,3);
+  }
+  if(id==41) { const char *labels[]={"SYNTH","SAMPLE"}; draw_segments(id,labels,2,view.tracks[ui.selected].sample); }
+  if(id==126) { const char *labels[]={"FWD","REV"}; draw_segments(id,labels,2,view.tracks[ui.selected].playback.reverse); }
+  if(id==127) { const char *labels[]={"ONE SHOT","GATE"}; draw_segments(id,labels,2,view.tracks[ui.selected].playback.mode==sampler::Mode::Gate); }
+  if(id==178) { const char *labels[]={"PAT","CHN"}; draw_segments(id,labels,2,view.mode==app::TransportMode::Chain,2); }
+  if(id==215) { const char *labels[]={"LOW","MED","HIGH"}; draw_segments(id,labels,3,int(transient_sensitivity)); }
+  if(id==201) { const char *mix[]={"MUTE","SOLO"}; const char *patterns[]={"OVERRIDE","FILL"}; draw_segments(id,ui.perf_mixer ? mix : patterns,2,ui.perf_mixer ? ui.perf_solo : ui.perf_fill); }
+  const bool confirming = ui_confirmation.widget==id || (ui.page==app::Page::Pattern && id==66 && ui.clear_pattern>=0) || (ui.page==app::Page::Tools && id==90 && ui.tool_pending) || (ui.page==app::Page::Chain && id==179 && ui.chain_clear_pending) || (ui.page==app::Page::Project && id==154 && project_ui.mode==project::Workflow::Mode::Confirm);
+  if(confirming) {
+    display::rect(r.x,r.y,r.w,r.h,app::ui20::theme::danger);
+    char line[64];
+    if(ui.page==app::Page::Tools && ui.tool_pending) snprintf(line,sizeof(line),"CONFIRM %s%02d",ui.pending_tool.kind==app::Kind::Duplicate ? "P" : "T",ui.pending_tool.value+1);
+    else if(ui_confirmation.widget==id) snprintf(line,sizeof(line),"CONFIRM T%02d",ui_confirmation.intent.track+1);
+    else strlcpy(line,"CONFIRM",sizeof(line));
+    ui_text(r.x+8,r.y+16,line,white,app::ui20::control_scale);
+  }
+  display::reset_clip();
 }
 void overlay() {
 #if P4SDM_APP_DIAGNOSTICS
-  char s[110];
-  display::rect(0, 80, 800, 18, bg);
-  snprintf(s, sizeof(s), "p99 %lu max %lu miss %lu frames %lu dirty %lu PS %u",
-           (unsigned long)diagnostic_p99.load(),
-           (unsigned long)diagnostic_max.load(),
-           (unsigned long)diagnostic_misses.load(), (unsigned long)frames,
-           (unsigned long)(frames ? dirty_bytes / frames : 0),
-           unsigned(heap_caps_get_free_size(MALLOC_CAP_SPIRAM)));
-  display::text(8, 82, s, white, 1);
+  // Explicit four-pixel strip; diagnostics never consume page geometry.
+  const auto r=app::ui20::diagnostics;
+  display::clip(r.x,r.y,r.w,r.h);
+  display::rect(r.x,r.y,r.w,r.h,diagnostic_misses.load() ? app::ui20::theme::danger : app::ui20::theme::current);
+  display::reset_clip();
 #endif
 }
 void tempo_header() {
-  char s[8];
-  display::rect(584, 16, 120, 56, bg);
-  snprintf(s, sizeof(s), "%03d", view.bpm);
-  display::text(600, 24, s, accent, 3);
-  draw(34);
-  draw(35);
+  const auto r=app::ui20::tempo_status;
+  text_bounds=r; display::clip(r.x,r.y,r.w,r.h);
+  char line[24]; snprintf(line,sizeof(line),"%d BPM",view.bpm);
+  display::rect(r.x,r.y,r.w,r.h,bg); ui_text(612,20,line,accent,3); display::reset_clip();
+  draw(34); draw(35);
 }
 void header() {
-  char s[32];
-  display::rect(0, 0, 800, 80, bg);
-  if (ui.page == app::Page::Performance || ui.page == app::Page::PerformanceRepeat)
-    snprintf(s, sizeof(s), "PERF %s", ui.page == app::Page::PerformanceRepeat ? "REPEAT" : ui.perf_mixer ? "MIX" : "PATS");
-  else snprintf(s, sizeof(s), "P4SDM T%02d", ui.selected + 1);
-  display::text(16, 24, s, white, 2);
-  draw(44);
-  tempo_header();
+  const auto r=app::ui20::context_status;
+  text_bounds=r; display::clip(r.x,r.y,r.w,r.h);
+  char line[64];
+  snprintf(line,sizeof(line),"P%02d T%02d %s%s",view.selected_pattern+1,ui.selected+1,view.tracks[ui.selected].sample ? "SAMPLE" : "SYNTH",projects::dirty() ? " *" : "");
+  display::rect(r.x,r.y,r.w,r.h,bg); ui_text(8,8,line,white,2);
+  snprintf(line,sizeof(line),"PLAY P%02d Q%02d %s%s R%u",view.playing_pattern+1,view.queued_pattern+1,
+      view.performance.override_active>=0 ? "O " : "",view.performance.fill_active>=0 ? "F " : "",view.performance.repeat.active);
+  ui_text(8,30,ui_notification.active ? ui_notification.text : line,ui_notification.active ? app::ui20::theme::warning : accent,1); display::reset_clip();
+  draw(306); draw(307); draw(29); draw(178); tempo_header();
 }
+void render_page() {
+  const auto &layout=app::ui20::layout(ui.page);
+  for(unsigned n=0;n<layout.count;++n) draw(layout.widgets[n].id);
+}
+void render_sequence() { render_page(); }
+void render_track() { render_page(); }
+void render_sample() { render_page(); }
+void render_pattern() { render_page(); }
+void render_performance() { render_page(); }
+void render_project() { render_page(); }
 void interact(int id, int x, bool initial) {
+  if (id < 0) return;
+  if (initial && id != ui_confirmation.widget) {
+    if (ui_confirmation.widget >= 0 && ui_confirmation.widget < 224) dirty[ui_confirmation.widget]=true;
+    ui_confirmation.cancel();
+  }
+  if (id >= 300) {
+    if (!initial || projects::busy() || transient_apply_pending) return;
+    if (id==306 || id==307) {
+      ui.selected=app::clamp(ui.selected+(id==306 ? -1 : 1),0,15);
+      ui.bank=ui.selected/8; ui.cancel_tool(); ui.cancel_pattern_action();
+    } else if (!app::ui20::navigate(ui,id)) return;
+    project_ui.cancel(); full=true; return;
+  }
+  if (id==178 && ui.page!=app::Page::Chain) {
+    if(initial && !view.playing && send({app::Kind::ChainMode,0,app::ui20::segment_choice(ui.page,id,x,2)})) dirty[44]=true;
+    return;
+  }
+  if (id==29 || id==34 || id==35) {
+    if(initial) {
+      send({id==29 ? app::Kind::Play : app::Kind::Bpm,0,id==29 ? int(!view.playing) : view.bpm+(id==34 ? -1 : 1)});
+      dirty[29]=dirty[34]=dirty[44]=true;
+    }
+    return;
+  }
+  if (id==41 && ui.page==app::Page::Track) {
+    if(initial && samples::has_sample(ui.selected) && !samples::busy()) {
+      send({app::Kind::Source,uint8_t(ui.selected),app::ui20::segment_choice(ui.page,id,x,2)}); full=true;
+    } else if(initial && !samples::has_sample(ui.selected) && app::ui20::segment_choice(ui.page,id,x,2)) { ui.page=app::Page::Sample; full=true; }
+    return;
+  }
+
   if (id >= 210 && id <= 220) {
     if (!initial || transient_apply_pending) return;
     if (id == 210) { ui.page = app::Page::AutoSlice; full = true; return; }
     if (id >= 211 && id <= 216) {
       send({app::Kind::TransientCancel, uint8_t(ui.selected), 0});
       if (id <= 214) { const unsigned modes[] = {0, 4, 8, 16}; transient_mode = modes[id - 211]; }
-      else transient_sensitivity = unsigned(app::clamp(int(transient_sensitivity) + (id == 215 ? -1 : 1), 0, 2));
+      else transient_sensitivity = id==215 ? unsigned(app::ui20::segment_choice(ui.page,id,x,3)) : unsigned(app::clamp(int(transient_sensitivity)+1,0,2));
     } else if (id == 217)
       send({app::Kind::TransientAnalyze, uint8_t(ui.selected), int(transient_mode | (transient_sensitivity << 8))});
     else if (id == 218 && transient_view.state == transients::State::Ready && transient_view.proposal.owner.track == ui.selected) {
@@ -979,8 +1139,8 @@ void interact(int id, int x, bool initial) {
       perf_ui_switches.fetch_add(1);
     } else if (id == 201) {
       if (ui.page == app::Page::PerformanceRepeat) return;
-      if (ui.perf_mixer) ui.perf_solo = !ui.perf_solo;
-      else ui.perf_fill = !ui.perf_fill;
+      if (ui.perf_mixer) ui.perf_solo = app::ui20::segment_choice(ui.page,id,x,2);
+      else ui.perf_fill = app::ui20::segment_choice(ui.page,id,x,2);
     } else if (id == 202) send({ui.perf_mixer ? app::Kind::PerfClearMix : app::Kind::PerfOverrideCancel, 0, 0});
     else if (id == 203) { send({app::Kind::PerfFillCancel, 0, 0}); ui.perf_fill = false; }
     else if (id <= 199) {
@@ -1054,7 +1214,7 @@ void interact(int id, int x, bool initial) {
     }
     if (id == 178 && !view.playing) {
       c.kind = app::Kind::ChainMode;
-      c.value = view.mode == app::TransportMode::Pattern;
+      c.value = app::ui20::segment_choice(ui.page,id,x,2);
     }
     if (id == 179) {
       if (ui.chain_clear_pending)
@@ -1062,6 +1222,7 @@ void interact(int id, int x, bool initial) {
       ui.chain_clear_pending = !ui.chain_clear_pending;
       dirty[179] = dirty[181] = true;
     }
+    if (c.kind==app::Kind::ChainDelete && !ui_confirmation.accept(id,c,projects::revision.load())) { dirty[id]=true; return; }
     if (c.kind != app::Kind::Count && send(c)) {
       chain_ui_edits.fetch_add(1);
       if (c.kind == app::Kind::ChainAdd)
@@ -1072,7 +1233,7 @@ void interact(int id, int x, bool initial) {
         for (int i = 163; i <= 168; ++i)
           dirty[i] = true;
       else if (ui.chain_row >= ui.chain_scroll &&
-               ui.chain_row < ui.chain_scroll + 6)
+               ui.chain_row < ui.chain_scroll + 5)
         dirty[163 + ui.chain_row - ui.chain_scroll] = true;
       dirty[44] = dirty[177] = dirty[44] = dirty[178] = dirty[182] = true;
     }
@@ -1080,15 +1241,15 @@ void interact(int id, int x, bool initial) {
         app::clamp(ui.chain_row, 0, std::max(0, int(view.chain.length) - 1));
     if (ui.chain_row < ui.chain_scroll)
       ui.chain_scroll = ui.chain_row;
-    if (ui.chain_row >= ui.chain_scroll + 6)
-      ui.chain_scroll = ui.chain_row - 5;
+    if (ui.chain_row >= ui.chain_scroll + 5)
+      ui.chain_scroll = ui.chain_row - 4;
     chain_ui_rows.fetch_add(old_row != ui.chain_row);
     chain_ui_scrolls.fetch_add(old_scroll != ui.chain_scroll);
     if (old_scroll != ui.chain_scroll)
       for (int i = 163; i <= 168; ++i)
         dirty[i] = true;
     else {
-      if (old_row >= ui.chain_scroll && old_row < ui.chain_scroll + 6)
+      if (old_row >= ui.chain_scroll && old_row < ui.chain_scroll + 5)
         dirty[163 + old_row - ui.chain_scroll] = true;
       dirty[163 + ui.chain_row - ui.chain_scroll] = true;
     }
@@ -1105,7 +1266,6 @@ void interact(int id, int x, bool initial) {
       return;
     if (id == 160) {
       project_ui.cancel();
-      ui.page = app::Page::Fx;
       full = true;
       return;
     }
@@ -1188,7 +1348,7 @@ void interact(int id, int x, bool initial) {
                      int(inspected)};
       c.step = inspected;
       if (id == 137 || id == 138) {
-        auto r = app::widget(id);
+        auto r = app::page_widget(ui.page, id);
         c.value = app::clamp(x - r.x, 0, r.w - 1) * 65535 / (r.w - 1);
         c.kind = id == 137 ? app::Kind::SliceStart : app::Kind::SliceEnd;
       } else if (!initial)
@@ -1235,6 +1395,7 @@ void interact(int id, int x, bool initial) {
         c.kind = app::Kind::SliceAudition;
       } else
         return;
+      if ((c.kind==app::Kind::SliceDelete || c.kind==app::Kind::SliceReset || c.kind==app::Kind::SliceDivide) && !ui_confirmation.accept(id,c,samples::revision())) { dirty[id]=true; return; }
       const bool was_full = full;
       if (!send(c))
         return;
@@ -1277,7 +1438,7 @@ void interact(int id, int x, bool initial) {
     app::Command c{app::Kind::SampleStart, uint8_t(ui.selected), 0};
     auto &p = t.playback;
     if (id == 124 || id == 125) {
-      auto r = app::widget(id);
+      auto r = app::page_widget(ui.page, id);
       int value = app::clamp(x - r.x, 0, r.w - 1) * 65535 / (r.w - 1);
       c.kind = id == 124 ? app::Kind::SampleStart : app::Kind::SampleEnd;
       c.value = id == 124 ? std::min(value, std::max(0, int(p.end) - 1))
@@ -1285,10 +1446,10 @@ void interact(int id, int x, bool initial) {
     } else if (initial) {
       if (id == 126) {
         c.kind = app::Kind::SampleReverse;
-        c.value = !p.reverse;
+        c.value = app::ui20::segment_choice(ui.page,id,x,2);
       } else if (id == 127) {
         c.kind = app::Kind::SampleMode;
-        c.value = p.mode != sampler::Mode::Gate;
+        c.value = app::ui20::segment_choice(ui.page,id,x,2);
       } else if (id == 128) {
         c.kind = app::Kind::SampleChoke;
         c.value = (p.choke + 1) % 9;
@@ -1299,6 +1460,7 @@ void interact(int id, int x, bool initial) {
     } else
       return;
     const bool was_full = full;
+    if(c.kind==app::Kind::SampleResetRegion && !ui_confirmation.accept(id,c,samples::revision())) { dirty[id]=true; return; }
     if (send(c)) {
       ++playback_ui_edits;
       playback_ui_full += full && !was_full;
@@ -1354,7 +1516,7 @@ void interact(int id, int x, bool initial) {
         dirty[45] = true;
       }
     } else if (id >= 107 && id <= 109) {
-      int value = app::drag(id, x);
+      int value = app::page_drag(ui.page, id, x);
       if (id == 107)
         value = p4tone::cutoff_from_slider(value);
       const auto &t = view.tracks[ui.selected];
@@ -1381,6 +1543,7 @@ void interact(int id, int x, bool initial) {
     app::Command c{};
     if (!ui.lock_action(id, x, initial, view, c))
       return;
+    if(c.kind==app::Kind::ClearStepLocks && !ui_confirmation.accept(id,c,projects::revision.load())) { dirty[id]=true; return; }
     const bool was_full = full;
     const uint8_t old_mask =
         view.patterns[c.pattern].locks[c.track][c.step].mask;
@@ -1423,11 +1586,11 @@ void interact(int id, int x, bool initial) {
     app::Ui previous = ui;
     const bool was_full = full;
     if (ui.tool_section == 1 && id >= 83 && id <= 88) {
-      int value = app::drag(id, x) * 100 / 127;
+      int value = app::page_drag(ui.page, id, x) * 100 / 127;
       int *values[] = {&ui.pulses,  &ui.rotation, &ui.density,
                        &ui.vel_var, &ui.prob_var, &ui.ratchet_chance};
       if (id <= 84)
-        value = app::drag(id, x) *
+        value = app::page_drag(ui.page, id, x) *
                 (view.patterns[view.selected_pattern].length - (id == 84)) /
                 127;
       *values[id - 83] = value;
@@ -1435,7 +1598,7 @@ void interact(int id, int x, bool initial) {
       return;
     }
     if (ui.tool_section == 1 && id == 93) {
-      ui.mutate_amount = app::drag(id, x) * 100 / 127;
+      ui.mutate_amount = app::page_drag(ui.page, id, x) * 100 / 127;
       dirty[id] = true;
       return;
     }
@@ -1483,19 +1646,19 @@ void interact(int id, int x, bool initial) {
     auto &m = view.patterns[c.pattern].meta[c.track][c.step];
     if (id == 69) {
       c.kind = app::Kind::Swing;
-      c.value = 50 + app::drag(id, x) * 25 / 127;
+      c.value = 50 + app::page_drag(ui.page, id, x) * 25 / 127;
     } else if (id == 70 && initial) {
       c.kind = app::Kind::Step;
       c.value = c.step;
     } else if (id == 71) {
       c.kind = app::Kind::Velocity;
-      c.value = std::max(1, app::drag(id, x));
+      c.value = std::max(1, app::page_drag(ui.page, id, x));
     } else if (id == 72 && initial) {
       c.kind = app::Kind::Velocity;
       c.value = m.velocity == 127 ? 100 : 127;
     } else if (id == 73) {
       c.kind = app::Kind::Probability;
-      c.value = app::drag(id, x) * 100 / 127;
+      c.value = app::page_drag(ui.page, id, x) * 100 / 127;
     } else if (id >= 74 && initial) {
       c.kind = app::Kind::Ratchet;
       c.value = id - 73;
@@ -1571,7 +1734,7 @@ void interact(int id, int x, bool initial) {
     else if (id == 41) {
       if (samples::has_sample(ui.selected) && !samples::busy())
         send({app::Kind::Source, uint8_t(ui.selected),
-              !view.tracks[ui.selected].sample});
+              app::ui20::segment_choice(ui.page,id,x,2)});
       dirty[38] = true;
     }
   } else if (id < 16 && initial) {
@@ -1597,7 +1760,7 @@ void interact(int id, int x, bool initial) {
   } else if (id < 29) {
     app::Kind kinds[] = {app::Kind::Volume, app::Kind::Pan, app::Kind::Pitch,
                          app::Kind::Length, app::Kind::Wave};
-    int val = app::drag(id, x);
+    int val = app::page_drag(ui.page, id, x);
     if (id == 28)
       val = val * 15 / 127;
     auto &t = view.tracks[ui.selected];
@@ -1639,9 +1802,27 @@ void interact(int id, int x, bool initial) {
     }
   }
 }
+#if P4SDM_APP_STRESS
+void qualify_interact(int id,int x,bool initial) {
+  if(initial && (id==41||id==126||id==127||id==178||id==201)) {
+    const bool active=id==41 ? view.tracks[ui.selected].sample : id==126 ? view.tracks[ui.selected].playback.reverse : id==127 ? view.tracks[ui.selected].playback.mode==sampler::Mode::Gate : id==178 ? view.mode==app::TransportMode::Chain : ui.perf_mixer ? ui.perf_solo : ui.perf_fill;
+    const auto cell=app::ui20::segment(app::page_widget(ui.page,id),!active,2);
+    x=cell.x+cell.w/2;
+  }
+  interact(id,x,initial);
+  // Existing scripts now deliberately perform the same confirmation required
+  // on the touchscreen; never bypass or weaken the production confirmation.
+  if(initial && ui_confirmation.widget==id) interact(id,x,true);
+}
+#endif
 void ui_task(void *) {
   while (!samples::initialized())
     vTaskDelay(1);
+#if P4SDM_UI20_STRESS
+  // Let the startup task retire before recording the stable heap baseline.
+  // Its FreeRTOS TCB is freed by Idle after it creates this UI task.
+  vTaskDelay(pdMS_TO_TICKS(500));
+#endif
   uint32_t next = 0, seen[16]{};
   touch::State touch_state;
   const uint32_t started = millis(),
@@ -1652,6 +1833,11 @@ void ui_task(void *) {
                largest_before =
                    heap_caps_get_largest_free_block(MALLOC_CAP_SPIRAM);
   for (;;) {
+#if P4SDM_UI20_STRESS
+    const uint32_t ui20_now=micros();
+    if(ui20_previous && !reported) ui20_interval_us=std::max(ui20_interval_us,ui20_now-ui20_previous);
+    ui20_previous=ui20_now;
+#endif
     static unsigned project_revision = 0, project_changes = 0;
 #if P4SDM_TRANSIENT_STRESS
     static unsigned analysis_stage = 0;
@@ -1719,6 +1905,7 @@ void ui_task(void *) {
         !projects::view_ready.load()) {
       for (unsigned part = 0; part <= 16; ++part)
         project::apply_part(view, *projects::staging, part);
+      ui_confirmation.cancel();
       ui.selected_step = -1;
       ui.capture = -1;
       ui.down = false;
@@ -1737,8 +1924,10 @@ void ui_task(void *) {
     }
     if (project_revision != projects::revision.load() ||
         project_changes != projects::changes.load()) {
+      if(project_revision != projects::revision.load()) { char message[96]; projects::status(message,sizeof(message)); ui_notification.show(message,millis()); }
       project_revision = projects::revision.load();
       project_changes = projects::changes.load();
+      dirty[45]=true;
       if (ui.page == app::Page::Project)
         full = true;
     }
@@ -1771,29 +1960,29 @@ void ui_task(void *) {
         send({app::Kind::ChainMode, 0, 1});
         send({app::Kind::Play, 0, 1});
         ++chain_setup_row;
-        interact(162, 0, true);
+        qualify_interact(162, 0, true);
       }
     }
 #endif
 #if P4SDM_PERFORMANCE_STRESS
     static unsigned perf_stage = 0;
     if (millis() - started > 36000 + perf_stage * 700 && perf_stage < 13 && !projects::busy()) {
-      interact(183, 0, true);
+      qualify_interact(183, 0, true);
       ui.perf_mixer = false;
       switch (perf_stage++) {
-      case 0: interact(192, 0, true); interact(193, 0, true); break;
-      case 1: interact(194, 0, true); break;
-      case 2: interact(201, 0, true); interact(196, 0, true); break;
+      case 0: qualify_interact(192, 0, true); qualify_interact(193, 0, true); break;
+      case 1: qualify_interact(194, 0, true); break;
+      case 2: qualify_interact(201, 0, true); qualify_interact(196, 0, true); break;
       case 3: send({app::Kind::PerfFill, 0, 13}); break;
-      case 4: interact(202, 0, true); break;
-      case 5: interact(201, 0, true); interact(195, 0, true); break;
-      case 6: interact(191, 0, true); break;
-      case 7: interact(201, 0, true); interact(198, 0, true); interact(202, 0, true); break;
-      case 8: interact(200, 0, true); for (int i = 184; i <= 199; ++i) interact(i, 0, true); break;
-      case 9: ui.perf_mixer = true; interact(201, 0, true); for (int i = 184; i <= 199; ++i) interact(i, 0, true); break;
-      case 10: ui.perf_mixer = true; interact(202, 0, true); for (int i = 184; i <= 199; ++i) { interact(i, 0, true); interact(i, 0, true); } break;
+      case 4: qualify_interact(202, 0, true); break;
+      case 5: qualify_interact(201, 0, true); qualify_interact(195, 0, true); break;
+      case 6: qualify_interact(191, 0, true); break;
+      case 7: qualify_interact(201, 0, true); qualify_interact(198, 0, true); qualify_interact(202, 0, true); break;
+      case 8: qualify_interact(200, 0, true); for (int i = 184; i <= 199; ++i) qualify_interact(i, 0, true); break;
+      case 9: ui.perf_mixer = true; qualify_interact(201, 0, true); for (int i = 184; i <= 199; ++i) qualify_interact(i, 0, true); break;
+      case 10: ui.perf_mixer = true; qualify_interact(202, 0, true); for (int i = 184; i <= 199; ++i) { qualify_interact(i, 0, true); qualify_interact(i, 0, true); } break;
       case 11: send({app::Kind::PerfOverride, 0, 8}); send({app::Kind::PerfOverrideCancel, 0, 0}); send({app::Kind::PerfFill, 0, 9}); send({app::Kind::PerfFillCancel, 0, 0}); break;
-      case 12: send({app::Kind::PerfOverrideCancel, 0, 0}); send({app::Kind::PerfClearMix, 0, 0}); interact(204, 0, true); break;
+      case 12: send({app::Kind::PerfOverrideCancel, 0, 0}); send({app::Kind::PerfClearMix, 0, 0}); qualify_interact(204, 0, true); break;
       }
     }
 #endif
@@ -1834,13 +2023,13 @@ void ui_task(void *) {
       const int actions[] = {170, 170, 170, 170, 170, 170, 170, 169,
                              175, 176, 173, 174, 172, 171, 177, 177};
       if (chain_ui_stage < sizeof(actions) / sizeof(actions[0])) {
-        interact(162, 0, true);
-        interact(actions[chain_ui_stage++], 0, true);
+        qualify_interact(162, 0, true);
+        qualify_interact(actions[chain_ui_stage++], 0, true);
       } else if (chain_ui_stage == sizeof(actions) / sizeof(actions[0])) {
-        interact(162, 0, true);
+        qualify_interact(162, 0, true);
         send({app::Kind::Play, 0, 0});
-        interact(178, 0, true);
-        interact(178, 0, true);
+        qualify_interact(178, 0, true);
+        qualify_interact(178, 0, true);
         for (int p = 0; p < 16; ++p) {
           app::Command c{app::Kind::PatternLength, 0, 1};
           c.pattern = uint8_t(p);
@@ -1856,6 +2045,7 @@ void ui_task(void *) {
     unsigned revision = samples::revision();
     if (revision != sample_revision) {
       sample_revision = revision;
+      char message[96]; samples::message(message,sizeof(message)); ui_notification.show(message,millis()); dirty[45]=true;
       dirty[38] = dirty[132] = true;
       for (unsigned t = 0; t < 16; ++t)
         if (samples::assigned(t)) {
@@ -1914,16 +2104,22 @@ void ui_task(void *) {
       }
       if (n % 32 == 0) {
         ui.page = app::Page::Sample;
-        interact(123, 0, true);
+        qualify_interact(123, 0, true);
       } else if (ui.page == app::Page::SamplePlayback && !full) {
-        interact(124 + int(n % 5), 300 + int(n % 400), n % 5 >= 2);
+        qualify_interact(124 + int(n % 5), 300 + int(n % 400), n % 5 >= 2);
       }
     }
 #endif
     static uint32_t tone_due = 0;
     static unsigned tone_edit = 0;
     if (millis() >= tone_due) {
+#if P4SDM_UI20_STRESS
+      // Larger finger controls make full pages slower under the SYNTH load.
+      // Strengthen test coverage rather than relaxing the inherited >500 blocks.
+      tone_due = millis() + 65;
+#else
       tone_due = millis() + 80; // realistic control rate, bounded commands
+#endif
       unsigned n = tone_edit++;
       uint8_t t = uint8_t(n % 16);
       bool dense = millis() - started < 12000;
@@ -1933,11 +2129,11 @@ void ui_task(void *) {
             dense ? int(64 + n % 64) : int((n * 7) % 128)});
       send({app::Kind::DelaySend, t, dense ? 127 : int((n * 13) % 128)});
       if (!dense && n % 64 == 0)
-        interact(113, 0, true);
+        qualify_interact(113, 0, true);
       else if (!dense && ui.page == app::Page::Tone && !full) {
-        interact(107 + int(n % 3), 24 + int(n % 128) * 751 / 127, false);
+        qualify_interact(107 + int(n % 3), 24 + int(n % 128) * 751 / 127, false);
         if (n % 8 == 0)
-          interact(111, 0, true);
+          qualify_interact(111, 0, true);
       }
     }
     static uint32_t lock_due = 0;
@@ -1955,18 +2151,18 @@ void ui_task(void *) {
       if (n % 32 == 0) {
         ui.page = app::Page::Step;
         ui.selected_step = int((n / 2) % 16);
-        interact(95, 0, true);
+        qualify_interact(95, 0, true);
       } else if ((ui.page == app::Page::Locks ||
                   ui.page == app::Page::ToneLocks) &&
                  n % 32 < 10 && !full) {
         if (n % 32 == 2)
-          interact(121, 0, true);
+          qualify_interact(121, 0, true);
         int id = ui.page == app::Page::ToneLocks ? 115 + int(n % 3) * 2
                                                  : 97 + int(n % 4) * 2;
-        interact(id, 0, true);
-        interact(id - 1, app::widget(id - 1).x + 270, true);
+        qualify_interact(id, 0, true);
+        qualify_interact(id - 1, app::widget(id - 1).x + 270, true);
         if (n % 32 == 9)
-          interact(ui.page == app::Page::ToneLocks ? 120 : 104, 0, true);
+          qualify_interact(ui.page == app::Page::ToneLocks ? 120 : 104, 0, true);
       }
     }
     static uint32_t stress_due = 0, retrigger_due = 0;
@@ -2026,79 +2222,79 @@ void ui_task(void *) {
       if (slot == 0) {
         send({app::Kind::SelectPattern, 0, 0});
         send({app::Kind::Swing, 0, 60});
-        interact(44, 0, true);
-        interact(46, 0, true);
+        qualify_interact(44, 0, true);
+        qualify_interact(46, 0, true);
       } else if (slot == 8) {
         send({app::Kind::SelectPattern, 0, 2});
         send({app::Kind::SelectPattern, 0, 1});
-        interact(44, 0, true);
-        interact(48, 0, true);
-        interact(47, 0, true);
+        qualify_interact(44, 0, true);
+        qualify_interact(48, 0, true);
+        qualify_interact(47, 0, true);
       } else if (slot == 20) {
         send({app::Kind::SelectPattern, 0, 0});
         send({app::Kind::Swing, 0, 75});
-        interact(44, 0, true);
-        interact(46, 0, true);
+        qualify_interact(44, 0, true);
+        qualify_interact(46, 0, true);
       } else if (slot == 24 || slot == 25)
-        interact(62, 0, true);
+        qualify_interact(62, 0, true);
       else if (slot == 26 || slot == 27)
-        interact(64, 0, true);
+        qualify_interact(64, 0, true);
       else if (slot == 28) {
-        interact(44, 0, true);
-        interact(65, 0, true);
-        interact(49, 0, true);
+        qualify_interact(44, 0, true);
+        qualify_interact(65, 0, true);
+        qualify_interact(49, 0, true);
       } else if (slot == 29) {
-        interact(67, 0, true);
-        interact(49, 0, true);
+        qualify_interact(67, 0, true);
+        qualify_interact(49, 0, true);
       } else if (slot == 30) {
         app::Command clear{app::Kind::ClearPattern, 0, 0};
         clear.pattern =
             4; // Guarantee coverage despite independent page scripts.
         send(clear);
-        interact(66, 0, true);
-        interact(66, 0, true);
+        qualify_interact(66, 0, true);
+        qualify_interact(66, 0, true);
       } else if (slot == 31) {
-        interact(67, 0, true);
-        interact(46, 0, true);
+        qualify_interact(67, 0, true);
+        qualify_interact(46, 0, true);
       } else if (slot == 32)
-        interact(31, 0, true);
+        qualify_interact(31, 0, true);
       else if (slot == 33 || slot == 34)
-        interact(37, 0, true);
+        qualify_interact(37, 0, true);
       else if (slot == 35 || slot == 36)
-        interact(43, 0, true);
+        qualify_interact(43, 0, true);
       else if (slot == 37)
-        interact(32, 0, true);
+        qualify_interact(32, 0, true);
       else if (slot == 38)
-        interact(30, 0, true);
+        qualify_interact(30, 0, true);
       else if (slot == 39 || slot == 40)
-        interact(5, 0, true);
+        qualify_interact(5, 0, true);
       else if (slot == 41)
-        interact(33, 0, true);
+        qualify_interact(33, 0, true);
       else if (slot == 42) {
-        interact(16, 0, true);
+        qualify_interact(16, 0, true);
         send({app::Kind::Trigger, uint8_t(ui.selected), 0});
       } else if (slot == 43)
-        interact(31, 0, true);
+        qualify_interact(31, 0, true);
       else if (slot == 44)
-        interact(24, 700, false);
+        qualify_interact(24, 700, false);
       else if (slot == 45) {
-        interact(30, 0, true);
-        interact(68, 0, true);
+        qualify_interact(30, 0, true);
+        qualify_interact(68, 0, true);
       } else if (slot == 46) {
-        interact(71, 350, false);
-        interact(73, 600, false);
+        qualify_interact(71, 350, false);
+        qualify_interact(73, 600, false);
       } else if (slot == 47) {
-        interact(72, 0, true);
-        interact(77, 0, true);
-        interact(30, 0, true);
-        interact(78, 0, true);
-        interact(81, 0, true);
-        interact(85, 100, false);
-        interact(90, 0, true);
-        interact(80, 0, true);
-        interact(86, 0, true);
-        interact(89, 0, true);
-        interact(90, 0, true);
+        qualify_interact(72, 0, true);
+        qualify_interact(77, 0, true);
+        qualify_interact(30, 0, true);
+        qualify_interact(78, 0, true);
+        qualify_interact(81, 0, true);
+        qualify_interact(85, 100, false);
+        qualify_interact(90, 0, true);
+        qualify_interact(80, 0, true);
+        qualify_interact(86, 0, true);
+        qualify_interact(89, 0, true);
+        qualify_interact(90, 0, true);
       }
     }
 #endif
@@ -2111,32 +2307,32 @@ void ui_task(void *) {
       const unsigned stage = inherited_ui_stage++ % 3;
       if (stage < 2) {
         ui.page = app::Page::Step;
-        interact(95, 0, true);
+        qualify_interact(95, 0, true);
         if (stage == 1)
-          interact(121, 0, true);
+          qualify_interact(121, 0, true);
         for (int param = 0; param < 3; ++param) {
           const int toggle = stage == 0 ? 97 + param * 2 : 115 + param * 2;
           // Toggle twice to guarantee an enabled value regardless of prior
           // state.
           if (view.patterns[view.selected_pattern].locks[ui.selected][2].mask &
               (1u << (param + (stage ? 4 : 0))))
-            interact(toggle, 0, true);
-          interact(toggle, 0, true);
-          interact(toggle - 1, app::widget(toggle - 1).x + 270, false);
+            qualify_interact(toggle, 0, true);
+          qualify_interact(toggle, 0, true);
+          qualify_interact(toggle - 1, app::widget(toggle - 1).x + 270, false);
         }
       } else {
-        interact(113, 0, true);
+        qualify_interact(113, 0, true);
         for (int id = 107; id <= 109; ++id) {
-          interact(id, 260, false);
-          interact(id, 600, false);
+          qualify_interact(id, 260, false);
+          qualify_interact(id, 600, false);
         }
       }
 #if P4SDM_SLICE_LOCK_STRESS
       if (stage == 2) {
         ui.page = app::Page::Sample;
-        interact(123, 0, true);
+        qualify_interact(123, 0, true);
         for (int id : {124, 125, 126, 127, 128, 129})
-          interact(id, id == 124 ? 80 : 730, true);
+          qualify_interact(id, id == 124 ? 80 : 730, true);
       }
 #endif
       app::Command length{app::Kind::PatternLength, 0, stage ? 16 : 7};
@@ -2171,7 +2367,7 @@ void ui_task(void *) {
         full = true;
       }
       if (ui.page != app::Page::SampleSlice)
-        interact(131, 0, true);
+        qualify_interact(131, 0, true);
       const int ids[] = {139, 139, 139, 139, 134, 135,
                          137, 138, 140, 141, 143, 142};
 #if P4SDM_SLICE_LOCK_STRESS
@@ -2180,7 +2376,7 @@ void ui_task(void *) {
         send({app::Kind::SliceDivide, uint8_t(ui.selected), 4});
       }
 #endif
-      interact(ids[n % 12], ids[n % 12] == 137 ? 80 : 730, true);
+      qualify_interact(ids[n % 12], ids[n % 12] == 137 ? 80 : 730, true);
       if (n % 12 == 3) {
         send({app::Kind::SliceSelect, uint8_t(ui.selected), 15});
         dirty[132] = dirty[135] = true;
@@ -2190,14 +2386,14 @@ void ui_task(void *) {
         flush_slice_release();
       }
       if (n % 24 == 23) {
-        interact(146, 0, true);
+        qualify_interact(146, 0, true);
 #if P4SDM_SLICE_LOCK_STRESS
         ui.selected_step = int((n / 24) % 16);
-        interact(95, 0, true);
-        interact(121, 0, true);
-        interact(121, 0, true);
+        qualify_interact(95, 0, true);
+        qualify_interact(121, 0, true);
+        qualify_interact(121, 0, true);
         for (int id : {149, 150, 151, 149})
-          interact(id, 0, true);
+          qualify_interact(id, 0, true);
         // Leave the page visible for a real display pass before next slice
         // edit.
 #endif
@@ -2209,20 +2405,34 @@ void ui_task(void *) {
 #endif
     flush_slice_release();
     repeat_gate.flush([](app::Command c) { return send(c); });
+#if P4SDM_UI20_STRESS
+    // Render every view only after all existing scripted musical edits finish.
+    // No new engine command or persisted data is introduced by this traversal.
+    static unsigned ui20_stage=0;
+    static uint32_t ui20_due=0;
+    if(captured.load()>=12000 && ui20_stage<21 && millis()>=ui20_due && (ui20_stage!=20 || ui20_slider_us)) {
+      if(ui20_stage<19) { ui.page=app::Page(ui20_stage); ui.perf_mixer=false; full=true; }
+      else if(ui20_stage==19) { ui.page=app::Page::Track; full=true; }
+      else { ui.page=app::Page::Sequence; full=true; }
+      ++ui20_stage; ui20_due=millis()+140;
+    }
+    if(ui20_stage==20 && !full) dirty[24]=true;
+    if(ui20_stage==21 && !full) dirty[0]=dirty[1]=true;
+#endif
     app::Command event;
     while (input_events.pop(event)) {
       touch_state.pressed = event.kind != app::Kind::Play;
       touch_state.x = unsigned(event.value) & 0xffff;
       touch_state.y = unsigned(event.value) >> 16;
       if (touch_state.pressed && !ui.down) {
-        ui.capture = app::hit(ui.page, touch_state.x, touch_state.y);
+        ui.capture = app::ui20::hit(ui, touch_state.x, touch_state.y);
         if (ui.page == app::Page::Track && ui.capture >= 24 &&
             ui.capture < 29 &&
             !app::track_control_enabled(view.tracks[ui.selected], ui.capture))
           ui.capture = -1;
         interact(ui.capture, touch_state.x, true);
       } else if (touch_state.pressed &&
-                 ((ui.capture == 137 || ui.capture == 138 ||
+                 ((((ui.capture >= 96 && ui.capture <= 102) || (ui.capture >= 114 && ui.capture <= 118)) && ui.capture % 2 == 0) || (ui.capture == 137 || ui.capture == 138 ||
                    ui.capture == 124 || ui.capture == 125) ||
                   (ui.capture >= 107 && ui.capture <= 109) ||
                   (ui.capture >= 24 && ui.capture < 29) || ui.capture == 69 ||
@@ -2301,7 +2511,7 @@ void ui_task(void *) {
           unsigned(view.mode) != ((cs >> 11) & 1)) {
         if (ui.page == app::Page::Chain) {
           for (int row : {int(view.chain_entry), int(cs & 63)})
-            if (row >= ui.chain_scroll && row < ui.chain_scroll + 6)
+            if (row >= ui.chain_scroll && row < ui.chain_scroll + 5)
               dirty[163 + row - ui.chain_scroll] = true;
           dirty[178] = dirty[182] = true;
         }
@@ -2363,6 +2573,19 @@ void ui_task(void *) {
 #else
     bool diag = false;
 #endif
+#if P4SDM_UI20_STRESS
+    // Dedicated redraw samples isolate the control from simultaneous pad flashes.
+    if(!full && (ui20_stage==20 || ui20_stage==21)) {
+      std::fill(std::begin(dirty),std::end(dirty),false);
+      if(ui20_stage==20) dirty[24]=true;
+      else dirty[0]=dirty[1]=true;
+    }
+#endif
+    if(ui_notification.expire(millis())) { dirty[45]=dirty[161]=dirty[222]=true; }
+    static app::ui20::Context ui_context;
+    const app::ui20::Context next_context{ui.selected,view.selected_pattern,view.tracks[ui.selected].sample,samples::revision(),projects::revision.load()};
+    if(app::ui20::full_invalidation(ui_context,next_context,ui.page)) { full=true; ui_confirmation.cancel(); }
+    ui_context=next_context;
     bool changed = full || diag;
     for (bool d : dirty)
       changed |= d;
@@ -2370,146 +2593,34 @@ void ui_task(void *) {
       const auto start = esp_timer_get_time();
       const uint32_t frame_ms = millis();
       const bool page_change = full;
+#if P4SDM_UI20_STRESS
+      const bool slider_update=ui20_stage==20 && !full && ui.page==app::Page::Track && dirty[24];
+      const bool head_update=ui20_stage==21 && !full && ui.page==app::Page::Sequence && dirty[0] && dirty[1];
+#endif
       if (display::begin_frame() != ESP_OK) {
         vTaskSuspend(nullptr);
       }
       if (full) {
         display::fill(bg);
         header();
-        if (ui.page == app::Page::Sequence) {
-          for (int i = 0; i < 24; ++i)
-            draw(i);
-          draw(68);
-          draw(69);
-          draw(78);
-        } else if (ui.page == app::Page::Tools) {
-          for (int i = 79; i <= 94; ++i)
-            draw(i);
-        } else if (ui.page == app::Page::Locks) {
-          display::text(24, 82, "LOCKS 1/3", white, 1);
-          for (int i = 96; i <= 105; ++i)
-            draw(i);
-          draw(121);
-        } else if (ui.page == app::Page::SampleLocks) {
-          display::text(24, 82, "SAMPLE LOCKS 3/3", white, 1);
-          for (int i = 148; i <= 152; ++i)
-            draw(i);
-        } else if (ui.page == app::Page::ToneLocks) {
-          display::text(24, 82, "LOCKS 2/3", white, 1);
-          for (int i = 114; i <= 122; ++i)
-            draw(i);
-        } else if (ui.page == app::Page::Step) {
-          draw(95);
-          for (int i = 70; i <= 77; ++i)
-            draw(i);
-        } else if (ui.page == app::Page::AutoSlice) {
-          draw(221); draw(132);
-          for (int i = 211; i <= 220; ++i) draw(i);
-        } else if (ui.page == app::Page::SampleSlice) {
-          draw(147);
-          for (int i = 132; i <= 146; ++i)
-            draw(i);
-          draw(210);
-        } else if (ui.page == app::Page::SamplePlayback) {
-          display::text(24, 82, "SAMPLE PLAYBACK", white, 1);
-          for (int i = 124; i <= 131; ++i)
-            draw(i);
-        } else if (ui.page == app::Page::Tone) {
-          for (int i = 106; i <= 112; ++i)
-            draw(i);
-        } else if (ui.page == app::Page::Track) {
-          draw(113);
-          for (int i = 24; i < 29; ++i)
-            draw(i);
-          char title[40];
-          snprintf(title, sizeof(title), "TRACK %02d / %s", ui.selected + 1,
-                   view.tracks[ui.selected].sample ? "SAMPLE" : "SYNTH");
-          display::text(24, 100, title, white, 1);
-          draw(37);
-          draw(43);
-          draw(42);
-        } else if (ui.page == app::Page::Pattern) {
-          for (int i = 46; i <= 67; ++i)
-            draw(i);
-        } else if (ui.page == app::Page::Sample) {
-          for (int i = 38; i <= 41; ++i)
-            draw(i);
-          draw(123);
-          sample_status();
-        } else if (ui.page == app::Page::PerformanceRepeat) {
-          display::text(16, 328, "PRESS AND HOLD / RELEASE FINISHES THE WINDOW", white, 2);
-          display::text(16, 356, "ACCEPTED STEP EVENTS / NO AUDIO BUFFER", white, 1);
-          for (int i = 207; i <= 209; ++i) draw(i);
-          for (int i = 200; i <= 206; ++i) draw(i);
-        } else if (ui.page == app::Page::Performance) {
-          display::text(16, 464, ui.perf_mixer ? "B=BASE MUTE S=BASE SOLO M=PERF MUTE +S=PERF SOLO" : "E=EDITOR A=ARRANGEMENT O=OVERRIDE F=FILL ?=TARGET  BORDER=AUDIBLE", white, 1);
-          for (int i = 184; i <= 206; ++i) draw(i);
-        } else if (ui.page == app::Page::Chain) {
-          for (int i = 163; i <= 182; ++i)
-            draw(i);
-        } else if (ui.page == app::Page::Project) {
-          char name[64];
-          projects::current(name, sizeof(name));
-          char line[96];
-          snprintf(line, sizeof(line), "PROJECT: %s%s", name,
-                   projects::dirty() ? " *" : "");
-          display::text(24, 108, line, accent, 2);
-          for (int i = 154; i <= 161; ++i)
-            draw(i);
-        } else {
-          draw(36);
-          display::text(24, 210, "INTERNAL DELAY / NO SD REQUIRED", white, 2);
-          draw(153);
-          draw(162);
-          draw(183);
+        switch(app::ui20::section(ui.page)) {
+        case app::ui20::Section::Seq: render_sequence(); break;
+        case app::ui20::Section::Track: render_track(); break;
+        case app::ui20::Section::Sample: render_sample(); break;
+        case app::ui20::Section::Pattern: render_pattern(); break;
+        case app::ui20::Section::Perform: render_performance(); break;
+        case app::ui20::Section::Project: render_project(); break;
         }
-        if (ui.page != app::Page::AutoSlice && ui.page != app::Page::SampleSlice && ui.page != app::Page::Project && ui.page != app::Page::Performance && ui.page != app::Page::PerformanceRepeat)
-          for (int i = 29; i < (ui.page == app::Page::Chain ? 30 : 34); ++i)
-            draw(i);
         ++full_frames;
         full = false;
       } else {
-        if (dirty[34])
-          tempo_header();
-        if (dirty[44])
-          draw(44);
-        if (dirty[45]) {
-          char title[24];
-          display::rect(0, 16, 176, 56, bg);
-          snprintf(title, sizeof(title), "P4SDM T%02d", ui.selected + 1);
-          display::text(16, 24, title, white, 2);
+        if(dirty[34]) tempo_header();
+        if(dirty[44] || dirty[45]) header();
+        const auto &layout=app::ui20::layout(ui.page);
+        for(unsigned n=0;n<layout.count;++n) {
+          const int id=layout.widgets[n].id;
+          if(id<224 && dirty[id]) draw(id);
         }
-        for (int i = 0; i < 222; ++i)
-          if (dirty[i] &&
-              (((((i >= 211 && i <= 221) || i == 132) && ui.page == app::Page::AutoSlice) ||
-                (i == 210 && ui.page == app::Page::SampleSlice) ||
-                (i >= 200 && i <= 209 && ui.page == app::Page::PerformanceRepeat) ||
-                (i >= 184 && i <= 206 && ui.page == app::Page::Performance) ||
-                (i >= 163 && i <= 182 && ui.page == app::Page::Chain) ||
-                (i >= 132 && i <= 147 && ui.page == app::Page::SampleSlice) ||
-                (i >= 124 && i <= 131 &&
-                 ui.page == app::Page::SamplePlayback) ||
-                (i == 123 && ui.page == app::Page::Sample) ||
-                (i >= 106 && i <= 112 && ui.page == app::Page::Tone) ||
-                (i == 113 && ui.page == app::Page::Track)) ||
-               (i < 24 && ui.page == app::Page::Sequence) ||
-               (i >= 24 && i < 29 && ui.page == app::Page::Track) ||
-               (i >= 29 && i < (ui.page == app::Page::Chain ? 30 : 34) &&
-                ui.page != app::Page::AutoSlice && ui.page != app::Page::SampleSlice && ui.page != app::Page::Performance && ui.page != app::Page::PerformanceRepeat) ||
-               (i == 36 && ui.page == app::Page::Fx) ||
-               ((i == 37 || i == 42 || i == 43) &&
-                ui.page == app::Page::Track) ||
-               (i >= 46 && i <= 67 && ui.page == app::Page::Pattern) ||
-               ((i == 68 || i == 69 || i == 78) &&
-                ui.page == app::Page::Sequence) ||
-               ((i == 95 || (i >= 70 && i <= 77)) &&
-                ui.page == app::Page::Step) ||
-               (((i >= 96 && i <= 105) || i == 121) &&
-                ui.page == app::Page::Locks) ||
-               (i >= 114 && i <= 122 && ui.page == app::Page::ToneLocks) ||
-               (i >= 148 && i <= 152 && ui.page == app::Page::SampleLocks) ||
-               (i >= 79 && i <= 94 && ui.page == app::Page::Tools)))
-            draw(i);
       }
       if (ui.page == app::Page::Sample && dirty[38]) {
         draw(41);
@@ -2517,7 +2628,7 @@ void ui_task(void *) {
       }
       if (diag)
         overlay();
-      if (ui.page == app::Page::SampleSlice) {
+      if (ui.page == app::Page::SampleSlice && view.tracks[ui.selected].sample) {
         const uint32_t us = uint32_t(esp_timer_get_time() - start);
         if (page_change) {
           if (!waveform_first_us)
@@ -2528,11 +2639,17 @@ void ui_task(void *) {
           slice_redraw_max = std::max(slice_redraw_max, us);
       }
       std::fill(std::begin(dirty), std::end(dirty), false);
-      prep_max = std::max(prep_max, uint32_t(esp_timer_get_time() - start));
+      const uint32_t render_us=uint32_t(esp_timer_get_time()-start);
+      prep_max = std::max(prep_max,render_us);
       if (display::present() != ESP_OK)
         vTaskSuspend(nullptr);
       auto tel = display::telemetry();
-      if (ui.page == app::Page::SampleSlice && slice_drag_dirty && !page_change)
+#if P4SDM_UI20_STRESS
+      if(page_change) { auto &m=ui_metrics[int(ui.page)]; ++m.frames; m.render_us=std::max(m.render_us,render_us); m.dirty_bytes=std::max(m.dirty_bytes,tel.dirty_bytes); }
+      if(slider_update) { ui20_slider_us=std::max(ui20_slider_us,render_us); ui20_slider_bytes=std::max(ui20_slider_bytes,tel.dirty_bytes); }
+      if(head_update) { ui20_head_us=std::max(ui20_head_us,render_us); ui20_head_bytes=std::max(ui20_head_bytes,tel.dirty_bytes); }
+#endif
+      if (ui.page == app::Page::SampleSlice && view.tracks[ui.selected].sample && slice_drag_dirty && !page_change)
         slice_drag_dirty_max = std::max(slice_drag_dirty_max, tel.dirty_bytes);
       slice_drag_dirty = false;
       dirty_bytes += tel.dirty_bytes;
@@ -2555,6 +2672,10 @@ void ui_task(void *) {
     if (!reported && millis() - started >= 63000 &&
         audio_summary_ready.load(std::memory_order_acquire)) {
       reported = true;
+#if P4SDM_UI20_STRESS
+      for(unsigned n=0;n<19;++n) summary_printf("[M20 page] page=%u frames=%u render_us=%u dirty_bytes=%u\n",n,ui_metrics[n].frames,ui_metrics[n].render_us,ui_metrics[n].dirty_bytes);
+      summary_printf("[M20 updates] slider_us=%u slider_bytes=%u playhead_us=%u playhead_bytes=%u interval_us=%u\n",ui20_slider_us,ui20_slider_bytes,ui20_head_us,ui20_head_bytes,ui20_interval_us);
+#endif
       if (display::wait_idle() != ESP_OK)
         vTaskSuspend(nullptr);
       const size_t ps_after = heap_caps_get_free_size(MALLOC_CAP_SPIRAM),
@@ -2657,7 +2778,7 @@ void touch_worker(void *) {
           (state.pressed && (state.x != x || state.y != y))) {
         if (state.pressed && !down && visible_page.load() == 0 &&
             !projects::locked()) {
-          int id = app::hit(app::Page::Sequence, state.x, state.y);
+          int id = app::ui20::hit(app::Page::Sequence, state.x, state.y);
           if (id >= 16 && id < 24 &&
               !pad.press(visible_bank.load() * 8 + id - 16, pad_triggers))
             input_overflow.fetch_add(1);

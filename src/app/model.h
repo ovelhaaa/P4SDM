@@ -1160,8 +1160,11 @@ enum class Page {
   Chain,
   Performance,
   PerformanceRepeat,
-  AutoSlice
+  AutoSlice,
+  SliceTools
 };
+Rect page_widget(Page page, int id);
+int page_drag(Page page, int id, int x);
 struct Ui {
   bool perf_mixer = false, perf_solo = false, perf_fill = false;
 
@@ -1627,7 +1630,7 @@ inline bool Ui::lock_action(int id, int x, bool initial, const Engine &e,
   } else {
     if (!(locks.mask & (1 << param)))
       return false;
-    c.value = drag(id, x);
+    c.value = page_drag(page, id, x);
     if (param == 2)
       c.value = c.value * 2 - 127;
     if (param == 3)
@@ -1638,3 +1641,4 @@ inline bool Ui::lock_action(int id, int x, bool initial, const Engine &e,
   return true;
 }
 } // namespace app
+#include "ui_layout.h"
