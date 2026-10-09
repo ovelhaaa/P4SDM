@@ -1,0 +1,90 @@
+[
+  {
+    "case": "MATRIX_16_0",
+    "files": {
+      "firmware.elf": "f85e5da67a7b1738d41333a457020c7e25c2535d43bc2f1409586212c81d5f4e",
+      "firmware.bin": "964fb19f71640ac04988e8b55aaac642d382240384af6951ea4beb834183942b",
+      "firmware.map": "dd74aadac3380df5955efaca6457ab3647f217d497916c4c5a2d2b13a3e8f1df",
+      "bootloader.bin": "6a88d429ece0ae20f8ae18493b9f3dee05c35f4abaa22f0320e44c34d30631c2",
+      "partitions.bin": "bd0f7954aca2ef7d925ee21aaa1f3dc8822d1d6ce5cbbd26a135e5886bfff6ce"
+    },
+    "archive": "C:\\progs\\P4SDM\\.pio\\m212-artifacts\\MATRIX_16_0"
+  },
+  {
+    "case": "MATRIX_16_1",
+    "files": {
+      "firmware.elf": "cc0268769f46e8fed7a2ae0dc743d61296fdc7b70a907f19af233ee4cee88cef",
+      "firmware.bin": "eea14b933eb4f65b33007216d5df6d2e6063e8ca55749f4086222fba993d808f",
+      "firmware.map": "c4efdd150f340a435a32b9df12fc9140b2a43a16b8ecf715e4bfdd72ee1498a2",
+      "bootloader.bin": "6a88d429ece0ae20f8ae18493b9f3dee05c35f4abaa22f0320e44c34d30631c2",
+      "partitions.bin": "bd0f7954aca2ef7d925ee21aaa1f3dc8822d1d6ce5cbbd26a135e5886bfff6ce"
+    },
+    "archive": "C:\\progs\\P4SDM\\.pio\\m212-artifacts\\MATRIX_16_1"
+  },
+  {
+    "case": "MATRIX_32_0",
+    "files": {
+      "firmware.elf": "9d05a38451bc1d5b1f50f402bf85469357a8dd442726e1ee0cec2550d2fe72b2",
+      "firmware.bin": "401a5846c8ae14731bce5bd7a4f16c804c56b1bfff32c455cd5e1b0a4237aa43",
+      "firmware.map": "96fb1110e5e04ba1038e239a4eaf4a8b065376f057c366023d79c0aa83be459b",
+      "bootloader.bin": "6a88d429ece0ae20f8ae18493b9f3dee05c35f4abaa22f0320e44c34d30631c2",
+      "partitions.bin": "bd0f7954aca2ef7d925ee21aaa1f3dc8822d1d6ce5cbbd26a135e5886bfff6ce"
+    },
+    "archive": "C:\\progs\\P4SDM\\.pio\\m212-artifacts\\MATRIX_32_0"
+  },
+  {
+    "case": "MATRIX_32_1",
+    "files": {
+      "firmware.elf": "56242f94e7ced2c5e972d573dab3a4a4d55dd818b72fb8fdca52a081bc7a840b",
+      "firmware.bin": "696d8e23c1e2c6408ae3a1845cda4e2d914601584735f3f66d021439acb71688",
+      "firmware.map": "892fc83f84a1c0f53f6d6bcac5abdc1ca8f97688cca8ab8ad61e11e15354763a",
+      "bootloader.bin": "6a88d429ece0ae20f8ae18493b9f3dee05c35f4abaa22f0320e44c34d30631c2",
+      "partitions.bin": "bd0f7954aca2ef7d925ee21aaa1f3dc8822d1d6ce5cbbd26a135e5886bfff6ce"
+    },
+    "archive": "C:\\progs\\P4SDM\\.pio\\m212-artifacts\\MATRIX_32_1"
+  },
+  {
+    "case": "MATRIX_64_0",
+    "files": {
+      "firmware.elf": "7937e0e07ecbc7525b2d12f0d205118be15c6bcc64ae82ca9691646bd4389d30",
+      "firmware.bin": "372f07c2b6240d338187d81a00970adbaaf07b65f4c201a315d954ea3b98a0f7",
+      "firmware.map": "0500f4110bcc85ee3e29d494a3cc41ec242976d439e4ec69225affbf391587ea",
+      "bootloader.bin": "6a88d429ece0ae20f8ae18493b9f3dee05c35f4abaa22f0320e44c34d30631c2",
+      "partitions.bin": "bd0f7954aca2ef7d925ee21aaa1f3dc8822d1d6ce5cbbd26a135e5886bfff6ce"
+    },
+    "archive": "C:\\progs\\P4SDM\\.pio\\m212-artifacts\\MATRIX_64_0"
+  },
+  {
+    "case": "MATRIX_64_1",
+    "files": {
+      "firmware.elf": "f8781ed529433704aef9cd4da89c60082a85a3a8aa426565556cda44bd7dca37",
+      "firmware.bin": "779d6de67d503d77b75fabaf2eb20c6ee2e69ab40473a33a629a09e133ae17a3",
+      "firmware.map": "79959001e3fd6879a1490c792a95278e261888e0dfb112f3ca4a1290d3908ef8",
+      "bootloader.bin": "6a88d429ece0ae20f8ae18493b9f3dee05c35f4abaa22f0320e44c34d30631c2",
+      "partitions.bin": "bd0f7954aca2ef7d925ee21aaa1f3dc8822d1d6ce5cbbd26a135e5886bfff6ce"
+    },
+    "archive": "C:\\progs\\P4SDM\\.pio\\m212-artifacts\\MATRIX_64_1"
+  },
+  {
+    "case": "MATRIX_128_0",
+    "files": {
+      "firmware.elf": "ebc05dfa0e3816f6b7f5cca5ba2a77e3862091cfe7df630f3367972dbff15e3e",
+      "firmware.bin": "558d56414dc311543cce62c256beeabea295f01591b5b970c38140465657afec",
+      "firmware.map": "65bc4b8e87fb7375b18e910c71bed07a9efc329ac91616525cbe67ed49378ce5",
+      "bootloader.bin": "6a88d429ece0ae20f8ae18493b9f3dee05c35f4abaa22f0320e44c34d30631c2",
+      "partitions.bin": "bd0f7954aca2ef7d925ee21aaa1f3dc8822d1d6ce5cbbd26a135e5886bfff6ce"
+    },
+    "archive": "C:\\progs\\P4SDM\\.pio\\m212-artifacts\\MATRIX_128_0"
+  },
+  {
+    "case": "MATRIX_128_1",
+    "files": {
+      "firmware.elf": "3133ae1f9b087563bf9a274f3e0774859656cf220ec528d8972a0847b3b0045f",
+      "firmware.bin": "f1a9628af6c2b2d3a37def4bd0492d2eed01aee95e25ab0f269208f2419845d8",
+      "firmware.map": "011bf2f19b14ba8a9db3b65321bc206c819847fd2aaa982aa77277a944430141",
+      "bootloader.bin": "6a88d429ece0ae20f8ae18493b9f3dee05c35f4abaa22f0320e44c34d30631c2",
+      "partitions.bin": "bd0f7954aca2ef7d925ee21aaa1f3dc8822d1d6ce5cbbd26a135e5886bfff6ce"
+    },
+    "archive": "C:\\progs\\P4SDM\\.pio\\m212-artifacts\\MATRIX_128_1"
+  }
+]

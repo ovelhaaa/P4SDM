@@ -1,0 +1,1916 @@
+{
+  "status": "PARTIAL",
+  "production": {
+    "interpolation": 0,
+    "pcm_read_cache": 0,
+    "linear_32bit": 0
+  },
+  "memory_config": {
+    "revision": 103,
+    "cpu_mhz": 360,
+    "psram_bytes": 33554432,
+    "sdk_speed_mhz": 200,
+    "l2_bytes": 131072,
+    "line_bytes": 64
+  },
+  "registers": {
+    "source": 1,
+    "source_hz": 400000000,
+    "source_status": 0,
+    "core_div": 1,
+    "bus_div": 2,
+    "effective_hz": 200000000,
+    "hex_read": 1,
+    "hex_write": 1,
+    "ddr": 1,
+    "ecc": 0
+  },
+  "electrical_clock_independently_verified": false,
+  "bandwidth": [
+    {
+      "layout": 0,
+      "order": 0,
+      "evicted": 0,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 65308,
+      "MBps": 4.014,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 0,
+      "order": 1,
+      "evicted": 0,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 3971,
+      "MBps": 66.015,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 0,
+      "order": 2,
+      "evicted": 0,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 6434,
+      "MBps": 40.744,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 0,
+      "order": 3,
+      "evicted": 0,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 6370,
+      "MBps": 41.153,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 0,
+      "order": 4,
+      "evicted": 0,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 6339,
+      "MBps": 41.354,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 0,
+      "order": 0,
+      "evicted": 1,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 65310,
+      "MBps": 4.014,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 0,
+      "order": 1,
+      "evicted": 1,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 4002,
+      "MBps": 65.503,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 0,
+      "order": 2,
+      "evicted": 1,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 6491,
+      "MBps": 40.386,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 0,
+      "order": 3,
+      "evicted": 1,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 6437,
+      "MBps": 40.725,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 0,
+      "order": 4,
+      "evicted": 1,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 6493,
+      "MBps": 40.373,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 1,
+      "order": 0,
+      "evicted": 0,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 3581,
+      "MBps": 73.204,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 1,
+      "order": 1,
+      "evicted": 0,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 2311,
+      "MBps": 113.433,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 1,
+      "order": 2,
+      "evicted": 0,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 4774,
+      "MBps": 54.911,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 1,
+      "order": 3,
+      "evicted": 0,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 4726,
+      "MBps": 55.468,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 1,
+      "order": 4,
+      "evicted": 0,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 4683,
+      "MBps": 55.978,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 1,
+      "order": 0,
+      "evicted": 1,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 5190,
+      "MBps": 50.509,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 1,
+      "order": 1,
+      "evicted": 1,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 4002,
+      "MBps": 65.503,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 1,
+      "order": 2,
+      "evicted": 1,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 6471,
+      "MBps": 40.511,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 1,
+      "order": 3,
+      "evicted": 1,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 6407,
+      "MBps": 40.915,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 1,
+      "order": 4,
+      "evicted": 1,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 6433,
+      "MBps": 40.75,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 2,
+      "order": 0,
+      "evicted": 0,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 3582,
+      "MBps": 73.184,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 2,
+      "order": 1,
+      "evicted": 0,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 2311,
+      "MBps": 113.433,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 2,
+      "order": 2,
+      "evicted": 0,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 4774,
+      "MBps": 54.911,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 2,
+      "order": 3,
+      "evicted": 0,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 4726,
+      "MBps": 55.468,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 2,
+      "order": 4,
+      "evicted": 0,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 4684,
+      "MBps": 55.966,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 2,
+      "order": 0,
+      "evicted": 1,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 5207,
+      "MBps": 50.345,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 2,
+      "order": 1,
+      "evicted": 1,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 4003,
+      "MBps": 65.487,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 2,
+      "order": 2,
+      "evicted": 1,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 6474,
+      "MBps": 40.492,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 2,
+      "order": 3,
+      "evicted": 1,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 6406,
+      "MBps": 40.922,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 2,
+      "order": 4,
+      "evicted": 1,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 6437,
+      "MBps": 40.725,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 3,
+      "order": 0,
+      "evicted": 0,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 3495,
+      "MBps": 75.005,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 3,
+      "order": 1,
+      "evicted": 0,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 2217,
+      "MBps": 118.243,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 3,
+      "order": 2,
+      "evicted": 0,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 4737,
+      "MBps": 55.34,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 3,
+      "order": 3,
+      "evicted": 0,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 4673,
+      "MBps": 56.098,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 3,
+      "order": 4,
+      "evicted": 0,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 4641,
+      "MBps": 56.484,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 3,
+      "order": 0,
+      "evicted": 1,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 5448,
+      "MBps": 48.117,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 3,
+      "order": 1,
+      "evicted": 1,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 4219,
+      "MBps": 62.134,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 3,
+      "order": 2,
+      "evicted": 1,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 6693,
+      "MBps": 39.167,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 3,
+      "order": 3,
+      "evicted": 1,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 6639,
+      "MBps": 39.485,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 3,
+      "order": 4,
+      "evicted": 1,
+      "repeats": 32,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 6627,
+      "MBps": 39.557,
+      "checksum": 4284219392
+    },
+    {
+      "layout": 0,
+      "order": 5,
+      "evicted": 0,
+      "repeats": 32,
+      "reads": 33554432,
+      "bytes": 67108864,
+      "us": 581278,
+      "MBps": 115.451,
+      "checksum": 0
+    },
+    {
+      "layout": 0,
+      "order": 6,
+      "evicted": 0,
+      "repeats": 32,
+      "reads": 33554432,
+      "bytes": 67108864,
+      "us": 747833,
+      "MBps": 89.738,
+      "checksum": 0
+    },
+    {
+      "layout": 0,
+      "order": 7,
+      "evicted": 0,
+      "repeats": 32,
+      "reads": 16777216,
+      "bytes": 67108864,
+      "us": 646650,
+      "MBps": 103.779,
+      "checksum": 4227858432
+    }
+  ],
+  "fills": [
+    {
+      "frames": 16,
+      "fill": 0,
+      "fills": 8192,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 8968,
+      "checksum": 27721728
+    },
+    {
+      "frames": 16,
+      "fill": 1,
+      "fills": 8192,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 7616,
+      "checksum": 27721728
+    },
+    {
+      "frames": 16,
+      "fill": 2,
+      "fills": 8192,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 7282,
+      "checksum": 27721728
+    },
+    {
+      "frames": 32,
+      "fill": 0,
+      "fills": 4096,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 6881,
+      "checksum": 27721728
+    },
+    {
+      "frames": 32,
+      "fill": 1,
+      "fills": 4096,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 5056,
+      "checksum": 27721728
+    },
+    {
+      "frames": 32,
+      "fill": 2,
+      "fills": 4096,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 5120,
+      "checksum": 27721728
+    },
+    {
+      "frames": 64,
+      "fill": 0,
+      "fills": 2048,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 6786,
+      "checksum": 27721728
+    },
+    {
+      "frames": 64,
+      "fill": 1,
+      "fills": 2048,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 4638,
+      "checksum": 27721728
+    },
+    {
+      "frames": 64,
+      "fill": 2,
+      "fills": 2048,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 5024,
+      "checksum": 27721728
+    },
+    {
+      "frames": 128,
+      "fill": 0,
+      "fills": 1024,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 6754,
+      "checksum": 27721728
+    },
+    {
+      "frames": 128,
+      "fill": 1,
+      "fills": 1024,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 4449,
+      "checksum": 27721728
+    },
+    {
+      "frames": 128,
+      "fill": 2,
+      "fills": 1024,
+      "reads": 131072,
+      "bytes": 262144,
+      "us": 4960,
+      "checksum": 27721728
+    }
+  ],
+  "cases": [
+    {
+      "case": "A_NEAREST",
+      "log": "docs/GUITION_M212_A_NEAREST_SERIAL.log",
+      "sha256": "7df3950e1bc0fdb17cb11c01cfb588c810b44cfa2788079c2af7914d05c0cd92",
+      "clean_capture": true,
+      "faults": [],
+      "timing": {
+        "blocks": 13782,
+        "p50": 3472,
+        "p95": 3875,
+        "p99": 3974,
+        "max": 4272,
+        "misses": 0,
+        "failures": 0,
+        "timeouts": 0,
+        "peak": 4488,
+        "nonzero": 6868783,
+        "rails": 0,
+        "active_min": 0,
+        "active_max": 16
+      },
+      "reserve_pass": true,
+      "headroom_percent": 26.408124999999995,
+      "memory": {
+        "ps_before": 24265252,
+        "ps_after": 24265252,
+        "internal_before": 216492,
+        "internal_after": 216492,
+        "largest_before": 24117236,
+        "largest_after": 24117236
+      },
+      "trace": {},
+      "chain": {
+        "starts": 5,
+        "advances": 117,
+        "repeats": 17,
+        "loops": 0,
+        "stops": 1,
+        "switches": 115,
+        "min_length": 1,
+        "max_length": 16,
+        "boundary_max": 4002,
+        "seen": 4294967295,
+        "entry_bytes": 2,
+        "chain_bytes": 66,
+        "engine_bytes": 52616
+      },
+      "heap_snapshots_equal": true
+    },
+    {
+      "case": "A_LINEAR32",
+      "log": "docs/GUITION_M212_A_LINEAR32_SERIAL.log",
+      "sha256": "f4ec3ef99e855768c338a139b0c9a62bed59d04c522dd19ba3ca8b18c8f0af0d",
+      "clean_capture": true,
+      "faults": [],
+      "timing": {
+        "blocks": 13782,
+        "p50": 3472,
+        "p95": 4631,
+        "p99": 4744,
+        "max": 4928,
+        "misses": 0,
+        "failures": 0,
+        "timeouts": 0,
+        "peak": 3875,
+        "nonzero": 6916146,
+        "rails": 0,
+        "active_min": 0,
+        "active_max": 16
+      },
+      "reserve_pass": false,
+      "headroom_percent": 15.107499999999996,
+      "memory": {
+        "ps_before": 24265252,
+        "ps_after": 24265252,
+        "internal_before": 216492,
+        "internal_after": 216492,
+        "largest_before": 24117236,
+        "largest_after": 24117236
+      },
+      "trace": {},
+      "chain": {
+        "starts": 5,
+        "advances": 130,
+        "repeats": 18,
+        "loops": 0,
+        "stops": 1,
+        "switches": 129,
+        "min_length": 1,
+        "max_length": 16,
+        "boundary_max": 4636,
+        "seen": 4294967295,
+        "entry_bytes": 2,
+        "chain_bytes": 66,
+        "engine_bytes": 52616
+      },
+      "heap_snapshots_equal": true
+    },
+    {
+      "case": "B_NEAREST",
+      "log": "docs/GUITION_M212_B_NEAREST_SERIAL.log",
+      "sha256": "e2dc9838531d28a0b12c51398d11af8a39f7be83ea479de1fe2c61df84d7803b",
+      "clean_capture": true,
+      "faults": [],
+      "timing": {
+        "blocks": 20672,
+        "p50": 3925,
+        "p95": 4144,
+        "p99": 4201,
+        "max": 4290,
+        "misses": 0,
+        "failures": 0,
+        "timeouts": 0,
+        "peak": 523,
+        "nonzero": 10566574,
+        "rails": 0,
+        "active_min": 16,
+        "active_max": 16
+      },
+      "reserve_pass": true,
+      "headroom_percent": 26.09804687499999,
+      "memory": {
+        "ps_before": 28590632,
+        "ps_after": 28590632,
+        "internal_before": 161696,
+        "internal_after": 161696,
+        "largest_before": 28311540,
+        "largest_after": 28311540
+      },
+      "trace": {
+        "scenario": 2,
+        "hash": 978631659,
+        "events": 126480,
+        "rng": 1386399687,
+        "chain_loops": 230,
+        "repeat_x8": 7168,
+        "cache_frames": 32,
+        "fill": 0
+      },
+      "chain": {
+        "starts": 1,
+        "advances": 461,
+        "repeats": 0,
+        "loops": 230,
+        "stops": 0,
+        "switches": 461,
+        "min_length": 4,
+        "max_length": 4,
+        "boundary_max": 4290,
+        "seen": 3,
+        "entry_bytes": 2,
+        "chain_bytes": 66,
+        "engine_bytes": 52616
+      },
+      "heap_snapshots_equal": true,
+      "trace_matches_host": true,
+      "all_voice_residency": true
+    },
+    {
+      "case": "B_LINEAR32",
+      "log": "docs/GUITION_M212_B_LINEAR32_SERIAL.log",
+      "sha256": "d977df058c3f7bde6308268e46e0ac0e934390959f199257dba09f7574180b1a",
+      "clean_capture": true,
+      "faults": [],
+      "timing": {
+        "blocks": 20672,
+        "p50": 4747,
+        "p95": 4935,
+        "p99": 4992,
+        "max": 5089,
+        "misses": 0,
+        "failures": 0,
+        "timeouts": 0,
+        "peak": 489,
+        "nonzero": 10569119,
+        "rails": 0,
+        "active_min": 16,
+        "active_max": 16
+      },
+      "reserve_pass": false,
+      "headroom_percent": 12.334023437499997,
+      "memory": {
+        "ps_before": 28590632,
+        "ps_after": 28590632,
+        "internal_before": 161696,
+        "internal_after": 161696,
+        "largest_before": 28311540,
+        "largest_after": 28311540
+      },
+      "trace": {
+        "scenario": 2,
+        "hash": 978631659,
+        "events": 126480,
+        "rng": 1386399687,
+        "chain_loops": 230,
+        "repeat_x8": 7168,
+        "cache_frames": 32,
+        "fill": 0
+      },
+      "chain": {
+        "starts": 1,
+        "advances": 461,
+        "repeats": 0,
+        "loops": 230,
+        "stops": 0,
+        "switches": 461,
+        "min_length": 4,
+        "max_length": 4,
+        "boundary_max": 5089,
+        "seen": 3,
+        "entry_bytes": 2,
+        "chain_bytes": 66,
+        "engine_bytes": 52616
+      },
+      "heap_snapshots_equal": true,
+      "trace_matches_host": true,
+      "all_voice_residency": true
+    },
+    {
+      "case": "C_NEAREST",
+      "log": "docs/GUITION_M212_C_NEAREST_SERIAL.log",
+      "sha256": "dbacb72634f76bcf3d73d1202b833be3b1623bae52e1086bbbc71dc663768154",
+      "clean_capture": true,
+      "faults": [],
+      "timing": {
+        "blocks": 20672,
+        "p50": 3913,
+        "p95": 4136,
+        "p99": 4188,
+        "max": 4267,
+        "misses": 0,
+        "failures": 0,
+        "timeouts": 0,
+        "peak": 2535,
+        "nonzero": 10575115,
+        "rails": 0,
+        "active_min": 16,
+        "active_max": 16
+      },
+      "reserve_pass": true,
+      "headroom_percent": 26.4942578125,
+      "memory": {
+        "ps_before": 28590632,
+        "ps_after": 28590632,
+        "internal_before": 161168,
+        "internal_after": 161696,
+        "largest_before": 28311540,
+        "largest_after": 28311540
+      },
+      "trace": {
+        "scenario": 3,
+        "hash": 3904423500,
+        "events": 126480,
+        "rng": 1386399687,
+        "chain_loops": 230,
+        "repeat_x8": 7168,
+        "cache_frames": 32,
+        "fill": 0
+      },
+      "chain": {
+        "starts": 1,
+        "advances": 461,
+        "repeats": 0,
+        "loops": 230,
+        "stops": 0,
+        "switches": 461,
+        "min_length": 4,
+        "max_length": 4,
+        "boundary_max": 4267,
+        "seen": 3,
+        "entry_bytes": 2,
+        "chain_bytes": 66,
+        "engine_bytes": 52616
+      },
+      "heap_snapshots_equal": false,
+      "trace_matches_host": true,
+      "all_voice_residency": true
+    },
+    {
+      "case": "C_LINEAR32",
+      "log": "docs/GUITION_M212_C_LINEAR32_SERIAL.log",
+      "sha256": "536f6e37c8e24ef57719935e59392c15794b7d2d30d1c245809c194af7414ca2",
+      "clean_capture": true,
+      "faults": [],
+      "timing": {
+        "blocks": 20672,
+        "p50": 4704,
+        "p95": 4920,
+        "p99": 4974,
+        "max": 5052,
+        "misses": 0,
+        "failures": 0,
+        "timeouts": 0,
+        "peak": 2534,
+        "nonzero": 10575454,
+        "rails": 0,
+        "active_min": 16,
+        "active_max": 16
+      },
+      "reserve_pass": false,
+      "headroom_percent": 12.971406249999994,
+      "memory": {
+        "ps_before": 28590632,
+        "ps_after": 28590632,
+        "internal_before": 161696,
+        "internal_after": 161696,
+        "largest_before": 28311540,
+        "largest_after": 28311540
+      },
+      "trace": {
+        "scenario": 3,
+        "hash": 3904423500,
+        "events": 126480,
+        "rng": 1386399687,
+        "chain_loops": 230,
+        "repeat_x8": 7168,
+        "cache_frames": 32,
+        "fill": 0
+      },
+      "chain": {
+        "starts": 1,
+        "advances": 461,
+        "repeats": 0,
+        "loops": 230,
+        "stops": 0,
+        "switches": 461,
+        "min_length": 4,
+        "max_length": 4,
+        "boundary_max": 5040,
+        "seen": 3,
+        "entry_bytes": 2,
+        "chain_bytes": 66,
+        "engine_bytes": 52616
+      },
+      "heap_snapshots_equal": true,
+      "trace_matches_host": true,
+      "all_voice_residency": true
+    },
+    {
+      "case": "B_MAGNITUDE",
+      "log": "docs/GUITION_M212_B_MAGNITUDE_SERIAL.log",
+      "sha256": "0ff815a6bfe79f626a2214a523c1d49f03454f2cc32c9570a70c8ba9a47915a2",
+      "clean_capture": true,
+      "faults": [],
+      "timing": {
+        "blocks": 20672,
+        "p50": 4626,
+        "p95": 4815,
+        "p99": 4865,
+        "max": 4949,
+        "misses": 0,
+        "failures": 0,
+        "timeouts": 0,
+        "peak": 489,
+        "nonzero": 10569119,
+        "rails": 0,
+        "active_min": 16,
+        "active_max": 16
+      },
+      "reserve_pass": false,
+      "headroom_percent": 14.7457421875,
+      "memory": {
+        "ps_before": 28590632,
+        "ps_after": 28590632,
+        "internal_before": 161696,
+        "internal_after": 161696,
+        "largest_before": 28311540,
+        "largest_after": 28311540
+      },
+      "trace": {
+        "scenario": 2,
+        "hash": 978631659,
+        "events": 126480,
+        "rng": 1386399687,
+        "chain_loops": 230,
+        "repeat_x8": 7168,
+        "cache_frames": 32,
+        "fill": 0
+      },
+      "chain": {
+        "starts": 1,
+        "advances": 461,
+        "repeats": 0,
+        "loops": 230,
+        "stops": 0,
+        "switches": 461,
+        "min_length": 4,
+        "max_length": 4,
+        "boundary_max": 4945,
+        "seen": 3,
+        "entry_bytes": 2,
+        "chain_bytes": 66,
+        "engine_bytes": 52616
+      },
+      "heap_snapshots_equal": true,
+      "trace_matches_host": true,
+      "all_voice_residency": true
+    },
+    {
+      "case": "B_VALIDATED",
+      "log": "docs/GUITION_M212_B_VALIDATED_SERIAL.log",
+      "sha256": "b85dc4bbe929a19571ed5ca603845e28e2ef22d9103116858a6445cc6bbe7272",
+      "clean_capture": true,
+      "faults": [],
+      "timing": {
+        "blocks": 20672,
+        "p50": 4623,
+        "p95": 4816,
+        "p99": 4871,
+        "max": 4966,
+        "misses": 0,
+        "failures": 0,
+        "timeouts": 0,
+        "peak": 489,
+        "nonzero": 10569119,
+        "rails": 0,
+        "active_min": 16,
+        "active_max": 16
+      },
+      "reserve_pass": false,
+      "headroom_percent": 14.452890624999991,
+      "memory": {
+        "ps_before": 28590632,
+        "ps_after": 28590632,
+        "internal_before": 161168,
+        "internal_after": 161696,
+        "largest_before": 28311540,
+        "largest_after": 28311540
+      },
+      "trace": {
+        "scenario": 2,
+        "hash": 978631659,
+        "events": 126480,
+        "rng": 1386399687,
+        "chain_loops": 230,
+        "repeat_x8": 7168,
+        "cache_frames": 32,
+        "fill": 0
+      },
+      "chain": {
+        "starts": 1,
+        "advances": 461,
+        "repeats": 0,
+        "loops": 230,
+        "stops": 0,
+        "switches": 461,
+        "min_length": 4,
+        "max_length": 4,
+        "boundary_max": 4942,
+        "seen": 3,
+        "entry_bytes": 2,
+        "chain_bytes": 66,
+        "engine_bytes": 52616
+      },
+      "heap_snapshots_equal": false,
+      "trace_matches_host": true,
+      "all_voice_residency": true
+    },
+    {
+      "case": "B_FULL_GAIN",
+      "log": "docs/GUITION_M212_B_FULL_GAIN_SERIAL.log",
+      "sha256": "63a671494383c9e0e7cf912abd3b7ef3246a57dde3878573d81a731ea3eb1591",
+      "clean_capture": true,
+      "faults": [],
+      "timing": {
+        "blocks": 20672,
+        "p50": 4663,
+        "p95": 4866,
+        "p99": 4920,
+        "max": 5013,
+        "misses": 0,
+        "failures": 0,
+        "timeouts": 0,
+        "peak": 489,
+        "nonzero": 10569119,
+        "rails": 0,
+        "active_min": 16,
+        "active_max": 16
+      },
+      "reserve_pass": false,
+      "headroom_percent": 13.643242187499993,
+      "memory": {
+        "ps_before": 28590632,
+        "ps_after": 28590632,
+        "internal_before": 161168,
+        "internal_after": 161696,
+        "largest_before": 28311540,
+        "largest_after": 28311540
+      },
+      "trace": {
+        "scenario": 2,
+        "hash": 978631659,
+        "events": 126480,
+        "rng": 1386399687,
+        "chain_loops": 230,
+        "repeat_x8": 7168,
+        "cache_frames": 32,
+        "fill": 0
+      },
+      "chain": {
+        "starts": 1,
+        "advances": 461,
+        "repeats": 0,
+        "loops": 230,
+        "stops": 0,
+        "switches": 461,
+        "min_length": 4,
+        "max_length": 4,
+        "boundary_max": 5001,
+        "seen": 3,
+        "entry_bytes": 2,
+        "chain_bytes": 66,
+        "engine_bytes": 52616
+      },
+      "heap_snapshots_equal": false,
+      "trace_matches_host": true,
+      "all_voice_residency": true
+    }
+  ],
+  "matrix": [
+    {
+      "frames": 16,
+      "fill": 0,
+      "log": "docs/GUITION_M212_MATRIX_16_0_SERIAL.log",
+      "timing": {
+        "blocks": 10336,
+        "p50": 4890,
+        "p95": 5080,
+        "p99": 5125,
+        "max": 5212,
+        "misses": 0,
+        "failures": 0,
+        "timeouts": 0,
+        "peak": 489,
+        "nonzero": 5284527,
+        "rails": 0,
+        "active_min": 16,
+        "active_max": 16
+      },
+      "counts": {
+        "hits": 81789968,
+        "misses": 2817504,
+        "reads": 45080064,
+        "bytes": 1024
+      },
+      "hit_ratio": 0.9666991113976316,
+      "trace": {
+        "scenario": 2,
+        "hash": 2005073613,
+        "events": 65040,
+        "rng": 1522191015,
+        "chain_loops": 110,
+        "repeat_x8": 7168,
+        "cache_frames": 16,
+        "fill": 0
+      },
+      "profile": [
+        {
+          "stage": 0,
+          "blocks": 10336,
+          "mean": 15,
+          "p50_upper": 99,
+          "p95_upper": 99,
+          "p99_upper": 99,
+          "max": 54
+        },
+        {
+          "stage": 1,
+          "blocks": 10336,
+          "mean": 4900,
+          "p50_upper": 4899,
+          "p95_upper": 5099,
+          "p99_upper": 5199,
+          "max": 5189
+        },
+        {
+          "stage": 2,
+          "blocks": 10336,
+          "mean": 47,
+          "p50_upper": 99,
+          "p95_upper": 99,
+          "p99_upper": 99,
+          "max": 110
+        },
+        {
+          "stage": 3,
+          "blocks": 10336,
+          "mean": 833,
+          "p50_upper": 899,
+          "p95_upper": 999,
+          "p99_upper": 999,
+          "max": 1022
+        },
+        {
+          "stage": 4,
+          "blocks": 10336,
+          "mean": 5797,
+          "p50_upper": 5799,
+          "p95_upper": 5899,
+          "p99_upper": 5899,
+          "max": 5859
+        }
+      ],
+      "stack": {
+        "static_bytes": 2128,
+        "audio_stack_high_water": 6472
+      },
+      "memory": {
+        "ps_before": 28590632,
+        "ps_after": 28590632,
+        "internal_before": 241980,
+        "internal_after": 242508,
+        "largest_before": 28311540,
+        "largest_after": 28311540
+      }
+    },
+    {
+      "frames": 16,
+      "fill": 1,
+      "log": "docs/GUITION_M212_MATRIX_16_1_SERIAL.log",
+      "timing": {
+        "blocks": 10336,
+        "p50": 4915,
+        "p95": 5110,
+        "p99": 5157,
+        "max": 5242,
+        "misses": 0,
+        "failures": 0,
+        "timeouts": 0,
+        "peak": 489,
+        "nonzero": 5284527,
+        "rails": 0,
+        "active_min": 16,
+        "active_max": 16
+      },
+      "counts": {
+        "hits": 81789968,
+        "misses": 2817504,
+        "reads": 45080064,
+        "bytes": 1024
+      },
+      "hit_ratio": 0.9666991113976316,
+      "trace": {
+        "scenario": 2,
+        "hash": 2005073613,
+        "events": 65040,
+        "rng": 1522191015,
+        "chain_loops": 110,
+        "repeat_x8": 7168,
+        "cache_frames": 16,
+        "fill": 1
+      },
+      "profile": [
+        {
+          "stage": 0,
+          "blocks": 10336,
+          "mean": 16,
+          "p50_upper": 99,
+          "p95_upper": 99,
+          "p99_upper": 99,
+          "max": 64
+        },
+        {
+          "stage": 1,
+          "blocks": 10336,
+          "mean": 4926,
+          "p50_upper": 4899,
+          "p95_upper": 5099,
+          "p99_upper": 5199,
+          "max": 5192
+        },
+        {
+          "stage": 2,
+          "blocks": 10336,
+          "mean": 47,
+          "p50_upper": 99,
+          "p95_upper": 99,
+          "p99_upper": 99,
+          "max": 107
+        },
+        {
+          "stage": 3,
+          "blocks": 10336,
+          "mean": 807,
+          "p50_upper": 899,
+          "p95_upper": 999,
+          "p99_upper": 999,
+          "max": 994
+        },
+        {
+          "stage": 4,
+          "blocks": 10336,
+          "mean": 5797,
+          "p50_upper": 5799,
+          "p95_upper": 5899,
+          "p99_upper": 5899,
+          "max": 5869
+        }
+      ],
+      "stack": {
+        "static_bytes": 2128,
+        "audio_stack_high_water": 6440
+      },
+      "memory": {
+        "ps_before": 28590632,
+        "ps_after": 28590632,
+        "internal_before": 242508,
+        "internal_after": 242508,
+        "largest_before": 28311540,
+        "largest_after": 28311540
+      }
+    },
+    {
+      "frames": 32,
+      "fill": 0,
+      "log": "docs/GUITION_M212_MATRIX_32_0_SERIAL.log",
+      "timing": {
+        "blocks": 10336,
+        "p50": 4889,
+        "p95": 5065,
+        "p99": 5114,
+        "max": 5192,
+        "misses": 0,
+        "failures": 0,
+        "timeouts": 0,
+        "peak": 489,
+        "nonzero": 5284527,
+        "rails": 0,
+        "active_min": 16,
+        "active_max": 16
+      },
+      "counts": {
+        "hits": 83018768,
+        "misses": 1588704,
+        "reads": 50838528,
+        "bytes": 1536
+      },
+      "hit_ratio": 0.9812226513516442,
+      "trace": {
+        "scenario": 2,
+        "hash": 2005073613,
+        "events": 65040,
+        "rng": 1522191015,
+        "chain_loops": 110,
+        "repeat_x8": 7168,
+        "cache_frames": 32,
+        "fill": 0
+      },
+      "profile": [
+        {
+          "stage": 0,
+          "blocks": 10336,
+          "mean": 15,
+          "p50_upper": 99,
+          "p95_upper": 99,
+          "p99_upper": 99,
+          "max": 57
+        },
+        {
+          "stage": 1,
+          "blocks": 10336,
+          "mean": 4892,
+          "p50_upper": 4899,
+          "p95_upper": 5099,
+          "p99_upper": 5099,
+          "max": 5168
+        },
+        {
+          "stage": 2,
+          "blocks": 10336,
+          "mean": 46,
+          "p50_upper": 99,
+          "p95_upper": 99,
+          "p99_upper": 99,
+          "max": 110
+        },
+        {
+          "stage": 3,
+          "blocks": 10336,
+          "mean": 842,
+          "p50_upper": 899,
+          "p95_upper": 999,
+          "p99_upper": 1099,
+          "max": 1044
+        },
+        {
+          "stage": 4,
+          "blocks": 10336,
+          "mean": 5797,
+          "p50_upper": 5899,
+          "p95_upper": 5899,
+          "p99_upper": 5899,
+          "max": 5865
+        }
+      ],
+      "stack": {
+        "static_bytes": 2128,
+        "audio_stack_high_water": 6472
+      },
+      "memory": {
+        "ps_before": 28590632,
+        "ps_after": 28590632,
+        "internal_before": 241468,
+        "internal_after": 241996,
+        "largest_before": 28311540,
+        "largest_after": 28311540
+      }
+    },
+    {
+      "frames": 32,
+      "fill": 1,
+      "log": "docs/GUITION_M212_MATRIX_32_1_SERIAL.log",
+      "timing": {
+        "blocks": 10336,
+        "p50": 4888,
+        "p95": 5074,
+        "p99": 5127,
+        "max": 5214,
+        "misses": 0,
+        "failures": 0,
+        "timeouts": 0,
+        "peak": 489,
+        "nonzero": 5284527,
+        "rails": 0,
+        "active_min": 16,
+        "active_max": 16
+      },
+      "counts": {
+        "hits": 83018768,
+        "misses": 1588704,
+        "reads": 50838528,
+        "bytes": 1536
+      },
+      "hit_ratio": 0.9812226513516442,
+      "trace": {
+        "scenario": 2,
+        "hash": 2005073613,
+        "events": 65040,
+        "rng": 1522191015,
+        "chain_loops": 110,
+        "repeat_x8": 7168,
+        "cache_frames": 32,
+        "fill": 1
+      },
+      "profile": [
+        {
+          "stage": 0,
+          "blocks": 10336,
+          "mean": 16,
+          "p50_upper": 99,
+          "p95_upper": 99,
+          "p99_upper": 99,
+          "max": 61
+        },
+        {
+          "stage": 1,
+          "blocks": 10336,
+          "mean": 4896,
+          "p50_upper": 4899,
+          "p95_upper": 5099,
+          "p99_upper": 5199,
+          "max": 5182
+        },
+        {
+          "stage": 2,
+          "blocks": 10336,
+          "mean": 48,
+          "p50_upper": 99,
+          "p95_upper": 99,
+          "p99_upper": 99,
+          "max": 114
+        },
+        {
+          "stage": 3,
+          "blocks": 10336,
+          "mean": 836,
+          "p50_upper": 899,
+          "p95_upper": 999,
+          "p99_upper": 999,
+          "max": 1029
+        },
+        {
+          "stage": 4,
+          "blocks": 10336,
+          "mean": 5797,
+          "p50_upper": 5899,
+          "p95_upper": 5899,
+          "p99_upper": 5899,
+          "max": 5855
+        }
+      ],
+      "stack": {
+        "static_bytes": 2128,
+        "audio_stack_high_water": 6520
+      },
+      "memory": {
+        "ps_before": 28590632,
+        "ps_after": 28590632,
+        "internal_before": 241468,
+        "internal_after": 241996,
+        "largest_before": 28311540,
+        "largest_after": 28311540
+      }
+    },
+    {
+      "frames": 64,
+      "fill": 0,
+      "log": "docs/GUITION_M212_MATRIX_64_0_SERIAL.log",
+      "timing": {
+        "blocks": 10336,
+        "p50": 4922,
+        "p95": 5092,
+        "p99": 5146,
+        "max": 5210,
+        "misses": 0,
+        "failures": 0,
+        "timeouts": 0,
+        "peak": 489,
+        "nonzero": 5284527,
+        "rails": 0,
+        "active_min": 16,
+        "active_max": 16
+      },
+      "counts": {
+        "hits": 83633168,
+        "misses": 974304,
+        "reads": 62355456,
+        "bytes": 2560
+      },
+      "hit_ratio": 0.9884844213286506,
+      "trace": {
+        "scenario": 2,
+        "hash": 2005073613,
+        "events": 65040,
+        "rng": 1522191015,
+        "chain_loops": 110,
+        "repeat_x8": 7168,
+        "cache_frames": 64,
+        "fill": 0
+      },
+      "profile": [
+        {
+          "stage": 0,
+          "blocks": 10336,
+          "mean": 17,
+          "p50_upper": 99,
+          "p95_upper": 99,
+          "p99_upper": 99,
+          "max": 52
+        },
+        {
+          "stage": 1,
+          "blocks": 10336,
+          "mean": 4909,
+          "p50_upper": 4999,
+          "p95_upper": 5099,
+          "p99_upper": 5199,
+          "max": 5179
+        },
+        {
+          "stage": 2,
+          "blocks": 10336,
+          "mean": 48,
+          "p50_upper": 99,
+          "p95_upper": 99,
+          "p99_upper": 99,
+          "max": 110
+        },
+        {
+          "stage": 3,
+          "blocks": 10336,
+          "mean": 821,
+          "p50_upper": 899,
+          "p95_upper": 999,
+          "p99_upper": 1099,
+          "max": 1069
+        },
+        {
+          "stage": 4,
+          "blocks": 10336,
+          "mean": 5796,
+          "p50_upper": 5799,
+          "p95_upper": 5899,
+          "p99_upper": 5899,
+          "max": 5856
+        }
+      ],
+      "stack": {
+        "static_bytes": 2128,
+        "audio_stack_high_water": 6472
+      },
+      "memory": {
+        "ps_before": 28590632,
+        "ps_after": 28590632,
+        "internal_before": 240444,
+        "internal_after": 240972,
+        "largest_before": 28311540,
+        "largest_after": 28311540
+      }
+    },
+    {
+      "frames": 64,
+      "fill": 1,
+      "log": "docs/GUITION_M212_MATRIX_64_1_SERIAL.log",
+      "timing": {
+        "blocks": 10336,
+        "p50": 4856,
+        "p95": 5040,
+        "p99": 5096,
+        "max": 5188,
+        "misses": 0,
+        "failures": 0,
+        "timeouts": 0,
+        "peak": 489,
+        "nonzero": 5284527,
+        "rails": 0,
+        "active_min": 16,
+        "active_max": 16
+      },
+      "counts": {
+        "hits": 83633168,
+        "misses": 974304,
+        "reads": 62355456,
+        "bytes": 2560
+      },
+      "hit_ratio": 0.9884844213286506,
+      "trace": {
+        "scenario": 2,
+        "hash": 2005073613,
+        "events": 65040,
+        "rng": 1522191015,
+        "chain_loops": 110,
+        "repeat_x8": 7168,
+        "cache_frames": 64,
+        "fill": 1
+      },
+      "profile": [
+        {
+          "stage": 0,
+          "blocks": 10336,
+          "mean": 17,
+          "p50_upper": 99,
+          "p95_upper": 99,
+          "p99_upper": 99,
+          "max": 66
+        },
+        {
+          "stage": 1,
+          "blocks": 10336,
+          "mean": 4857,
+          "p50_upper": 4899,
+          "p95_upper": 5099,
+          "p99_upper": 5099,
+          "max": 5147
+        },
+        {
+          "stage": 2,
+          "blocks": 10336,
+          "mean": 49,
+          "p50_upper": 99,
+          "p95_upper": 99,
+          "p99_upper": 99,
+          "max": 112
+        },
+        {
+          "stage": 3,
+          "blocks": 10336,
+          "mean": 873,
+          "p50_upper": 899,
+          "p95_upper": 1099,
+          "p99_upper": 1099,
+          "max": 1101
+        },
+        {
+          "stage": 4,
+          "blocks": 10336,
+          "mean": 5797,
+          "p50_upper": 5799,
+          "p95_upper": 5899,
+          "p99_upper": 5899,
+          "max": 5856
+        }
+      ],
+      "stack": {
+        "static_bytes": 2128,
+        "audio_stack_high_water": 6520
+      },
+      "memory": {
+        "ps_before": 28590632,
+        "ps_after": 28590632,
+        "internal_before": 240444,
+        "internal_after": 240972,
+        "largest_before": 28311540,
+        "largest_after": 28311540
+      }
+    },
+    {
+      "frames": 128,
+      "fill": 0,
+      "log": "docs/GUITION_M212_MATRIX_128_0_SERIAL.log",
+      "timing": {
+        "blocks": 10336,
+        "p50": 4874,
+        "p95": 5152,
+        "p99": 5206,
+        "max": 5282,
+        "misses": 0,
+        "failures": 0,
+        "timeouts": 0,
+        "peak": 489,
+        "nonzero": 5284527,
+        "rails": 0,
+        "active_min": 16,
+        "active_max": 16
+      },
+      "counts": {
+        "hits": 84073712,
+        "misses": 533760,
+        "reads": 68321280,
+        "bytes": 4608
+      },
+      "hit_ratio": 0.9936913373324758,
+      "trace": {
+        "scenario": 2,
+        "hash": 2005073613,
+        "events": 65040,
+        "rng": 1522191015,
+        "chain_loops": 110,
+        "repeat_x8": 7168,
+        "cache_frames": 128,
+        "fill": 0
+      },
+      "profile": [
+        {
+          "stage": 0,
+          "blocks": 10336,
+          "mean": 18,
+          "p50_upper": 99,
+          "p95_upper": 99,
+          "p99_upper": 99,
+          "max": 65
+        },
+        {
+          "stage": 1,
+          "blocks": 10336,
+          "mean": 4908,
+          "p50_upper": 4899,
+          "p95_upper": 5199,
+          "p99_upper": 5199,
+          "max": 5256
+        },
+        {
+          "stage": 2,
+          "blocks": 10336,
+          "mean": 48,
+          "p50_upper": 99,
+          "p95_upper": 99,
+          "p99_upper": 99,
+          "max": 108
+        },
+        {
+          "stage": 3,
+          "blocks": 10336,
+          "mean": 821,
+          "p50_upper": 899,
+          "p95_upper": 999,
+          "p99_upper": 1099,
+          "max": 1080
+        },
+        {
+          "stage": 4,
+          "blocks": 10336,
+          "mean": 5797,
+          "p50_upper": 5799,
+          "p95_upper": 5899,
+          "p99_upper": 5899,
+          "max": 5854
+        }
+      ],
+      "stack": {
+        "static_bytes": 2128,
+        "audio_stack_high_water": 6552
+      },
+      "memory": {
+        "ps_before": 28590632,
+        "ps_after": 28590632,
+        "internal_before": 238396,
+        "internal_after": 238924,
+        "largest_before": 28311540,
+        "largest_after": 28311540
+      }
+    },
+    {
+      "frames": 128,
+      "fill": 1,
+      "log": "docs/GUITION_M212_MATRIX_128_1_SERIAL.log",
+      "timing": {
+        "blocks": 10336,
+        "p50": 4817,
+        "p95": 5062,
+        "p99": 5124,
+        "max": 5202,
+        "misses": 0,
+        "failures": 0,
+        "timeouts": 0,
+        "peak": 489,
+        "nonzero": 5284527,
+        "rails": 0,
+        "active_min": 16,
+        "active_max": 16
+      },
+      "counts": {
+        "hits": 84073712,
+        "misses": 533760,
+        "reads": 68321280,
+        "bytes": 4608
+      },
+      "hit_ratio": 0.9936913373324758,
+      "trace": {
+        "scenario": 2,
+        "hash": 2005073613,
+        "events": 65040,
+        "rng": 1522191015,
+        "chain_loops": 110,
+        "repeat_x8": 7168,
+        "cache_frames": 128,
+        "fill": 1
+      },
+      "profile": [
+        {
+          "stage": 0,
+          "blocks": 10336,
+          "mean": 17,
+          "p50_upper": 99,
+          "p95_upper": 99,
+          "p99_upper": 99,
+          "max": 58
+        },
+        {
+          "stage": 1,
+          "blocks": 10336,
+          "mean": 4840,
+          "p50_upper": 4799,
+          "p95_upper": 5099,
+          "p99_upper": 5099,
+          "max": 5162
+        },
+        {
+          "stage": 2,
+          "blocks": 10336,
+          "mean": 50,
+          "p50_upper": 99,
+          "p95_upper": 99,
+          "p99_upper": 99,
+          "max": 112
+        },
+        {
+          "stage": 3,
+          "blocks": 10336,
+          "mean": 889,
+          "p50_upper": 999,
+          "p95_upper": 1099,
+          "p99_upper": 1099,
+          "max": 1126
+        },
+        {
+          "stage": 4,
+          "blocks": 10336,
+          "mean": 5797,
+          "p50_upper": 5799,
+          "p95_upper": 5899,
+          "p99_upper": 5899,
+          "max": 5854
+        }
+      ],
+      "stack": {
+        "static_bytes": 2128,
+        "audio_stack_high_water": 6520
+      },
+      "memory": {
+        "ps_before": 28590632,
+        "ps_after": 28590632,
+        "internal_before": 238396,
+        "internal_after": 238924,
+        "largest_before": 28311540,
+        "largest_after": 28311540
+      }
+    }
+  ],
+  "pending": [
+    "matched complete inherited A Chain/event coverage",
+    "DSP substage attribution and instrumentation overhead",
+    "capacity/fill qualification across A/C and unprofiled overhead controls",
+    "DMA underrun/backlog and scheduling-delay counters",
+    "fresh cache-enabled resident musical WAV/physical SD regression",
+    "extended heap/PCM integrity monitoring",
+    "actual musical listening",
+    "human touchscreen usability",
+    "fresh extended SYNTH device regression",
+    "remote GitHub Actions result"
+  ]
+}

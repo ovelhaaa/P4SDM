@@ -1,4 +1,8 @@
 #include "app/model.h"
+#if P4SDM_M212_SCENARIO
+#include "app/m212_fixture.h"
+namespace { m212::Trace m212_trace; uint32_t m212_blocks=0; }
+#endif
 #include "app/voice_state.h"
 #include "engine/track_tone.h"
 #if P4SDM_PCM_READ_CACHE
@@ -51,10 +55,6 @@ namespace { block_profile::Profile block_metrics; }
 namespace {
 unsigned interpolation_fractional_blocks = 0, interpolation_full_fractional_blocks = 0;
 uint32_t interpolation_fractional_worst = 0, interpolation_full_fractional_worst = 0;
-#if P4SDM_INTERPOLATION_FRACTIONAL_STRESS
-uint32_t interpolation_prep_worst = 0, interpolation_equivalent_worst = 0,
-         interpolation_render_worst = 0;
-#endif
 }
 #endif
 namespace {
@@ -141,7 +141,9 @@ uint32_t tool_cell_max = 0, tool_edit_full = 0;
 uint32_t tone_ui_edits = 0, tone_ui_full = 0, tone_ui_widgets_max = 0;
 uint32_t lock_ui_edits = 0, lock_ui_full = 0, lock_ui_widgets_max = 0;
 uint32_t tone_lock_ui_edits = 0, tone_lock_ui_entries = 0;
-#if P4SDM_REPEAT_STRESS
+#if P4SDM_M212_SCENARIO
+constexpr unsigned capture_blocks = 20672; // 120 seconds, fixed block coverage.
+#elif P4SDM_REPEAT_STRESS
 constexpr unsigned capture_blocks = 13782; // 80 s; repeat follows every inherited fixture.
 #else
 constexpr unsigned capture_blocks = 10337;
@@ -2894,6 +2896,9 @@ unsigned project_boundary() {
 void audio_worker(void *) {
   for (;;) {
     const auto start = esp_timer_get_time();
+#if P4SDM_M212_SCENARIO
+    m212::commands(engine,m212_blocks++);
+#endif
 #if P4SDM_SAMPLER_QUALIFICATION
     static unsigned previous_phase = 0, blocks = 0;
     unsigned phase =
@@ -3090,26 +3095,8 @@ void audio_worker(void *) {
     const bool repeat_active_before = engine.performance.repeat.active != 0;
     const bool x8_before = engine.performance.repeat.active == 8;
     const bool analysis_before = transients::active.load(std::memory_order_acquire);
-#if P4SDM_INTERPOLATION_FRACTIONAL_STRESS
-    const auto interpolation_prep_start = esp_timer_get_time();
-    // Additional diagnostic inputs, not a replacement for inherited M20 data.
-    // Resolve a uniform MIDI 59 through the unchanged pitch table. Normalize
-    // musical inputs before acceptance; stored TriggerEvents/Repeat captures
-    // are never rewritten. Include the diagnostic work in block timing.
-    for (unsigned t = 0; t < 16; ++t) {
-      engine.tracks[t].sample_pitch = 59;
-      if (engine.tracks[t].sample) engine.tracks[t].pitch = 59;
-      engine.tracks[t].playback.start = 0;
-      engine.tracks[t].playback.end = 65535;
-      engine.tracks[t].playback.reverse = false;
-      for (auto &slice : engine.tracks[t].slices.slices) slice = {0,65535};
-      for (auto &pattern : engine.patterns)
-        for (auto &lock : pattern.locks[t]) lock.pitch = 59;
-      if (voice_routing.pcm(t) && samples::voices[t].active)
-        samples::voices[t].set_increment(sampler::pitch_increment(59));
-    }
-    const uint32_t interpolation_prep_us = uint32_t(esp_timer_get_time()-interpolation_prep_start);
-#endif
+    // M21.2 removes the unsafe legacy per-block Voice/control rewrite.
+    // Fractional qualification is configured before accepted events by B/C.
 #if P4SDM_INTERPOLATION_QUALIFICATION
     unsigned interp_active = 0, interp_fractional = 0;
     for (unsigned t = 0; t < 16; ++t) {
@@ -3120,9 +3107,6 @@ void audio_worker(void *) {
       }
     }
 #endif
-#if P4SDM_INTERPOLATION_FRACTIONAL_STRESS
-    const auto interpolation_render_start = esp_timer_get_time();
-#endif
 #if P4SDM_PCM_READ_CACHE
     for (auto &cache : pcm_read_cache) cache.invalidate();
 #endif
@@ -3132,13 +3116,6 @@ void audio_worker(void *) {
     render_buffer();
     const auto render_finished = esp_timer_get_time();
     auto us = uint32_t(render_finished - start);
-#if P4SDM_INTERPOLATION_FRACTIONAL_STRESS
-    if (captured.load() < capture_blocks) {
-      interpolation_prep_worst = std::max(interpolation_prep_worst,interpolation_prep_us);
-      interpolation_equivalent_worst = std::max(interpolation_equivalent_worst,us-interpolation_prep_us);
-      interpolation_render_worst = std::max(interpolation_render_worst,uint32_t(render_finished-interpolation_render_start));
-    }
-#endif
 #if P4SDM_INTERPOLATION_QUALIFICATION
     if (captured.load() < capture_blocks && interp_fractional) {
       ++interpolation_fractional_blocks;
@@ -3181,6 +3158,9 @@ void audio_worker(void *) {
     if (project_phase)
       projects::measured(project_phase == 1, us);
     unsigned b = captured.load(std::memory_order_relaxed);
+#if P4SDM_M212_SCENARIO
+    if(b<capture_blocks) m212_trace.block(engine,samples::voices);
+#endif
     if (b < capture_blocks) {
       if (slice_edited) {
         ++slice_edit_blocks;
@@ -3396,6 +3376,10 @@ static bool app_pcm(int t, int16_t &v) {
 #else
   v = voice.next();
 #endif
+#if P4SDM_M212_SCENARIO
+  if (captured.load(std::memory_order_relaxed)<capture_blocks)
+    m212_trace.active_frames[t] += natural;
+#endif
   playback_metrics.ends += natural && !voice.active;
   return true;
 }
@@ -3404,7 +3388,13 @@ static int16_t app_velocity(int t, int16_t v) {
 }
 static void app_sample() {
   engine.sample(
-      [](app::TriggerEvent event, bool ratchet, bool sample) { trigger(event, ratchet, sample); },
+      [](app::TriggerEvent event, bool ratchet, bool sample) {
+#if P4SDM_M212_SCENARIO
+        if (captured.load(std::memory_order_relaxed)<capture_blocks)
+          m212_trace.event(event,ratchet,sample,engine.rng);
+#endif
+        trigger(event, ratchet, sample);
+      },
       [](int t) {
         auto &v = samples::voices[t];
         if (v.sequenced)
@@ -3427,6 +3417,9 @@ void setup_playback_fixture() {
     auto &sample = fixture_samples[t];
     sample.data = pcm + t * frames;
     sample.frames = frames;
+#if P4SDM_M212_SCENARIO == 3
+    sample.frames -= t*1024; // varied real PSRAM lengths, same backing ownership
+#endif
     snprintf(sample.name, sizeof(sample.name), "PSRAM TRACK %02u", t + 1);
     samples::analyze(sample, false);
     samples::publish_preview(t, &sample);
@@ -3582,6 +3575,11 @@ static void initialize(void *) {
 #if P4SDM_SAMPLE_PLAYBACK_STRESS
   setup_playback_fixture();
 #endif
+#if P4SDM_M212_SCENARIO
+  m212::configure(engine,P4SDM_M212_SCENARIO);
+  view=engine;
+  for(unsigned t=0;t<16;++t) { voice_routing.trigger(t,true); update_track(t); }
+#endif
 #if P4SDM_INTERPOLATION_QUALIFICATION
   qualify_interpolation(fixture_samples);
 #if P4SDM_PCM_LOCALITY_QUALIFICATION
@@ -3589,9 +3587,10 @@ static void initialize(void *) {
 #endif
   summary_printf("[M21 configuration] mode=%u voice_bytes=%u table_bytes=0 scratch_bytes=0 forced_fractional=%u full_regions=%u forward_only=%u\n",
                 unsigned(sampler::default_interpolation), unsigned(sizeof(sampler::Voice)),
-                unsigned(P4SDM_INTERPOLATION_FRACTIONAL_STRESS),
-                unsigned(P4SDM_INTERPOLATION_FRACTIONAL_STRESS),
-                unsigned(P4SDM_INTERPOLATION_FRACTIONAL_STRESS));
+                0u, 0u, 0u);
+#if P4SDM_INTERPOLATION_FRACTIONAL_STRESS
+  summary_printf("[M212 legacy fixture] deprecated=1 forced_transport=0 use_B_C=1\n");
+#endif
 #endif
 #if P4SDM_TRANSIENT_STRESS
   transients::qualification_setup();
@@ -3656,16 +3655,19 @@ void loop() {
   static bool reported = false;
   if (!reported && captured.load(std::memory_order_acquire) == capture_blocks) {
     reported = true;
+#if P4SDM_M212_SCENARIO
+    summary_printf("[M212 trace] scenario=%u hash=%lu events=%u rng=%lu chain_loops=%u repeat_x8=%u cache_frames=%u fill=%u\n",
+      unsigned(P4SDM_M212_SCENARIO),(unsigned long)m212_trace.hash,m212_trace.events,
+      (unsigned long)m212_trace.final_rng,m212_trace.final_chain,m212_trace.final_repeat,
+      unsigned(P4SDM_PCM_CACHE_FRAMES),unsigned(P4SDM_PCM_CACHE_FILL));
+    for(unsigned t=0;t<16;++t)
+      summary_printf("[M212 residency] track=%u active_frames=%u total_frames=%u\n",t,m212_trace.active_frames[t],capture_blocks*256);
+#endif
 #if P4SDM_INTERPOLATION_QUALIFICATION
     summary_printf("[M21 fractional] mode=%u blocks=%u max=%u full_blocks=%u full_max=%u\n",
                    unsigned(sampler::default_interpolation), interpolation_fractional_blocks,
                    unsigned(interpolation_fractional_worst), interpolation_full_fractional_blocks,
                    unsigned(interpolation_full_fractional_worst));
-#if P4SDM_INTERPOLATION_FRACTIONAL_STRESS
-    summary_printf("[M21 isolated preparation] prep_max=%u equivalent_max=%u render_max=%u\n",
-                   unsigned(interpolation_prep_worst),unsigned(interpolation_equivalent_worst),
-                   unsigned(interpolation_render_worst));
-#endif
 #endif
     static uint32_t sorted[capture_blocks];
     std::copy(render_times, render_times + capture_blocks, sorted);

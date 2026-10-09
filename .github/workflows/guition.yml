@@ -131,6 +131,12 @@ jobs:
 
       # M21.1 engineering candidates remain separate from production acceptance.
       - run: python tests/pcm_cache_checks.py
+      - run: python tests/pcm_cache_checks.py --full-gain
+      - run: python tests/m212_checks.py
+      - run: python tests/m212_magnitude_checks.py
+      - run: python tests/m212_trace_checks.py
+      - run: pio run -e guition_m212_memory -e guition_m212_B_nearest -e guition_m212_B_linear32 -e guition_m212_C_nearest -e guition_m212_C_linear32 -e guition_m212_A_linear32 -e guition_m212_B_magnitude -e guition_m212_B_validated -e guition_m212_B_full_gain
+      - run: python tests/archive_firmware.py guition_m212_B_nearest .pio/m212-ci-artifacts/B_NEAREST --pio-home ~/.platformio
       - run: python tests/analyze_m211.py
       - run: pio run -e guition_pcm_locality -e guition_pcm_cache_nearest_fractional -e guition_pcm_cache_linear_fractional -e guition_pcm_cache_nearest_mixed -e guition_pcm_cache_nearest_profile -e guition_pcm_cache_linear32_fractional
       - uses: actions/upload-artifact@v4
@@ -140,4 +146,11 @@ jobs:
           path: |
             .pio/build/guition_pcm*/firmware.elf
             .pio/build/guition_pcm*/firmware.bin
+            .pio/build/guition_pcm*/firmware.map
+            .pio/build/guition_m212*/firmware.elf
+            .pio/build/guition_m212*/firmware.bin
+            .pio/build/guition_m212*/firmware.map
+            .pio/build/guition_m212*/bootloader.bin
+            .pio/build/guition_m212*/partitions.bin
+            .pio/m212-ci-artifacts/
           retention-days: 30

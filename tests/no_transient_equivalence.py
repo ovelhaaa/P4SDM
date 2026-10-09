@@ -5,6 +5,20 @@ from pathlib import Path
 baseline = 'bb552f8'
 accepted_main = subprocess.check_output(['git', 'show', baseline + ':src/app_main.cpp']).decode()
 current_main = Path('src/app_main.cpp').read_text(encoding='utf-8')
+# Normalize exactly the compile-time-disabled M21.2 residency probe. The
+# accepted Engine/Voice trace is tested independently by m212_trace_checks.py.
+current_main = current_main.replace('''#if P4SDM_M212_SCENARIO
+  if (captured.load(std::memory_order_relaxed)<capture_blocks)
+    m212_trace.active_frames[t] += natural;
+#endif
+''', '')
+current_main = current_main.replace('''      [](app::TriggerEvent event, bool ratchet, bool sample) {
+#if P4SDM_M212_SCENARIO
+        if (captured.load(std::memory_order_relaxed)<capture_blocks)
+          m212_trace.event(event,ratchet,sample,engine.rng);
+#endif
+        trigger(event, ratchet, sample);
+      },''', '      [](app::TriggerEvent event, bool ratchet, bool sample) { trigger(event, ratchet, sample); },')
 # Normalize only the explicit diagnostic cache alternative. Enabled output and
 # transport use actual accepted M21 headers in pcm_cache_checks.py.
 current_main = current_main.replace('''#if P4SDM_PCM_READ_CACHE
@@ -29,6 +43,14 @@ for dependency in ('sample_playback.h', 'slices.h', 'wav.h', 'voice_state.h'):
     accepted = subprocess.check_output(['git', 'show', baseline + ':src/app/' + dependency]).decode()
     current = (Path('src/app') / dependency).read_text(encoding='utf-8')
     if dependency == 'wav.h':
+        current = current.replace('''#if P4SDM_FULL_GAIN_FASTPATH
+      // Exact identity after attack and before end/release fades. Keep every
+      // envelope/transport update; skip only a redundant multiply/divide.
+      if (gain != fade)
+        result = int16_t(int32_t(result) * int(gain) / int(fade));
+#else
+      result = int16_t(int32_t(result) * int(gain) / int(fade));
+#endif''', '      result = int16_t(int32_t(result) * int(gain) / int(fade));')
         # M21 changes exactly the reconstruction lookup. Restore only these
         # three known substitutions, then retain the historical full-source
         # assertion. interpolation_checks.py compares actual old/new samples.

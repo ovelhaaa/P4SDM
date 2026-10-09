@@ -1,0 +1,92 @@
+[
+  {
+    "case": "B_NEAREST",
+    "environment": "guition_m212_B_nearest",
+    "files": {
+      "firmware.elf": "81140bc1b2763a2572363402bba4391631337246245f3470821d75f3d5923933",
+      "firmware.bin": "61bc6fd991c9b33d2a2e2fb8f337e174e9d2a1d0df5e7fd1d1bf0c80c173a13a",
+      "firmware.map": "11a5fe0746d9e3a1786c4d87897bda9564ca6392d9801888961d47ac4cafb5db",
+      "bootloader.bin": "6a88d429ece0ae20f8ae18493b9f3dee05c35f4abaa22f0320e44c34d30631c2",
+      "partitions.bin": "bd0f7954aca2ef7d925ee21aaa1f3dc8822d1d6ce5cbbd26a135e5886bfff6ce"
+    },
+    "baseline_sha": "59e1da5c223206e3505f74e752cb1f5fc82a8afb",
+    "sdk_sha256": "bc766404b5cfcca6f8bcb48cdf1ccfd6183e7f3c94617a7d6710198013d58fa0",
+    "archive": ".pio\\m212-artifacts\\B_NEAREST",
+    "capture_exit": 0
+  },
+  {
+    "case": "B_LINEAR32",
+    "environment": "guition_m212_B_linear32",
+    "files": {
+      "firmware.elf": "b16a5e3a7359d15593718ce908916c9bcca2d4563e9b2821b95f360844744e72",
+      "firmware.bin": "feb8f5a3efd2e371dd655ac2daa89ecca913f4994e1f7a6caa1393d8c6cb9fa8",
+      "firmware.map": "afd27504236558d7770e6816f60f3c86b88b78be16903a6b7094e35161db63fc",
+      "bootloader.bin": "6a88d429ece0ae20f8ae18493b9f3dee05c35f4abaa22f0320e44c34d30631c2",
+      "partitions.bin": "bd0f7954aca2ef7d925ee21aaa1f3dc8822d1d6ce5cbbd26a135e5886bfff6ce"
+    },
+    "baseline_sha": "59e1da5c223206e3505f74e752cb1f5fc82a8afb",
+    "sdk_sha256": "bc766404b5cfcca6f8bcb48cdf1ccfd6183e7f3c94617a7d6710198013d58fa0",
+    "archive": ".pio\\m212-artifacts\\B_LINEAR32",
+    "capture_exit": 0
+  },
+  {
+    "case": "C_NEAREST",
+    "environment": "guition_m212_C_nearest",
+    "files": {
+      "firmware.elf": "b00e6920a7b929f29729d80c82bf53256d3c5559906a2e17f3252aed568ac41b",
+      "firmware.bin": "f7108d53857e942694d6ce0438d5e263279b01274691aeb3d785534d81168317",
+      "firmware.map": "91dad4d2a8b62082bbad211fa29468b3f74c40bfff4226f61d22ca8d3f6c5108",
+      "bootloader.bin": "6a88d429ece0ae20f8ae18493b9f3dee05c35f4abaa22f0320e44c34d30631c2",
+      "partitions.bin": "bd0f7954aca2ef7d925ee21aaa1f3dc8822d1d6ce5cbbd26a135e5886bfff6ce"
+    },
+    "baseline_sha": "59e1da5c223206e3505f74e752cb1f5fc82a8afb",
+    "sdk_sha256": "bc766404b5cfcca6f8bcb48cdf1ccfd6183e7f3c94617a7d6710198013d58fa0",
+    "archive": ".pio\\m212-artifacts\\C_NEAREST",
+    "capture_exit": 0
+  },
+  {
+    "case": "C_LINEAR32",
+    "environment": "guition_m212_C_linear32",
+    "files": {
+      "firmware.elf": "c854b72d1ba746f231a7b122c00ac85b666fcfc667447ecb01dd531df852e8be",
+      "firmware.bin": "2cfcc3bed3d7912c256fa83071a2a47526b71aa65b00d1ef65f5df135240f717",
+      "firmware.map": "4b059bd1692439f8100fd6e3a0064f2f354212fefca5298422045ac5d3a68fc8",
+      "bootloader.bin": "6a88d429ece0ae20f8ae18493b9f3dee05c35f4abaa22f0320e44c34d30631c2",
+      "partitions.bin": "bd0f7954aca2ef7d925ee21aaa1f3dc8822d1d6ce5cbbd26a135e5886bfff6ce"
+    },
+    "baseline_sha": "59e1da5c223206e3505f74e752cb1f5fc82a8afb",
+    "sdk_sha256": "bc766404b5cfcca6f8bcb48cdf1ccfd6183e7f3c94617a7d6710198013d58fa0",
+    "archive": ".pio\\m212-artifacts\\C_LINEAR32",
+    "capture_exit": 0
+  },
+  {
+    "case": "A_NEAREST",
+    "environment": "guition_pcm_cache_nearest_mixed",
+    "files": {
+      "firmware.elf": "afb68eed6697f751b55e0ff0e7d7dc4c4d5e362d667b90155fcbe49dcec64720",
+      "firmware.bin": "993d2d880217bf9f10701b0311a4483eed15e31fb3dee497040a878719cdc972",
+      "firmware.map": "395589f51fd4ef1f82374529d493e326a615bcb892c005ccb36ef52bb63dd0ff",
+      "bootloader.bin": "6a88d429ece0ae20f8ae18493b9f3dee05c35f4abaa22f0320e44c34d30631c2",
+      "partitions.bin": "bd0f7954aca2ef7d925ee21aaa1f3dc8822d1d6ce5cbbd26a135e5886bfff6ce"
+    },
+    "baseline_sha": "59e1da5c223206e3505f74e752cb1f5fc82a8afb",
+    "sdk_sha256": "bc766404b5cfcca6f8bcb48cdf1ccfd6183e7f3c94617a7d6710198013d58fa0",
+    "archive": ".pio\\m212-artifacts\\A_NEAREST",
+    "capture_exit": 0
+  },
+  {
+    "case": "A_LINEAR32",
+    "environment": "guition_m212_A_linear32",
+    "files": {
+      "firmware.elf": "5bc0668697fea73a996169223da8ca81a9211a92f5ba925b582e5e0e84907d28",
+      "firmware.bin": "bc239ad5209ad10f5a9dca488e92ef835b7819e4d3d46b25e799b6ebff3c750d",
+      "firmware.map": "1da7e3f852673b49261c9817aafd76d8811adb003c2693be67051aec536e22e0",
+      "bootloader.bin": "6a88d429ece0ae20f8ae18493b9f3dee05c35f4abaa22f0320e44c34d30631c2",
+      "partitions.bin": "bd0f7954aca2ef7d925ee21aaa1f3dc8822d1d6ce5cbbd26a135e5886bfff6ce"
+    },
+    "baseline_sha": "59e1da5c223206e3505f74e752cb1f5fc82a8afb",
+    "sdk_sha256": "bc766404b5cfcca6f8bcb48cdf1ccfd6183e7f3c94617a7d6710198013d58fa0",
+    "archive": ".pio\\m212-artifacts\\A_LINEAR32",
+    "capture_exit": 0
+  }
+]
