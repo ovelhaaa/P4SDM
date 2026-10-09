@@ -38,9 +38,9 @@ void run(void *) {
     }
     for(auto &a:allocations) a.release([](void *p) { heap_caps_free(p); });
     heap_caps_free(slab);
-    if(!ok) { Serial.println("[M213 memory] FAIL allocation"); vTaskDelete(nullptr); return; }
+    if(!ok) { report("[M213 memory] FAIL allocation\n"); vTaskDelete(nullptr); return; }
   }
-  Serial.println("[M213 memory] COMPLETE layouts=5 audio_started=0 display_started=0");
+  report("[M213 memory] COMPLETE layouts=5 audio_started=0 display_started=0\n");
   Serial.flush(); vTaskDelete(nullptr);
 }
 }

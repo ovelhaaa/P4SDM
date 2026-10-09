@@ -23,6 +23,12 @@ def state():
         if '[Q PLAYBACK]' in text: return text+read(.15)
         log.write(f'\n# HOST read-only STATE retry={attempt+1}\n');log.flush()
     raise AssertionError('complete STATE response missing')
+def load(t,index):
+    # This helper is used only for valid filenames resolved by INDEX. Invalid
+    # fixtures use explicit commands below; directory order has no semantics.
+    text=cmd(f'LOAD {t} {index}',.2)
+    assert '[Q ACK] load=1' in text,text
+    wait_for('[M6 load]',initial=text)
 def project(name='M213_LAYOUT_QUAL'):
     text=cmd('PROJECT '+name,.2)
     assert '[Q ACK] project=1' in text,text

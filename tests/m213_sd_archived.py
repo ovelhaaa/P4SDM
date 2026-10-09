@@ -9,13 +9,18 @@ def capture(archive, name):
                        stdout=log, stderr=subprocess.STDOUT, check=True)
 
 try:
-    capture('.pio/m213-artifacts/SD_0_repeat_exact', '0_REPEAT')
-    with Path('.pio/m213-SD_0_REPEAT-host.log').open('w', encoding='utf-8') as log:
-        subprocess.run([sys.executable, 'tests/m213_sd_repeat.py', '0_REPEAT'],
-                       stdout=log, stderr=subprocess.STDOUT, check=True)
-    capture('.pio/m213-artifacts/SD_direct_1_exact', 'direct_1')
+    if '--direct-only' not in sys.argv:
+        capture('.pio/m213-artifacts/SD_0_repeat_exact', '0_REPEAT')
+        with Path('.pio/m213-SD_0_REPEAT-host.log').open('w', encoding='utf-8') as log:
+            subprocess.run([sys.executable, 'tests/m213_sd_repeat.py', '0_REPEAT'],
+                           stdout=log, stderr=subprocess.STDOUT, check=True)
+    capture('.pio/m213-artifacts/SD_direct_1_paced_exact', 'direct_1')
     with Path('.pio/m213-SD_direct_1-host.log').open('w', encoding='utf-8') as log:
         subprocess.run([sys.executable, 'tests/m213_sd.py', 'direct_1'],
+                       stdout=log, stderr=subprocess.STDOUT, check=True)
+    capture('.pio/m213-artifacts/SD_direct_1_paced_exact', 'direct_1_REPEAT')
+    with Path('.pio/m213-SD_direct_1_REPEAT-host.log').open('w', encoding='utf-8') as log:
+        subprocess.run([sys.executable, 'tests/m213_sd_repeat.py', 'direct_1_REPEAT'],
                        stdout=log, stderr=subprocess.STDOUT, check=True)
 finally:
     candidates=list(Path('.pio/m213-artifacts').glob('*/production/manifest.json'))

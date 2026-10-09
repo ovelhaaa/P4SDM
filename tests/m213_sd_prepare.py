@@ -47,6 +47,29 @@ s = s.replace('  if(op==1) qseed();', '''  if(op==8) {
   if(op==13) for(auto &p:fragments) { heap_caps_free(p); p=nullptr; }
   if(op==1) qseed();''')
 store.write_text(s)
+# Keep diagnostic loader and UI report lines intact on native USB. These edits
+# apply only to the ignored console copy; audio never takes this mutex.
+store_text=store.read_text()
+prefix=store_text.split('void qheap',1)[0]
+prefix=prefix.replace('char line[512];', 'if(m213_console_mutex) xSemaphoreTake(m213_console_mutex,portMAX_DELAY);\n  char line[512];')
+prefix=prefix.replace('at+=48','at+=32').replace('std::min(48,','std::min(32,')
+prefix=prefix.replace('vTaskDelay(1);','vTaskDelay(std::max<TickType_t>(1,pdMS_TO_TICKS(4)));')
+prefix=prefix.replace('\n}\n','\n  if(m213_console_mutex) xSemaphoreGive(m213_console_mutex);\n}\n')
+store.write_text('void qheap'+store_text.split('void qheap',1)[1])
+loader=target/'src/app/samples.cpp'
+text=loader.read_text().replace('namespace samples {',
+    '#include "freertos/semphr.h"\nextern SemaphoreHandle_t m213_console_mutex;\nnamespace samples {\n'+prefix,1)
+loader.write_text(text.replace('Serial.printf(', 'qprintf('))
+app=target/'src/app_main.cpp'
+text=app.read_text().replace('namespace {\n// Native USB/JTAG',
+    '#include "freertos/semphr.h"\nSemaphoreHandle_t m213_console_mutex=nullptr;\nnamespace {\n// Native USB/JTAG',1)
+text=text.replace('void summary_printf(const char *format, ...) {',
+    'void summary_printf(const char *format, ...) {\n  if(m213_console_mutex) xSemaphoreTake(m213_console_mutex,portMAX_DELAY);',1)
+text=text.replace('}\napp::Queue<64> commands;',
+    '  if(m213_console_mutex) xSemaphoreGive(m213_console_mutex);\n}\napp::Queue<64> commands;',1)
+text=text.replace('  Serial.setTxBufferSize(2048);',
+    '  m213_console_mutex=xSemaphoreCreateMutex();\n  if(!m213_console_mutex) { Serial.println("[M5 INIT FAIL] console mutex"); vTaskDelete(nullptr); return; }\n  Serial.setTxBufferSize(2048);',1)
+app.write_text(text)
 console=target/'src/qconsole.inc'
 s=console.read_text().replace('else if(!strcmp(line,"STATE")) {', '''else if(!strcmp(line,"INDEX")) {
       char name[96];

@@ -1,7 +1,7 @@
 from pathlib import Path
 import argparse, hashlib, json
 from m213_capture import fields, validate, validate_physical
-p=argparse.ArgumentParser();p.add_argument('--require-acceptance',action='store_true');p.add_argument('--require-case',action='append',default=[]);p.add_argument('--require-physical',action='append',default=[]);a=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('--require-acceptance',action='store_true');p.add_argument('--require-case',action='append',default=[]);p.add_argument('--require-rejection',action='append',default=[]);p.add_argument('--require-physical',action='append',default=[]);p.add_argument('--require-memory',action='store_true');a=p.parse_args()
 cases=[]
 for path in sorted(Path('docs').glob('GUITION_M213_*_SERIAL.log')):
     label=path.stem.removeprefix('GUITION_M213_').removesuffix('_SERIAL')
@@ -12,6 +12,8 @@ for path in sorted(Path('docs').glob('GUITION_M213_*_SERIAL.log')):
     cases.append(entry)
 for label in a.require_case:
     assert any(c['case']==label and c['accepted'] for c in cases),f'Case not qualified: {label}'
+for label in a.require_rejection:
+    assert any(c['case']==label and c['complete'] and not c['reserve_pass'] and not c['accepted'] for c in cases),f'Over-budget control not preserved: {label}'
 physical=[]
 for path in sorted(Path('docs').glob('GUITION_M213_SD_*_SERIAL.log')):
     text=path.read_text(errors='replace')
@@ -33,8 +35,8 @@ if memory.exists():
     locality=[fields(line) for line in text.splitlines() if line.startswith('[M213 locality]')]
     assert len(locality)==30 and len({r['checksum'] for r in locality})==1
     assert all(r['reads']==131072 and r['concurrent_audio']==0 for r in locality)
-pending=['genuine musical A/B listening','full A immutable control-event equivalence',
-         'production promotion decision after all required physical/sustained/CI checks']
+if a.require_memory: assert locality,'Complete standalone memory capture missing'
+pending=['genuine musical A/B listening','full A immutable control-event equivalence']
 result=dict(status='PARTIAL',baseline_sha='246434cf7024f7158954014f9f0857f21d9a9b1e',
     production=dict(interpolation=0,pcm_read_cache=0,linear_32bit=0,sample_layout=0),
     cases=cases,synthetic_locality=locality,physical=physical,pending=pending)

@@ -1,0 +1,632 @@
+
+# HOST SESSION UTC 2026-10-09T20:22:03.215909+00:00 mode=2
+
+# HOST ESPrun reset
+esptool v5.1.0
+Serial port COM13:
+Connecting...
+Connected to ESP32-P4 on COM13:
+Chip type:          ESP32-P4 (revision v1.3)
+Features:           Dual Core + LP Core, 400MHz
+Crystal frequency:  40MHz
+USB mode:           USB-Serial/JTAG
+MAC:                80:f1:b2:d3:cc:86
+
+Uploading stub flasher...
+Running stub flasher...
+Stub flasher running.
+
+Warning: ESP32-P4 has no chip ID. Reading MAC address instead.
+MAC:                80:f1:b2:d3:cc:86
+
+Hard resetting via RTS pin...
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M6 budget] total=33554432 display=2304000 fx_delay=352800 samples=0 reserve=4194304 free=30779004 largest=30408692 internal=200648
+[M6 SD] mounted=1 width=4 clock_khz=20000 mount_us=258881 capacity=8053063680 status=SD READY
+[M6 index] files=9 entries=9 limited=0 scan_us=28873 ps_free=30752712 largest=30408692 internal=199024
+
+# HOST INDEX
+[Q COMMAND] INDEX
+[M213 index] index=0 name=m19p_impulses.wav
+[M213 index] index=1 name=m19p_kick.wav
+[M213 index] index=2 name=m19p_snare.wav
+[M213 index] index=3 name=m19p_mixed.wav
+[M213 index] index=4 name=m19p_stereo.wav
+[M213 index] index=5 name=m19p_large.wav
+[M213 index] index=6 name=m19p_bad_depth.wav
+[M213 index] index=7 name=m19p_truncated.wav
+[M213 index] index=8 name=m19p_oneshot.wav
+
+# HOST CMD 0 0 0 0 0
+[Q COMMAND] CMD 0 0 0 0 0
+[Q ACK] sent=1
+
+# HOST LOAD 0 3
+[Q COMMAND] LOAD 0 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=707326 bytes_per_second=498779 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=352844 pcm_bytes=352800 load_publish_us=1140508 payload=352863 transient=352800 peak_payload=352863 ps_free=30392872 largest=29884404 internal=197740 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=0 pcm=0x482abe00 base=0x482abdfc bytes=352863 frames=176400 mod64=0 mod128=0 mod256=0 mod4096=3584 mod131072=48640 external=1 requested_caps=1028 free=30392872 largest=29884404
+
+# HOST LOAD 1 3
+[Q COMMAND] LOAD 1 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=768624 bytes_per_second=459002 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=1 file_bytes=352844 pcm_bytes=352800 load_publish_us=1195989 payload=705726 transient=352800 peak_payload=705726 ps_free=30032420 largest=29884404 internal=196136 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=1 pcm=0x48303e00 base=0x48303e00 bytes=352863 frames=176400 mod64=0 mod128=0 mod256=0 mod4096=3584 mod131072=15872 external=1 requested_caps=1028 free=30032420 largest=29884404
+
+# HOST LOAD 2 3
+[Q COMMAND] LOAD 2 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=771885 bytes_per_second=457062 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=2 file_bytes=352844 pcm_bytes=352800 load_publish_us=1201821 payload=1058589 transient=352800 peak_payload=1058589 ps_free=29671968 largest=29360116 internal=194532 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=2 pcm=0x4835be40 base=0x4835be04 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=114240 external=1 requested_caps=1028 free=29671968 largest=29360116
+
+# HOST LOAD 3 3
+[Q COMMAND] LOAD 3 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=699924 bytes_per_second=504054 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=3 file_bytes=352844 pcm_bytes=352800 load_publish_us=1135396 payload=1411452 transient=352800 peak_payload=1411452 ps_free=29311516 largest=28835828 internal=192928 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=3 pcm=0x483b3e40 base=0x483b3e08 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=81472 external=1 requested_caps=1028 free=29311516 largest=28835828
+
+# HOST LOAD 4 3
+[Q COMMAND] LOAD 4 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=711911 bytes_per_second=495567 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=4 file_bytes=352844 pcm_bytes=352800 load_publish_us=1145827 payload=1764315 transient=352800 peak_payload=1764315 ps_free=28951064 largest=28835828 internal=191324 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=4 pcm=0x4840be40 base=0x4840be0c bytes=352863 frame
+# HOST LOAD 5 3
+s=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=48704 external=1 requested_caps=1028 free=28951064 largest=28835828
+[Q COMMAND] LOAD 5 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=708769 bytes_per_second=497764 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=5 file_bytes=352844 pcm_bytes=352800 load_publish_us=1209133 payload=2117178 transient=352800 peak_payload=2117178 ps_free=28590612 largest=28311540 internal=189720 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=5 pcm=0x48463e40 base=0x48463e10 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=15936 external=1 requested_caps=1028 free=28590612 largest=28311540
+
+# HOST LOAD 6 3
+[Q COMMAND] LOAD 6 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=770233 bytes_per_second=458043 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=6 file_bytes=352844 pcm_bytes=352800 load_publish_us=1205970 payload=2470041 transient=352800 peak_payload=2470041 ps_free=28230160 largest=27787252 internal=188116 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=6 pcm=0x484bbe40 base=0x484bbe14 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=114240 external=1 requested_caps=1028 free=28230160 largest=27787252
+
+# HOST LOAD 7 3
+[Q COMMAND] LOAD 7 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=713573 bytes_per_second=494413 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=7 file_bytes=352844 pcm_bytes=352800 load_publish_us=1147462 payload=2822904 transient=352800 peak_payload=2822904 ps_free=27869708 largest=27787252 internal=186512 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=7 pcm=0x48513e40 base=0x48513e18 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=81472 external=1 requested_caps=1028 free=27869708 largest=27787252
+
+# HOST LOAD 8 3
+[Q COMMAND] LOAD 8 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=710740 bytes_per_second=496384 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=8 file_bytes=352844 pcm_bytes=352800 load_publish_us=1146119 payload=3175767 transient=352800 peak_payload=3175767 ps_free=27509256 largest=27262964 internal=184908 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=8 pcm=0x4856be40 base=0x4856be1c bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=48704 external=1 requested_caps=1028 free=27509256 largest=27262964
+
+# HOST LOAD 9 3
+[Q COMMAND] LOAD 9 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=707451 bytes_per_second=498691 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=9 file_bytes=352844 pcm_bytes=352800 load_publish_us=1140274 payload=3528630 transient=352800 peak_payload=3528630 ps_free=27148804 largest=26738676 internal=183304 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=9 pcm=0x485c3e40 base=0x485c3e20 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=15936 external=1 requested_caps=1028 free=27148804 largest=26738676
+
+# HOST LOAD 10 3
+[Q COMMAND] LOAD 10 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=704448 bytes_per_second=500817 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=10 file_bytes=352844 pcm_bytes=352800 load_publish_us=1137303 payload=3881493 transient=352800 peak_payload=3881493 ps_free=26788352 largest=26738676 internal=181700 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=10 pcm=0x4861be40 base=0x4861be24 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=114240 external=1 requested_caps=1028 free=26788352 largest=26738676
+
+# HOST LOAD 11 3
+[Q COMMAND] LOAD 11 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=706413 bytes_per_second=499424 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=11 file_bytes=352844 pcm_bytes=352800 load_publish_us=1169414 payload=4234356 transient=352800 peak_payload=4234356 ps_free=26427900 largest=26214388 internal=180096 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=11 pcm=0x48673e40 base=0x48673e28 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=81472 external=1 requested_caps=1028 free=26427900 largest=26214388
+
+# HOST LOAD 12 3
+[Q COMMAND] LOAD 12 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=719700 bytes_per_second=490204 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=12 file_bytes=352844 pcm_bytes=352800 load_publish_us=1155225 payload=4587219 transient=352800 peak_payload=4587219 ps_free=26067448 largest=25690100 internal=178492 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=12 pcm=0x486cbe40 base=0x486cbe2c bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=48704 external=1 requested_caps=1028 free=26067448 largest=25690100
+
+# HOST LOAD 13 3
+[Q COMMAND] LOAD 13 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=775958 bytes_per_second=454663 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=13 file_bytes=352844 pcm_bytes=352800 load_publish_us=1211363 payload=4940082 transient=352800 peak_payload=4940082 ps_free=25706996 largest=25690100 internal=176888 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=13 pcm=0x48723e40 base=0x48723e30 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=15936 external=1 requested_caps=1028 free=25706996 largest=25690100
+
+# HOST LOAD 14 3
+[Q COMMAND] LOAD 14 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=712473 bytes_per_second=495176 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=14 file_bytes=352844 pcm_bytes=352800 load_publish_us=1147896 payload=5292945 transient=352800 peak_payload=5292945 ps_free=25346544 largest=25165812 internal=175284 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=14 pcm=0x4877be40 base=0x4877be34 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=114240 external=1 requested_caps=1028 free=25346544 largest=25165812
+
+# HOST LOAD 15 3
+[Q COMMAND] LOAD 15 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=702080 bytes_per_second=502506 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=15 file_bytes=352844 pcm_bytes=352800 load_publish_us=1135353 payload=5645808 transient=352800 peak_payload=5645808 ps_free=24986092 largest=24641524 internal=173680 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=15 pcm=0x487d3e40 base=0x487d3e38 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=81472 external=1 requested_caps=1028 free=24986092 largest=24641524
+
+# HOST STORE 8
+[Q COMMAND] STORE 8
+[M213 address] track=0 pcm=0x482abe00 base=0x482abdfc bytes=352863 frames=176400 mod64=0 mod128=0 mod256=0 mod4096=3584 mod131072=48640 external=1 requested_caps=1028 free=24986092 largest=24641524
+[M213 address] track=1 pcm=0x48303e00 base=0x48303e00 bytes=352863 frames=176400 mod64=0 mod128=0 mod256=0 mod4096=3584 mod131072=15872 external=1 requested_caps=1028 free=24986092 largest=24641524
+[M213 address] track=2 pcm=0x4835be40 base=0x4835be04 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=114240 external=1 requested_caps=1028 free=24986092 largest=24641524
+[M213 address] track=3 pcm=0x483b3e40 base=0x483b3e08 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=81472 external=1 requested_caps=1028 free=24986092 largest=24641524
+[M213 address] track=4 pcm=0x4840be40 base=0x4840be0c bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=48704 external=1 requested_caps=1028 free=24986092 largest=24641524
+[M213 address] track=5 pcm=0x48463e40 base=0x48463e10 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=15936 external=1 requested_caps=1028 free=24986092 largest=24641524
+[M213 address] track=6 pcm=0x484bbe40 base=0x484bbe14 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=114240 external=1 requested_caps=1028 free=24986092 largest=24641524
+[M213 address] track=7 pcm=0x48513e40 base=0x48513e18 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=81472 external=1 requested_caps=1028 free=24986092 largest=24641524
+[M213 address] track=8 pcm=0x4856be40 base=0x4856be1c bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=48704 external=1 requested_caps=1028 free=24986092 largest=24641524
+[M213 address] track=9 pcm=0x485c3e40 base=0x485c3e20 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=15936 external=1 requested_caps=1028 free=24986092 largest=24641524
+[M213 address] track=10 pcm=0x4861be40 base=0x4861be24 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=114240 external=1 requested_caps=1028 free=24986092 largest=24641524
+[M213 address] track=11 pcm=0x48673e40 base=0x48673e28 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=81472 external=1 requested_caps=1028 free=24986092 largest=24641524
+[M213 address] track=12 pcm=0x486cbe40 base=0x486cbe2c bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=48704 external=1 requested_caps=1028 free=24986092 largest=24641524
+[M213 address] track=13 pcm=0x48723e40 base=0x48723e30 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=15936 external=1 requested_caps=1028 free=24986092 largest=24641524
+[M213 address] track=14 pcm=0x4877be40 base=0x4877be34 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=114240 external=1 requested_caps=1028 free=24986092 largest=24641524
+[M213 address] track=15 pcm=0x487d3e40 base=0x487d3e38 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=81472 external=1 requested_caps=1028 free=24986092 largest=24641524
+[M213 locality] tag=1 order=0 eviction=0 repeats=32 reads=131072 us=90260 max=4025 checksum=14336000 sweep=0 concurrent_audio=1 cold_proven=0
+[M213 locality] tag=1 order=1 eviction=0 repeats=32 reads=131072 us=8080 max=2055 checksum=14336000 sweep=0 concurrent_audio=1 cold_proven=0
+[M213 locality] tag=1 order=2 eviction=0 repeats=32 reads=131072 us=8904 max=2128 checksum=14336000 sweep=0 concurrent_audio=1 cold_proven=0
+[M213 locality] tag=1 order=0 eviction=1 repeats=32 reads=131072 us=107373 max=4374 checksum=14336000 sweep=524288 concurrent_audio=1 cold_proven=0
+[M213 locality] tag=1 order=1 eviction=1 repeats=32 reads=131072 us=6556 max=2256 checksum=14336000 sweep=1048576 concurrent_audio=1 cold_proven=0
+[M213 locality] tag=1 order=2 eviction=1 repeats=32 reads=131072 us=11827 max=2342 checksum=14336000 sweep=1572864 concurrent_audio=1 cold_proven=0
+[M213 locality complete] tag=1
+[M213 physical] tag=1 complete=1
+[Q HEAP] tag=store_done internal=173680 free=24986092 largest=24641524 payload=5645808
+[Q STORE DONE] op=8
+
+# HOST LOAD 15 1
+[Q COMMAND] LOAD 15 1
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=698900 bytes_per_second=504793 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=15 file_bytes=352844 pcm_bytes=352800 load_publish_us=1163624 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173680 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=15 pcm=0x4882be40 base=0x4882be3c bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=48704 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 14 3
+[Q COMMAND] LOAD 14 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=712201 bytes_per_second=495365 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=14 file_bytes=352844 pcm_bytes=352800 load_publish_us=1175121 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173680 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=14 pcm=0x487d3e40 base=0x487d3e38 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=81472 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 13 1
+[Q COMMAND] LOAD 13 1
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=772988 bytes_per_second=456410 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=13 file_bytes=352844 pcm_bytes=352800 load_publish_us=1241047 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173680 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=13 pcm=0x4877be40 base=0x4877be34 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=114240 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 12 3
+[Q COMMAND] LOAD 12 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=708024 bytes_per_second=498288 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=12 file_bytes=352844 pcm_bytes=352800 load_publish_us=1142497 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173680 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=12 pcm=0x48723e40 base=0x48723e30 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=15936 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 11 1
+[Q COMMAND] LOAD 11 1
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=687814 bytes_per_second=512929 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=11 file_bytes=352844 pcm_bytes=352800 load_publish_us=1151910 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173680 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=11 pcm=0x486cbe40 base=0x486cbe2c bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=48704 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 10 3
+[Q COMMAND] LOAD 10 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=705793 bytes_per_second=499863 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=10 file_bytes=352844 pcm_bytes=352800 load_publish_us=1170170 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173680 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=10 pcm=0x48673e40 base=0x48673e28 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=81472 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 9 1
+[Q COMMAND] LOAD 9 1
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=696299 bytes_per_second=506678 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=9 file_bytes=352844 pcm_bytes=352800 load_publish_us=1126247 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173680 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=9 pcm=0x4861be40 base=0x4861be24 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=114240 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 8 3
+[Q COMMAND] LOAD 8 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=710540 bytes_per_second=496523 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=8 file_bytes=352844 pcm_bytes=352800 load_publish_us=1145983 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173680 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=8 pcm=0x485c3e40 base=0x485c3e20 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=15936 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 7 1
+[Q COMMAND] LOAD 7 1
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=753323 bytes_per_second=468325 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=7 file_bytes=352844 pcm_bytes=352800 load_publish_us=1188573 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173680 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=7 pcm=0x4856be40 base=0x4856be1c bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=48704 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 6 3
+[Q COMMAND] LOAD 6 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=716296 bytes_per_second=492533 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=6 file_bytes=352844 pcm_bytes=352800 load_publish_us=1151790 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173680 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=6 pcm=0x48513e40 base=0x48513e18 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=81472 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 5 1
+[Q COMMAND] LOAD 5 1
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=693187 bytes_per_second=508953 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=5 file_bytes=352844 pcm_bytes=352800 load_publish_us=1131924 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173680 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=5 pcm=0x484bbe40 base=0x484bbe14 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=114240 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 4 3
+[Q COMMAND] LOAD 4 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=705020 bytes_per_second=500411 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=4 file_bytes=352844 pcm_bytes=352800 load_publish_us=1172626 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173680 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=4 pcm=0x48463e40 base=0x48463e10 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=15936 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 3 1
+[Q COMMAND] LOAD 3 1
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=690032 bytes_per_second=511280 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=3 file_bytes=352844 pcm_bytes=352800 load_publish_us=1123056 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173680 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=3 pcm=0x4840be40 base=0x4840be0c bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=48704 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 2 3
+[Q COMMAND] LOAD 2 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=708452 bytes_per_second=497987 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=2 file_bytes=352844 pcm_bytes=352800 load_publish_us=1147529 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173680 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=2 pcm=0x483b3e40 base=0x483b3e08 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=81472 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 1 1
+[Q COMMAND] LOAD 1 1
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=690838 bytes_per_second=510684 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=1 file_bytes=352844 pcm_bytes=352800 load_publish_us=1155484 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173680 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=1 pcm=0x4835be40 base=0x4835be04 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=114240 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 0 3
+[Q COMMAND] LOAD 0 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=785260 bytes_per_second=449277 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=352844 pcm_bytes=352800 load_publish_us=1248646 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173680 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=0 pcm=0x48303e00 base=0x48303e00 bytes=352863 frames=176400 mod64=0 mod128=0 mod256=0 mod4096=3584 mod131072=15872 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 15 3
+[Q COMMAND] LOAD 15 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=777992 bytes_per_second=453475 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=15 file_bytes=352844 pcm_bytes=352800 load_publish_us=1213418 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24641524 internal=173680 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=15 pcm=0x482abe00 base=0x482abdfc bytes=352863 frames=176400 mod64=0 mod128=0 mod256=0 mod4096=3584 mod131072=48640 external=1 requested_caps=1028 free=24986092 largest=24641524
+
+# HOST LOAD 14 1
+[Q COMMAND] LOAD 14 1
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=696016 bytes_per_second=506884 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=14 file_bytes=352844 pcm_bytes=352800 load_publish_us=1128852 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173680 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=14 pcm=0x4882be40 base=0x4882be3c bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=48704 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 13 3
+[Q COMMAND] LOAD 13 3
+[Q ACK] load=1
+[M5] blocks=10337 p50=1819 p95=1940 p99=1966 max=2050 misses=0 failures=0 timeouts=0 peak=0 nonzero=0 rails=0 active_min=0 active_max=0
+[M8 groove] parents=0 passed=0 skipped=0 ratchets=0 pending_max=[M6 read] bytes=352800 read_us=710270 bytes_per_second=496712 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=13 file_bytes=352844 pcm_bytes=352800 load_publish_us=1143426 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173680 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=13 pcm=0x487d3e40 base=0x487d3e38 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=81472 external=1 requested_caps=1028 free=24986092 largest=24117236
+0 velocity_min=127 velocity_max=0 swing_changes=0
+[MEM] M8 after 60s PSRAM total=33554432 free=24986092 largest=24117236 internal_free=173680
+[M10 locks] locked=0 unlocked=0 pitch=0 volume=0 pan=0 wave=0 pattern_bytes=3106 bank_bytes=49696 engine_bytes=52616
+[M11 tone] cutoff=0 resonance=0 send=0 cutoff_min=127 cutoff_max=0 resonance_min=127 resonance_max=0 send_min=127 send_max=0 blocks=0 max=0 dense=0 dense_max=0
+[M12 locks] cutoff=0 resonance=0 send=0 coefficients=0 avoided=34 send_changes=0 coefficient_blocks=0 coefficient_max=0 edit_blocks=0 edit_max=0 commands=0 step_bytes=9 event_bytes=20 voice_bytes=384 idle_residue=0
+[M17 chain] starts=0 advances=0 repeats=0 loops=0 stops=0 switches=0 min_length=16 max_length=0 boundary_max=0 seen=0 entry_bytes=2 chain_bytes=66 engine_bytes=52616
+[M18 performance] override_requests=0 override_accepts=0 override_loops=0 override_cancels=0 returns=0 fill_requests=0 fill_accepts=0 fill_completions=0 fill_to_override=0 fill_to_arrangement=0 mute_edits=0 solo_edits=0 boundaries=0 boundary_max=0 state_bytes=352 engine_bytes=52616 publication_bytes=24
+[M181 repeat] requests=0 accepts=0 cancelled=0 x2_windows=0 x4_windows=0 x8_windows=0 hits=0 x8_hits=0 changes=0 releases=0 empty
+# HOST LOAD 12 1
+=0 captured_max=0 suppressed=0 [Q COMMAND] LOAD 12 1
+worst=0 capture_bytes=324 repeat[Q ACK] load=1
+_bytes=336
+[M181 x8] blocks=0 worst=0 active_min=0 active_max=0 coefficients=0 avoided=0 chokes=0 full_blocks=0
+[M181 runtime] requested=0 active=0 count=0 ui_presses=0 ui_releases=0 ui_edits=0
+[M18 runtime] override_target=0 override_active=0 fill_pending=0 fill_active=0 return_pattern=0 return_end=0 mutes=0 solos=0 ui_bytes=116
+[M19 analysis] requests=0 completed=0 cancelled=0 stale_discarded=0 frames=0 candidates=0 selected=0 proposals=0 apply=0 cancel=0 min_count=0 max_count=0 sensitivity=0 target=0 duration_max_us=0 chunk_max_us=0
+[M19 overlap] blocks=0 worst=0 misses=0 x8_blocks=0 ui_interval_max_us=0 detector_bytes=616 candidate_bytes=512 proposal_bytes=84 status_bytes=100 storage_stack=7000 stack_free_min=0
+[M18 UI] entries=0 pads=0 fills=0 toggles=0 switches=0
+[M17 UI] entries=0 edits=0 rows=0 scrolls=0
+[M16 project] state_bytes=53192 file_bytes=52704 snapshot_blocks=0 snapshot_max=0 apply_blocks=0 apply_max=0 fixtures=0 fixture_errors=0 dirty=1 physical_pending=1
+[M13 dense] blocks=2068 active_min=0
+[M13 playback] triggers=0 reverse=0 gate=0 releases=0 ends=0 choke_ops=0 choked=0 retriggers=0 region_min=0 region_max=0 max=2050 choke_max=0 retrigger_max=0 voice_bytes=64 track_bytes=116 event_bytes=20
+[M15 locks] locked=0 unlocked=0 unsliced=0 requested_min=0 requested_max=0 resolved_min=0 resolved_max=0 clamped=0 edits=0 ui_edits=0 align=1 requested_seen=0 resolved_seen=0
+[M14 slices] triggers=0 auditions=0 index_min=0 index_max=0 frames_min=0 frames_max=0 active_changes=0 divides=0 adds=0 deletes=0 resets=0 edit_blocks=0 edit_max=0 slice_bytes=4 bank_bytes=66 sample_bytes=1556
+[M10 worst] blocks=0 max=0
+[M9 tools] rotate=0 reverse=0 copy_track=0 clear_track=0 duplicate=0 euclidean=0 randomize=0 mutate=0 reroll=0 blocks=0 dense_blocks=0 max=0
+[M6 read] bytes=352800 read_us=748676 bytes_per_second=471231 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=12 file_bytes=352844 pcm_bytes=352800 load_publish_us=1184379 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173680 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=12 pcm=0x4877be40 base=0x4877be34 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=114240 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 11 3
+[Q COMMAND] LOAD 11 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=707400 bytes_per_second=498727 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=11 file_bytes=352844 pcm_bytes=352800 load_publish_us=1141311 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173680 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=11 pcm=0x48723e40 base=0x48723e30 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=15936 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M5 UI] seconds=63.095 submitted=85 completed=85 dirty_avg=689694 dirty_max=768000 full=75 preparation_max_us=69186 touch_errors=0 rejected=0 pads=0 steps=0 drags=0 pages=0 transport=0 bpm=0 skipped=72
+[M7 patterns] switches=0 loops=0 selections=0 copies=0 clears=0 lengths=0 solos=0 mutes=0 normal_frames=10 dirty_avg=102400 dirty_max=102400 pattern_bytes=3106 command_bytes=12
+[M7 applied] long_to_short=0 short_to_long=0 queue_replacements=0 copies=0 clears=0 lengths=0 solos=0 mutes=0 steps=0
+[M9 UI] entries=0 copies=0 randomize=0 cell_max=0 edit_full=0
+[M12 UI] entries=0 edits=0 widgets_max=0 edit_full=0
+[M11 UI] entries=0 edits=0 widgets_max=0 edit_full=0
+[M10 UI] entries=0 edits=0 widgets_max=0 edit_full=0
+[M13 UI] entries=0 edits=0 widgets_max=0 edit_full=0
+[M14 UI] entries=0 edits=0 edit_f
+# HOST LOAD 10 1
+ull=0 waveform_first_us=0 waveform_redraw_max_us=0 slice_redraw_max_us=0 build_count=37 build_max_us=432444 large_us=0 cache_bytes=1440 page_max_us=0 drag_dirty_max=0
+[M5 memory] ps_before=30753324 ps_after=24986092 internal_before=198816 internal_after=173680 largest_before=30408692 largest_after=24117236
+[Q COMMAND] LOAD 10 1
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=751648 bytes_per_second=469368 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=10 file_bytes=352844 pcm_bytes=352800 load_publish_us=1184407 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173400 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=10 pcm=0x486cbe40 base=0x486cbe2c bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=48704 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 9 3
+[Q COMMAND] LOAD 9 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=708053 bytes_per_second=498267 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=9 file_bytes=352844 pcm_bytes=352800 load_publish_us=1169754 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173400 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=9 pcm=0x48673e40 base=0x48673e28 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=81472 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 8 1
+[Q COMMAND] LOAD 8 1
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=687310 bytes_per_second=513305 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=8 file_bytes=352844 pcm_bytes=352800 load_publish_us=1117250 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173400 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=8 pcm=0x4861be40 base=0x4861be24 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=114240 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 7 3
+[Q COMMAND] LOAD 7 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=707602 bytes_per_second=498585 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=7 file_bytes=352844 pcm_bytes=352800 load_publish_us=1143104 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173400 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=7 pcm=0x485c3e40 base=0x485c3e20 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=15936 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 6 1
+[Q COMMAND] LOAD 6 1
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=754577 bytes_per_second=467546 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=6 file_bytes=352844 pcm_bytes=352800 load_publish_us=1184519 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173400 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=6 pcm=0x4856be40 base=0x4856be1c bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=48704 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 5 3
+[Q COMMAND] LOAD 5 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=706868 bytes_per_second=499103 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=5 file_bytes=352844 pcm_bytes=352800 load_publish_us=1136795 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173400 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=5 pcm=0x48513e40 base=0x48513e18 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=81472 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 4 1
+[Q COMMAND] LOAD 4 1
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=685334 bytes_per_second=514785 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=4 file_bytes=352844 pcm_bytes=352800 load_publish_us=1118115 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173400 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=4 pcm=0x484bbe40 base=0x484bbe14 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=114240 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 3 3
+[Q COMMAND] LOAD 3 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=704969 bytes_per_second=500447 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=3 file_bytes=352844 pcm_bytes=352800 load_publish_us=1134585 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173400 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=3 pcm=0x48463e40 base=0x48463e10 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=15936 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 2 1
+[Q COMMAND] LOAD 2 1
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=669616 bytes_per_second=526869 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=2 file_bytes=352844 pcm_bytes=352800 load_publish_us=1099552 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173400 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=2 pcm=0x4840be40 base=0x4840be0c bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=48704 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 1 3
+[Q COMMAND] LOAD 1 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=705457 bytes_per_second=500101 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=1 file_bytes=352844 pcm_bytes=352800 load_publish_us=1167662 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173400 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=1 pcm=0x483b3e40 base=0x483b3e08 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=81472 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 0 1
+[Q COMMAND] LOAD 0 1
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=676202 bytes_per_second=521737 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=352844 pcm_bytes=352800 load_publish_us=1111927 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173400 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=0 pcm=0x4835be40 base=0x4835be04 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=114240 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST STORE 8
+[Q COMMAND] STORE 8
+[M213 address] track=0 pcm=0x4835be40 base=0x4835be04 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=114240 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 address] track=1 pcm=0x483b3e40 base=0x483b3e08 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=81472 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 address] track=2 pcm=0x4840be40 base=0x4840be0c bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=48704 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 address] track=3 pcm=0x48463e40 base=0x48463e10 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=15936 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 address] track=4 pcm=0x484bbe40 base=0x484bbe14 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=114240 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 address] track=5 pcm=0x48513e40 base=0x48513e18 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=81472 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 address] track=6 pcm=0x4856be40 base=0x4856be1c bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=48704 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 address] track=7 pcm=0x485c3e40 base=0x485c3e20 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=15936 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 address] track=8 pcm=0x4861be40 base=0x4861be24 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=114240 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 address] track=9 pcm=0x48673e40 base=0x48673e28 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=81472 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 address] track=10 pcm=0x486cbe40 base=0x486cbe2c bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=48704 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 address] track=11 pcm=0x48723e40 base=0x48723e30 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=15936 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 address] track=12 pcm=0x4877be40 base=0x4877be34 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=114240 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 address] track=13 pcm=0x487d3e40 base=0x487d3e38 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=81472 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 address] track=14 pcm=0x4882be40 base=0x4882be3c bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=48704 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 address] track=15 pcm=0x482abe00 base=0x482abdfc bytes=352863 frames=176400 mod64=0 mod128=0 mod256=0 mod4096=3584 mod131072=48640 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 locality] tag=2 order=0 eviction=0 repeats=32 reads=131072 us=98018 max=4146 checksum=3150639360 sweep=0 concurrent_audio=1 cold_proven=0
+[M213 locality] tag=2 order=1 eviction=0 repeats=32 reads=131072 us=6160 max=1997 checksum=3150639360 sweep=0 concurrent_audio=1 cold_proven=0
+[M213 locality] tag=2 order=2 eviction=0 repeats=32 reads=131072 us=8943 max=2093 checksum=3150639360 sweep=0 concurrent_audio=1 cold_proven=0
+[M213 locality] tag=2 order=0 eviction=1 repeats=32 reads=131072 us=132486 max=4470 checksum=3150639360 sweep=524288 concurrent_audio=1 cold_proven=0
+[M213 locality] tag=2 order=1 eviction=1 repeats=32 reads=131072 us=6646 max=2266 checksum=3150639360 sweep=1048576 concurrent_audio=1 cold_proven=0
+[M213 locality] tag=2 order=2 eviction=1 repeats=32 reads=131072 us=17923 max=2417 checksum=3150639360 sweep=1572864 concurrent_audio=1 cold_proven=0
+[M213 locality complete] tag=2
+[M213 physical] tag=2 complete=1
+[Q HEAP] tag=store_done internal=173400 free=24986092 largest=24117236 payload=5645808
+[Q STORE DONE] op=8
+
+# HOST LOAD 0 1
+[Q COMMAND] LOAD 0 1
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=749376 bytes_per_second=470791 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=352844 pcm_bytes=352800 load_publish_us=1182279 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173400 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=0 pcm=0x48303e00 base=0x48303e00 bytes=352863 frames=176400 mod64=0 mod128=0 mod256=0 mod4096=3584 mod131072=15872 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 1 2
+[Q COMMAND] LOAD 1 2
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=768694 bytes_per_second=458960 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=1 file_bytes=352844 pcm_bytes=352800 load_publish_us=1268704 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173400 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=1 pcm=0x4835be40 base=0x4835be04 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=114240 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 2 3
+[Q COMMAND] LOAD 2 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=704902 bytes_per_second=500495 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=2 file_bytes=352844 pcm_bytes=352800 load_publish_us=1134850 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173400 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=2 pcm=0x483b3e40 base=0x483b3e08 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=81472 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 3 4
+[Q COMMAND] LOAD 3 4
+[Q ACK] load=1
+[M6 read] bytes=705600 read_us=1183512 bytes_per_second=596191 original_channels=2 rate=44100 total_psram=33554432
+[M6 load] track=3 file_bytes=705644 pcm_bytes=352800 load_publish_us=1643274 payload=5645808 transient=352800 peak_payload=5998671 ps_free=24986092 largest=24117236 internal=173400 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=3 pcm=0x4840be40 base=0x4840be0c bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=48704 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST LOAD 4 8
+[Q COMMAND] LOAD 4 8
+[Q ACK] load=1
+[M6 read] bytes=44100 read_us=88549 bytes_per_second=498029 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=4 file_bytes=44144 pcm_bytes=44100 load_publish_us=516595 payload=5337108 transient=44100 peak_payload=5689971 ps_free=25301484 largest=24117236 internal=173400 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=-315392 status=READY
+[M213 address] track=4 pcm=0x48463e40 base=0x48463e10 bytes=44163 frames=22050 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=15936 external=1 requested_caps=1028 free=25301484 largest=24117236
+
+# HOST LOAD 5 1
+[Q COMMAND] LOAD 5 1
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=679894 bytes_per_second=518904 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=5 file_bytes=352844 pcm_bytes=352800 load_publish_us=1112842 payload=5337108 transient=352800 peak_payload=5689971 ps_free=25301484 largest=24117236 internal=173400 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=5 pcm=0x4846ee40 base=0x4846ee14 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=60992 external=1 requested_caps=1028 free=25301484 largest=24117236
+
+# HOST LOAD 6 2
+[Q COMMAND] LOAD 6 2
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=696045 bytes_per_second=506863 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=6 file_bytes=352844 pcm_bytes=352800 load_publish_us=1125238 payload=5337108 transient=352800 peak_payload=5689971 ps_free=25301484 largest=24117236 internal=173400 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=6 pcm=0x484c6e40 base=0x484c6e18 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=28224 external=1 requested_caps=1028 free=25301484 largest=24117236
+
+# HOST LOAD 7 3
+[Q COMMAND] LOAD 7 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=707351 bytes_per_second=498762 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=7 file_bytes=352844 pcm_bytes=352800 load_publish_us=1163881 payload=5337108 transient=352800 peak_payload=5689971 ps_free=25301484 largest=24117236 internal=173400 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=7 pcm=0x4851ee40 base=0x4851ee1c bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=126528 external=1 requested_caps=1028 free=25301484 largest=24117236
+
+# HOST LOAD 8 4
+[Q COMMAND] LOAD 8 4
+[Q ACK] load=1
+[M6 read] bytes=705600 read_us=1250152 bytes_per_second=564411 original_channels=2 rate=44100 total_psram=33554432
+[M6 load] track=8 file_bytes=705644 pcm_bytes=352800 load_publish_us=1683645 payload=5337108 transient=352800 peak_payload=5689971 ps_free=25301484 largest=24117236 internal=173400 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=8 pcm=0x48576e40 base=0x48576e20 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=93760 external=1 requested_caps=1028 free=25301484 largest=24117236
+
+# HOST LOAD 9 8
+[Q COMMAND] LOAD 9 8
+[Q ACK] load=1
+[M6 read] bytes=44100 read_us=86155 bytes_per_second=511868 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=9 file_bytes=44144 pcm_bytes=44100 load_publish_us=543488 payload=5028408 transient=44100 peak_payload=5381271 ps_free=25616876 largest=24117236 internal=173400 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=-315392 status=READY
+[M213 address] track=9 pcm=0x485cee40 base=0x485cee24 bytes=44163 frames=22050 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=60992 external=1 requested_caps=1028 free=25616876 largest=24117236
+
+# HOST LOAD 10 1
+[Q COMMAND] LOAD 10 1
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=686137 bytes_per_second=514183 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=10 file_bytes=352844 pcm_bytes=352800 load_publish_us=1118912 payload=5028408 transient=352800 peak_payload=5381271 ps_free=25616876 largest=24117236 internal=173400 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=10 pcm=0x485d9e40 base=0x485d9e28 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=106048 external=1 requested_caps=1028 free=25616876 largest=24117236
+
+# HOST LOAD 11 2
+[Q COMMAND] LOAD 11 2
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=766780 bytes_per_second=460105 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=11 file_bytes=352844 pcm_bytes=352800 load_publish_us=1201825 payload=5028408 transient=352800 peak_payload=5381271 ps_free=25616876 largest=24117236 internal=173400 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=11 pcm=0x48631e40 base=0x48631e2c bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=73280 external=1 requested_caps=1028 free=25616876 largest=24117236
+
+# HOST LOAD 12 3
+[Q COMMAND] LOAD 12 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=772255 bytes_per_second=456843 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=12 file_bytes=352844 pcm_bytes=352800 load_publish_us=1207742 payload=5028408 transient=352800 peak_payload=5381271 ps_free=25616876 largest=24117236 internal=173400 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=12 pcm=0x48689e40 base=0x48689e30 bytes=352863 frames=176400 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=40512 external=1 requested_caps=1028 free=25616876 largest=24117236
+
+# HOST LOAD 13 4
+[Q COMMAND] LOAD 13 4
+[Q ACK] load=1
+E BOD: Brownout detector was triggered

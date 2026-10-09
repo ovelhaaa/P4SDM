@@ -13,6 +13,7 @@ source=source.replace('    while time.monotonic() < stop:', '    tail = b""\n   
 source=source.replace("            print(data.decode('utf-8','replace'), end='', flush=True)",
     "            print(data.decode('utf-8','replace'), end='', flush=True)\n"
     "            tail = (tail + data)[-4096:]\n"
-    "            if re.search(rb'\\[M5 memory\\][^\\r\\n]*largest_after=\\d+\\r?\\n', tail): break")
+    "            if re.search(rb'\\[M5 memory\\][^\\r\\n]*largest_after=\\d+\\r?\\n', tail) or "
+    "re.search(rb'\\[M213 memory\\] COMPLETE[^\\r\\n]*display_started=0\\r?\\n', tail): break")
 sys.argv=[str(original),environment,seconds,output]
 exec(compile(source,str(original),'exec'),dict(__file__=str(original),__name__='__main__',re=re))

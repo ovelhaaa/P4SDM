@@ -7,6 +7,8 @@ for path in sorted(Path('.pio/m213-artifacts').rglob('manifest.json')):
     manifest=json.loads(path.read_text())
     for name,expected in manifest['files'].items():
         assert hashlib.sha256((path.parent/name).read_bytes()).hexdigest()==expected,str(path.parent/name)
+    assert hashlib.sha256((path.parent/'sdkconfig.h').read_bytes()).hexdigest()==manifest['sdk_sha256']
+    assert hashlib.sha256((path.parent/'platformio.ini').read_bytes()).hexdigest()==manifest['sources']['platformio.ini']
     archives.append(dict(archive=path.parent.as_posix(),manifest=manifest))
 assert archives,'No saved firmware evidence'
 captures={path.as_posix():hashlib.sha256(path.read_bytes()).hexdigest()

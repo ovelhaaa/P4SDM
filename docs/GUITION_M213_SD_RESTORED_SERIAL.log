@@ -1,0 +1,9 @@
+# Production firmware guition_app; fresh esptool flash/hardware reset; UTC 2026-10-09T20:23:48.086545+00:00
+
+A fatal error occurred: Could not open COM13, the port is busy or doesn't exist.
+(could not open port 'COM13': FileNotFoundError(2, 'O sistema não pode encontrar o arquivo especificado.', None, 2))
+
+Hint: Check if the port is correct and ESP connected
+
+esptool v5.1.0
+Serial port COM13:

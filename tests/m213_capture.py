@@ -17,8 +17,12 @@ def validate_physical(text):
           0<=timing.get('p99',-1)<=timing.get('max',-1))
     reserve=bool(timing) and timing.get('max',5805)<=4643
     restored='project_status=PROJECT READY / 0 MISSING' in text
+    dense_complete='# HOST M213 dense physical x8 Repeat COMPLETE' in text
     return dict(complete=complete,timing=timing,faults=faults,safe=safe,
                 reserve_pass=reserve,repeat_hits=repeat,chain_loops=chain,
+                dense_component_complete=dense_complete,
+                dense_component_timing_pass=dense_complete and safe and reserve and repeat>0,
+                quantiles_cover_all_blocks=bool(timing) and timing.get('stored')==timing.get('blocks'),
                 project_restored=restored,accepted=complete and safe and reserve and repeat>0 and chain>0 and restored,
                 headroom_percent=100*(1-timing['max']/(256*1e6/44100)) if timing else None)
 def fields(line):
@@ -34,8 +38,19 @@ def validate(text, scenario=None, blocks=20672):
     if timing and (any(v<0 for v in quantiles) or quantiles!=sorted(quantiles)):
         faults.append('invalid timing quantiles')
     complete=bool(timing) and '[M5 memory]' in rows and timing.get('blocks')==blocks
+    memory=rows.get('[M5 memory]',{})
+    memory_keys=('ps_before','ps_after','internal_before','internal_after','largest_before','largest_after')
+    if complete and (not all(memory.get(k,0)>0 for k in memory_keys) or
+                     memory.get('ps_after',0)!=memory.get('ps_before',0) or
+                     memory.get('largest_after',0)!=memory.get('largest_before',0) or
+                     memory.get('internal_after',0)<memory.get('internal_before',0)):
+        faults.append('missing or unstable heap summary')
     if blocks==103360 and (len(monitors)<19 or any(r.get('resident')!=(16 if scenario else 0) for r in monitors)):
         faults.append('sustained PCM monitoring incomplete')
+    if blocks==103360 and monitors and (any(not all(r.get(k,0)>0 for k in ('free','largest','internal')) for r in monitors) or
+        len({(r.get('free'),r.get('largest'),r.get('internal')) for r in monitors})!=1 or
+        len({r.get('digest') for r in monitors})!=1 or any(r.get('digest') is None for r in monitors)):
+        faults.append('sustained heap or PCM digest drift')
     safe=complete and not faults and all(timing.get(k)==0 for k in ('misses','failures','timeouts'))
     trace_ok=True
     if scenario:
@@ -45,10 +60,12 @@ def validate(text, scenario=None, blocks=20672):
         residency=[fields(line) for line in text.splitlines() if line.startswith('[M212 residency]')]
         trace_ok=(expected is not None and trace.get('hash')==expected and trace.get('scenario')==scenario and
                   trace.get('events')==(126480 if blocks==20672 else 618000) and
+                  trace.get('rng')==(1386399687 if blocks==20672 else 2250252452) and
                   trace.get('chain_loops')==(230 if blocks==20672 else 1190) and trace.get('repeat_x8')==7168 and
+                  timing.get('active_min')==timing.get('active_max')==16 and
                   len(residency)==16 and {r.get('track') for r in residency}==set(range(16)) and
                   all(r.get('active_frames')==r.get('total_frames')==blocks*256 for r in residency))
     reserve=complete and timing.get('max',5805)<=4643
-    return dict(complete=complete,safe=safe,faults=faults,timing=timing,memory=rows.get('[M5 memory]',{}),
+    return dict(complete=complete,safe=safe,faults=faults,timing=timing,memory=memory,
                 trace_matches=trace_ok,reserve_pass=reserve,accepted=safe and trace_ok and reserve,monitors=monitors,
                 headroom_percent=100*(1-timing['max']/(256*1e6/44100)) if complete else None)

@@ -1,0 +1,3800 @@
+
+# HOST SESSION UTC 2026-10-09T21:38:35.313372+00:00 mode=0_REPEAT
+
+# HOST ESPrun reset
+esptool v5.1.0
+Serial port COM13:
+Connecting...
+Connected to ESP32-P4 on COM13:
+Chip type:          ESP32-P4 (revision v1.3)
+Features:           Dual Core + LP Core, 400MHz
+Crystal frequency:  40MHz
+USB mode:           USB-Serial/JTAG
+MAC:                80:f1:b2:d3:cc:86
+
+Uploading stub flasher...
+Running stub flasher...
+Stub flasher running.
+
+Warning: ESP32-P4 has no chip ID. Reading MAC address instead.
+MAC:                80:f1:b2:d3:cc:86
+
+Hard resetting via RTS pin...
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M6 budget] total=33554432 display=2304000 fx_delay=352800 samples=0 reserve=4194304 free=30779004 largest=30408692 internal=200648
+[M6 SD] mounted=1 width=4 clock_khz=20000 mount_us=247271 capacity=8053063680 status=SD READY
+[M6 index] files=9 entries=9 limited=0 scan_us=29355 ps_free=30752712 largest=30408692 internal=199024
+
+# HOST INDEX
+[Q COMMAND] INDEX
+[M213 index] index=0 name=m19p_impulses.wav
+[M213 index] index=1 name=m19p_kick.wav
+[M213 index] index=2 name=m19p_snare.wav
+[M213 index] index=3 name=m19p_mixed.wav
+[M213 index] index=4 name=m19p_stereo.wav
+[M213 index] index=5 name=m19p_large.wav
+[M213 index] index=6 name=m19p_bad_depth.wav
+[M213 index] index=7 name=m19p_truncated.wav
+[M213 index] index=8 name=m19p_oneshot.wav
+
+# HOST CMD 0 0 0 0 0
+[Q COMMAND] CMD 0 0 0 0 0
+[Q ACK] sent=1
+
+# HOST LOAD 0 3
+[Q COMMAND] LOAD 0 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=702140 bytes_per_second=502463 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=352844 pcm_bytes=352800 load_publish_us=1135104 payload=352800 transient=352800 peak_payload=352800 ps_free=30392872 largest=29884404 internal=197740 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=0 pcm=0x482abdfc base=0x482abdfc bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=60 mod128=124 mod256=252 mod4096=3580 mod131072=48636 external=1 requested_caps=1028 free=30392872 largest=29884404
+
+# HOST LOAD 1 3
+[Q COMMAND] LOAD 1 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=772307 bytes_per_second=456813 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=1 file_bytes=352844 pcm_bytes=352800 load_publish_us=1199659 payload=705600 transient=352800 peak_payload=705600 ps_free=30032420 largest=29884404 internal=196136 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=1 pcm=0x48303e00 base=0x48303e00 bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=0 mod128=0 mod256=0 mod4096=3584 mod131072=15872 external=1 requested_caps=1028 free=30032420 largest=29884404
+
+# HOST LOAD 2 3
+[Q COMMAND] LOAD 2 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=692602 bytes_per_second=509383 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=2 file_bytes=352844 pcm_bytes=352800 load_publish_us=1125588 payload=1058400 transient=352800 peak_payload=1058400 ps_free=29671968 largest=29360116 internal=194532 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=2 pcm=0x4835be04 base=0x4835be04 bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=4 mod128=4 mod256=4 mod4096=3588 mod131072=114180 external=1 requested_caps=1028 free=29671968 largest=29360116
+
+# HOST LOAD 3 3
+[Q COMMAND] LOAD 3 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=766221 bytes_per_second=460441 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=3 file_bytes=352844 pcm_bytes=352800 load_publish_us=1196146 payload=1411200 transient=352800 peak_payload=1411200 ps_free=29311516 largest=28835828 internal=192928 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=3 pcm=0x483b3e08 base=0x483b3e08 bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=8 mod128=8 mod256=8 mod4096=3592 mod131072=81416 external=1 requested_caps=1028 free=29311516 largest=28835828
+
+# HOST LOAD 4 3
+[Q COMMAND] LOAD 4 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=693120 bytes_per_second=509002 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=4 file_bytes=352844 pcm_bytes=352800 load_publish_us=1154888 payload=1764000 transient=352800 peak_payload=1764000 ps_free=28951064 largest=28835828 internal=191324 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=4 pcm=0x4840be0c base=0x4840be0c bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=12 mod128=12 mod256=12 mod4096=3596 mod131072=48652 external=1 requested_caps=1028 free=28951064 largest=28835828
+
+# HOST LOAD 5 3
+[Q COMMAND] LOAD 5 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=709855 bytes_per_second=497002 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=5 file_bytes=352844 pcm_bytes=352800 load_publish_us=1142570 payload=2116800 transient=352800 peak_payload=2116800 ps_free=28590612 largest=28311540 internal=189720 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=5 pcm=0x48463e10 base=0x48463e10 bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=16 mod128=16 mod256=16 mod4096=3600 mod131072=15888 external=1 requested_caps=1028 free=28590612 largest=28311540
+
+# HOST LOAD 6 3
+[Q COMMAND] LOAD 6 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=704847 bytes_per_second=500534 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=6 file_bytes=352844 pcm_bytes=352800 load_publish_us=1138043 payload=2469600 transient=352800 peak_payload=2469600 ps_free=28230160 largest=27787252 internal=188116 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=6 pcm=0x484bbe14 base=0x484bbe14 bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=20 mod128=20 mod256=20 mod4096=3604 mod131072=114196 external=1 requested_caps=1028 free=28230160 largest=27787252
+
+# HOST LOAD 7 3
+[Q COMMAND] LOAD 7 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=707396 bytes_per_second=498730 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=7 file_bytes=352844 pcm_bytes=352800 load_publish_us=1140612 payload=2822400 transient=352800 peak_payload=2822400 ps_free=27869708 largest=27787252 internal=186512 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=7 pcm=0x48513e18 base=0x48513e18 bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=24 mod128=24 mod256=24 mod4096=3608 mod131072=81432 external=1 requested_caps=1028 free=27869708 largest=27787252
+
+# HOST LOAD 8 3
+[Q COMMAND] LOAD 8 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=707080 bytes_per_second=498953 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=8 file_bytes=352844 pcm_bytes=352800 load_publish_us=1142521 payload=3175200 transient=352800 peak_payload=3175200 ps_free=27509256 largest=27262964 internal=184908 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=8 pcm=0x4856be1c base=0x4856be1c bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=28 mod128=28 mod256=28 mod4096=3612 mod131072=48668 external=1 requested_caps=1028 free=27509256 largest=27262964
+
+# HOST LOAD 9 3
+[Q COMMAND] LOAD 9 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=713129 bytes_per_second=494721 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=9 file_bytes=352844 pcm_bytes=352800 load_publish_us=1176337 payload=3528000 transient=352800 peak_payload=3528000 ps_free=27148804 largest=26738676 internal=183304 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=9 pcm=0x485c3e20 base=0x485c3e20 bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=32 mod128=32 mod256=32 mod4096=3616 mod131072=15904 external=1 requested_caps=1028 free=27148804 largest=26738676
+
+# HOST LOAD 10 3
+[Q COMMAND] LOAD 10 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=703915 bytes_per_second=501196 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=10 file_bytes=352844 pcm_bytes=352800 load_publish_us=1136696 payload=3880800 transient=352800 peak_payload=3880800 ps_free=26788352 largest=26738676 internal=181700 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=10 pcm=0x4861be24 base=0x4861be24 bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=36 mod128=36 mod256=36 mod4096=3620 mod131072=114212 external=1 requested_caps=1028 free=26788352 largest=26738676
+
+# HOST LOAD 11 3
+[Q COMMAND] LOAD 11 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=708915 bytes_per_second=497661 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=11 file_bytes=352844 pcm_bytes=352800 load_publish_us=1141744 payload=4233600 transient=352800 peak_payload=4233600 ps_free=26427900 largest=26214388 internal=180096 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=11 pcm=0x48673e28 base=0x48673e28 bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=40 mod128=40 mod256=40 mod4096=3624 mod131072=81448 external=1 requested_caps=1028 free=26427900 largest=26214388
+
+# HOST LOAD 12 3
+[Q COMMAND] LOAD 12 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=707469 bytes_per_second=498679 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=12 file_bytes=352844 pcm_bytes=352800 load_publish_us=1146132 payload=4586400 transient=352800 peak_payload=4586400 ps_free=26067448 largest=25690100 internal=178492 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=12 pcm=0x486cbe2c base=0x486cbe2c bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=44 mod128=44 mod256=44 mod4096=3628 mod131072=48684 external=1 requested_caps=1028 free=26067448 largest=25690100
+
+# HOST LOAD 13 3
+[Q COMMAND] LOAD 13 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=712852 bytes_per_second=494913 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=13 file_bytes=352844 pcm_bytes=352800 load_publish_us=1148348 payload=4939200 transient=352800 peak_payload=4939200 ps_free=25706996 largest=25690100 internal=176888 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=13 pcm=0x48723e30 base=0x48723e30 bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=48 mod128=48 mod256=48 mod4096=3632 mod131072=15920 external=1 requested_caps=1028 free=25706996 largest=25690100
+
+# HOST LOAD 14 3
+[Q COMMAND] LOAD 14 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=781072 bytes_per_second=451686 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=14 file_bytes=352844 pcm_bytes=352800 load_publish_us=1213391 payload=5292000 transient=352800 peak_payload=5292000 ps_free=25346544 largest=25165812 internal=175284 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=14 pcm=0x4877be34 base=0x4877be34 bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=52 mod128=52 mod256=52 mod4096=3636 mod131072=114228 external=1 requested_caps=1028 free=25346544 largest=25165812
+
+# HOST LOAD 15 3
+[Q COMMAND] LOAD 15 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=715265 bytes_per_second=493243 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=15 file_bytes=352844 pcm_bytes=352800 load_publish_us=1149226 payload=5644800 transient=352800 peak_payload=5644800 ps_free=24986092 largest=24641524 internal=173680 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=360452 status=READY
+[M213 address] track=15 pcm=0x487d3e38 base=0x487d3e38 bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=56 mod128=56 mod256=56 mod4096=3640 mod131072=81464 external=1 requested_caps=1028 free=24986092 largest=24641524
+
+# HOST CMD 60 0 0 0 0
+[Q COMMAND] CMD 60 0 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 13 0 0 0 0
+[Q COMMAND] CMD 13 0 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 17 0 0 0 0
+[Q COMMAND] CMD 17 0 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 1 0 240 0 0
+[Q COMMAND] CMD 1 0 240 0 0
+[Q ACK] sent=1
+
+# HOST CMD 15 0 16 0 0
+[Q COMMAND] CMD 15 0 16 0 0
+[Q ACK] sent=1
+
+# HOST CMD 10 0 0 0 0
+[Q COMMAND] CMD 10 0 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 12 0 0 0 0
+[Q COMMAND] CMD 12 0 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 47 0 0 0 0
+[Q COMMAND] CMD 47 0 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 6 0 59 0 0
+[Q COMMAND] CMD 6 0 59 0 0
+[Q ACK] sent=1
+
+# HOST CMD 55 0 4 0 0
+[Q COMMAND] CMD 55 0 4 0 0
+[Q ACK] sent=1
+
+# HOST CMD 51 0 1 0 0
+[Q COMMAND] CMD 51 0 1 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 0 0 0 0
+[Q COMMAND] CMD 2 0 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 31 0 59 0 0
+[Q COMMAND] CMD 31 0 59 0 0
+[Q ACK] sent=1
+
+# HOST CMD 38 0 0 0 0
+[Q COMMAND] CMD 38 0 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 0 1 0 1
+[Q COMMAND] CMD 2 0 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 31 0 59 0 1
+[Q COMMAND] CMD 31 0 59 0 1
+[Q ACK] sent=1
+
+# HOST CMD 38 0 1 0 1
+[Q COMMAND] CMD 38 0 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 2 0 2 0 2
+[Q COMMAND] CMD 2 0 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 31 0 59 0 2
+[Q COMMAND] CMD 31 0 59 0 2
+[Q ACK] sent=1
+
+# HOST CMD 38 0 2 0 2
+[Q COMMAND] CMD 38 0 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 2 0 3 0 3
+[Q COMMAND] CMD 2 0 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 31 0 59 0 3
+[Q COMMAND] CMD 31 0 59 0 3
+[Q ACK] sent=1
+
+# HOST CMD 38 0 3 0 3
+[Q COMMAND] CMD 38 0 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 2 0 4 0 4
+[Q COMMAND] CMD 2 0 4 0 4
+[Q ACK] sent=1
+
+# HOST CMD 31 0 59 0 4
+[Q COMMAND] CMD 31 0 59 0 4
+[Q ACK] sent=1
+
+# HOST CMD 38 0 0 0 4
+[Q COMMAND] CMD 38 0 0 0 4
+[Q ACK] sent=1
+
+# HOST CMD 2 0 5 0 5
+[Q COMMAND] CMD 2 0 5 0 5
+[Q ACK] sent=1
+
+# HOST CMD 31 0 59 0 5
+[Q COMMAND] CMD 31 0 59 0 5
+[Q ACK] sent=1
+
+# HOST CMD 38 0 1 0 5
+[Q COMMAND] CMD 38 0 1 0 5
+[Q ACK] sent=1
+
+# HOST CMD 2 0 6 0 6
+[Q COMMAND] CMD 2 0 6 0 6
+[Q ACK] sent=1
+
+# HOST CMD 31 0 59 0 6
+[Q COMMAND] CMD 31 0 59 0 6
+[Q ACK] sent=1
+
+# HOST CMD 38 0 2 0 6
+[Q COMMAND] CMD 38 0 2 0 6
+[Q ACK] sent=1
+
+# HOST CMD 2 0 7 0 7
+[Q COMMAND] CMD 2 0 7 0 7
+[Q ACK] sent=1
+
+# HOST CMD 31 0 59 0 7
+[Q COMMAND] CMD 31 0 59 0 7
+[Q ACK] sent=1
+
+# HOST CMD 38 0 3 0 7
+[Q COMMAND] CMD 38 0 3 0 7
+[Q ACK] sent=1
+
+# HOST CMD 2 0 8 0 8
+[Q COMMAND] CMD 2 0 8 0 8
+[Q ACK] sent=1
+
+# HOST CMD 31 0 59 0 8
+[Q COMMAND] CMD 31 0 59 0 8
+[Q ACK] sent=1
+
+# HOST CMD 38 0 0 0 8
+[Q COMMAND] CMD 38 0 0 0 8
+[Q ACK] sent=1
+
+# HOST CMD 2 0 9 0 9
+[Q COMMAND] CMD 2 0 9 0 9
+[Q ACK] sent=1
+
+# HOST CMD 31 0 59 0 9
+[Q COMMAND] CMD 31 0 59 0 9
+[Q ACK] sent=1
+
+# HOST CMD 38 0 1 0 9
+[Q COMMAND] CMD 38 0 1 0 9
+[Q ACK] sent=1
+
+# HOST CMD 2 0 10 0 10
+[Q COMMAND] CMD 2 0 10 0 10
+[Q ACK] sent=1
+
+# HOST CMD 31 0 59 0 10
+[Q COMMAND] CMD 31 0 59 0 10
+[Q ACK] sent=1
+
+# HOST CMD 38 0 2 0 10
+[Q COMMAND] CMD 38 0 2 0 10
+[Q ACK] sent=1
+
+# HOST CMD 2 0 11 0 11
+[Q COMMAND] CMD 2 0 11 0 11
+[Q ACK] sent=1
+
+# HOST CMD 31 0 59 0 11
+[Q COMMAND] CMD 31 0 59 0 11
+[Q ACK] sent=1
+
+# HOST CMD 38 0 3 0 11
+[Q COMMAND] CMD 38 0 3 0 11
+[Q ACK] sent=1
+
+# HOST CMD 2 0 12 0 12
+[Q COMMAND] CMD 2 0 12 0 12
+[Q ACK] sent=1
+
+# HOST CMD 31 0 59 0 12
+[Q COMMAND] CMD 31 0 59 0 12
+[Q ACK] sent=1
+
+# HOST CMD 38 0 0 0 12
+[Q COMMAND] CMD 38 0 0 0 12
+[Q ACK] sent=1
+
+# HOST CMD 2 0 13 0 13
+[Q COMMAND] CMD 2 0 13 0 13
+[Q ACK] sent=1
+
+# HOST CMD 31 0 59 0 13
+[Q COMMAND] CMD 31 0 59 0 13
+[Q ACK] sent=1
+
+# HOST CMD 38 0 1 0 13
+[Q COMMAND] CMD 38 0 1 0 13
+[Q ACK] sent=1
+
+# HOST CMD 2 0 14 0 14
+[Q COMMAND] CMD 2 0 14 0 14
+[Q ACK] sent=1
+
+# HOST CMD 31 0 59 0 14
+[Q COMMAND] CMD 31 0 59 0 14
+[Q ACK] sent=1
+
+# HOST CMD 38 0 2 0 14
+[Q COMMAND] CMD 38 0 2 0 14
+[Q ACK] sent=1
+
+# HOST CMD 2 0 15 0 15
+[Q COMMAND] CMD 2 0 15 0 15
+[Q ACK] sent=1
+
+# HOST CMD 31 0 59 0 15
+[Q COMMAND] CMD 31 0 59 0 15
+[Q ACK] sent=1
+
+# HOST CMD 38 0 3 0 15
+[Q COMMAND] CMD 38 0 3 0 15
+[Q ACK] sent=1
+
+# HOST CMD 10 1 0 0 0
+[Q COMMAND] CMD 10 1 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 12 1 0 0 0
+[Q COMMAND] CMD 12 1 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 47 1 0 0 0
+[Q COMMAND] CMD 47 1 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 6 1 59 0 0
+[Q COMMAND] CMD 6 1 59 0 0
+[Q ACK] sent=1
+
+# HOST CMD 55 1 4 0 0
+[Q COMMAND] CMD 55 1 4 0 0
+[Q ACK] sent=1
+
+# HOST CMD 51 1 1 0 0
+[Q COMMAND] CMD 51 1 1 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 1 0 0 0
+[Q COMMAND] CMD 2 1 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 31 1 59 0 0
+[Q COMMAND] CMD 31 1 59 0 0
+[Q ACK] sent=1
+
+# HOST CMD 38 1 0 0 0
+[Q COMMAND] CMD 38 1 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 1 1 0 1
+[Q COMMAND] CMD 2 1 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 31 1 59 0 1
+[Q COMMAND] CMD 31 1 59 0 1
+[Q ACK] sent=1
+
+# HOST CMD 38 1 1 0 1
+[Q COMMAND] CMD 38 1 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 2 1 2 0 2
+[Q COMMAND] CMD 2 1 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 31 1 59 0 2
+[Q COMMAND] CMD 31 1 59 0 2
+[Q ACK] sent=1
+
+# HOST CMD 38 1 2 0 2
+[Q COMMAND] CMD 38 1 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 2 1 3 0 3
+[Q COMMAND] CMD 2 1 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 31 1 59 0 3
+[Q COMMAND] CMD 31 1 59 0 3
+[Q ACK] sent=1
+
+# HOST CMD 38 1 3 0 3
+[Q COMMAND] CMD 38 1 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 2 1 4 0 4
+[Q COMMAND] CMD 2 1 4 0 4
+[Q ACK] sent=1
+
+# HOST CMD 31 1 59 0 4
+[Q COMMAND] CMD 31 1 59 0 4
+[Q ACK] sent=1
+
+# HOST CMD 38 1 0 0 4
+[Q COMMAND] CMD 38 1 0 0 4
+[Q ACK] sent=1
+
+# HOST CMD 2 1 5 0 5
+[Q COMMAND] CMD 2 1 5 0 5
+[Q ACK] sent=1
+
+# HOST CMD 31 1 59 0 5
+[Q COMMAND] CMD 31 1 59 0 5
+[Q ACK] sent=1
+
+# HOST CMD 38 1 1 0 5
+[Q COMMAND] CMD 38 1 1 0 5
+[Q ACK] sent=1
+
+# HOST CMD 2 1 6 0 6
+[Q COMMAND] CMD 2 1 6 0 6
+[Q ACK] sent=1
+
+# HOST CMD 31 1 59 0 6
+[Q COMMAND] CMD 31 1 59 0 6
+[Q ACK] sent=1
+
+# HOST CMD 38 1 2 0 6
+[Q COMMAND] CMD 38 1 2 0 6
+[Q ACK] sent=1
+
+# HOST CMD 2 1 7 0 7
+[Q COMMAND] CMD 2 1 7 0 7
+[Q ACK] sent=1
+
+# HOST CMD 31 1 59 0 7
+[Q COMMAND] CMD 31 1 59 0 7
+[Q ACK] sent=1
+
+# HOST CMD 38 1 3 0 7
+[Q COMMAND] CMD 38 1 3 0 7
+[Q ACK] sent=1
+
+# HOST CMD 2 1 8 0 8
+[Q COMMAND] CMD 2 1 8 0 8
+[Q ACK] sent=1
+
+# HOST CMD 31 1 59 0 8
+[Q COMMAND] CMD 31 1 59 0 8
+[Q ACK] sent=1
+
+# HOST CMD 38 1 0 0 8
+[Q COMMAND] CMD 38 1 0 0 8
+[Q ACK] sent=1
+
+# HOST CMD 2 1 9 0 9
+[Q COMMAND] CMD 2 1 9 0 9
+[Q ACK] sent=1
+
+# HOST CMD 31 1 59 0 9
+[Q COMMAND] CMD 31 1 59 0 9
+[Q ACK] sent=1
+
+# HOST CMD 38 1 1 0 9
+[Q COMMAND] CMD 38 1 1 0 9
+[Q ACK] sent=1
+
+# HOST CMD 2 1 10 0 10
+[Q COMMAND] CMD 2 1 10 0 10
+[Q ACK] sent=1
+
+# HOST CMD 31 1 59 0 10
+[Q COMMAND] CMD 31 1 59 0 10
+[Q ACK] sent=1
+
+# HOST CMD 38 1 2 0 10
+[Q COMMAND] CMD 38 1 2 0 10
+[Q ACK] sent=1
+
+# HOST CMD 2 1 11 0 11
+[Q COMMAND] CMD 2 1 11 0 11
+[Q ACK] sent=1
+
+# HOST CMD 31 1 59 0 11
+[Q COMMAND] CMD 31 1 59 0 11
+[Q ACK] sent=1
+
+# HOST CMD 38 1 3 0 11
+[Q COMMAND] CMD 38 1 3 0 11
+[Q ACK] sent=1
+
+# HOST CMD 2 1 12 0 12
+[Q COMMAND] CMD 2 1 12 0 12
+[Q ACK] sent=1
+
+# HOST CMD 31 1 59 0 12
+[Q COMMAND] CMD 31 1 59 0 12
+[Q ACK] sent=1
+
+# HOST CMD 38 1 0 0 12
+[Q COMMAND] CMD 38 1 0 0 12
+[Q ACK] sent=1
+
+# HOST CMD 2 1 13 0 13
+[Q COMMAND] CMD 2 1 13 0 13
+[Q ACK] sent=1
+
+# HOST CMD 31 1 59 0 13
+[Q COMMAND] CMD 31 1 59 0 13
+[Q ACK] sent=1
+
+# HOST CMD 38 1 1 0 13
+[Q COMMAND] CMD 38 1 1 0 13
+[Q ACK] sent=1
+
+# HOST CMD 2 1 14 0 14
+[Q COMMAND] CMD 2 1 14 0 14
+[Q ACK] sent=1
+
+# HOST CMD 31 1 59 0 14
+[Q COMMAND] CMD 31 1 59 0 14
+[Q ACK] sent=1
+
+# HOST CMD 38 1 2 0 14
+[Q COMMAND] CMD 38 1 2 0 14
+[Q ACK] sent=1
+
+# HOST CMD 2 1 15 0 15
+[Q COMMAND] CMD 2 1 15 0 15
+[Q ACK] sent=1
+
+# HOST CMD 31 1 59 0 15
+[Q COMMAND] CMD 31 1 59 0 15
+[Q ACK] sent=1
+
+# HOST CMD 38 1 3 0 15
+[Q COMMAND] CMD 38 1 3 0 15
+[Q ACK] sent=1
+
+# HOST CMD 10 2 0 0 0
+[Q COMMAND] CMD 10 2 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 12 2 0 0 0
+[Q COMMAND] CMD 12 2 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 47 2 0 0 0
+[Q COMMAND] CMD 47 2 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 6 2 59 0 0
+[Q COMMAND] CMD 6 2 59 0 0
+[Q ACK] sent=1
+
+# HOST CMD 55 2 4 0 0
+[Q COMMAND] CMD 55 2 4 0 0
+[Q ACK] sent=1
+
+# HOST CMD 51 2 1 0 0
+[Q COMMAND] CMD 51 2 1 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 2 0 0 0
+[Q COMMAND] CMD 2 2 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 31 2 59 0 0
+[Q COMMAND] CMD 31 2 59 0 0
+[Q ACK] sent=1
+
+# HOST CMD 38 2 0 0 0
+[Q COMMAND] CMD 38 2 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 2 1 0 1
+[Q COMMAND] CMD 2 2 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 31 2 59 0 1
+[Q COMMAND] CMD 31 2 59 0 1
+[Q ACK] sent=1
+
+# HOST CMD 38 2 1 0 1
+[Q COMMAND] CMD 38 2 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 2 2 2 0 2
+[Q COMMAND] CMD 2 2 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 31 2 59 0 2
+[Q COMMAND] CMD 31 2 59 0 2
+[Q ACK] sent=1
+
+# HOST CMD 38 2 2 0 2
+[Q COMMAND] CMD 38 2 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 2 2 3 0 3
+[Q COMMAND] CMD 2 2 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 31 2 59 0 3
+[Q COMMAND] CMD 31 2 59 0 3
+[Q ACK] sent=1
+
+# HOST CMD 38 2 3 0 3
+[Q COMMAND] CMD 38 2 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 2 2 4 0 4
+[Q COMMAND] CMD 2 2 4 0 4
+[Q ACK] sent=1
+
+# HOST CMD 31 2 59 0 4
+[Q COMMAND] CMD 31 2 59 0 4
+[Q ACK] sent=1
+
+# HOST CMD 38 2 0 0 4
+[Q COMMAND] CMD 38 2 0 0 4
+[Q ACK] sent=1
+
+# HOST CMD 2 2 5 0 5
+[Q COMMAND] CMD 2 2 5 0 5
+[Q ACK] sent=1
+
+# HOST CMD 31 2 59 0 5
+[Q COMMAND] CMD 31 2 59 0 5
+[Q ACK] sent=1
+
+# HOST CMD 38 2 1 0 5
+[Q COMMAND] CMD 38 2 1 0 5
+[Q ACK] sent=1
+
+# HOST CMD 2 2 6 0 6
+[Q COMMAND] CMD 2 2 6 0 6
+[Q ACK] sent=1
+
+# HOST CMD 31 2 59 0 6
+[Q COMMAND] CMD 31 2 59 0 6
+[Q ACK] sent=1
+
+# HOST CMD 38 2 2 0 6
+[Q COMMAND] CMD 38 2 2 0 6
+[Q ACK] sent=1
+
+# HOST CMD 2 2 7 0 7
+[Q COMMAND] CMD 2 2 7 0 7
+[Q ACK] sent=1
+
+# HOST CMD 31 2 59 0 7
+[Q COMMAND] CMD 31 2 59 0 7
+[Q ACK] sent=1
+
+# HOST CMD 38 2 3 0 7
+[Q COMMAND] CMD 38 2 3 0 7
+[Q ACK] sent=1
+
+# HOST CMD 2 2 8 0 8
+[Q COMMAND] CMD 2 2 8 0 8
+[Q ACK] sent=1
+
+# HOST CMD 31 2 59 0 8
+[Q COMMAND] CMD 31 2 59 0 8
+[Q ACK] sent=1
+
+# HOST CMD 38 2 0 0 8
+[Q COMMAND] CMD 38 2 0 0 8
+[Q ACK] sent=1
+
+# HOST CMD 2 2 9 0 9
+[Q COMMAND] CMD 2 2 9 0 9
+[Q ACK] sent=1
+
+# HOST CMD 31 2 59 0 9
+[Q COMMAND] CMD 31 2 59 0 9
+[Q ACK] sent=1
+
+# HOST CMD 38 2 1 0 9
+[Q COMMAND] CMD 38 2 1 0 9
+[Q ACK] sent=1
+
+# HOST CMD 2 2 10 0 10
+[Q COMMAND] CMD 2 2 10 0 10
+[Q ACK] sent=1
+
+# HOST CMD 31 2 59 0 10
+[Q COMMAND] CMD 31 2 59 0 10
+[Q ACK] sent=1
+
+# HOST CMD 38 2 2 0 10
+[Q COMMAND] CMD 38 2 2 0 10
+[Q ACK] sent=1
+
+# HOST CMD 2 2 11 0 11
+[Q COMMAND] CMD 2 2 11 0 11
+[Q ACK] sent=1
+
+# HOST CMD 31 2 59 0 11
+[Q COMMAND] CMD 31 2 59 0 11
+[Q ACK] sent=1
+
+# HOST CMD 38 2 3 0 11
+[Q COMMAND] CMD 38 2 3 0 11
+[Q ACK] sent=1
+
+# HOST CMD 2 2 12 0 12
+[Q COMMAND] CMD 2 2 12 0 12
+[Q ACK] sent=1
+
+# HOST CMD 31 2 59 0 12
+[Q COMMAND] CMD 31 2 59 0 12
+[Q ACK] sent=1
+
+# HOST CMD 38 2 0 0 12
+[Q COMMAND] CMD 38 2 0 0 12
+[Q ACK] sent=1
+
+# HOST CMD 2 2 13 0 13
+[Q COMMAND] CMD 2 2 13 0 13
+[Q ACK] sent=1
+
+# HOST CMD 31 2 59 0 13
+[Q COMMAND] CMD 31 2 59 0 13
+[Q ACK] sent=1
+
+# HOST CMD 38 2 1 0 13
+[Q COMMAND] CMD 38 2 1 0 13
+[Q ACK] sent=1
+
+# HOST CMD 2 2 14 0 14
+[Q COMMAND] CMD 2 2 14 0 14
+[Q ACK] sent=1
+
+# HOST CMD 31 2 59 0 14
+[Q COMMAND] CMD 31 2 59 0 14
+[Q ACK] sent=1
+
+# HOST CMD 38 2 2 0 14
+[Q COMMAND] CMD 38 2 2 0 14
+[Q ACK] sent=1
+
+# HOST CMD 2 2 15 0 15
+[Q COMMAND] CMD 2 2 15 0 15
+[Q ACK] sent=1
+
+# HOST CMD 31 2 59 0 15
+[Q COMMAND] CMD 31 2 59 0 15
+[Q ACK] sent=1
+
+# HOST CMD 38 2 3 0 15
+[Q COMMAND] CMD 38 2 3 0 15
+[Q ACK] sent=1
+
+# HOST CMD 10 3 0 0 0
+[Q COMMAND] CMD 10 3 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 12 3 0 0 0
+[Q COMMAND] CMD 12 3 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 47 3 0 0 0
+[Q COMMAND] CMD 47 3 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 6 3 59 0 0
+[Q COMMAND] CMD 6 3 59 0 0
+[Q ACK] sent=1
+
+# HOST CMD 55 3 4 0 0
+[Q COMMAND] CMD 55 3 4 0 0
+[Q ACK] sent=1
+
+# HOST CMD 51 3 1 0 0
+[Q COMMAND] CMD 51 3 1 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 3 0 0 0
+[Q COMMAND] CMD 2 3 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 31 3 59 0 0
+[Q COMMAND] CMD 31 3 59 0 0
+[Q ACK] sent=1
+
+# HOST CMD 38 3 0 0 0
+[Q COMMAND] CMD 38 3 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 3 1 0 1
+[Q COMMAND] CMD 2 3 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 31 3 59 0 1
+[Q COMMAND] CMD 31 3 59 0 1
+[Q ACK] sent=1
+
+# HOST CMD 38 3 1 0 1
+[Q COMMAND] CMD 38 3 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 2 3 2 0 2
+[Q COMMAND] CMD 2 3 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 31 3 59 0 2
+[Q COMMAND] CMD 31 3 59 0 2
+[Q ACK] sent=1
+
+# HOST CMD 38 3 2 0 2
+[Q COMMAND] CMD 38 3 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 2 3 3 0 3
+[Q COMMAND] CMD 2 3 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 31 3 59 0 3
+[Q COMMAND] CMD 31 3 59 0 3
+[Q ACK] sent=1
+
+# HOST CMD 38 3 3 0 3
+[Q COMMAND] CMD 38 3 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 2 3 4 0 4
+[Q COMMAND] CMD 2 3 4 0 4
+[Q ACK] sent=1
+
+# HOST CMD 31 3 59 0 4
+[Q COMMAND] CMD 31 3 59 0 4
+[Q ACK] sent=1
+
+# HOST CMD 38 3 0 0 4
+[Q COMMAND] CMD 38 3 0 0 4
+[Q ACK] sent=1
+
+# HOST CMD 2 3 5 0 5
+[Q COMMAND] CMD 2 3 5 0 5
+[Q ACK] sent=1
+
+# HOST CMD 31 3 59 0 5
+[Q COMMAND] CMD 31 3 59 0 5
+[Q ACK] sent=1
+
+# HOST CMD 38 3 1 0 5
+[Q COMMAND] CMD 38 3 1 0 5
+[Q ACK] sent=1
+
+# HOST CMD 2 3 6 0 6
+[Q COMMAND] CMD 2 3 6 0 6
+[Q ACK] sent=1
+
+# HOST CMD 31 3 59 0 6
+[Q COMMAND] CMD 31 3 59 0 6
+[Q ACK] sent=1
+
+# HOST CMD 38 3 2 0 6
+[Q COMMAND] CMD 38 3 2 0 6
+[Q ACK] sent=1
+
+# HOST CMD 2 3 7 0 7
+[Q COMMAND] CMD 2 3 7 0 7
+[Q ACK] sent=1
+
+# HOST CMD 31 3 59 0 7
+[Q COMMAND] CMD 31 3 59 0 7
+[Q ACK] sent=1
+
+# HOST CMD 38 3 3 0 7
+[Q COMMAND] CMD 38 3 3 0 7
+[Q ACK] sent=1
+
+# HOST CMD 2 3 8 0 8
+[Q COMMAND] CMD 2 3 8 0 8
+[Q ACK] sent=1
+
+# HOST CMD 31 3 59 0 8
+[Q COMMAND] CMD 31 3 59 0 8
+[Q ACK] sent=1
+
+# HOST CMD 38 3 0 0 8
+[Q COMMAND] CMD 38 3 0 0 8
+[Q ACK] sent=1
+
+# HOST CMD 2 3 9 0 9
+[Q COMMAND] CMD 2 3 9 0 9
+[Q ACK] sent=1
+
+# HOST CMD 31 3 59 0 9
+[Q COMMAND] CMD 31 3 59 0 9
+[Q ACK] sent=1
+
+# HOST CMD 38 3 1 0 9
+[Q COMMAND] CMD 38 3 1 0 9
+[Q ACK] sent=1
+
+# HOST CMD 2 3 10 0 10
+[Q COMMAND] CMD 2 3 10 0 10
+[Q ACK] sent=1
+
+# HOST CMD 31 3 59 0 10
+[Q COMMAND] CMD 31 3 59 0 10
+[Q ACK] sent=1
+
+# HOST CMD 38 3 2 0 10
+[Q COMMAND] CMD 38 3 2 0 10
+[Q ACK] sent=1
+
+# HOST CMD 2 3 11 0 11
+[Q COMMAND] CMD 2 3 11 0 11
+[Q ACK] sent=1
+
+# HOST CMD 31 3 59 0 11
+[Q COMMAND] CMD 31 3 59 0 11
+[Q ACK] sent=1
+
+# HOST CMD 38 3 3 0 11
+[Q COMMAND] CMD 38 3 3 0 11
+[Q ACK] sent=1
+
+# HOST CMD 2 3 12 0 12
+[Q COMMAND] CMD 2 3 12 0 12
+[Q ACK] sent=1
+
+# HOST CMD 31 3 59 0 12
+[Q COMMAND] CMD 31 3 59 0 12
+[Q ACK] sent=1
+
+# HOST CMD 38 3 0 0 12
+[Q COMMAND] CMD 38 3 0 0 12
+[Q ACK] sent=1
+
+# HOST CMD 2 3 13 0 13
+[Q COMMAND] CMD 2 3 13 0 13
+[Q ACK] sent=1
+
+# HOST CMD 31 3 59 0 13
+[Q COMMAND] CMD 31 3 59 0 13
+[Q ACK] sent=1
+
+# HOST CMD 38 3 1 0 13
+[Q COMMAND] CMD 38 3 1 0 13
+[Q ACK] sent=1
+
+# HOST CMD 2 3 14 0 14
+[Q COMMAND] CMD 2 3 14 0 14
+[Q ACK] sent=1
+
+# HOST CMD 31 3 59 0 14
+[Q COMMAND] CMD 31 3 59 0 14
+[Q ACK] sent=1
+
+# HOST CMD 38 3 2 0 14
+[Q COMMAND] CMD 38 3 2 0 14
+[Q ACK] sent=1
+
+# HOST CMD 2 3 15 0 15
+[Q COMMAND] CMD 2 3 15 0 15
+[Q ACK] sent=1
+
+# HOST CMD 31 3 59 0 15
+[Q COMMAND] CMD 31 3 59 0 15
+[Q ACK] sent=1
+
+# HOST CMD 38 3 3 0 15
+[Q COMMAND] CMD 38 3 3 0 15
+[Q ACK] sent=1
+
+# HOST CMD 10 4 0 0 0
+[Q COMMAND] CMD 10 4 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 12 4 0 0 0
+[Q COMMAND] CMD 12 4 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 47 4 0 0 0
+[Q COMMAND] CMD 47 4 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 6 4 59 0 0
+[Q COMMAND] CMD 6 4 59 0 0
+[Q ACK] sent=1
+
+# HOST CMD 55 4 4 0 0
+[Q COMMAND] CMD 55 4 4 0 0
+[Q ACK] sent=1
+
+# HOST CMD 51 4 1 0 0
+[Q COMMAND] CMD 51 4 1 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 4 0 0 0
+[Q COMMAND] CMD 2 4 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 31 4 59 0 0
+[Q COMMAND] CMD 31 4 59 0 0
+[Q ACK] sent=1
+
+# HOST CMD 38 4 0 0 0
+[Q COMMAND] CMD 38 4 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 4 1 0 1
+[Q COMMAND] CMD 2 4 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 31 4 59 0 1
+[Q COMMAND] CMD 31 4 59 0 1
+[Q ACK] sent=1
+
+# HOST CMD 38 4 1 0 1
+[Q COMMAND] CMD 38 4 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 2 4 2 0 2
+[Q COMMAND] CMD 2 4 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 31 4 59 0 2
+[Q COMMAND] CMD 31 4 59 0 2
+[Q ACK] sent=1
+
+# HOST CMD 38 4 2 0 2
+[Q COMMAND] CMD 38 4 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 2 4 3 0 3
+[Q COMMAND] CMD 2 4 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 31 4 59 0 3
+[Q COMMAND] CMD 31 4 59 0 3
+[Q ACK] sent=1
+
+# HOST CMD 38 4 3 0 3
+[Q COMMAND] CMD 38 4 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 2 4 4 0 4
+[Q COMMAND] CMD 2 4 4 0 4
+[Q ACK] sent=1
+
+# HOST CMD 31 4 59 0 4
+[Q COMMAND] CMD 31 4 59 0 4
+[Q ACK] sent=1
+
+# HOST CMD 38 4 0 0 4
+[Q COMMAND] CMD 38 4 0 0 4
+[Q ACK] sent=1
+
+# HOST CMD 2 4 5 0 5
+[Q COMMAND] CMD 2 4 5 0 5
+[Q ACK] sent=1
+
+# HOST CMD 31 4 59 0 5
+[Q COMMAND] CMD 31 4 59 0 5
+[Q ACK] sent=1
+
+# HOST CMD 38 4 1 0 5
+[Q COMMAND] CMD 38 4 1 0 5
+[Q ACK] sent=1
+
+# HOST CMD 2 4 6 0 6
+[Q COMMAND] CMD 2 4 6 0 6
+[Q ACK] sent=1
+
+# HOST CMD 31 4 59 0 6
+[Q COMMAND] CMD 31 4 59 0 6
+[Q ACK] sent=1
+
+# HOST CMD 38 4 2 0 6
+[Q COMMAND] CMD 38 4 2 0 6
+[Q ACK] sent=1
+
+# HOST CMD 2 4 7 0 7
+[Q COMMAND] CMD 2 4 7 0 7
+[Q ACK] sent=1
+
+# HOST CMD 31 4 59 0 7
+[Q COMMAND] CMD 31 4 59 0 7
+[Q ACK] sent=1
+
+# HOST CMD 38 4 3 0 7
+[Q COMMAND] CMD 38 4 3 0 7
+[Q ACK] sent=1
+
+# HOST CMD 2 4 8 0 8
+[Q COMMAND] CMD 2 4 8 0 8
+[Q ACK] sent=1
+
+# HOST CMD 31 4 59 0 8
+[Q COMMAND] CMD 31 4 59 0 8
+[Q ACK] sent=1
+
+# HOST CMD 38 4 0 0 8
+[Q COMMAND] CMD 38 4 0 0 8
+[Q ACK] sent=1
+
+# HOST CMD 2 4 9 0 9
+[Q COMMAND] CMD 2 4 9 0 9
+[Q ACK] sent=1
+
+# HOST CMD 31 4 59 0 9
+[Q COMMAND] CMD 31 4 59 0 9
+[Q ACK] sent=1
+
+# HOST CMD 38 4 1 0 9
+[Q COMMAND] CMD 38 4 1 0 9
+[Q ACK] sent=1
+
+# HOST CMD 2 4 10 0 10
+[Q COMMAND] CMD 2 4 10 0 10
+[Q ACK] sent=1
+
+# HOST CMD 31 4 59 0 10
+[Q COMMAND] CMD 31 4 59 0 10
+[Q ACK] sent=1
+
+# HOST CMD 38 4 2 0 10
+[Q COMMAND] CMD 38 4 2 0 10
+[Q ACK] sent=1
+
+# HOST CMD 2 4 11 0 11
+[Q COMMAND] CMD 2 4 11 0 11
+[Q ACK] sent=1
+
+# HOST CMD 31 4 59 0 11
+[Q COMMAND] CMD 31 4 59 0 11
+[Q ACK] sent=1
+
+# HOST CMD 38 4 3 0 11
+[Q COMMAND] CMD 38 4 3 0 11
+[Q ACK] sent=1
+
+# HOST CMD 2 4 12 0 12
+[Q COMMAND] CMD 2 4 12 0 12
+[Q ACK] sent=1
+
+# HOST CMD 31 4 59 0 12
+[Q COMMAND] CMD 31 4 59 0 12
+[Q ACK] sent=1
+
+# HOST CMD 38 4 0 0 12
+[Q COMMAND] CMD 38 4 0 0 12
+[Q ACK] sent=1
+
+# HOST CMD 2 4 13 0 13
+[Q COMMAND] CMD 2 4 13 0 13
+[Q ACK] sent=1
+
+# HOST CMD 31 4 59 0 13
+[Q COMMAND] CMD 31 4 59 0 13
+[Q ACK] sent=1
+
+# HOST CMD 38 4 1 0 13
+[Q COMMAND] CMD 38 4 1 0 13
+[Q ACK] sent=1
+
+# HOST CMD 2 4 14 0 14
+[Q COMMAND] CMD 2 4 14 0 14
+[Q ACK] sent=1
+
+# HOST CMD 31 4 59 0 14
+[Q COMMAND] CMD 31 4 59 0 14
+[Q ACK] sent=1
+
+# HOST CMD 38 4 2 0 14
+[Q COMMAND] CMD 38 4 2 0 14
+[Q ACK] sent=1
+
+# HOST CMD 2 4 15 0 15
+[Q COMMAND] CMD 2 4 15 0 15
+[Q ACK] sent=1
+
+# HOST CMD 31 4 59 0 15
+[Q COMMAND] CMD 31 4 59 0 15
+[Q ACK] sent=1
+
+# HOST CMD 38 4 3 0 15
+[Q COMMAND] CMD 38 4 3 0 15
+[Q ACK] sent=1
+
+# HOST CMD 10 5 0 0 0
+[Q COMMAND] CMD 10 5 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 12 5 0 0 0
+[Q COMMAND] CMD 12 5 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 47 5 0 0 0
+[Q COMMAND] CMD 47 5 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 6 5 59 0 0
+[Q COMMAND] CMD 6 5 59 0 0
+[Q ACK] sent=1
+[M5] blocks=10337 p50=1817 p95=1920 p99=1961 max=2117 misses=0 failures=0 timeouts=0 peak=0 nonzero=0 rails=0 active_min=0 active_max=0
+[M8 groove] parents=0 passed=0 skipped=0 ratchets=0 pending_max=0 velocity_min=127 velocity_max=0 swing_changes=0
+[MEM] M8 after 60s PSRAM total=33554432 free=24986092 largest=24641524 internal_free=173680
+[M10 locks] locked=0 unlocked=0 pitch=0 volume=0 pan=0 wave=0 pattern_bytes=3106 bank_bytes=49696 engine_bytes=52616
+[M11 tone] cutoff=0 resonance=0 send=0 cutoff_min=127 cutoff_max=0 resonance_min=127 resonance_max=0 send_min=127 send_max=0 blocks=0 max=0 dense=0 dense_max=0
+[
+# HOST CMD 55 5 4 0 0
+M12 locks] cutoff=0 resonance=0 send=0 coefficients=0 avoided=2[Q COMMAND] CMD 55 5 4 0 0
+1 send_changes=0 coefficient_blo[Q ACK] sent=1
+cks=0 coefficient_max=0 edit_blocks=0 edit_max=0 commands=0 step_bytes=9 event_bytes=20 voice_bytes=384 idle_residue=0
+[M17 chain] starts=0 advances=0 repeats=0 loops=0 stops=0 switches=0 min_length=16 max_length=0 boundary_max=0 seen=0 entry_bytes=2 chain_bytes=66 engine_bytes=52616
+[M18 performance] override_requests=0 override_accepts=0 override_loops=0 override_cancels=0 returns=0 fill_requests=0 fill_accepts=0 fill_completions=0 fill_to_override=0 fill_to_arrangement=0 mute_edits=0 solo_edits=0 boundaries=0 boundary_max=0 state_bytes=352 engine_bytes=52616 publication_bytes=24
+[M181 repeat] requests=0 accepts=0 cancelled=0 x2_windows=0 x4_windows=0 x8_windows=0 hits=0 x8_h
+# HOST CMD 51 5 1 0 0
+its=0 changes=0 releases=0 empty=0 captured_max=0 suppressed=0 [Q COMMAND] CMD 51 5 1 0 0
+worst=0 capture_bytes=324 repeat[Q ACK] sent=1
+_bytes=336
+[M181 x8] blocks=0 worst=0 active_min=0 active_max=0 coefficients=0 avoided=0 chokes=0 full_blocks=0
+[M181 runtime] requested=0 active=0 count=0 ui_presses=0 ui_releases=0 ui_edits=0
+[M18 runtime] override_target=0 override_active=0 fill_pending=0 fill_active=0 return_pattern=0 return_end=0 mutes=0 solos=0 ui_bytes=116
+[M19 analysis] requests=0 completed=0 cancelled=0 stale_discarded=0 frames=0 candidates=0 selected=0 proposals=0 apply=0 cancel=0 min_count=0 max_count=0 sensitivity=0 target=0 duration_max_us=0 chunk_max_us=0
+[M19 overlap] blocks=0 worst=0 misses=0 x8_blocks=0 ui_interval_max_us=0 detector_bytes=616 candi
+# HOST CMD 2 5 0 0 0
+date_bytes=512 proposal_bytes=8[Q COMMAND] CMD 2 5 0 0 0
+4 status_bytes=100 storage_stack[Q ACK] sent=1
+=7000 stack_free_min=0
+[M18 UI] entries=0 pads=0 fills=0 toggles=0 switches=0
+[M17 UI] entries=0 edits=0 rows=0 scrolls=0
+[M16 project] state_bytes=53192 file_bytes=52704 snapshot_blocks=0 snapshot_max=0 apply_blocks=0 apply_max=0 fixtures=0 fixture_errors=0 dirty=1 physical_pending=1
+[M13 dense] blocks=2068 active_min=0
+[M13 playback] triggers=0 reverse=0 gate=0 releases=0 ends=0 choke_ops=0 choked=0 retriggers=0 region_min=0 region_max=0 max=2117 choke_max=0 retrigger_max=0 voice_bytes=64 track_bytes=116 event_bytes=20
+[M15 locks] locked=0 unlocked=0 unsliced=0 requested_min=0 requested_max=0 resolved_min=0 resolved_max=0 clamped=0 edits=80 ui_ed
+# HOST CMD 31 5 59 0 0
+its=0 align=1 requested_seen=0 resolved_seen=0
+[Q COMMAND] CMD 31 5 59 0 0
+[M14 slices] triggers=0 audition[Q ACK] sent=1
+s=0 index_min=0 index_max=0 frames_min=0 frames_max=0 active_changes=0 divides=6 adds=0 deletes=0 resets=0 edit_blocks=90 edit_max=1875 slice_bytes=4 bank_bytes=66 sample_bytes=1556
+[M10 worst] blocks=0 max=0
+[M9 tools] rotate=0 reverse=0 copy_track=0 clear_track=0 duplicate=0 euclidean=0 randomize=0 mutate=0 reroll=0 blocks=0 dense_blocks=0 max=0
+
+# HOST CMD 38 5 0 0 0
+[Q COMMAND] CMD 38 5 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 5 1 0 1
+[Q COMMAND] CMD 2 5 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 31 5 59 0 1
+[Q COMMAND] CMD 31 5 59 0 1
+[Q ACK] sent=1
+
+# HOST CMD 38 5 1 0 1
+[Q COMMAND] CMD 38 5 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 2 5 2 0 2
+[Q COMMAND] CMD 2 5 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 31 5 59 0 2
+[Q COMMAND] CMD 31 5 59 0 2
+[Q ACK] sent=1
+
+# HOST CMD 38 5 2 0 2
+[Q COMMAND] CMD 38 5 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 2 5 3 0 3
+[Q COMMAND] CMD 2 5 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 31 5 59 0 3
+[Q COMMAND] CMD 31 5 59 0 3
+[Q ACK] sent=1
+
+# HOST CMD 38 5 3 0 3
+[Q COMMAND] CMD 38 5 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 2 5 4 0 4
+[Q COMMAND] CMD 2 5 4 0 4
+[Q ACK] sent=1
+
+# HOST CMD 31 5 59 0 4
+[Q COMMAND] CMD 31 5 59 0 4
+[Q ACK] sent=1
+
+# HOST CMD 38 5 0 0 4
+[Q COMMAND] CMD 38 5 0 0 4
+[Q ACK] sent=1
+
+# HOST CMD 2 5 5 0 5
+[Q COMMAND] CMD 2 5 5 0 5
+[Q ACK] sent=1
+
+# HOST CMD 31 5 59 0 5
+[Q COMMAND] CMD 31 5 59 0 5
+[Q ACK] sent=1
+
+# HOST CMD 38 5 1 0 5
+[Q COMMAND] CMD 38 5 1 0 5
+[Q ACK] sent=1
+
+# HOST CMD 2 5 6 0 6
+[Q COMMAND] CMD 2 5 6 0 6
+[Q ACK] sent=1
+
+# HOST CMD 31 5 59 0 6
+[Q COMMAND] CMD 31 5 59 0 6
+[Q ACK] sent=1
+
+# HOST CMD 38 5 2 0 6
+[Q COMMAND] CMD 38 5 2 0 6
+[Q ACK] sent=1
+
+# HOST CMD 2 5 7 0 7
+[Q COMMAND] CMD 2 5 7 0 7
+[Q ACK] sent=1
+[
+# HOST CMD 31 5 59 0 7
+M5 UI] seconds=63.006 submitted=334 completed=334 dirty_avg=168162 dirty_max=768000 full=33 preparation_max_us=69051 touch_errors=0 rejected=0 pads=0 steps=0 drags=0 pages=0 transport=0 bpm=0 skipped=32
+[M7 patterns] switches=0 loops=0 selections=0 copies=0 clears=0 lengths=0 solos=0 mutes=0 normal_frames=301 dirty_avg=102400 dirty_max=102400 pattern_bytes=3106 command_bytes=12
+[M7 applied] long_to_short=0 short_to_long=0 queue_replacements=0 copies=0 clears=1 lengths=1 solos=6 mutes=6 steps=88
+[M9 UI] entries=0 copies=0 randomize=0 cell_max=0 edit_full=0
+[M12 UI] entries=0 edits=0 widgets_max=0 edit_full=0
+[M11 UI] entries=0 edits=0 widgets_max=0 edit_full=0
+[M10 UI] entries=0 edits=0 widgets_max=0 edit_full=0
+[
+# HOST CMD 38 5 3 0 7
+M13 UI] entries=0 edits=0 widgets_max=0 edit_full=0
+[M14 UI] entries=0 edits=0 edit_full=0 waveform_first_us=0 waveform_redraw_max_us=0 slice_redraw_max_us=0 build_count=16 build_max_us=432330 large_us=0 cache_bytes=1440 page_max_us=0 drag_dirty_max=0
+[M5 memory] ps_before=30753324 ps_after=24986092 internal_before=199344 internal_after=173680 largest_before=30408692 largest_after=24641524
+[Q COMMAND] CMD 31 5 59 0 7
+[Q ACK] sent=1
+[Q COMMAND] CMD 38 5 3 0 7
+[Q ACK] sent=1
+
+# HOST CMD 2 5 8 0 8
+[Q COMMAND] CMD 2 5 8 0 8
+[Q ACK] sent=1
+
+# HOST CMD 31 5 59 0 8
+[Q COMMAND] CMD 31 5 59 0 8
+[Q ACK] sent=1
+
+# HOST CMD 38 5 0 0 8
+[Q COMMAND] CMD 38 5 0 0 8
+[Q ACK] sent=1
+
+# HOST CMD 2 5 9 0 9
+[Q COMMAND] CMD 2 5 9 0 9
+[Q ACK] sent=1
+
+# HOST CMD 31 5 59 0 9
+[Q COMMAND] CMD 31 5 59 0 9
+[Q ACK] sent=1
+
+# HOST CMD 38 5 1 0 9
+[Q COMMAND] CMD 38 5 1 0 9
+[Q ACK] sent=1
+
+# HOST CMD 2 5 10 0 10
+[Q COMMAND] CMD 2 5 10 0 10
+[Q ACK] sent=1
+
+# HOST CMD 31 5 59 0 10
+[Q COMMAND] CMD 31 5 59 0 10
+[Q ACK] sent=1
+
+# HOST CMD 38 5 2 0 10
+[Q COMMAND] CMD 38 5 2 0 10
+[Q ACK] sent=1
+
+# HOST CMD 2 5 11 0 11
+[Q COMMAND] CMD 2 5 11 0 11
+[Q ACK] sent=1
+
+# HOST CMD 31 5 59 0 11
+[Q COMMAND] CMD 31 5 59 0 11
+[Q ACK] sent=1
+
+# HOST CMD 38 5 3 0 11
+[Q COMMAND] CMD 38 5 3 0 11
+[Q ACK] sent=1
+
+# HOST CMD 2 5 12 0 12
+[Q COMMAND] CMD 2 5 12 0 12
+[Q ACK] sent=1
+
+# HOST CMD 31 5 59 0 12
+[Q COMMAND] CMD 31 5 59 0 12
+[Q ACK] sent=1
+
+# HOST CMD 38 5 0 0 12
+[Q COMMAND] CMD 38 5 0 0 12
+[Q ACK] sent=1
+
+# HOST CMD 2 5 13 0 13
+[Q COMMAND] CMD 2 5 13 0 13
+[Q ACK] sent=1
+
+# HOST CMD 31 5 59 0 13
+[Q COMMAND] CMD 31 5 59 0 13
+[Q ACK] sent=1
+
+# HOST CMD 38 5 1 0 13
+[Q COMMAND] CMD 38 5 1 0 13
+[Q ACK] sent=1
+
+# HOST CMD 2 5 14 0 14
+[Q COMMAND] CMD 2 5 14 0 14
+[Q ACK] sent=1
+
+# HOST CMD 31 5 59 0 14
+[Q COMMAND] CMD 31 5 59 0 14
+[Q ACK] sent=1
+
+# HOST CMD 38 5 2 0 14
+[Q COMMAND] CMD 38 5 2 0 14
+[Q ACK] sent=1
+
+# HOST CMD 2 5 15 0 15
+[Q COMMAND] CMD 2 5 15 0 15
+[Q ACK] sent=1
+
+# HOST CMD 31 5 59 0 15
+[Q COMMAND] CMD 31 5 59 0 15
+[Q ACK] sent=1
+
+# HOST CMD 38 5 3 0 15
+[Q COMMAND] CMD 38 5 3 0 15
+[Q ACK] sent=1
+
+# HOST CMD 10 6 0 0 0
+[Q COMMAND] CMD 10 6 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 12 6 0 0 0
+[Q COMMAND] CMD 12 6 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 47 6 0 0 0
+[Q COMMAND] CMD 47 6 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 6 6 59 0 0
+[Q COMMAND] CMD 6 6 59 0 0
+[Q ACK] sent=1
+
+# HOST CMD 55 6 4 0 0
+[Q COMMAND] CMD 55 6 4 0 0
+[Q ACK] sent=1
+
+# HOST CMD 51 6 1 0 0
+[Q COMMAND] CMD 51 6 1 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 6 0 0 0
+[Q COMMAND] CMD 2 6 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 31 6 59 0 0
+[Q COMMAND] CMD 31 6 59 0 0
+[Q ACK] sent=1
+
+# HOST CMD 38 6 0 0 0
+[Q COMMAND] CMD 38 6 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 6 1 0 1
+[Q COMMAND] CMD 2 6 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 31 6 59 0 1
+[Q COMMAND] CMD 31 6 59 0 1
+[Q ACK] sent=1
+
+# HOST CMD 38 6 1 0 1
+[Q COMMAND] CMD 38 6 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 2 6 2 0 2
+[Q COMMAND] CMD 2 6 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 31 6 59 0 2
+[Q COMMAND] CMD 31 6 59 0 2
+[Q ACK] sent=1
+
+# HOST CMD 38 6 2 0 2
+[Q COMMAND] CMD 38 6 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 2 6 3 0 3
+[Q COMMAND] CMD 2 6 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 31 6 59 0 3
+[Q COMMAND] CMD 31 6 59 0 3
+[Q ACK] sent=1
+
+# HOST CMD 38 6 3 0 3
+[Q COMMAND] CMD 38 6 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 2 6 4 0 4
+[Q COMMAND] CMD 2 6 4 0 4
+[Q ACK] sent=1
+
+# HOST CMD 31 6 59 0 4
+[Q COMMAND] CMD 31 6 59 0 4
+[Q ACK] sent=1
+
+# HOST CMD 38 6 0 0 4
+[Q COMMAND] CMD 38 6 0 0 4
+[Q ACK] sent=1
+
+# HOST CMD 2 6 5 0 5
+[Q COMMAND] CMD 2 6 5 0 5
+[Q ACK] sent=1
+
+# HOST CMD 31 6 59 0 5
+[Q COMMAND] CMD 31 6 59 0 5
+[Q ACK] sent=1
+
+# HOST CMD 38 6 1 0 5
+[Q COMMAND] CMD 38 6 1 0 5
+[Q ACK] sent=1
+
+# HOST CMD 2 6 6 0 6
+[Q COMMAND] CMD 2 6 6 0 6
+[Q ACK] sent=1
+
+# HOST CMD 31 6 59 0 6
+[Q COMMAND] CMD 31 6 59 0 6
+[Q ACK] sent=1
+
+# HOST CMD 38 6 2 0 6
+[Q COMMAND] CMD 38 6 2 0 6
+[Q ACK] sent=1
+
+# HOST CMD 2 6 7 0 7
+[Q COMMAND] CMD 2 6 7 0 7
+[Q ACK] sent=1
+
+# HOST CMD 31 6 59 0 7
+[Q COMMAND] CMD 31 6 59 0 7
+[Q ACK] sent=1
+
+# HOST CMD 38 6 3 0 7
+[Q COMMAND] CMD 38 6 3 0 7
+[Q ACK] sent=1
+
+# HOST CMD 2 6 8 0 8
+[Q COMMAND] CMD 2 6 8 0 8
+[Q ACK] sent=1
+
+# HOST CMD 31 6 59 0 8
+[Q COMMAND] CMD 31 6 59 0 8
+[Q ACK] sent=1
+
+# HOST CMD 38 6 0 0 8
+[Q COMMAND] CMD 38 6 0 0 8
+[Q ACK] sent=1
+
+# HOST CMD 2 6 9 0 9
+[Q COMMAND] CMD 2 6 9 0 9
+[Q ACK] sent=1
+
+# HOST CMD 31 6 59 0 9
+[Q COMMAND] CMD 31 6 59 0 9
+[Q ACK] sent=1
+
+# HOST CMD 38 6 1 0 9
+[Q COMMAND] CMD 38 6 1 0 9
+[Q ACK] sent=1
+
+# HOST CMD 2 6 10 0 10
+[Q COMMAND] CMD 2 6 10 0 10
+[Q ACK] sent=1
+
+# HOST CMD 31 6 59 0 10
+[Q COMMAND] CMD 31 6 59 0 10
+[Q ACK] sent=1
+
+# HOST CMD 38 6 2 0 10
+[Q COMMAND] CMD 38 6 2 0 10
+[Q ACK] sent=1
+
+# HOST CMD 2 6 11 0 11
+[Q COMMAND] CMD 2 6 11 0 11
+[Q ACK] sent=1
+
+# HOST CMD 31 6 59 0 11
+[Q COMMAND] CMD 31 6 59 0 11
+[Q ACK] sent=1
+
+# HOST CMD 38 6 3 0 11
+[Q COMMAND] CMD 38 6 3 0 11
+[Q ACK] sent=1
+
+# HOST CMD 2 6 12 0 12
+[Q COMMAND] CMD 2 6 12 0 12
+[Q ACK] sent=1
+
+# HOST CMD 31 6 59 0 12
+[Q COMMAND] CMD 31 6 59 0 12
+[Q ACK] sent=1
+
+# HOST CMD 38 6 0 0 12
+[Q COMMAND] CMD 38 6 0 0 12
+[Q ACK] sent=1
+
+# HOST CMD 2 6 13 0 13
+[Q COMMAND] CMD 2 6 13 0 13
+[Q ACK] sent=1
+
+# HOST CMD 31 6 59 0 13
+[Q COMMAND] CMD 31 6 59 0 13
+[Q ACK] sent=1
+
+# HOST CMD 38 6 1 0 13
+[Q COMMAND] CMD 38 6 1 0 13
+[Q ACK] sent=1
+
+# HOST CMD 2 6 14 0 14
+[Q COMMAND] CMD 2 6 14 0 14
+[Q ACK] sent=1
+
+# HOST CMD 31 6 59 0 14
+[Q COMMAND] CMD 31 6 59 0 14
+[Q ACK] sent=1
+
+# HOST CMD 38 6 2 0 14
+[Q COMMAND] CMD 38 6 2 0 14
+[Q ACK] sent=1
+
+# HOST CMD 2 6 15 0 15
+[Q COMMAND] CMD 2 6 15 0 15
+[Q ACK] sent=1
+
+# HOST CMD 31 6 59 0 15
+[Q COMMAND] CMD 31 6 59 0 15
+[Q ACK] sent=1
+
+# HOST CMD 38 6 3 0 15
+[Q COMMAND] CMD 38 6 3 0 15
+[Q ACK] sent=1
+
+# HOST CMD 10 7 0 0 0
+[Q COMMAND] CMD 10 7 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 12 7 0 0 0
+[Q COMMAND] CMD 12 7 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 47 7 0 0 0
+[Q COMMAND] CMD 47 7 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 6 7 59 0 0
+[Q COMMAND] CMD 6 7 59 0 0
+[Q ACK] sent=1
+
+# HOST CMD 55 7 4 0 0
+[Q COMMAND] CMD 55 7 4 0 0
+[Q ACK] sent=1
+
+# HOST CMD 51 7 1 0 0
+[Q COMMAND] CMD 51 7 1 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 7 0 0 0
+[Q COMMAND] CMD 2 7 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 31 7 59 0 0
+[Q COMMAND] CMD 31 7 59 0 0
+[Q ACK] sent=1
+
+# HOST CMD 38 7 0 0 0
+[Q COMMAND] CMD 38 7 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 7 1 0 1
+[Q COMMAND] CMD 2 7 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 31 7 59 0 1
+[Q COMMAND] CMD 31 7 59 0 1
+[Q ACK] sent=1
+
+# HOST CMD 38 7 1 0 1
+[Q COMMAND] CMD 38 7 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 2 7 2 0 2
+[Q COMMAND] CMD 2 7 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 31 7 59 0 2
+[Q COMMAND] CMD 31 7 59 0 2
+[Q ACK] sent=1
+
+# HOST CMD 38 7 2 0 2
+[Q COMMAND] CMD 38 7 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 2 7 3 0 3
+[Q COMMAND] CMD 2 7 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 31 7 59 0 3
+[Q COMMAND] CMD 31 7 59 0 3
+[Q ACK] sent=1
+
+# HOST CMD 38 7 3 0 3
+[Q COMMAND] CMD 38 7 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 2 7 4 0 4
+[Q COMMAND] CMD 2 7 4 0 4
+[Q ACK] sent=1
+
+# HOST CMD 31 7 59 0 4
+[Q COMMAND] CMD 31 7 59 0 4
+[Q ACK] sent=1
+
+# HOST CMD 38 7 0 0 4
+[Q COMMAND] CMD 38 7 0 0 4
+[Q ACK] sent=1
+
+# HOST CMD 2 7 5 0 5
+[Q COMMAND] CMD 2 7 5 0 5
+[Q ACK] sent=1
+
+# HOST CMD 31 7 59 0 5
+[Q COMMAND] CMD 31 7 59 0 5
+[Q ACK] sent=1
+
+# HOST CMD 38 7 1 0 5
+[Q COMMAND] CMD 38 7 1 0 5
+[Q ACK] sent=1
+
+# HOST CMD 2 7 6 0 6
+[Q COMMAND] CMD 2 7 6 0 6
+[Q ACK] sent=1
+
+# HOST CMD 31 7 59 0 6
+[Q COMMAND] CMD 31 7 59 0 6
+[Q ACK] sent=1
+
+# HOST CMD 38 7 2 0 6
+[Q COMMAND] CMD 38 7 2 0 6
+[Q ACK] sent=1
+
+# HOST CMD 2 7 7 0 7
+[Q COMMAND] CMD 2 7 7 0 7
+[Q ACK] sent=1
+
+# HOST CMD 31 7 59 0 7
+[Q COMMAND] CMD 31 7 59 0 7
+[Q ACK] sent=1
+
+# HOST CMD 38 7 3 0 7
+[Q COMMAND] CMD 38 7 3 0 7
+[Q ACK] sent=1
+
+# HOST CMD 2 7 8 0 8
+[Q COMMAND] CMD 2 7 8 0 8
+[Q ACK] sent=1
+
+# HOST CMD 31 7 59 0 8
+[Q COMMAND] CMD 31 7 59 0 8
+[Q ACK] sent=1
+
+# HOST CMD 38 7 0 0 8
+[Q COMMAND] CMD 38 7 0 0 8
+[Q ACK] sent=1
+
+# HOST CMD 2 7 9 0 9
+[Q COMMAND] CMD 2 7 9 0 9
+[Q ACK] sent=1
+
+# HOST CMD 31 7 59 0 9
+[Q COMMAND] CMD 31 7 59 0 9
+[Q ACK] sent=1
+
+# HOST CMD 38 7 1 0 9
+[Q COMMAND] CMD 38 7 1 0 9
+[Q ACK] sent=1
+
+# HOST CMD 2 7 10 0 10
+[Q COMMAND] CMD 2 7 10 0 10
+[Q ACK] sent=1
+
+# HOST CMD 31 7 59 0 10
+[Q COMMAND] CMD 31 7 59 0 10
+[Q ACK] sent=1
+
+# HOST CMD 38 7 2 0 10
+[Q COMMAND] CMD 38 7 2 0 10
+[Q ACK] sent=1
+
+# HOST CMD 2 7 11 0 11
+[Q COMMAND] CMD 2 7 11 0 11
+[Q ACK] sent=1
+
+# HOST CMD 31 7 59 0 11
+[Q COMMAND] CMD 31 7 59 0 11
+[Q ACK] sent=1
+
+# HOST CMD 38 7 3 0 11
+[Q COMMAND] CMD 38 7 3 0 11
+[Q ACK] sent=1
+
+# HOST CMD 2 7 12 0 12
+[Q COMMAND] CMD 2 7 12 0 12
+[Q ACK] sent=1
+
+# HOST CMD 31 7 59 0 12
+[Q COMMAND] CMD 31 7 59 0 12
+[Q ACK] sent=1
+
+# HOST CMD 38 7 0 0 12
+[Q COMMAND] CMD 38 7 0 0 12
+[Q ACK] sent=1
+
+# HOST CMD 2 7 13 0 13
+[Q COMMAND] CMD 2 7 13 0 13
+[Q ACK] sent=1
+
+# HOST CMD 31 7 59 0 13
+[Q COMMAND] CMD 31 7 59 0 13
+[Q ACK] sent=1
+
+# HOST CMD 38 7 1 0 13
+[Q COMMAND] CMD 38 7 1 0 13
+[Q ACK] sent=1
+
+# HOST CMD 2 7 14 0 14
+[Q COMMAND] CMD 2 7 14 0 14
+[Q ACK] sent=1
+
+# HOST CMD 31 7 59 0 14
+[Q COMMAND] CMD 31 7 59 0 14
+[Q ACK] sent=1
+
+# HOST CMD 38 7 2 0 14
+[Q COMMAND] CMD 38 7 2 0 14
+[Q ACK] sent=1
+
+# HOST CMD 2 7 15 0 15
+[Q COMMAND] CMD 2 7 15 0 15
+[Q ACK] sent=1
+
+# HOST CMD 31 7 59 0 15
+[Q COMMAND] CMD 31 7 59 0 15
+[Q ACK] sent=1
+
+# HOST CMD 38 7 3 0 15
+[Q COMMAND] CMD 38 7 3 0 15
+[Q ACK] sent=1
+
+# HOST CMD 10 8 0 0 0
+[Q COMMAND] CMD 10 8 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 12 8 0 0 0
+[Q COMMAND] CMD 12 8 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 47 8 0 0 0
+[Q COMMAND] CMD 47 8 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 6 8 59 0 0
+[Q COMMAND] CMD 6 8 59 0 0
+[Q ACK] sent=1
+
+# HOST CMD 55 8 4 0 0
+[Q COMMAND] CMD 55 8 4 0 0
+[Q ACK] sent=1
+
+# HOST CMD 51 8 1 0 0
+[Q COMMAND] CMD 51 8 1 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 8 0 0 0
+[Q COMMAND] CMD 2 8 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 31 8 59 0 0
+[Q COMMAND] CMD 31 8 59 0 0
+[Q ACK] sent=1
+
+# HOST CMD 38 8 0 0 0
+[Q COMMAND] CMD 38 8 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 8 1 0 1
+[Q COMMAND] CMD 2 8 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 31 8 59 0 1
+[Q COMMAND] CMD 31 8 59 0 1
+[Q ACK] sent=1
+
+# HOST CMD 38 8 1 0 1
+[Q COMMAND] CMD 38 8 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 2 8 2 0 2
+[Q COMMAND] CMD 2 8 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 31 8 59 0 2
+[Q COMMAND] CMD 31 8 59 0 2
+[Q ACK] sent=1
+
+# HOST CMD 38 8 2 0 2
+[Q COMMAND] CMD 38 8 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 2 8 3 0 3
+[Q COMMAND] CMD 2 8 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 31 8 59 0 3
+[Q COMMAND] CMD 31 8 59 0 3
+[Q ACK] sent=1
+
+# HOST CMD 38 8 3 0 3
+[Q COMMAND] CMD 38 8 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 2 8 4 0 4
+[Q COMMAND] CMD 2 8 4 0 4
+[Q ACK] sent=1
+
+# HOST CMD 31 8 59 0 4
+[Q COMMAND] CMD 31 8 59 0 4
+[Q ACK] sent=1
+
+# HOST CMD 38 8 0 0 4
+[Q COMMAND] CMD 38 8 0 0 4
+[Q ACK] sent=1
+
+# HOST CMD 2 8 5 0 5
+[Q COMMAND] CMD 2 8 5 0 5
+[Q ACK] sent=1
+
+# HOST CMD 31 8 59 0 5
+[Q COMMAND] CMD 31 8 59 0 5
+[Q ACK] sent=1
+
+# HOST CMD 38 8 1 0 5
+[Q COMMAND] CMD 38 8 1 0 5
+[Q ACK] sent=1
+
+# HOST CMD 2 8 6 0 6
+[Q COMMAND] CMD 2 8 6 0 6
+[Q ACK] sent=1
+
+# HOST CMD 31 8 59 0 6
+[Q COMMAND] CMD 31 8 59 0 6
+[Q ACK] sent=1
+
+# HOST CMD 38 8 2 0 6
+[Q COMMAND] CMD 38 8 2 0 6
+[Q ACK] sent=1
+
+# HOST CMD 2 8 7 0 7
+[Q COMMAND] CMD 2 8 7 0 7
+[Q ACK] sent=1
+
+# HOST CMD 31 8 59 0 7
+[Q COMMAND] CMD 31 8 59 0 7
+[Q ACK] sent=1
+
+# HOST CMD 38 8 3 0 7
+[Q COMMAND] CMD 38 8 3 0 7
+[Q ACK] sent=1
+
+# HOST CMD 2 8 8 0 8
+[Q COMMAND] CMD 2 8 8 0 8
+[Q ACK] sent=1
+
+# HOST CMD 31 8 59 0 8
+[Q COMMAND] CMD 31 8 59 0 8
+[Q ACK] sent=1
+
+# HOST CMD 38 8 0 0 8
+[Q COMMAND] CMD 38 8 0 0 8
+[Q ACK] sent=1
+
+# HOST CMD 2 8 9 0 9
+[Q COMMAND] CMD 2 8 9 0 9
+[Q ACK] sent=1
+
+# HOST CMD 31 8 59 0 9
+[Q COMMAND] CMD 31 8 59 0 9
+[Q ACK] sent=1
+
+# HOST CMD 38 8 1 0 9
+[Q COMMAND] CMD 38 8 1 0 9
+[Q ACK] sent=1
+
+# HOST CMD 2 8 10 0 10
+[Q COMMAND] CMD 2 8 10 0 10
+[Q ACK] sent=1
+
+# HOST CMD 31 8 59 0 10
+[Q COMMAND] CMD 31 8 59 0 10
+[Q ACK] sent=1
+
+# HOST CMD 38 8 2 0 10
+[Q COMMAND] CMD 38 8 2 0 10
+[Q ACK] sent=1
+
+# HOST CMD 2 8 11 0 11
+[Q COMMAND] CMD 2 8 11 0 11
+[Q ACK] sent=1
+
+# HOST CMD 31 8 59 0 11
+[Q COMMAND] CMD 31 8 59 0 11
+[Q ACK] sent=1
+
+# HOST CMD 38 8 3 0 11
+[Q COMMAND] CMD 38 8 3 0 11
+[Q ACK] sent=1
+
+# HOST CMD 2 8 12 0 12
+[Q COMMAND] CMD 2 8 12 0 12
+[Q ACK] sent=1
+
+# HOST CMD 31 8 59 0 12
+[Q COMMAND] CMD 31 8 59 0 12
+[Q ACK] sent=1
+
+# HOST CMD 38 8 0 0 12
+[Q COMMAND] CMD 38 8 0 0 12
+[Q ACK] sent=1
+
+# HOST CMD 2 8 13 0 13
+[Q COMMAND] CMD 2 8 13 0 13
+[Q ACK] sent=1
+
+# HOST CMD 31 8 59 0 13
+[Q COMMAND] CMD 31 8 59 0 13
+[Q ACK] sent=1
+
+# HOST CMD 38 8 1 0 13
+[Q COMMAND] CMD 38 8 1 0 13
+[Q ACK] sent=1
+
+# HOST CMD 2 8 14 0 14
+[Q COMMAND] CMD 2 8 14 0 14
+[Q ACK] sent=1
+
+# HOST CMD 31 8 59 0 14
+[Q COMMAND] CMD 31 8 59 0 14
+[Q ACK] sent=1
+
+# HOST CMD 38 8 2 0 14
+[Q COMMAND] CMD 38 8 2 0 14
+[Q ACK] sent=1
+
+# HOST CMD 2 8 15 0 15
+[Q COMMAND] CMD 2 8 15 0 15
+[Q ACK] sent=1
+
+# HOST CMD 31 8 59 0 15
+[Q COMMAND] CMD 31 8 59 0 15
+[Q ACK] sent=1
+
+# HOST CMD 38 8 3 0 15
+[Q COMMAND] CMD 38 8 3 0 15
+[Q ACK] sent=1
+
+# HOST CMD 10 9 0 0 0
+[Q COMMAND] CMD 10 9 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 12 9 0 0 0
+[Q COMMAND] CMD 12 9 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 47 9 0 0 0
+[Q COMMAND] CMD 47 9 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 6 9 59 0 0
+[Q COMMAND] CMD 6 9 59 0 0
+[Q ACK] sent=1
+
+# HOST CMD 55 9 4 0 0
+[Q COMMAND] CMD 55 9 4 0 0
+[Q ACK] sent=1
+
+# HOST CMD 51 9 1 0 0
+[Q COMMAND] CMD 51 9 1 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 9 0 0 0
+[Q COMMAND] CMD 2 9 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 31 9 59 0 0
+[Q COMMAND] CMD 31 9 59 0 0
+[Q ACK] sent=1
+
+# HOST CMD 38 9 0 0 0
+[Q COMMAND] CMD 38 9 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 9 1 0 1
+[Q COMMAND] CMD 2 9 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 31 9 59 0 1
+[Q COMMAND] CMD 31 9 59 0 1
+[Q ACK] sent=1
+
+# HOST CMD 38 9 1 0 1
+[Q COMMAND] CMD 38 9 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 2 9 2 0 2
+[Q COMMAND] CMD 2 9 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 31 9 59 0 2
+[Q COMMAND] CMD 31 9 59 0 2
+[Q ACK] sent=1
+
+# HOST CMD 38 9 2 0 2
+[Q COMMAND] CMD 38 9 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 2 9 3 0 3
+[Q COMMAND] CMD 2 9 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 31 9 59 0 3
+[Q COMMAND] CMD 31 9 59 0 3
+[Q ACK] sent=1
+
+# HOST CMD 38 9 3 0 3
+[Q COMMAND] CMD 38 9 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 2 9 4 0 4
+[Q COMMAND] CMD 2 9 4 0 4
+[Q ACK] sent=1
+
+# HOST CMD 31 9 59 0 4
+[Q COMMAND] CMD 31 9 59 0 4
+[Q ACK] sent=1
+
+# HOST CMD 38 9 0 0 4
+[Q COMMAND] CMD 38 9 0 0 4
+[Q ACK] sent=1
+
+# HOST CMD 2 9 5 0 5
+[Q COMMAND] CMD 2 9 5 0 5
+[Q ACK] sent=1
+
+# HOST CMD 31 9 59 0 5
+[Q COMMAND] CMD 31 9 59 0 5
+[Q ACK] sent=1
+
+# HOST CMD 38 9 1 0 5
+[Q COMMAND] CMD 38 9 1 0 5
+[Q ACK] sent=1
+
+# HOST CMD 2 9 6 0 6
+[Q COMMAND] CMD 2 9 6 0 6
+[Q ACK] sent=1
+
+# HOST CMD 31 9 59 0 6
+[Q COMMAND] CMD 31 9 59 0 6
+[Q ACK] sent=1
+
+# HOST CMD 38 9 2 0 6
+[Q COMMAND] CMD 38 9 2 0 6
+[Q ACK] sent=1
+
+# HOST CMD 2 9 7 0 7
+[Q COMMAND] CMD 2 9 7 0 7
+[Q ACK] sent=1
+
+# HOST CMD 31 9 59 0 7
+[Q COMMAND] CMD 31 9 59 0 7
+[Q ACK] sent=1
+
+# HOST CMD 38 9 3 0 7
+[Q COMMAND] CMD 38 9 3 0 7
+[Q ACK] sent=1
+
+# HOST CMD 2 9 8 0 8
+[Q COMMAND] CMD 2 9 8 0 8
+[Q ACK] sent=1
+
+# HOST CMD 31 9 59 0 8
+[Q COMMAND] CMD 31 9 59 0 8
+[Q ACK] sent=1
+
+# HOST CMD 38 9 0 0 8
+[Q COMMAND] CMD 38 9 0 0 8
+[Q ACK] sent=1
+
+# HOST CMD 2 9 9 0 9
+[Q COMMAND] CMD 2 9 9 0 9
+[Q ACK] sent=1
+
+# HOST CMD 31 9 59 0 9
+[Q COMMAND] CMD 31 9 59 0 9
+[Q ACK] sent=1
+
+# HOST CMD 38 9 1 0 9
+[Q COMMAND] CMD 38 9 1 0 9
+[Q ACK] sent=1
+
+# HOST CMD 2 9 10 0 10
+[Q COMMAND] CMD 2 9 10 0 10
+[Q ACK] sent=1
+
+# HOST CMD 31 9 59 0 10
+[Q COMMAND] CMD 31 9 59 0 10
+[Q ACK] sent=1
+
+# HOST CMD 38 9 2 0 10
+[Q COMMAND] CMD 38 9 2 0 10
+[Q ACK] sent=1
+
+# HOST CMD 2 9 11 0 11
+[Q COMMAND] CMD 2 9 11 0 11
+[Q ACK] sent=1
+
+# HOST CMD 31 9 59 0 11
+[Q COMMAND] CMD 31 9 59 0 11
+[Q ACK] sent=1
+
+# HOST CMD 38 9 3 0 11
+[Q COMMAND] CMD 38 9 3 0 11
+[Q ACK] sent=1
+
+# HOST CMD 2 9 12 0 12
+[Q COMMAND] CMD 2 9 12 0 12
+[Q ACK] sent=1
+
+# HOST CMD 31 9 59 0 12
+[Q COMMAND] CMD 31 9 59 0 12
+[Q ACK] sent=1
+
+# HOST CMD 38 9 0 0 12
+[Q COMMAND] CMD 38 9 0 0 12
+[Q ACK] sent=1
+
+# HOST CMD 2 9 13 0 13
+[Q COMMAND] CMD 2 9 13 0 13
+[Q ACK] sent=1
+
+# HOST CMD 31 9 59 0 13
+[Q COMMAND] CMD 31 9 59 0 13
+[Q ACK] sent=1
+
+# HOST CMD 38 9 1 0 13
+[Q COMMAND] CMD 38 9 1 0 13
+[Q ACK] sent=1
+
+# HOST CMD 2 9 14 0 14
+[Q COMMAND] CMD 2 9 14 0 14
+[Q ACK] sent=1
+
+# HOST CMD 31 9 59 0 14
+[Q COMMAND] CMD 31 9 59 0 14
+[Q ACK] sent=1
+
+# HOST CMD 38 9 2 0 14
+[Q COMMAND] CMD 38 9 2 0 14
+[Q ACK] sent=1
+
+# HOST CMD 2 9 15 0 15
+[Q COMMAND] CMD 2 9 15 0 15
+[Q ACK] sent=1
+
+# HOST CMD 31 9 59 0 15
+[Q COMMAND] CMD 31 9 59 0 15
+[Q ACK] sent=1
+
+# HOST CMD 38 9 3 0 15
+[Q COMMAND] CMD 38 9 3 0 15
+[Q ACK] sent=1
+
+# HOST CMD 10 10 0 0 0
+[Q COMMAND] CMD 10 10 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 12 10 0 0 0
+[Q COMMAND] CMD 12 10 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 47 10 0 0 0
+[Q COMMAND] CMD 47 10 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 6 10 59 0 0
+[Q COMMAND] CMD 6 10 59 0 0
+[Q ACK] sent=1
+
+# HOST CMD 55 10 4 0 0
+[Q COMMAND] CMD 55 10 4 0 0
+[Q ACK] sent=1
+
+# HOST CMD 51 10 1 0 0
+[Q COMMAND] CMD 51 10 1 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 10 0 0 0
+[Q COMMAND] CMD 2 10 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 31 10 59 0 0
+[Q COMMAND] CMD 31 10 59 0 0
+[Q ACK] sent=1
+
+# HOST CMD 38 10 0 0 0
+[Q COMMAND] CMD 38 10 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 10 1 0 1
+[Q COMMAND] CMD 2 10 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 31 10 59 0 1
+[Q COMMAND] CMD 31 10 59 0 1
+[Q ACK] sent=1
+
+# HOST CMD 38 10 1 0 1
+[Q COMMAND] CMD 38 10 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 2 10 2 0 2
+[Q COMMAND] CMD 2 10 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 31 10 59 0 2
+[Q COMMAND] CMD 31 10 59 0 2
+[Q ACK] sent=1
+
+# HOST CMD 38 10 2 0 2
+[Q COMMAND] CMD 38 10 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 2 10 3 0 3
+[Q COMMAND] CMD 2 10 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 31 10 59 0 3
+[Q COMMAND] CMD 31 10 59 0 3
+[Q ACK] sent=1
+
+# HOST CMD 38 10 3 0 3
+[Q COMMAND] CMD 38 10 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 2 10 4 0 4
+[Q COMMAND] CMD 2 10 4 0 4
+[Q ACK] sent=1
+
+# HOST CMD 31 10 59 0 4
+[Q COMMAND] CMD 31 10 59 0 4
+[Q ACK] sent=1
+
+# HOST CMD 38 10 0 0 4
+[Q COMMAND] CMD 38 10 0 0 4
+[Q ACK] sent=1
+
+# HOST CMD 2 10 5 0 5
+[Q COMMAND] CMD 2 10 5 0 5
+[Q ACK] sent=1
+
+# HOST CMD 31 10 59 0 5
+[Q COMMAND] CMD 31 10 59 0 5
+[Q ACK] sent=1
+
+# HOST CMD 38 10 1 0 5
+[Q COMMAND] CMD 38 10 1 0 5
+[Q ACK] sent=1
+
+# HOST CMD 2 10 6 0 6
+[Q COMMAND] CMD 2 10 6 0 6
+[Q ACK] sent=1
+
+# HOST CMD 31 10 59 0 6
+[Q COMMAND] CMD 31 10 59 0 6
+[Q ACK] sent=1
+
+# HOST CMD 38 10 2 0 6
+[Q COMMAND] CMD 38 10 2 0 6
+[Q ACK] sent=1
+
+# HOST CMD 2 10 7 0 7
+[Q COMMAND] CMD 2 10 7 0 7
+[Q ACK] sent=1
+
+# HOST CMD 31 10 59 0 7
+[Q COMMAND] CMD 31 10 59 0 7
+[Q ACK] sent=1
+
+# HOST CMD 38 10 3 0 7
+[Q COMMAND] CMD 38 10 3 0 7
+[Q ACK] sent=1
+
+# HOST CMD 2 10 8 0 8
+[Q COMMAND] CMD 2 10 8 0 8
+[Q ACK] sent=1
+
+# HOST CMD 31 10 59 0 8
+[Q COMMAND] CMD 31 10 59 0 8
+[Q ACK] sent=1
+
+# HOST CMD 38 10 0 0 8
+[Q COMMAND] CMD 38 10 0 0 8
+[Q ACK] sent=1
+
+# HOST CMD 2 10 9 0 9
+[Q COMMAND] CMD 2 10 9 0 9
+[Q ACK] sent=1
+
+# HOST CMD 31 10 59 0 9
+[Q COMMAND] CMD 31 10 59 0 9
+[Q ACK] sent=1
+
+# HOST CMD 38 10 1 0 9
+[Q COMMAND] CMD 38 10 1 0 9
+[Q ACK] sent=1
+
+# HOST CMD 2 10 10 0 10
+[Q COMMAND] CMD 2 10 10 0 10
+[Q ACK] sent=1
+
+# HOST CMD 31 10 59 0 10
+[Q COMMAND] CMD 31 10 59 0 10
+[Q ACK] sent=1
+
+# HOST CMD 38 10 2 0 10
+[Q COMMAND] CMD 38 10 2 0 10
+[Q ACK] sent=1
+
+# HOST CMD 2 10 11 0 11
+[Q COMMAND] CMD 2 10 11 0 11
+[Q ACK] sent=1
+
+# HOST CMD 31 10 59 0 11
+[Q COMMAND] CMD 31 10 59 0 11
+[Q ACK] sent=1
+
+# HOST CMD 38 10 3 0 11
+[Q COMMAND] CMD 38 10 3 0 11
+[Q ACK] sent=1
+
+# HOST CMD 2 10 12 0 12
+[Q COMMAND] CMD 2 10 12 0 12
+[Q ACK] sent=1
+
+# HOST CMD 31 10 59 0 12
+[Q COMMAND] CMD 31 10 59 0 12
+[Q ACK] sent=1
+
+# HOST CMD 38 10 0 0 12
+[Q COMMAND] CMD 38 10 0 0 12
+[Q ACK] sent=1
+
+# HOST CMD 2 10 13 0 13
+[Q COMMAND] CMD 2 10 13 0 13
+[Q ACK] sent=1
+
+# HOST CMD 31 10 59 0 13
+[Q COMMAND] CMD 31 10 59 0 13
+[Q ACK] sent=1
+
+# HOST CMD 38 10 1 0 13
+[Q COMMAND] CMD 38 10 1 0 13
+[Q ACK] sent=1
+
+# HOST CMD 2 10 14 0 14
+[Q COMMAND] CMD 2 10 14 0 14
+[Q ACK] sent=1
+
+# HOST CMD 31 10 59 0 14
+[Q COMMAND] CMD 31 10 59 0 14
+[Q ACK] sent=1
+
+# HOST CMD 38 10 2 0 14
+[Q COMMAND] CMD 38 10 2 0 14
+[Q ACK] sent=1
+
+# HOST CMD 2 10 15 0 15
+[Q COMMAND] CMD 2 10 15 0 15
+[Q ACK] sent=1
+
+# HOST CMD 31 10 59 0 15
+[Q COMMAND] CMD 31 10 59 0 15
+[Q ACK] sent=1
+
+# HOST CMD 38 10 3 0 15
+[Q COMMAND] CMD 38 10 3 0 15
+[Q ACK] sent=1
+
+# HOST CMD 10 11 0 0 0
+[Q COMMAND] CMD 10 11 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 12 11 0 0 0
+[Q COMMAND] CMD 12 11 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 47 11 0 0 0
+[Q COMMAND] CMD 47 11 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 6 11 59 0 0
+[Q COMMAND] CMD 6 11 59 0 0
+[Q ACK] sent=1
+
+# HOST CMD 55 11 4 0 0
+[Q COMMAND] CMD 55 11 4 0 0
+[Q ACK] sent=1
+
+# HOST CMD 51 11 1 0 0
+[Q COMMAND] CMD 51 11 1 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 11 0 0 0
+[Q COMMAND] CMD 2 11 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 31 11 59 0 0
+[Q COMMAND] CMD 31 11 59 0 0
+[Q ACK] sent=1
+
+# HOST CMD 38 11 0 0 0
+[Q COMMAND] CMD 38 11 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 11 1 0 1
+[Q COMMAND] CMD 2 11 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 31 11 59 0 1
+[Q COMMAND] CMD 31 11 59 0 1
+[Q ACK] sent=1
+
+# HOST CMD 38 11 1 0 1
+[Q COMMAND] CMD 38 11 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 2 11 2 0 2
+[Q COMMAND] CMD 2 11 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 31 11 59 0 2
+[Q COMMAND] CMD 31 11 59 0 2
+[Q ACK] sent=1
+
+# HOST CMD 38 11 2 0 2
+[Q COMMAND] CMD 38 11 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 2 11 3 0 3
+[Q COMMAND] CMD 2 11 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 31 11 59 0 3
+[Q COMMAND] CMD 31 11 59 0 3
+[Q ACK] sent=1
+
+# HOST CMD 38 11 3 0 3
+[Q COMMAND] CMD 38 11 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 2 11 4 0 4
+[Q COMMAND] CMD 2 11 4 0 4
+[Q ACK] sent=1
+
+# HOST CMD 31 11 59 0 4
+[Q COMMAND] CMD 31 11 59 0 4
+[Q ACK] sent=1
+
+# HOST CMD 38 11 0 0 4
+[Q COMMAND] CMD 38 11 0 0 4
+[Q ACK] sent=1
+
+# HOST CMD 2 11 5 0 5
+[Q COMMAND] CMD 2 11 5 0 5
+[Q ACK] sent=1
+
+# HOST CMD 31 11 59 0 5
+[Q COMMAND] CMD 31 11 59 0 5
+[Q ACK] sent=1
+
+# HOST CMD 38 11 1 0 5
+[Q COMMAND] CMD 38 11 1 0 5
+[Q ACK] sent=1
+
+# HOST CMD 2 11 6 0 6
+[Q COMMAND] CMD 2 11 6 0 6
+[Q ACK] sent=1
+
+# HOST CMD 31 11 59 0 6
+[Q COMMAND] CMD 31 11 59 0 6
+[Q ACK] sent=1
+
+# HOST CMD 38 11 2 0 6
+[Q COMMAND] CMD 38 11 2 0 6
+[Q ACK] sent=1
+
+# HOST CMD 2 11 7 0 7
+[Q COMMAND] CMD 2 11 7 0 7
+[Q ACK] sent=1
+
+# HOST CMD 31 11 59 0 7
+[Q COMMAND] CMD 31 11 59 0 7
+[Q ACK] sent=1
+
+# HOST CMD 38 11 3 0 7
+[Q COMMAND] CMD 38 11 3 0 7
+[Q ACK] sent=1
+
+# HOST CMD 2 11 8 0 8
+[Q COMMAND] CMD 2 11 8 0 8
+[Q ACK] sent=1
+
+# HOST CMD 31 11 59 0 8
+[Q COMMAND] CMD 31 11 59 0 8
+[Q ACK] sent=1
+
+# HOST CMD 38 11 0 0 8
+[Q COMMAND] CMD 38 11 0 0 8
+[Q ACK] sent=1
+
+# HOST CMD 2 11 9 0 9
+[Q COMMAND] CMD 2 11 9 0 9
+[Q ACK] sent=1
+
+# HOST CMD 31 11 59 0 9
+[Q COMMAND] CMD 31 11 59 0 9
+[Q ACK] sent=1
+
+# HOST CMD 38 11 1 0 9
+[Q COMMAND] CMD 38 11 1 0 9
+[Q ACK] sent=1
+
+# HOST CMD 2 11 10 0 10
+[Q COMMAND] CMD 2 11 10 0 10
+[Q ACK] sent=1
+
+# HOST CMD 31 11 59 0 10
+[Q COMMAND] CMD 31 11 59 0 10
+[Q ACK] sent=1
+
+# HOST CMD 38 11 2 0 10
+[Q COMMAND] CMD 38 11 2 0 10
+[Q ACK] sent=1
+
+# HOST CMD 2 11 11 0 11
+[Q COMMAND] CMD 2 11 11 0 11
+[Q ACK] sent=1
+
+# HOST CMD 31 11 59 0 11
+[Q COMMAND] CMD 31 11 59 0 11
+[Q ACK] sent=1
+
+# HOST CMD 38 11 3 0 11
+[Q COMMAND] CMD 38 11 3 0 11
+[Q ACK] sent=1
+
+# HOST CMD 2 11 12 0 12
+[Q COMMAND] CMD 2 11 12 0 12
+[Q ACK] sent=1
+
+# HOST CMD 31 11 59 0 12
+[Q COMMAND] CMD 31 11 59 0 12
+[Q ACK] sent=1
+
+# HOST CMD 38 11 0 0 12
+[Q COMMAND] CMD 38 11 0 0 12
+[Q ACK] sent=1
+
+# HOST CMD 2 11 13 0 13
+[Q COMMAND] CMD 2 11 13 0 13
+[Q ACK] sent=1
+
+# HOST CMD 31 11 59 0 13
+[Q COMMAND] CMD 31 11 59 0 13
+[Q ACK] sent=1
+
+# HOST CMD 38 11 1 0 13
+[Q COMMAND] CMD 38 11 1 0 13
+[Q ACK] sent=1
+
+# HOST CMD 2 11 14 0 14
+[Q COMMAND] CMD 2 11 14 0 14
+[Q ACK] sent=1
+
+# HOST CMD 31 11 59 0 14
+[Q COMMAND] CMD 31 11 59 0 14
+[Q ACK] sent=1
+
+# HOST CMD 38 11 2 0 14
+[Q COMMAND] CMD 38 11 2 0 14
+[Q ACK] sent=1
+
+# HOST CMD 2 11 15 0 15
+[Q COMMAND] CMD 2 11 15 0 15
+[Q ACK] sent=1
+
+# HOST CMD 31 11 59 0 15
+[Q COMMAND] CMD 31 11 59 0 15
+[Q ACK] sent=1
+
+# HOST CMD 38 11 3 0 15
+[Q COMMAND] CMD 38 11 3 0 15
+[Q ACK] sent=1
+
+# HOST CMD 10 12 0 0 0
+[Q COMMAND] CMD 10 12 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 12 12 0 0 0
+[Q COMMAND] CMD 12 12 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 47 12 0 0 0
+[Q COMMAND] CMD 47 12 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 6 12 59 0 0
+[Q COMMAND] CMD 6 12 59 0 0
+[Q ACK] sent=1
+
+# HOST CMD 55 12 4 0 0
+[Q COMMAND] CMD 55 12 4 0 0
+[Q ACK] sent=1
+
+# HOST CMD 51 12 1 0 0
+[Q COMMAND] CMD 51 12 1 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 12 0 0 0
+[Q COMMAND] CMD 2 12 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 31 12 59 0 0
+[Q COMMAND] CMD 31 12 59 0 0
+[Q ACK] sent=1
+
+# HOST CMD 38 12 0 0 0
+[Q COMMAND] CMD 38 12 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 12 1 0 1
+[Q COMMAND] CMD 2 12 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 31 12 59 0 1
+[Q COMMAND] CMD 31 12 59 0 1
+[Q ACK] sent=1
+
+# HOST CMD 38 12 1 0 1
+[Q COMMAND] CMD 38 12 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 2 12 2 0 2
+[Q COMMAND] CMD 2 12 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 31 12 59 0 2
+[Q COMMAND] CMD 31 12 59 0 2
+[Q ACK] sent=1
+
+# HOST CMD 38 12 2 0 2
+[Q COMMAND] CMD 38 12 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 2 12 3 0 3
+[Q COMMAND] CMD 2 12 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 31 12 59 0 3
+[Q COMMAND] CMD 31 12 59 0 3
+[Q ACK] sent=1
+
+# HOST CMD 38 12 3 0 3
+[Q COMMAND] CMD 38 12 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 2 12 4 0 4
+[Q COMMAND] CMD 2 12 4 0 4
+[Q ACK] sent=1
+
+# HOST CMD 31 12 59 0 4
+[Q COMMAND] CMD 31 12 59 0 4
+[Q ACK] sent=1
+
+# HOST CMD 38 12 0 0 4
+[Q COMMAND] CMD 38 12 0 0 4
+[Q ACK] sent=1
+
+# HOST CMD 2 12 5 0 5
+[Q COMMAND] CMD 2 12 5 0 5
+[Q ACK] sent=1
+
+# HOST CMD 31 12 59 0 5
+[Q COMMAND] CMD 31 12 59 0 5
+[Q ACK] sent=1
+
+# HOST CMD 38 12 1 0 5
+[Q COMMAND] CMD 38 12 1 0 5
+[Q ACK] sent=1
+
+# HOST CMD 2 12 6 0 6
+[Q COMMAND] CMD 2 12 6 0 6
+[Q ACK] sent=1
+
+# HOST CMD 31 12 59 0 6
+[Q COMMAND] CMD 31 12 59 0 6
+[Q ACK] sent=1
+
+# HOST CMD 38 12 2 0 6
+[Q COMMAND] CMD 38 12 2 0 6
+[Q ACK] sent=1
+
+# HOST CMD 2 12 7 0 7
+[Q COMMAND] CMD 2 12 7 0 7
+[Q ACK] sent=1
+
+# HOST CMD 31 12 59 0 7
+[Q COMMAND] CMD 31 12 59 0 7
+[Q ACK] sent=1
+
+# HOST CMD 38 12 3 0 7
+[Q COMMAND] CMD 38 12 3 0 7
+[Q ACK] sent=1
+
+# HOST CMD 2 12 8 0 8
+[Q COMMAND] CMD 2 12 8 0 8
+[Q ACK] sent=1
+
+# HOST CMD 31 12 59 0 8
+[Q COMMAND] CMD 31 12 59 0 8
+[Q ACK] sent=1
+
+# HOST CMD 38 12 0 0 8
+[Q COMMAND] CMD 38 12 0 0 8
+[Q ACK] sent=1
+
+# HOST CMD 2 12 9 0 9
+[Q COMMAND] CMD 2 12 9 0 9
+[Q ACK] sent=1
+
+# HOST CMD 31 12 59 0 9
+[Q COMMAND] CMD 31 12 59 0 9
+[Q ACK] sent=1
+
+# HOST CMD 38 12 1 0 9
+[Q COMMAND] CMD 38 12 1 0 9
+[Q ACK] sent=1
+
+# HOST CMD 2 12 10 0 10
+[Q COMMAND] CMD 2 12 10 0 10
+[Q ACK] sent=1
+
+# HOST CMD 31 12 59 0 10
+[Q COMMAND] CMD 31 12 59 0 10
+[Q ACK] sent=1
+
+# HOST CMD 38 12 2 0 10
+[Q COMMAND] CMD 38 12 2 0 10
+[Q ACK] sent=1
+
+# HOST CMD 2 12 11 0 11
+[Q COMMAND] CMD 2 12 11 0 11
+[Q ACK] sent=1
+
+# HOST CMD 31 12 59 0 11
+[Q COMMAND] CMD 31 12 59 0 11
+[Q ACK] sent=1
+
+# HOST CMD 38 12 3 0 11
+[Q COMMAND] CMD 38 12 3 0 11
+[Q ACK] sent=1
+
+# HOST CMD 2 12 12 0 12
+[Q COMMAND] CMD 2 12 12 0 12
+[Q ACK] sent=1
+
+# HOST CMD 31 12 59 0 12
+[Q COMMAND] CMD 31 12 59 0 12
+[Q ACK] sent=1
+
+# HOST CMD 38 12 0 0 12
+[Q COMMAND] CMD 38 12 0 0 12
+[Q ACK] sent=1
+
+# HOST CMD 2 12 13 0 13
+[Q COMMAND] CMD 2 12 13 0 13
+[Q ACK] sent=1
+
+# HOST CMD 31 12 59 0 13
+[Q COMMAND] CMD 31 12 59 0 13
+[Q ACK] sent=1
+
+# HOST CMD 38 12 1 0 13
+[Q COMMAND] CMD 38 12 1 0 13
+[Q ACK] sent=1
+
+# HOST CMD 2 12 14 0 14
+[Q COMMAND] CMD 2 12 14 0 14
+[Q ACK] sent=1
+
+# HOST CMD 31 12 59 0 14
+[Q COMMAND] CMD 31 12 59 0 14
+[Q ACK] sent=1
+
+# HOST CMD 38 12 2 0 14
+[Q COMMAND] CMD 38 12 2 0 14
+[Q ACK] sent=1
+
+# HOST CMD 2 12 15 0 15
+[Q COMMAND] CMD 2 12 15 0 15
+[Q ACK] sent=1
+
+# HOST CMD 31 12 59 0 15
+[Q COMMAND] CMD 31 12 59 0 15
+[Q ACK] sent=1
+
+# HOST CMD 38 12 3 0 15
+[Q COMMAND] CMD 38 12 3 0 15
+[Q ACK] sent=1
+
+# HOST CMD 10 13 0 0 0
+[Q COMMAND] CMD 10 13 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 12 13 0 0 0
+[Q COMMAND] CMD 12 13 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 47 13 0 0 0
+[Q COMMAND] CMD 47 13 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 6 13 59 0 0
+[Q COMMAND] CMD 6 13 59 0 0
+[Q ACK] sent=1
+
+# HOST CMD 55 13 4 0 0
+[Q COMMAND] CMD 55 13 4 0 0
+[Q ACK] sent=1
+
+# HOST CMD 51 13 1 0 0
+[Q COMMAND] CMD 51 13 1 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 13 0 0 0
+[Q COMMAND] CMD 2 13 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 31 13 59 0 0
+[Q COMMAND] CMD 31 13 59 0 0
+[Q ACK] sent=1
+
+# HOST CMD 38 13 0 0 0
+[Q COMMAND] CMD 38 13 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 13 1 0 1
+[Q COMMAND] CMD 2 13 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 31 13 59 0 1
+[Q COMMAND] CMD 31 13 59 0 1
+[Q ACK] sent=1
+
+# HOST CMD 38 13 1 0 1
+[Q COMMAND] CMD 38 13 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 2 13 2 0 2
+[Q COMMAND] CMD 2 13 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 31 13 59 0 2
+[Q COMMAND] CMD 31 13 59 0 2
+[Q ACK] sent=1
+
+# HOST CMD 38 13 2 0 2
+[Q COMMAND] CMD 38 13 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 2 13 3 0 3
+[Q COMMAND] CMD 2 13 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 31 13 59 0 3
+[Q COMMAND] CMD 31 13 59 0 3
+[Q ACK] sent=1
+
+# HOST CMD 38 13 3 0 3
+[Q COMMAND] CMD 38 13 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 2 13 4 0 4
+[Q COMMAND] CMD 2 13 4 0 4
+[Q ACK] sent=1
+
+# HOST CMD 31 13 59 0 4
+[Q COMMAND] CMD 31 13 59 0 4
+[Q ACK] sent=1
+
+# HOST CMD 38 13 0 0 4
+[Q COMMAND] CMD 38 13 0 0 4
+[Q ACK] sent=1
+
+# HOST CMD 2 13 5 0 5
+[Q COMMAND] CMD 2 13 5 0 5
+[Q ACK] sent=1
+
+# HOST CMD 31 13 59 0 5
+[Q COMMAND] CMD 31 13 59 0 5
+[Q ACK] sent=1
+
+# HOST CMD 38 13 1 0 5
+[Q COMMAND] CMD 38 13 1 0 5
+[Q ACK] sent=1
+
+# HOST CMD 2 13 6 0 6
+[Q COMMAND] CMD 2 13 6 0 6
+[Q ACK] sent=1
+
+# HOST CMD 31 13 59 0 6
+[Q COMMAND] CMD 31 13 59 0 6
+[Q ACK] sent=1
+
+# HOST CMD 38 13 2 0 6
+[Q COMMAND] CMD 38 13 2 0 6
+[Q ACK] sent=1
+
+# HOST CMD 2 13 7 0 7
+[Q COMMAND] CMD 2 13 7 0 7
+[Q ACK] sent=1
+
+# HOST CMD 31 13 59 0 7
+[Q COMMAND] CMD 31 13 59 0 7
+[Q ACK] sent=1
+
+# HOST CMD 38 13 3 0 7
+[Q COMMAND] CMD 38 13 3 0 7
+[Q ACK] sent=1
+
+# HOST CMD 2 13 8 0 8
+[Q COMMAND] CMD 2 13 8 0 8
+[Q ACK] sent=1
+
+# HOST CMD 31 13 59 0 8
+[Q COMMAND] CMD 31 13 59 0 8
+[Q ACK] sent=1
+
+# HOST CMD 38 13 0 0 8
+[Q COMMAND] CMD 38 13 0 0 8
+[Q ACK] sent=1
+
+# HOST CMD 2 13 9 0 9
+[Q COMMAND] CMD 2 13 9 0 9
+[Q ACK] sent=1
+
+# HOST CMD 31 13 59 0 9
+[Q COMMAND] CMD 31 13 59 0 9
+[Q ACK] sent=1
+
+# HOST CMD 38 13 1 0 9
+[Q COMMAND] CMD 38 13 1 0 9
+[Q ACK] sent=1
+
+# HOST CMD 2 13 10 0 10
+[Q COMMAND] CMD 2 13 10 0 10
+[Q ACK] sent=1
+
+# HOST CMD 31 13 59 0 10
+[Q COMMAND] CMD 31 13 59 0 10
+[Q ACK] sent=1
+
+# HOST CMD 38 13 2 0 10
+[Q COMMAND] CMD 38 13 2 0 10
+[Q ACK] sent=1
+
+# HOST CMD 2 13 11 0 11
+[Q COMMAND] CMD 2 13 11 0 11
+[Q ACK] sent=1
+
+# HOST CMD 31 13 59 0 11
+[Q COMMAND] CMD 31 13 59 0 11
+[Q ACK] sent=1
+
+# HOST CMD 38 13 3 0 11
+[Q COMMAND] CMD 38 13 3 0 11
+[Q ACK] sent=1
+
+# HOST CMD 2 13 12 0 12
+[Q COMMAND] CMD 2 13 12 0 12
+[Q ACK] sent=1
+
+# HOST CMD 31 13 59 0 12
+[Q COMMAND] CMD 31 13 59 0 12
+[Q ACK] sent=1
+
+# HOST CMD 38 13 0 0 12
+[Q COMMAND] CMD 38 13 0 0 12
+[Q ACK] sent=1
+
+# HOST CMD 2 13 13 0 13
+[Q COMMAND] CMD 2 13 13 0 13
+[Q ACK] sent=1
+
+# HOST CMD 31 13 59 0 13
+[Q COMMAND] CMD 31 13 59 0 13
+[Q ACK] sent=1
+
+# HOST CMD 38 13 1 0 13
+[Q COMMAND] CMD 38 13 1 0 13
+[Q ACK] sent=1
+
+# HOST CMD 2 13 14 0 14
+[Q COMMAND] CMD 2 13 14 0 14
+[Q ACK] sent=1
+
+# HOST CMD 31 13 59 0 14
+[Q COMMAND] CMD 31 13 59 0 14
+[Q ACK] sent=1
+
+# HOST CMD 38 13 2 0 14
+[Q COMMAND] CMD 38 13 2 0 14
+[Q ACK] sent=1
+
+# HOST CMD 2 13 15 0 15
+[Q COMMAND] CMD 2 13 15 0 15
+[Q ACK] sent=1
+
+# HOST CMD 31 13 59 0 15
+[Q COMMAND] CMD 31 13 59 0 15
+[Q ACK] sent=1
+
+# HOST CMD 38 13 3 0 15
+[Q COMMAND] CMD 38 13 3 0 15
+[Q ACK] sent=1
+
+# HOST CMD 10 14 0 0 0
+[Q COMMAND] CMD 10 14 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 12 14 0 0 0
+[Q COMMAND] CMD 12 14 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 47 14 0 0 0
+[Q COMMAND] CMD 47 14 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 6 14 59 0 0
+[Q COMMAND] CMD 6 14 59 0 0
+[Q ACK] sent=1
+
+# HOST CMD 55 14 4 0 0
+[Q COMMAND] CMD 55 14 4 0 0
+[Q ACK] sent=1
+
+# HOST CMD 51 14 1 0 0
+[Q COMMAND] CMD 51 14 1 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 14 0 0 0
+[Q COMMAND] CMD 2 14 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 31 14 59 0 0
+[Q COMMAND] CMD 31 14 59 0 0
+[Q ACK] sent=1
+
+# HOST CMD 38 14 0 0 0
+[Q COMMAND] CMD 38 14 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 14 1 0 1
+[Q COMMAND] CMD 2 14 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 31 14 59 0 1
+[Q COMMAND] CMD 31 14 59 0 1
+[Q ACK] sent=1
+
+# HOST CMD 38 14 1 0 1
+[Q COMMAND] CMD 38 14 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 2 14 2 0 2
+[Q COMMAND] CMD 2 14 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 31 14 59 0 2
+[Q COMMAND] CMD 31 14 59 0 2
+[Q ACK] sent=1
+
+# HOST CMD 38 14 2 0 2
+[Q COMMAND] CMD 38 14 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 2 14 3 0 3
+[Q COMMAND] CMD 2 14 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 31 14 59 0 3
+[Q COMMAND] CMD 31 14 59 0 3
+[Q ACK] sent=1
+
+# HOST CMD 38 14 3 0 3
+[Q COMMAND] CMD 38 14 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 2 14 4 0 4
+[Q COMMAND] CMD 2 14 4 0 4
+[Q ACK] sent=1
+
+# HOST CMD 31 14 59 0 4
+[Q COMMAND] CMD 31 14 59 0 4
+[Q ACK] sent=1
+
+# HOST CMD 38 14 0 0 4
+[Q COMMAND] CMD 38 14 0 0 4
+[Q ACK] sent=1
+
+# HOST CMD 2 14 5 0 5
+[Q COMMAND] CMD 2 14 5 0 5
+[Q ACK] sent=1
+
+# HOST CMD 31 14 59 0 5
+[Q COMMAND] CMD 31 14 59 0 5
+[Q ACK] sent=1
+
+# HOST CMD 38 14 1 0 5
+[Q COMMAND] CMD 38 14 1 0 5
+[Q ACK] sent=1
+
+# HOST CMD 2 14 6 0 6
+[Q COMMAND] CMD 2 14 6 0 6
+[Q ACK] sent=1
+
+# HOST CMD 31 14 59 0 6
+[Q COMMAND] CMD 31 14 59 0 6
+[Q ACK] sent=1
+
+# HOST CMD 38 14 2 0 6
+[Q COMMAND] CMD 38 14 2 0 6
+[Q ACK] sent=1
+
+# HOST CMD 2 14 7 0 7
+[Q COMMAND] CMD 2 14 7 0 7
+[Q ACK] sent=1
+
+# HOST CMD 31 14 59 0 7
+[Q COMMAND] CMD 31 14 59 0 7
+[Q ACK] sent=1
+
+# HOST CMD 38 14 3 0 7
+[Q COMMAND] CMD 38 14 3 0 7
+[Q ACK] sent=1
+
+# HOST CMD 2 14 8 0 8
+[Q COMMAND] CMD 2 14 8 0 8
+[Q ACK] sent=1
+
+# HOST CMD 31 14 59 0 8
+[Q COMMAND] CMD 31 14 59 0 8
+[Q ACK] sent=1
+
+# HOST CMD 38 14 0 0 8
+[Q COMMAND] CMD 38 14 0 0 8
+[Q ACK] sent=1
+
+# HOST CMD 2 14 9 0 9
+[Q COMMAND] CMD 2 14 9 0 9
+[Q ACK] sent=1
+
+# HOST CMD 31 14 59 0 9
+[Q COMMAND] CMD 31 14 59 0 9
+[Q ACK] sent=1
+
+# HOST CMD 38 14 1 0 9
+[Q COMMAND] CMD 38 14 1 0 9
+[Q ACK] sent=1
+
+# HOST CMD 2 14 10 0 10
+[Q COMMAND] CMD 2 14 10 0 10
+[Q ACK] sent=1
+
+# HOST CMD 31 14 59 0 10
+[Q COMMAND] CMD 31 14 59 0 10
+[Q ACK] sent=1
+
+# HOST CMD 38 14 2 0 10
+[Q COMMAND] CMD 38 14 2 0 10
+[Q ACK] sent=1
+
+# HOST CMD 2 14 11 0 11
+[Q COMMAND] CMD 2 14 11 0 11
+[Q ACK] sent=1
+
+# HOST CMD 31 14 59 0 11
+[Q COMMAND] CMD 31 14 59 0 11
+[Q ACK] sent=1
+
+# HOST CMD 38 14 3 0 11
+[Q COMMAND] CMD 38 14 3 0 11
+[Q ACK] sent=1
+
+# HOST CMD 2 14 12 0 12
+[Q COMMAND] CMD 2 14 12 0 12
+[Q ACK] sent=1
+
+# HOST CMD 31 14 59 0 12
+[Q COMMAND] CMD 31 14 59 0 12
+[Q ACK] sent=1
+
+# HOST CMD 38 14 0 0 12
+[Q COMMAND] CMD 38 14 0 0 12
+[Q ACK] sent=1
+
+# HOST CMD 2 14 13 0 13
+[Q COMMAND] CMD 2 14 13 0 13
+[Q ACK] sent=1
+
+# HOST CMD 31 14 59 0 13
+[Q COMMAND] CMD 31 14 59 0 13
+[Q ACK] sent=1
+
+# HOST CMD 38 14 1 0 13
+[Q COMMAND] CMD 38 14 1 0 13
+[Q ACK] sent=1
+
+# HOST CMD 2 14 14 0 14
+[Q COMMAND] CMD 2 14 14 0 14
+[Q ACK] sent=1
+
+# HOST CMD 31 14 59 0 14
+[Q COMMAND] CMD 31 14 59 0 14
+[Q ACK] sent=1
+
+# HOST CMD 38 14 2 0 14
+[Q COMMAND] CMD 38 14 2 0 14
+[Q ACK] sent=1
+
+# HOST CMD 2 14 15 0 15
+[Q COMMAND] CMD 2 14 15 0 15
+[Q ACK] sent=1
+
+# HOST CMD 31 14 59 0 15
+[Q COMMAND] CMD 31 14 59 0 15
+[Q ACK] sent=1
+
+# HOST CMD 38 14 3 0 15
+[Q COMMAND] CMD 38 14 3 0 15
+[Q ACK] sent=1
+
+# HOST CMD 10 15 0 0 0
+[Q COMMAND] CMD 10 15 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 12 15 0 0 0
+[Q COMMAND] CMD 12 15 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 47 15 0 0 0
+[Q COMMAND] CMD 47 15 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 6 15 59 0 0
+[Q COMMAND] CMD 6 15 59 0 0
+[Q ACK] sent=1
+
+# HOST CMD 55 15 4 0 0
+[Q COMMAND] CMD 55 15 4 0 0
+[Q ACK] sent=1
+
+# HOST CMD 51 15 1 0 0
+[Q COMMAND] CMD 51 15 1 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 15 0 0 0
+[Q COMMAND] CMD 2 15 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 31 15 59 0 0
+[Q COMMAND] CMD 31 15 59 0 0
+[Q ACK] sent=1
+
+# HOST CMD 38 15 0 0 0
+[Q COMMAND] CMD 38 15 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 2 15 1 0 1
+[Q COMMAND] CMD 2 15 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 31 15 59 0 1
+[Q COMMAND] CMD 31 15 59 0 1
+[Q ACK] sent=1
+
+# HOST CMD 38 15 1 0 1
+[Q COMMAND] CMD 38 15 1 0 1
+[Q ACK] sent=1
+
+# HOST CMD 2 15 2 0 2
+[Q COMMAND] CMD 2 15 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 31 15 59 0 2
+[Q COMMAND] CMD 31 15 59 0 2
+[Q ACK] sent=1
+
+# HOST CMD 38 15 2 0 2
+[Q COMMAND] CMD 38 15 2 0 2
+[Q ACK] sent=1
+
+# HOST CMD 2 15 3 0 3
+[Q COMMAND] CMD 2 15 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 31 15 59 0 3
+[Q COMMAND] CMD 31 15 59 0 3
+[Q ACK] sent=1
+
+# HOST CMD 38 15 3 0 3
+[Q COMMAND] CMD 38 15 3 0 3
+[Q ACK] sent=1
+
+# HOST CMD 2 15 4 0 4
+[Q COMMAND] CMD 2 15 4 0 4
+[Q ACK] sent=1
+
+# HOST CMD 31 15 59 0 4
+[Q COMMAND] CMD 31 15 59 0 4
+[Q ACK] sent=1
+
+# HOST CMD 38 15 0 0 4
+[Q COMMAND] CMD 38 15 0 0 4
+[Q ACK] sent=1
+
+# HOST CMD 2 15 5 0 5
+[Q COMMAND] CMD 2 15 5 0 5
+[Q ACK] sent=1
+
+# HOST CMD 31 15 59 0 5
+[Q COMMAND] CMD 31 15 59 0 5
+[Q ACK] sent=1
+
+# HOST CMD 38 15 1 0 5
+[Q COMMAND] CMD 38 15 1 0 5
+[Q ACK] sent=1
+
+# HOST CMD 2 15 6 0 6
+[Q COMMAND] CMD 2 15 6 0 6
+[Q ACK] sent=1
+
+# HOST CMD 31 15 59 0 6
+[Q COMMAND] CMD 31 15 59 0 6
+[Q ACK] sent=1
+
+# HOST CMD 38 15 2 0 6
+[Q COMMAND] CMD 38 15 2 0 6
+[Q ACK] sent=1
+
+# HOST CMD 2 15 7 0 7
+[Q COMMAND] CMD 2 15 7 0 7
+[Q ACK] sent=1
+
+# HOST CMD 31 15 59 0 7
+[Q COMMAND] CMD 31 15 59 0 7
+[Q ACK] sent=1
+
+# HOST CMD 38 15 3 0 7
+[Q COMMAND] CMD 38 15 3 0 7
+[Q ACK] sent=1
+
+# HOST CMD 2 15 8 0 8
+[Q COMMAND] CMD 2 15 8 0 8
+[Q ACK] sent=1
+
+# HOST CMD 31 15 59 0 8
+[Q COMMAND] CMD 31 15 59 0 8
+[Q ACK] sent=1
+
+# HOST CMD 38 15 0 0 8
+[Q COMMAND] CMD 38 15 0 0 8
+[Q ACK] sent=1
+
+# HOST CMD 2 15 9 0 9
+[Q COMMAND] CMD 2 15 9 0 9
+[Q ACK] sent=1
+
+# HOST CMD 31 15 59 0 9
+[Q COMMAND] CMD 31 15 59 0 9
+[Q ACK] sent=1
+
+# HOST CMD 38 15 1 0 9
+[Q COMMAND] CMD 38 15 1 0 9
+[Q ACK] sent=1
+
+# HOST CMD 2 15 10 0 10
+[Q COMMAND] CMD 2 15 10 0 10
+[Q ACK] sent=1
+
+# HOST CMD 31 15 59 0 10
+[Q COMMAND] CMD 31 15 59 0 10
+[Q ACK] sent=1
+
+# HOST CMD 38 15 2 0 10
+[Q COMMAND] CMD 38 15 2 0 10
+[Q ACK] sent=1
+
+# HOST CMD 2 15 11 0 11
+[Q COMMAND] CMD 2 15 11 0 11
+[Q ACK] sent=1
+
+# HOST CMD 31 15 59 0 11
+[Q COMMAND] CMD 31 15 59 0 11
+[Q ACK] sent=1
+
+# HOST CMD 38 15 3 0 11
+[Q COMMAND] CMD 38 15 3 0 11
+[Q ACK] sent=1
+
+# HOST CMD 2 15 12 0 12
+[Q COMMAND] CMD 2 15 12 0 12
+[Q ACK] sent=1
+
+# HOST CMD 31 15 59 0 12
+[Q COMMAND] CMD 31 15 59 0 12
+[Q ACK] sent=1
+
+# HOST CMD 38 15 0 0 12
+[Q COMMAND] CMD 38 15 0 0 12
+[Q ACK] sent=1
+
+# HOST CMD 2 15 13 0 13
+[Q COMMAND] CMD 2 15 13 0 13
+[Q ACK] sent=1
+
+# HOST CMD 31 15 59 0 13
+[Q COMMAND] CMD 31 15 59 0 13
+[Q ACK] sent=1
+
+# HOST CMD 38 15 1 0 13
+[Q COMMAND] CMD 38 15 1 0 13
+[Q ACK] sent=1
+
+# HOST CMD 2 15 14 0 14
+[Q COMMAND] CMD 2 15 14 0 14
+[Q ACK] sent=1
+
+# HOST CMD 31 15 59 0 14
+[Q COMMAND] CMD 31 15 59 0 14
+[Q ACK] sent=1
+
+# HOST CMD 38 15 2 0 14
+[Q COMMAND] CMD 38 15 2 0 14
+[Q ACK] sent=1
+
+# HOST CMD 2 15 15 0 15
+[Q COMMAND] CMD 2 15 15 0 15
+[Q ACK] sent=1
+
+# HOST CMD 31 15 59 0 15
+[Q COMMAND] CMD 31 15 59 0 15
+[Q ACK] sent=1
+
+# HOST CMD 38 15 3 0 15
+[Q COMMAND] CMD 38 15 3 0 15
+[Q ACK] sent=1
+
+# HOST MEASURE 1
+[Q COMMAND] MEASURE 1
+
+# HOST CMD 0 0 1 0 0
+[Q COMMAND] CMD 0 0 1 0 0
+[Q ACK] sent=1
+
+# HOST CMD 75 0 8 0 0
+[Q COMMAND] CMD 75 0 8 0 0
+[Q ACK] sent=1
+
+# HOST LOAD 1 3
+[Q COMMAND] LOAD 1 3
+[Q ACK] load=1
+[M6 read] bytes=352800 read_us=8399651 bytes_per_second=42001 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=1 file_bytes=352844 pcm_bytes=352800 load_publish_us=12259543 payload=5644800 transient=352800 peak_payload=5997600 ps_free=24986092 largest=24117236 internal=173400 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=1 pcm=0x4882be3c base=0x4882be3c bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=60 mod128=60 mod256=60 mod4096=3644 mod131072=48700 external=1 requested_caps=1028 free=24986092 largest=24117236
+
+# HOST CMD 77 0 0 0 0
+[Q COMMAND] CMD 77 0 0 0 0
+[Q ACK] sent=1
+
+# HOST CMD 0 0 0 0 0
+[Q COMMAND] CMD 0 0 0 0 0
+[Q ACK] sent=1
+[Q COMMAND] 
+[Q ACK] invalid=1
+
+# HOST STATE
+[Q COMMAND] STATE
+[Q STATE] bpm=240 swing=50 playing=0 mode=0 chain_length=0 chain_loop=0 project_busy=0 restoring=0 sample_busy=0 project_status=PROJECT READY sample_status=SAMPLE READY
+[Q TRACK] track=0 source=1 pitch=59 synth_pitch=36 sample_pitch=59 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=4 enabled=1 selected=0 frames=176400 waveform=0720701a name=m19p_mixed.wav
+[Q SLICE] track=0 index=0 start=0 end=16383
+[Q SLICE] track=0 index=1 start=16383 end=32767
+[Q SLICE] track=0 index=2 start=32767 end=49151
+[Q SLICE] track=0 index=3 start=49151 end=65535
+[Q TRACK] track=1 source=1 pitch=59 synth_pitch=39 sample_pitch=59 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=4 enabled=1 selected=0 frames=176400 waveform=0720701a name=m19p_mixed.wav
+[Q SLICE] track=1 index=0 start=0 end=16383
+[Q SLICE] track=1 index=1 start=16383 end=32767
+[Q SLICE] track=1 index=2 start=32767 end=49151
+[Q SLICE] track=1 index=3 start=49151 end=65535
+[Q TRACK] track=2 source=1 pitch=59 synth_pitch=42 sample_pitch=59 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=4 enabled=1 selected=0 frames=176400 waveform=0720701a name=m19p_mixed.wav
+[Q SLICE] track=2 index=0 start=0 end=16383
+[Q SLICE] track=2 index=1 start=16383 end=32767
+[Q SLICE] track=2 index=2 start=32767 end=49151
+[Q SLICE] track=2 index=3 start=49151 end=65535
+[Q TRACK] track=3 source=1 pitch=59 synth_pitch=45 sample_pitch=59 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=4 enabled=1 selected=0 frames=176400 waveform=0720701a name=m19p_mixed.wav
+[Q SLICE] track=3 index=0 start=0 end=16383
+[Q SLICE] track=3 index=1 start=16383 end=32767
+[Q SLICE] track=3 index=2 start=32767 end=49151
+[Q SLICE] track=3 index=3 start=49151 end=65535
+[Q PATTERN] index=0 length=16 masks=ffff,ffff,ffff
+[Q LOCK] pattern=0 step=0 mask=129 slice=0
+[Q LOCK] pattern=0 step=1 mask=129 slice=1
+[Q LOCK] pattern=0 step=2 mask=129 slice=2
+[Q LOCK] pattern=0 step=3 mask=129 slice=3
+[Q PATTERN] index=1 length=16 masks=0000,0000,0000
+[Q LOCK] pattern=1 step=0 mask=0 slice=0
+[Q LOCK] pattern=1 step=1 mask=0 slice=0
+[Q LOCK] pattern=1 step=2 mask=0 slice=0
+[Q LOCK] pattern=1 step=3 mask=0 slice=0
+[Q PATTERN] index=2 length=16 masks=0000,0000,0000
+[Q LOCK] pattern=2 step=0 mask=0 slice=0
+[Q LOCK] pattern=2 step=1 mask=0 slice=0
+[Q LOCK] pattern=2 step=2 mask=0 slice=0
+[Q LOCK] pattern=2 step=3 mask=0 slice=0
+[Q PATTERN] index=3 length=16 masks=0000,0000,0000
+[Q LOCK] pattern=3 step=0 mask=0 slice=0
+[Q LOCK] pattern=3 step=1 mask=0 slice=0
+[Q LOCK] pattern=3 step=2 mask=0 slice=0
+[Q LOCK] pattern=3 step=3 mask=0 slice=0
+[Q TRANSIENT] state=0 request=0 progress=0 count=1 stale_discarded=0 apply=0 cancel=0 duration_max_us=0 chunk_max_us=0
+[Q PROPOSAL] index=0 start=0 end=65535
+[Q HEAP] tag=state internal=173400 free=24986092 largest=24117236
+[Q PLAYBACK] triggers=33248 reverse=0 gate=0 releases=0 chokes=0 retriggers=33231 repeat_accepts=1 repeat_hits=32368 chain_loops=0
+
+# HOST MEASURE 0
+[Q COMMAND] MEASURE 0
+
+# HOST METRICS
+[Q COMMAND] METRICS
+[Q METRICS] blocks=3549 stored=3549 p99=4484 max=4616 misses=0 failures=0 timeouts=0 nonzero=1774332 overlap=0 overlap_max=0 active_max=16
+
+# HOST STORE 8
+[Q COMMAND] STORE 8
+[M213 address] track=0 pcm=0x482abdfc base=0x482abdfc bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=60 mod128=124 mod256=252 mod4096=3580 mod131072=48636 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 address] track=1 pcm=0x4882be3c base=0x4882be3c bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=60 mod128=60 mod256=60 mod4096=3644 mod131072=48700 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 address] track=2 pcm=0x4835be04 base=0x4835be04 bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=4 mod128=4 mod256=4 mod4096=3588 mod131072=114180 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 address] track=3 pcm=0x483b3e08 base=0x483b3e08 bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=8 mod128=8 mod256=8 mod4096=3592 mod131072=81416 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 address] track=4 pcm=0x4840be0c base=0x4840be0c bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=12 mod128=12 mod256=12 mod4096=3596 mod131072=48652 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 address] track=5 pcm=0x48463e10 base=0x48463e10 bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=16 mod128=16 mod256=16 mod4096=3600 mod131072=15888 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 address] track=6 pcm=0x484bbe14 base=0x484bbe14 bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=20 mod128=20 mod256=20 mod4096=3604 mod131072=114196 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 address] track=7 pcm=0x48513e18 base=0x48513e18 bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=24 mod128=24 mod256=24 mod4096=3608 mod131072=81432 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 address] track=8 pcm=0x4856be1c base=0x4856be1c bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=28 mod128=28 mod256=28 mod4096=3612 mod131072=48668 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 address] track=9 pcm=0x485c3e20 base=0x485c3e20 bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=32 mod128=32 mod256=32 mod4096=3616 mod131072=15904 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 address] track=10 pcm=0x4861be24 base=0x4861be24 bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=36 mod128=36 mod256=36 mod4096=3620 mod131072=114212 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 address] track=11 pcm=0x48673e28 base=0x48673e28 bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=40 mod128=40 mod256=40 mod4096=3624 mod131072=81448 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 address] track=12 pcm=0x486cbe2c base=0x486cbe2c bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=44 mod128=44 mod256=44 mod4096=3628 mod131072=48684 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 address] track=13 pcm=0x48723e30 base=0x48723e30 bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=48 mod128=48 mod256=48 mod4096=3632 mod131072=15920 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 address] track=14 pcm=0x4877be34 base=0x4877be34 bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=52 mod128=52 mod256=52 mod4096=3636 mod131072=114228 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 address] track=15 pcm=0x487d3e38 base=0x487d3e38 bytes=352800 owner_usable_bytes=360436 frames=176400 mod64=56 mod128=56 mod256=56 mod4096=3640 mod131072=81464 external=1 requested_caps=1028 free=24986092 largest=24117236
+[M213 locality] tag=1 order=0 eviction=0 repeats=32 reads=131072 us=85576 max=3792 checksum=14336000 sweep=0 concurrent_audio=1 cold_proven=0
+[M213 locality] tag=1 order=1 eviction=0 repeats=32 reads=131072 us=6396 max=2022 checksum=14336000 sweep=0 concurrent_audio=1 cold_proven=0
+[M213 locality] tag=1 order=2 eviction=0 repeats=32 reads=131072 us=10994 max=2147 checksum=14336000 sweep=0 concurrent_audio=1 cold_proven=0
+[M213 locality] tag=1 order=0 eviction=1 repeats=32 reads=131072 us=90564 max=4048 checksum=14336000 sweep=524288 concurrent_audio=1 cold_proven=0
+[M213 locality] tag=1 order=1 eviction=1 repeats=32 reads=131072 us=6927 max=2177 checksum=14336000 sweep=1048576 concurrent_audio=1 cold_proven=0
+[M213 locality] tag=1 order=2 eviction=1 repeats=32 reads=131072 us=9712 max=406 checksum=14336000 sweep=1572864 concurrent_audio=1 cold_proven=0
+[M213 locality complete] tag=1
+[M213 physical] tag=1 complete=1
+[Q HEAP] tag=store_done internal=173400 free=24986092 largest=24117236 payload=5644800
+[Q STORE DONE] op=8
+
+# HOST M213 dense physical x8 Repeat COMPLETE
