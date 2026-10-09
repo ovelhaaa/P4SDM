@@ -21,6 +21,9 @@ sampler::PcmReadCache pcm_read_cache[16]{};
 #include "app/qualification.h"
 #include "app/samples.h"
 #include "app/transient_service.h"
+#if P4SDM_M213_FIXTURE_LAYOUT
+#include "app/pcm_allocation.h"
+#endif
 #include <cstdarg>
 static bool app_pcm(int track, int16_t &value);
 static void app_sample();
@@ -44,6 +47,9 @@ namespace { block_profile::Profile block_metrics; }
 #include "../DRUM_2026_VSAMPLER_TAB5_2002.ino"
 #include "../synthESP32.ino"
 // clang-format on
+#if P4SDM_M213_DSP_STAGES
+#include "app/dsp_stage_qualification.h"
+#endif
 #if P4SDM_INTERPOLATION_QUALIFICATION
 #include "app/interpolation_qualification.h"
 #if P4SDM_PCM_LOCALITY_QUALIFICATION
@@ -141,7 +147,9 @@ uint32_t tool_cell_max = 0, tool_edit_full = 0;
 uint32_t tone_ui_edits = 0, tone_ui_full = 0, tone_ui_widgets_max = 0;
 uint32_t lock_ui_edits = 0, lock_ui_full = 0, lock_ui_widgets_max = 0;
 uint32_t tone_lock_ui_edits = 0, tone_lock_ui_entries = 0;
-#if P4SDM_M212_SCENARIO
+#if P4SDM_M213_CAPTURE_BLOCKS
+constexpr unsigned capture_blocks = P4SDM_M213_CAPTURE_BLOCKS;
+#elif P4SDM_M212_SCENARIO
 constexpr unsigned capture_blocks = 20672; // 120 seconds, fixed block coverage.
 #elif P4SDM_REPEAT_STRESS
 constexpr unsigned capture_blocks = 13782; // 80 s; repeat follows every inherited fixture.
@@ -156,7 +164,11 @@ struct QualificationMetrics {
 QualificationMetrics qualification[8];
 std::atomic<unsigned> qualification_finished{0};
 #endif
+#if P4SDM_M213_CAPTURE_BLOCKS
+uint32_t *render_times=nullptr, *sustained_sorted=nullptr;
+#else
 uint32_t render_times[capture_blocks]{};
+#endif
 struct GrooveMetrics {
   uint32_t parents, passed, skipped, ratchets, pending_max, swing_changes;
   unsigned velocity_min, velocity_max;
@@ -3405,6 +3417,19 @@ static void app_sample() {
 sampler::Sample fixture_samples[16];
 void setup_playback_fixture() {
   constexpr unsigned frames = 65536;
+#if P4SDM_M213_FIXTURE_LAYOUT
+  static sampler::PcmAllocation allocations[16];
+  for (unsigned i=0;i<16;++i) {
+    const unsigned t=P4SDM_M213_FIXTURE_LAYOUT == 3 ? 15-i : i;
+    const unsigned policy=P4SDM_M213_FIXTURE_LAYOUT == 1 ? 1 : 0;
+    if (!allocations[t].acquire(frames*2,policy,t,[](size_t n) {
+          return heap_caps_malloc(n,MALLOC_CAP_SPIRAM|MALLOC_CAP_8BIT);
+        })) {
+      for(auto &a:allocations) a.release([](void *p) { heap_caps_free(p); });
+      Serial.println("[M213 fixture] FAIL allocation"); return;
+    }
+  }
+#else
   auto *pcm = static_cast<int16_t *>(
       heap_caps_malloc(frames * 2 * 16, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT));
   if (!pcm) {
@@ -3413,9 +3438,20 @@ void setup_playback_fixture() {
   }
   for (unsigned n = 0; n < frames * 16; ++n)
     pcm[n] = int16_t((n % 97) * 160 - 7680);
+#endif
   for (unsigned t = 0; t < 16; ++t) {
     auto &sample = fixture_samples[t];
+#if P4SDM_M213_FIXTURE_LAYOUT
+    sample.data=allocations[t].data;
+    sample.allocation=allocations[t].bytes;
+    for(unsigned n=0;n<frames;++n)
+      sample.data[n]=int16_t(((t*frames+n)%97)*160-7680);
+    Serial.printf("[M213 fixture] layout=%u track=%u pcm=%p base=%p bytes=%u mod64=%u mod131072=%u\n",
+      unsigned(P4SDM_M213_FIXTURE_LAYOUT),t,sample.data,allocations[t].base,sample.allocation,
+      unsigned(uintptr_t(sample.data)%64),unsigned(uintptr_t(sample.data)%131072));
+#else
     sample.data = pcm + t * frames;
+#endif
     sample.frames = frames;
 #if P4SDM_M212_SCENARIO == 3
     sample.frames -= t*1024; // varied real PSRAM lengths, same backing ownership
@@ -3483,6 +3519,16 @@ void setup_playback_fixture() {
 static void initialize(void *) {
   Serial.setTxBufferSize(2048);
   Serial.begin(115200);
+#if P4SDM_M213_CAPTURE_BLOCKS
+  // Long diagnostic captures retain every timing without growing internal BSS.
+  // Both allocations happen before audio, never on the realtime task.
+  render_times=static_cast<uint32_t *>(heap_caps_malloc(capture_blocks*sizeof(uint32_t),MALLOC_CAP_SPIRAM|MALLOC_CAP_8BIT));
+  sustained_sorted=static_cast<uint32_t *>(heap_caps_malloc(capture_blocks*sizeof(uint32_t),MALLOC_CAP_SPIRAM|MALLOC_CAP_8BIT));
+  if(!render_times || !sustained_sorted) {
+    heap_caps_free(render_times);heap_caps_free(sustained_sorted);
+    Serial.println("[M213 sustained] FAIL allocation");vTaskDelete(nullptr);return;
+  }
+#endif
   is_reverb = is_delay = is_chorus = is_flanger = is_tremolo = is_ringmod =
       is_distortion = is_bitcrusher = false;
   if (display::begin(display::Pipeline::NativeQueued) != ESP_OK ||
@@ -3582,6 +3628,9 @@ static void initialize(void *) {
 #endif
 #if P4SDM_INTERPOLATION_QUALIFICATION
   qualify_interpolation(fixture_samples);
+#if P4SDM_M213_DSP_STAGES
+  qualify_dsp_stages(fixture_samples);
+#endif
 #if P4SDM_PCM_LOCALITY_QUALIFICATION
   qualify_pcm_locality(fixture_samples);
 #endif
@@ -3669,7 +3718,11 @@ void loop() {
                    unsigned(interpolation_fractional_worst), interpolation_full_fractional_blocks,
                    unsigned(interpolation_full_fractional_worst));
 #endif
+#if P4SDM_M213_CAPTURE_BLOCKS
+    auto *sorted=sustained_sorted;
+#else
     static uint32_t sorted[capture_blocks];
+#endif
     std::copy(render_times, render_times + capture_blocks, sorted);
     std::sort(sorted, sorted + capture_blocks);
     diagnostic_p99.store(sorted[capture_blocks * 99 / 100]);

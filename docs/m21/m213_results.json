@@ -1,0 +1,124 @@
+{
+  "status": "PARTIAL",
+  "baseline_sha": "246434cf7024f7158954014f9f0857f21d9a9b1e",
+  "production": {
+    "interpolation": 0,
+    "pcm_read_cache": 0,
+    "linear_32bit": 0,
+    "sample_layout": 0
+  },
+  "cases": [
+    {
+      "case": "B_CURRENT",
+      "log": "docs/GUITION_M213_B_CURRENT_SERIAL.log",
+      "sha256": "af84e9b1dea3280d739ce5cd3775d72236749e5b3f01e81a7da2299621c84e75",
+      "complete": true,
+      "safe": true,
+      "faults": [],
+      "timing": {
+        "blocks": 20672,
+        "p50": 5361,
+        "p95": 5540,
+        "p99": 5608,
+        "max": 5693,
+        "misses": 0,
+        "failures": 0,
+        "timeouts": 0,
+        "peak": 523,
+        "nonzero": 10566574,
+        "rails": 0,
+        "active_min": 16,
+        "active_max": 16
+      },
+      "memory": {
+        "ps_before": 28590632,
+        "ps_after": 28590632,
+        "internal_before": 162512,
+        "internal_after": 163040,
+        "largest_before": 28311540,
+        "largest_after": 28311540
+      },
+      "trace_matches": true,
+      "reserve_pass": false,
+      "accepted": false,
+      "headroom_percent": 1.9291796874999934
+    },
+    {
+      "case": "B_NORMAL",
+      "log": "docs/GUITION_M213_B_NORMAL_SERIAL.log",
+      "sha256": "fabd3aeb20ad1d4857f744fa3e27a961f304d1501b20209f006d0246e2d9b422",
+      "complete": true,
+      "safe": true,
+      "faults": [],
+      "timing": {
+        "blocks": 20672,
+        "p50": 3381,
+        "p95": 3599,
+        "p99": 3651,
+        "max": 3740,
+        "misses": 0,
+        "failures": 0,
+        "timeouts": 0,
+        "peak": 523,
+        "nonzero": 10566574,
+        "rails": 0,
+        "active_min": 16,
+        "active_max": 16
+      },
+      "memory": {
+        "ps_before": 28590572,
+        "ps_after": 28590572,
+        "internal_before": 162848,
+        "internal_after": 162848,
+        "largest_before": 28311540,
+        "largest_after": 28311540
+      },
+      "trace_matches": true,
+      "reserve_pass": true,
+      "accepted": true,
+      "headroom_percent": 35.57265625
+    },
+    {
+      "case": "B_STAGGER",
+      "log": "docs/GUITION_M213_B_STAGGER_SERIAL.log",
+      "sha256": "1049ebdaed3a945db1a8e18f9b3a07543f5a15953ffa5ab4f806a887b795ec65",
+      "complete": true,
+      "safe": true,
+      "faults": [],
+      "timing": {
+        "blocks": 20672,
+        "p50": 3378,
+        "p95": 3600,
+        "p99": 3651,
+        "max": 3728,
+        "misses": 0,
+        "failures": 0,
+        "timeouts": 0,
+        "peak": 523,
+        "nonzero": 10566574,
+        "rails": 0,
+        "active_min": 16,
+        "active_max": 16
+      },
+      "memory": {
+        "ps_before": 28590572,
+        "ps_after": 28590572,
+        "internal_before": 162848,
+        "internal_after": 162848,
+        "largest_before": 28311540,
+        "largest_after": 28311540
+      },
+      "trace_matches": true,
+      "reserve_pass": true,
+      "accepted": true,
+      "headroom_percent": 35.779375
+    }
+  ],
+  "synthetic_locality": [],
+  "physical": [],
+  "pending": [
+    "genuine musical A/B listening",
+    "full A immutable control-event equivalence",
+    "production promotion decision after all required physical/sustained/CI checks"
+  ]
+}
