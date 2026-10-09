@@ -8,8 +8,8 @@ namespace sample_layout {
 template<class Print> void address(unsigned track, const sampler::Sample &s,
                                    const void *base, Print print) {
   const uintptr_t p = reinterpret_cast<uintptr_t>(s.data);
-  print("[M213 address] track=%u pcm=%p base=%p bytes=%u frames=%u mod64=%u mod128=%u mod256=%u mod4096=%u mod131072=%u external=%u requested_caps=%u free=%u largest=%u\n",
-    track, s.data, base, s.allocation, s.frames, unsigned(p%64), unsigned(p%128),
+  print("[M213 address] track=%u pcm=%p base=%p bytes=%u owner_usable_bytes=%u frames=%u mod64=%u mod128=%u mod256=%u mod4096=%u mod131072=%u external=%u requested_caps=%u free=%u largest=%u\n",
+    track, s.data, base, s.allocation, unsigned(heap_caps_get_allocated_size(const_cast<void *>(base))),s.frames, unsigned(p%64), unsigned(p%128),
     unsigned(p%256), unsigned(p%4096), unsigned(p%131072),
     unsigned(esp_ptr_external_ram(s.data)), unsigned(MALLOC_CAP_SPIRAM|MALLOC_CAP_8BIT),
     unsigned(heap_caps_get_free_size(MALLOC_CAP_SPIRAM)),

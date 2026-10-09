@@ -1,8 +1,17 @@
 #include <Arduino.h>
 #include "app/pcm_allocation.h"
+#include "app/memory_audit.h"
 #include "app/sample_layout_diagnostics.h"
 namespace {
+template<class... A> void report(const char *format,A... args) {
+  char line[512];const int n=snprintf(line,sizeof(line),format,args...);
+  for(int at=0;at<n && at<511;at+=32) {
+    Serial.write(reinterpret_cast<const uint8_t *>(line+at),std::min(32,std::min(n,511)-at));
+    vTaskDelay(1);
+  }
+}
 void run(void *) {
+  memory_audit();
   static sampler::Sample samples[16];
   const sampler::Sample *views[16];
   constexpr unsigned span=131072;
@@ -24,8 +33,8 @@ void run(void *) {
     }
     if(ok) {
       for(unsigned t=0;t<16;++t) sample_layout::address(t,samples[t],layout<2 ? slab : allocations[t].base,
-        [](const char *format,auto... args) { Serial.printf(format,args...); });
-      ok=sample_layout::benchmark(views,layout,[](const char *format,auto... args) { Serial.printf(format,args...); },false);
+        [](const char *format,auto... args) { report(format,args...); });
+      ok=sample_layout::benchmark(views,layout,[](const char *format,auto... args) { report(format,args...); },false);
     }
     for(auto &a:allocations) a.release([](void *p) { heap_caps_free(p); });
     heap_caps_free(slab);

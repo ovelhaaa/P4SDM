@@ -3519,16 +3519,6 @@ void setup_playback_fixture() {
 static void initialize(void *) {
   Serial.setTxBufferSize(2048);
   Serial.begin(115200);
-#if P4SDM_M213_CAPTURE_BLOCKS
-  // Long diagnostic captures retain every timing without growing internal BSS.
-  // Both allocations happen before audio, never on the realtime task.
-  render_times=static_cast<uint32_t *>(heap_caps_malloc(capture_blocks*sizeof(uint32_t),MALLOC_CAP_SPIRAM|MALLOC_CAP_8BIT));
-  sustained_sorted=static_cast<uint32_t *>(heap_caps_malloc(capture_blocks*sizeof(uint32_t),MALLOC_CAP_SPIRAM|MALLOC_CAP_8BIT));
-  if(!render_times || !sustained_sorted) {
-    heap_caps_free(render_times);heap_caps_free(sustained_sorted);
-    Serial.println("[M213 sustained] FAIL allocation");vTaskDelete(nullptr);return;
-  }
-#endif
   is_reverb = is_delay = is_chorus = is_flanger = is_tremolo = is_ringmod =
       is_distortion = is_bitcrusher = false;
   if (display::begin(display::Pipeline::NativeQueued) != ESP_OK ||
@@ -3646,6 +3636,16 @@ static void initialize(void *) {
 #endif
   tone_lock_metrics = {};
   projects::initialize();
+#if P4SDM_M213_CAPTURE_BLOCKS
+  // Long diagnostic captures retain every timing without growing internal BSS.
+  // Both allocations happen before audio, never on the realtime task.
+  render_times=static_cast<uint32_t *>(heap_caps_malloc(capture_blocks*sizeof(uint32_t),MALLOC_CAP_SPIRAM|MALLOC_CAP_8BIT));
+  sustained_sorted=static_cast<uint32_t *>(heap_caps_malloc(capture_blocks*sizeof(uint32_t),MALLOC_CAP_SPIRAM|MALLOC_CAP_8BIT));
+  if(!render_times || !sustained_sorted) {
+    heap_caps_free(render_times);heap_caps_free(sustained_sorted);
+    Serial.println("[M213 sustained] FAIL allocation");vTaskDelete(nullptr);return;
+  }
+#endif
   xTaskCreatePinnedToCore(audio_worker, "app_audio", 8000, nullptr,
                           configMAX_PRIORITIES - 1, nullptr, 0);
   samples::start();

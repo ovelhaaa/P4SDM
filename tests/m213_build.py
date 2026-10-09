@@ -5,7 +5,8 @@ root=Path(__file__).resolve().parents[1]
 python=r'C:\.platformio\penv\Scripts\python.exe'
 stamp=datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%SZ')
 archives=root/'.pio/m213-artifacts'/('build-'+stamp)
-index={}
+index_path=root/'docs/m21/m213_artifact_index.json'
+index=json.loads(index_path.read_text()) if index_path.exists() else {}
 for case in sys.argv[1:]:
     env='guition_m213_'+case
     print('BUILD '+case,flush=True)

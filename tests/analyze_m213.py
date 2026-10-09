@@ -1,7 +1,7 @@
 from pathlib import Path
 import argparse, hashlib, json
-from m213_capture import fields, validate
-p=argparse.ArgumentParser();p.add_argument('--require-acceptance',action='store_true');p.add_argument('--require-case',action='append',default=[]);a=p.parse_args()
+from m213_capture import fields, validate, validate_physical
+p=argparse.ArgumentParser();p.add_argument('--require-acceptance',action='store_true');p.add_argument('--require-case',action='append',default=[]);p.add_argument('--require-physical',action='append',default=[]);a=p.parse_args()
 cases=[]
 for path in sorted(Path('docs').glob('GUITION_M213_*_SERIAL.log')):
     label=path.stem.removeprefix('GUITION_M213_').removesuffix('_SERIAL')
@@ -21,9 +21,10 @@ for path in sorted(Path('docs').glob('GUITION_M213_SD_*_SERIAL.log')):
         rows=[r for r in locality if r['tag']==tag]
         assert len(rows)==6 and len({r['checksum'] for r in rows})==1,'Missing rows or content mismatch'
         assert all(r['reads']==131072 and r['repeats']==32 for r in rows)
-    physical.append(dict(log=path.as_posix(),complete='COMPLETE; no listening observed' in text,
-      faults=[x for x in ('task_wdt:','Guru Meditation','stack overflow') if x in text],locality=locality,
+    physical.append(dict(log=path.as_posix(),**validate_physical(text),locality=locality,
       addresses=[line for line in text.splitlines() if line.startswith('[M213 address]')]))
+for label in a.require_physical:
+    assert any(c['log']==f'docs/GUITION_M213_SD_{label}_SERIAL.log' and c['accepted'] for c in physical),f'Physical case not qualified: {label}'
 memory=Path('docs/GUITION_M213_MEMORY_SERIAL.log')
 locality=[]
 if memory.exists():

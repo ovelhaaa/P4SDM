@@ -141,9 +141,10 @@ jobs:
       - run: python tests/m213_checks.py
       - run: python tests/m213_capture_test.py
       - run: python tests/m213_sd_prepare.py
-      - run: pio run -d .pio/m19p -e guition_m213_sd_0 -e guition_m213_sd_1 -e guition_m213_sd_2
+      - run: pio run -d .pio/m19p -e guition_m213_sd_0 -e guition_m213_sd_1 -e guition_m213_sd_2 -e guition_m213_sd_direct_1
       - run: python tests/analyze_m213.py --require-case B_NORMAL
       - run: pio run -e guition_m213_memory -e guition_m213_B_current -e guition_m213_B_stagger -e guition_m213_B_normal -e guition_m213_B_reverse_order -e guition_m213_B_normal_cache -e guition_m213_B_linear -e guition_m213_B_magnitude -e guition_m213_C_magnitude -e guition_m213_A_magnitude -e guition_m213_B_profile -e guition_m213_B_linear_direct -e guition_m213_B_magnitude_direct -e guition_m213_C_magnitude_direct -e guition_m213_A_magnitude_direct
+      - run: pio run -e guition_m213_B_sustained -e guition_m213_synth -e guition_m213_B_pad_linear_direct -e guition_m213_B_pad_linear_cache -e guition_m213_B_pad_magnitude_cache -e guition_m213_B_pad_magnitude_direct -e guition_m213_C_pad_magnitude_direct -e guition_m213_A_pad_magnitude_direct -e guition_m213_B_pad_sustained -e guition_m213_synth_pad_sustained
       - run: pio run -e guition_pcm_locality -e guition_pcm_cache_nearest_fractional -e guition_pcm_cache_linear_fractional -e guition_pcm_cache_nearest_mixed -e guition_pcm_cache_nearest_profile -e guition_pcm_cache_linear32_fractional
       - uses: actions/upload-artifact@v4
         if: always()

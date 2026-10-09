@@ -164,6 +164,16 @@ bool load_name(const char *name) {
     report("PSRAM allocation failed");
     return false;
   }
+#if P4SDM_M213_LAYOUT
+  // Include allocator rounding and possible metadata fallback in the reserve,
+  // rather than assuming requested padding equals the actual heap decrease.
+  if (heap_caps_get_free_size(MALLOC_CAP_SPIRAM) < reserve) {
+    s->pcm.release([](void *base) { heap_caps_free(base); });
+    delete s;
+    report("Sample exceeds PSRAM reserve after allocation");
+    return false;
+  }
+#endif
   s->original_channels = wav.channels;
   s->rate = wav.rate;
   s->frames = wav.frames;

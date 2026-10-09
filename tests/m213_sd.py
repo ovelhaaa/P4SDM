@@ -75,10 +75,19 @@ try:
     send('Bpm',value=240);send('PatternLength',value=16,p=0)
     for t in range(16):
         send('Mute',t,0);send('Solo',t,0);send('SampleMode',t,0)
-        for s in (0,4,8,12):
+        for s in range(16):
             send('Step',t,1,p=0,s=s);send('LockSlice',t,s%4,p=0,s=s)
     send('Play',value=1);read(1);send('PerfRepeatStart',value=8);read(2)
     load(1,wav['stereo']);send('PerfRepeatStop');read(1);send('Play',value=0)
+    before_restore=state()
+    hits=re.search(r'\[Q PLAYBACK\].*repeat_hits=(\d+)',before_restore)
+    assert hits and int(hits[1])>0,'x8 Repeat captured no actual hits'
+    send('PatternLength',value=4,p=0);send('ChainClear')
+    send('ChainAdd',value=0,s=0);send('ChainRepeats',value=1,s=0)
+    send('ChainLoop',value=1);send('ChainMode',value=1)
+    send('Play',value=1);read(3);send('Play',value=0)
+    chain=re.search(r'\[Q PLAYBACK\].*chain_loops=(\d+)',state())
+    assert chain and int(chain[1])>0,'physical Chain completed no loops'
     cmd('MEASURE 0');cmd('METRICS',2);save();project();store(8);state()
     log.write(f'\n# HOST M213 SD policy={policy} COMPLETE; no listening observed\n');log.flush()
 finally:

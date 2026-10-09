@@ -62,4 +62,8 @@ with (target/'platformio.ini').open('a') as f:
                 f'build_flags = ${{env:guition_app.build_flags}} -DP4SDM_M213_DIAGNOSTICS=1 '
                 f'-DP4SDM_M213_LAYOUT={policy} -DP4SDM_PCM_READ_CACHE=1 '
                 '-DP4SDM_INTERPOLATION=1 -DP4SDM_LINEAR_32BIT=1 -DP4SDM_LINEAR_MAGNITUDE=1\n')
+    f.write('\n[env:guition_m213_sd_direct_1]\nextends = env:guition_app\n'
+            'build_flags = ${env:guition_app.build_flags} -DP4SDM_M213_DIAGNOSTICS=1 '
+            '-DP4SDM_M213_LAYOUT=1 -DP4SDM_INTERPOLATION=1 -DP4SDM_LINEAR_32BIT=1 '
+            '-DP4SDM_LINEAR_MAGNITUDE=1\n')
 print('M213 SD console prepared; STORE 8 reads resident PCM only')
