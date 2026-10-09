@@ -158,7 +158,8 @@ struct Voice {
     uint32_t offset = uint32_t(position >> 16);
     return playback.reverse ? region.end - 1 - offset : region.start + offset;
   }
-  inline __attribute__((always_inline)) int16_t next(Interpolation interpolation = default_interpolation) {
+  inline __attribute__((always_inline)) int16_t next(Interpolation interpolation = default_interpolation,
+                                                    PcmReadCache *cache = nullptr) {
     if (!active || !sample)
       return 0;
     if ((position >> 16) >= region.end - region.start || !remaining) {
@@ -166,7 +167,7 @@ struct Voice {
       return 0;
     }
     int16_t result = lookup_valid(sample->data, region, playback.reverse, position,
-                            interpolation);
+                            interpolation, cache);
     if (fade) {
       unsigned gain = attack;
       if (remaining <= fade)

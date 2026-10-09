@@ -128,3 +128,16 @@ jobs:
       - run: python tests/analyze_m21.py
       - run: python tests/analyze_m20.py docs/GUITION_M21_NEAREST_FINAL_SERIAL.log
       - run: python tests/analyze_m20.py docs/GUITION_M21_SYNTH_STRESS_SERIAL.log --synth
+
+      # M21.1 engineering candidates remain separate from production acceptance.
+      - run: python tests/pcm_cache_checks.py
+      - run: python tests/analyze_m211.py
+      - run: pio run -e guition_pcm_locality -e guition_pcm_cache_nearest_fractional -e guition_pcm_cache_linear_fractional -e guition_pcm_cache_nearest_mixed -e guition_pcm_cache_nearest_profile -e guition_pcm_cache_linear32_fractional
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: m211-matching-firmware
+          path: |
+            .pio/build/guition_pcm*/firmware.elf
+            .pio/build/guition_pcm*/firmware.bin
+          retention-days: 30

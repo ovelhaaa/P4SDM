@@ -5,6 +5,13 @@ from pathlib import Path
 baseline = 'bb552f8'
 accepted_main = subprocess.check_output(['git', 'show', baseline + ':src/app_main.cpp']).decode()
 current_main = Path('src/app_main.cpp').read_text(encoding='utf-8')
+# Normalize only the explicit diagnostic cache alternative. Enabled output and
+# transport use actual accepted M21 headers in pcm_cache_checks.py.
+current_main = current_main.replace('''#if P4SDM_PCM_READ_CACHE
+  v = voice.next(sampler::default_interpolation, &pcm_read_cache[t]);
+#else
+  v = voice.next();
+#endif''', '  v = voice.next();')
 def function(source, signature):
     start = source.index(signature)
     opened = source.index('{', start)
@@ -26,8 +33,8 @@ for dependency in ('sample_playback.h', 'slices.h', 'wav.h', 'voice_state.h'):
         # three known substitutions, then retain the historical full-source
         # assertion. interpolation_checks.py compares actual old/new samples.
         current = current.replace('#include "sample_interpolation.h"\n', '')
-        current = current.replace('inline __attribute__((always_inline)) int16_t next(Interpolation interpolation = default_interpolation)', 'int16_t next()')
-        current = current.replace('lookup_valid(sample->data, region, playback.reverse, position,\n                            interpolation)', 'sample->data[frame_index()]')
+        current = current.replace('inline __attribute__((always_inline)) int16_t next(Interpolation interpolation = default_interpolation,\n                                                    PcmReadCache *cache = nullptr)', 'int16_t next()')
+        current = current.replace('lookup_valid(sample->data, region, playback.reverse, position,\n                            interpolation, cache)', 'sample->data[frame_index()]')
     assert accepted == current, dependency
 with tempfile.TemporaryDirectory() as folder:
     root = Path(folder)

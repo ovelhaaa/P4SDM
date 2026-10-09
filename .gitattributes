@@ -1,0 +1,2 @@
+# Preserve new physical captures byte-for-byte, including native USB line endings.
+docs/GUITION_M211_*.log -text

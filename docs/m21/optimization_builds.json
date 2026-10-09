@@ -1,0 +1,223 @@
+{
+  "accepted_main": "7d90acea7aa18ddc7af1b8c5ad00d6b44cd4b16c",
+  "platform": "pioarduino 55.03.36-1",
+  "compiler": "riscv32-esp GCC 14.2.0+20251107",
+  "cpu_mhz": 360,
+  "sample_rate": 44100,
+  "frames": 256,
+  "baseline_reproduction": {
+    "environment": "guition_interp_linear_fractional_stress",
+    "elf_sha256": "2961122e19a6df569df255173f118b66d601fb103bc3804cd0b1da587619fbd7",
+    "preserved_at": ".pio/m211-baseline",
+    "source_revision": "7d90acea7aa18ddc7af1b8c5ad00d6b44cd4b16c",
+    "flags": "INTERPOLATION=1 INTERPOLATION_QUALIFICATION=1 INTERPOLATION_FRACTIONAL_STRESS=1 plus complete guition_ui20_stress inherited flags",
+    "resolved_build_flags": [
+      "-DBOARD_HAS_PSRAM",
+      "-DARDUINO_USB_MODE=1",
+      "-DARDUINO_USB_CDC_ON_BOOT=1",
+      "-DP4SDM_HEADLESS=1",
+      "-DFEATURE_USB_MIDI=0 -DP4SDM_DISPLAY=1 -DP4SDM_APP=1 -DP4SDM_APP_DIAGNOSTICS=0 -DP4SDM_APP_STRESS=1 -DP4SDM_SAMPLE_PLAYBACK_STRESS=1 -DP4SDM_SAMPLE_SLICE_STRESS=1 -DP4SDM_SLICE_LOCK_STRESS=1 -DP4SDM_PROJECT_STRESS=1 -DP4SDM_CHAIN_STRESS=1 -DP4SDM_PERFORMANCE_STRESS=1 -DP4SDM_REPEAT_STRESS=1 -DP4SDM_TRANSIENT_STRESS=1 -DP4SDM_UI20_STRESS=1 -DP4SDM_INTERPOLATION=1 -DP4SDM_INTERPOLATION_QUALIFICATION=1 -DP4SDM_INTERPOLATION_FRACTIONAL_STRESS=1"
+    ]
+  },
+  "historical_store_elf": {
+    "sha256_prefix": "b00e8a3f1",
+    "matching_elf_recovered": false
+  },
+  "clean_candidates": {
+    "nearest_cache_B": {
+      "source_revision": "a02d820ed37849bf0900bd7160b8cdda1af816a2",
+      "environment": "guition_pcm_cache_nearest_fractional",
+      "elf_sha256": "58dc7c6c921380a7a4e20c1fc78fbe8b647180f65d7e75986f8369a7913a6004",
+      "matching_local_elf_available": false,
+      "resolved_build_flags": [
+        "-DBOARD_HAS_PSRAM",
+        "-DARDUINO_USB_MODE=1",
+        "-DARDUINO_USB_CDC_ON_BOOT=1",
+        "-DP4SDM_HEADLESS=1",
+        "-DFEATURE_USB_MIDI=0 -DP4SDM_DISPLAY=1 -DP4SDM_APP=1 -DP4SDM_APP_DIAGNOSTICS=0 -DP4SDM_APP_STRESS=1 -DP4SDM_SAMPLE_PLAYBACK_STRESS=1 -DP4SDM_SAMPLE_SLICE_STRESS=1 -DP4SDM_SLICE_LOCK_STRESS=1 -DP4SDM_PROJECT_STRESS=1 -DP4SDM_CHAIN_STRESS=1 -DP4SDM_PERFORMANCE_STRESS=1 -DP4SDM_REPEAT_STRESS=1 -DP4SDM_TRANSIENT_STRESS=1 -DP4SDM_UI20_STRESS=1 -DP4SDM_INTERPOLATION=0 -DP4SDM_INTERPOLATION_QUALIFICATION=1 -DP4SDM_INTERPOLATION_FRACTIONAL_STRESS=1 -DP4SDM_PCM_READ_CACHE=1"
+      ]
+    },
+    "linear_cache_B": {
+      "source_revision": "a02d820ed37849bf0900bd7160b8cdda1af816a2",
+      "environment": "guition_pcm_cache_linear_fractional",
+      "elf_sha256": "79fc97c915c47c04d2a95982e996f34becfa9933832d7c9d990937363b142c12",
+      "matching_local_elf_available": false,
+      "resolved_build_flags": [
+        "-DBOARD_HAS_PSRAM",
+        "-DARDUINO_USB_MODE=1",
+        "-DARDUINO_USB_CDC_ON_BOOT=1",
+        "-DP4SDM_HEADLESS=1",
+        "-DFEATURE_USB_MIDI=0 -DP4SDM_DISPLAY=1 -DP4SDM_APP=1 -DP4SDM_APP_DIAGNOSTICS=0 -DP4SDM_APP_STRESS=1 -DP4SDM_SAMPLE_PLAYBACK_STRESS=1 -DP4SDM_SAMPLE_SLICE_STRESS=1 -DP4SDM_SLICE_LOCK_STRESS=1 -DP4SDM_PROJECT_STRESS=1 -DP4SDM_CHAIN_STRESS=1 -DP4SDM_PERFORMANCE_STRESS=1 -DP4SDM_REPEAT_STRESS=1 -DP4SDM_TRANSIENT_STRESS=1 -DP4SDM_UI20_STRESS=1 -DP4SDM_INTERPOLATION=1 -DP4SDM_INTERPOLATION_QUALIFICATION=1 -DP4SDM_INTERPOLATION_FRACTIONAL_STRESS=1 -DP4SDM_PCM_READ_CACHE=1"
+      ]
+    },
+    "nearest_cache_profile_B": {
+      "source_revision_description": "a02d820 plus block profiler patch, before Linear32 patch",
+      "environment": "guition_pcm_cache_nearest_profile",
+      "elf_sha256": "b3193d371b6575e25b15b2d37dc85aba9bcc28fcd9eb1bb978f93f9b0cde9597",
+      "preserved_at": ".pio/m211-profile-artifacts",
+      "resolved_build_flags": [
+        "-DBOARD_HAS_PSRAM",
+        "-DARDUINO_USB_MODE=1",
+        "-DARDUINO_USB_CDC_ON_BOOT=1",
+        "-DP4SDM_HEADLESS=1",
+        "-DFEATURE_USB_MIDI=0 -DP4SDM_DISPLAY=1 -DP4SDM_APP=1 -DP4SDM_APP_DIAGNOSTICS=0 -DP4SDM_APP_STRESS=1 -DP4SDM_SAMPLE_PLAYBACK_STRESS=1 -DP4SDM_SAMPLE_SLICE_STRESS=1 -DP4SDM_SLICE_LOCK_STRESS=1 -DP4SDM_PROJECT_STRESS=1 -DP4SDM_CHAIN_STRESS=1 -DP4SDM_PERFORMANCE_STRESS=1 -DP4SDM_REPEAT_STRESS=1 -DP4SDM_TRANSIENT_STRESS=1 -DP4SDM_UI20_STRESS=1 -DP4SDM_INTERPOLATION=0 -DP4SDM_INTERPOLATION_QUALIFICATION=1 -DP4SDM_INTERPOLATION_FRACTIONAL_STRESS=1 -DP4SDM_PCM_READ_CACHE=1 -DP4SDM_BLOCK_PROFILE=1"
+      ]
+    },
+    "linear32_cache_B": {
+      "source_revision": "f52cc4328c4ec58c1970c3c97012c50c4ae87b02",
+      "environment": "guition_pcm_cache_linear32_fractional",
+      "elf_sha256": "c52326252a54f365d9912e88ecefc3eab985473c6f6026e65aba7537345f0441",
+      "preserved_at": ".pio/m211-final-artifacts/guition_pcm_cache_linear32_fractional",
+      "resolved_build_flags": [
+        "-DBOARD_HAS_PSRAM",
+        "-DARDUINO_USB_MODE=1",
+        "-DARDUINO_USB_CDC_ON_BOOT=1",
+        "-DP4SDM_HEADLESS=1",
+        "-DFEATURE_USB_MIDI=0 -DP4SDM_DISPLAY=1 -DP4SDM_APP=1 -DP4SDM_APP_DIAGNOSTICS=0 -DP4SDM_APP_STRESS=1 -DP4SDM_SAMPLE_PLAYBACK_STRESS=1 -DP4SDM_SAMPLE_SLICE_STRESS=1 -DP4SDM_SLICE_LOCK_STRESS=1 -DP4SDM_PROJECT_STRESS=1 -DP4SDM_CHAIN_STRESS=1 -DP4SDM_PERFORMANCE_STRESS=1 -DP4SDM_REPEAT_STRESS=1 -DP4SDM_TRANSIENT_STRESS=1 -DP4SDM_UI20_STRESS=1 -DP4SDM_INTERPOLATION=1 -DP4SDM_INTERPOLATION_QUALIFICATION=1 -DP4SDM_INTERPOLATION_FRACTIONAL_STRESS=1 -DP4SDM_PCM_READ_CACHE=1 -DP4SDM_LINEAR_32BIT=1"
+      ]
+    },
+    "nearest_cache_A": {
+      "source_revision": "f52cc4328c4ec58c1970c3c97012c50c4ae87b02",
+      "environment": "guition_pcm_cache_nearest_mixed",
+      "elf_sha256": "6e7337283c07ee69a8867a44ed2f8e783ae0173bdc296f1508a9e1109fc56298",
+      "preserved_at": ".pio/m211-final-artifacts/guition_pcm_cache_nearest_mixed",
+      "resolved_build_flags": [
+        "-DBOARD_HAS_PSRAM",
+        "-DARDUINO_USB_MODE=1",
+        "-DARDUINO_USB_CDC_ON_BOOT=1",
+        "-DP4SDM_HEADLESS=1",
+        "-DFEATURE_USB_MIDI=0 -DP4SDM_DISPLAY=1 -DP4SDM_APP=1 -DP4SDM_APP_DIAGNOSTICS=0 -DP4SDM_APP_STRESS=1 -DP4SDM_SAMPLE_PLAYBACK_STRESS=1 -DP4SDM_SAMPLE_SLICE_STRESS=1 -DP4SDM_SLICE_LOCK_STRESS=1 -DP4SDM_PROJECT_STRESS=1 -DP4SDM_CHAIN_STRESS=1 -DP4SDM_PERFORMANCE_STRESS=1 -DP4SDM_REPEAT_STRESS=1 -DP4SDM_TRANSIENT_STRESS=1 -DP4SDM_UI20_STRESS=1 -DP4SDM_INTERPOLATION=0 -DP4SDM_INTERPOLATION_QUALIFICATION=1 -DP4SDM_PCM_READ_CACHE=1"
+      ]
+    }
+  },
+  "preservation_note": "PlatformIO invalidated earlier clean candidate build directories after platformio.ini changes. SHA values were recorded before invalidation; no matching ELF availability is claimed for those cases. Failing baseline and later profile/final candidates are copied outside .pio/build. Remote CI archives newly built candidate ELF/BIN files; Linux CI ELFs are not the Windows capture ELFs.",
+  "historical_capture_inventory": {
+    "docs\\GUITION_M21_HERMITE_FINAL_SERIAL.log": {
+      "sha256": "fc47ae0a352c2aea95d82f7c13ccf3ac28836a1d82f838c663f780e51f91ea99",
+      "bytes": 15385,
+      "watchdogs": 0,
+      "panics": 0
+    },
+    "docs\\GUITION_M21_HERMITE_INLINED_FAILED_SERIAL.log": {
+      "sha256": "1292134fd569083d835f6a895b5955f6a7f3bc613e64d306611f4083168e271b",
+      "bytes": 15389,
+      "watchdogs": 0,
+      "panics": 0
+    },
+    "docs\\GUITION_M21_HERMITE_PRE_PROFILE_SERIAL.log": {
+      "sha256": "6e5f69f8afceb68a78f409da985f6074d93e58dbad103621ba08de61888537f1",
+      "bytes": 15372,
+      "watchdogs": 0,
+      "panics": 0
+    },
+    "docs\\GUITION_M21_LINEAR_ALL_FRACTIONAL_SERIAL.log": {
+      "sha256": "061829163e3ccfbf44f792abc90122629fd0cfeb8b0293bb70fddc85bee01ae9",
+      "bytes": 15418,
+      "watchdogs": 0,
+      "panics": 0
+    },
+    "docs\\GUITION_M21_LINEAR_CHAIN_COVERAGE_SERIAL.log": {
+      "sha256": "e92c4c4d41a5097844b9aa012f14c852769d2d24002bc611c131bcbecec65d75",
+      "bytes": 15383,
+      "watchdogs": 0,
+      "panics": 0
+    },
+    "docs\\GUITION_M21_LINEAR_FINAL_SERIAL.log": {
+      "sha256": "f8e00bcbc391f16c8ceb3c641b7db61bc9be15cd17984621f51816cde935015a",
+      "bytes": 15321,
+      "watchdogs": 0,
+      "panics": 0
+    },
+    "docs\\GUITION_M21_LINEAR_FLOAT_STRESS_SERIAL.log": {
+      "sha256": "81d79e9d1e7d478d3220eaf8fbce98ef018673b371cb158dacad482f4d6ba267",
+      "bytes": 15382,
+      "watchdogs": 0,
+      "panics": 0
+    },
+    "docs\\GUITION_M21_LINEAR_INLINED_FAILED_SERIAL.log": {
+      "sha256": "4f34836a23a6c474fee886503499cedcd65cc6d1bfc70633865b99054953014c",
+      "bytes": 15385,
+      "watchdogs": 0,
+      "panics": 0
+    },
+    "docs\\GUITION_M21_LINEAR_STRESS_SERIAL.log": {
+      "sha256": "2bebf2ecdc68dc158e171fe57bdcee133ed1b86587843aeaa39655dd1c428401",
+      "bytes": 15369,
+      "watchdogs": 0,
+      "panics": 0
+    },
+    "docs\\GUITION_M21_LINEAR_WORST_FRACTIONAL_SERIAL.log": {
+      "sha256": "2f279865335211000b60d9e84fe11c5c61383ccbedd0c7200f55e9a126d2a045",
+      "bytes": 91616,
+      "watchdogs": 11,
+      "panics": 1
+    },
+    "docs\\GUITION_M21_NEAREST_FINAL_SERIAL.log": {
+      "sha256": "f36214fe1d8dbed1ab7cb607b88177eafbc73c36b3392f6b669432b0ee424fac",
+      "bytes": 15417,
+      "watchdogs": 0,
+      "panics": 0
+    },
+    "docs\\GUITION_M21_NEAREST_PRE_PROFILE_SERIAL.log": {
+      "sha256": "7a694071034ce0d91cc53926d2744de6f99675abab58ee1ea2f6a7dfa7460002",
+      "bytes": 15366,
+      "watchdogs": 0,
+      "panics": 0
+    },
+    "docs\\GUITION_M21_NEAREST_STRESS_SERIAL.log": {
+      "sha256": "2afa7ac253df904f5778cfffba913668c65024512ba1ffe396bd18c4c8532e0b",
+      "bytes": 15386,
+      "watchdogs": 0,
+      "panics": 0
+    },
+    "docs\\GUITION_M21_NEAREST_WORST_FRACTIONAL_SERIAL.log": {
+      "sha256": "c58e232a1275717a3e9cb68b46e74e69fa0233882f5b9ac1ea690b8210d465c5",
+      "bytes": 15535,
+      "watchdogs": 0,
+      "panics": 0
+    },
+    "docs\\GUITION_M21_NORMAL_SERIAL.log": {
+      "sha256": "11d05902afe0e55a3eb63befbdeceab262c4333cc35c23aafc0225490291befd",
+      "bytes": 6794,
+      "watchdogs": 0,
+      "panics": 0
+    },
+    "docs\\GUITION_M21_SD_HERMITE_SERIAL.log": {
+      "sha256": "0d3d4583edfefbd61f98f685083beeb211fe803d625f3eaeda0df3a46d8d74c3",
+      "bytes": 37687,
+      "watchdogs": 0,
+      "panics": 0
+    },
+    "docs\\GUITION_M21_SD_LINEAR_SERIAL.log": {
+      "sha256": "3f9570f9acca9be89c01bb69646b28dcb1b593192930898fe825d00792bd19ff",
+      "bytes": 57663,
+      "watchdogs": 0,
+      "panics": 0
+    },
+    "docs\\GUITION_M21_STARTUP_WATCHDOG_SERIAL.log": {
+      "sha256": "00386407e36c4a7ad8b2104b359410c050de1d61fcbc71d523175322ae00ebcd",
+      "bytes": 104993,
+      "watchdogs": 16,
+      "panics": 0
+    },
+    "docs\\GUITION_M21_SYNTH_STRESS_SERIAL.log": {
+      "sha256": "f1a08d06b0fa02889d4efdb854c59ca6ed88a93dd2abe56fa139f7806327ff38",
+      "bytes": 13116,
+      "watchdogs": 0,
+      "panics": 0
+    }
+  },
+  "restored_production": {
+    "environment": "guition_app",
+    "source_revision": "f52cc43",
+    "elf_sha256": "a6897579d035c7f0e974bb0de76e11aad55ffd91406f67ad3a0803711ba402cf",
+    "resolved_build_flags": [
+      "-DBOARD_HAS_PSRAM",
+      "-DARDUINO_USB_MODE=1",
+      "-DARDUINO_USB_CDC_ON_BOOT=1",
+      "-DP4SDM_HEADLESS=1",
+      "-DFEATURE_USB_MIDI=0 -DP4SDM_DISPLAY=1 -DP4SDM_APP=1 -DP4SDM_APP_DIAGNOSTICS=0"
+    ],
+    "capture": "docs/GUITION_M211_RESTORED_PRODUCTION_SERIAL.log"
+  }
+}
