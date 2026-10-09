@@ -3,6 +3,9 @@
 #include <array>
 #include <cassert>
 #include <cstdio>
+#ifndef P4SDM_TRACE_BLOCKS
+#define P4SDM_TRACE_BLOCKS 20672
+#endif
 int main() {
   for(unsigned scenario:{2u,3u}) {
     app::Engine e;
@@ -16,7 +19,7 @@ int main() {
       samples[t].data=pcm[t].data(); samples[t].frames=65536-(scenario==3 ? t*1024 : 0); voices[t].assign(&samples[t]);
     }
     m212::Trace trace;
-    for(unsigned block=0;block<20672;++block) {
+    for(unsigned block=0;block<P4SDM_TRACE_BLOCKS;++block) {
       m212::commands(e,block);
       for(auto &c:caches) c.invalidate();
       for(unsigned n=0;n<256;++n) {
@@ -38,7 +41,7 @@ int main() {
     }
     assert(trace.final_chain>0 && trace.final_repeat>0);
     printf("scenario=%u hash=%u events=%u rng=%u chain=%u x8=%u",scenario,trace.hash,trace.events,trace.final_rng,trace.final_chain,trace.final_repeat);
-    for(auto n:trace.active_frames) { assert(n>20672*256-256); printf(" active=%u",n); }
+    for(auto n:trace.active_frames) { assert(n>P4SDM_TRACE_BLOCKS*256-256); printf(" active=%u",n); }
     puts("");
   }
 }

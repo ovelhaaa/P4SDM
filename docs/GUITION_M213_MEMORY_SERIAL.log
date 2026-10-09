@@ -1,0 +1,173 @@
+# Production firmware guition_m213_memory; fresh esptool flash/hardware reset; UTC 2026-10-09T21:37:48.320229+00:00
+esptool v5.1.0
+Serial port COM13:
+Connecting...
+Connected to ESP32-P4 on COM13:
+Chip type:          ESP32-P4 (revision v1.3)
+Features:           Dual Core + LP Core, 400MHz
+Crystal frequency:  40MHz
+USB mode:           USB-Serial/JTAG
+MAC:                80:f1:b2:d3:cc:86
+
+Uploading stub flasher...
+Running stub flasher...
+Stub flasher running.
+Changing baud rate to 460800...
+Changed.
+
+Configuring flash size...
+Flash will be erased from 0x00002000 to 0x00007fff...
+Flash will be erased from 0x00008000 to 0x00008fff...
+Flash will be erased from 0x0000e000 to 0x0000ffff...
+Flash will be erased from 0x00010000 to 0x00065fff...
+SHA digest in image updated.
+Compressed 21616 bytes to 13700...
+Writing at 0x00002000 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0.0% 0/13700 bytes... 
+Writing at 0x00007470 [██████████████████████████████] 100.0% 13700/13700 bytes... 
+Wrote 21616 bytes (13700 compressed) at 0x00002000 in 0.3 seconds (646.6 kbit/s).
+Hash of data verified.
+Compressed 3072 bytes to 146...
+Writing at 0x00008000 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0.0% 0/146 bytes... 
+Writing at 0x00008c00 [██████████████████████████████] 100.0% 146/146 bytes... 
+Wrote 3072 bytes (146 compressed) at 0x00008000 in 0.1 seconds (333.3 kbit/s).
+Hash of data verified.
+Compressed 8192 bytes to 47...
+Writing at 0x0000e000 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0.0% 0/47 bytes... 
+Writing at 0x00010000 [██████████████████████████████] 100.0% 47/47 bytes... 
+Wrote 8192 bytes (47 compressed) at 0x0000e000 in 0.1 seconds (664.9 kbit/s).
+Hash of data verified.
+Compressed 351232 bytes to 177678...
+Writing at 0x00010000 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0.0% 0/177678 bytes... 
+Writing at 0x0001c3ec [██░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   9.2% 16384/177678 bytes... 
+Writing at 0x00024aec [█████░░░░░░░░░░░░░░░░░░░░░░░░░]  18.4% 32768/177678 bytes... 
+Writing at 0x0002af7c [████████░░░░░░░░░░░░░░░░░░░░░░]  27.7% 49152/177678 bytes... 
+Writing at 0x0003111f [███████████░░░░░░░░░░░░░░░░░░░]  36.9% 65536/177678 bytes... 
+Writing at 0x00038605 [█████████████░░░░░░░░░░░░░░░░░]  46.1% 81920/177678 bytes... 
+Writing at 0x0003e45d [████████████████░░░░░░░░░░░░░░]  55.3% 98304/177678 bytes... 
+Writing at 0x000451fd [███████████████████░░░░░░░░░░░]  64.5% 114688/177678 bytes... 
+Writing at 0x0004b2fc [██████████████████████░░░░░░░░]  73.8% 131072/177678 bytes... 
+Writing at 0x00051449 [████████████████████████░░░░░░]  83.0% 147456/177678 bytes... 
+Writing at 0x00059350 [███████████████████████████░░░]  92.2% 163840/177678 bytes... 
+Writing at 0x00065c00 [██████████████████████████████] 100.0% 177678/177678 bytes... 
+Wrote 351232 bytes (177678 compressed) at 0x00010000 in 1.9 seconds (1463.3 kbit/s).
+Hash of data verified.
+
+Hard resetting via RTS pin...
+[M212 memory] revision=103 cpu_mhz=360 psram_bytes=33554432 sdk_speed_mhz=200 l2_bytes=131072 line_bytes=64
+[M212 registers] source=1 source_hz=400000000 source_status=0 core_div=1 bus_div=2 effective_hz=200000000 hex_read=1 hex_write=1 ddr=1 ecc=0
+[M213 address] track=0 pcm=0x48000a40 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=2624 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 address] track=1 pcm=0x48020a40 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=2624 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 address] track=2 pcm=0x48040a40 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=2624 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 address] track=3 pcm=0x48060a40 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=2624 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 address] track=4 pcm=0x48080a40 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=2624 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 address] track=5 pcm=0x480a0a40 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=2624 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 address] track=6 pcm=0x480c0a40 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=2624 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 address] track=7 pcm=0x480e0a40 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=2624 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 address] track=8 pcm=0x48100a40 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=2624 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 address] track=9 pcm=0x48120a40 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=2624 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 address] track=10 pcm=0x48140a40 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=2624 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 address] track=11 pcm=0x48160a40 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=2624 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 address] track=12 pcm=0x48180a40 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=2624 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 address] track=13 pcm=0x481a0a40 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=2624 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 address] track=14 pcm=0x481c0a40 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=2624 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 address] track=15 pcm=0x481e0a40 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=2624 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 locality] tag=0 order=0 eviction=0 repeats=32 reads=131072 us=65593 max=2065 checksum=4293374976 sweep=0 concurrent_audio=0 cold_proven=0
+[M213 locality] tag=0 order=1 eviction=0 repeats=32 reads=131072 us=4002 max=127 checksum=4293374976 sweep=0 concurrent_audio=0 cold_proven=0
+[M213 locality] tag=0 order=2 eviction=0 repeats=32 reads=131072 us=6753 max=212 checksum=4293374976 sweep=0 concurrent_audio=0 cold_proven=0
+[M213 locality] tag=0 order=0 eviction=1 repeats=32 reads=131072 us=65666 max=2054 checksum=4293374976 sweep=524288 concurrent_audio=0 cold_proven=0
+[M213 locality] tag=0 order=1 eviction=1 repeats=32 reads=131072 us=4005 max=129 checksum=4293374976 sweep=1048576 concurrent_audio=0 cold_proven=0
+[M213 locality] tag=0 order=2 eviction=1 repeats=32 reads=131072 us=6798 max=217 checksum=4293374976 sweep=1572864 concurrent_audio=0 cold_proven=0
+[M213 locality complete] tag=0
+[M213 address] track=0 pcm=0x48000a40 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=2624 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 address] track=1 pcm=0x48020a80 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=0 mod256=128 mod4096=2688 mod131072=2688 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 address] track=2 pcm=0x48040ac0 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=64 mod256=192 mod4096=2752 mod131072=2752 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 address] track=3 pcm=0x48060b00 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=0 mod256=0 mod4096=2816 mod131072=2816 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 address] track=4 pcm=0x48080b40 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2880 mod131072=2880 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 address] track=5 pcm=0x480a0b80 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=0 mod256=128 mod4096=2944 mod131072=2944 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 address] track=6 pcm=0x480c0bc0 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=64 mod256=192 mod4096=3008 mod131072=3008 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 address] track=7 pcm=0x480e0c00 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=0 mod256=0 mod4096=3072 mod131072=3072 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 address] track=8 pcm=0x48100c40 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=3136 mod131072=3136 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 address] track=9 pcm=0x48120c80 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=0 mod256=128 mod4096=3200 mod131072=3200 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 address] track=10 pcm=0x48140cc0 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=64 mod256=192 mod4096=3264 mod131072=3264 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 address] track=11 pcm=0x48160d00 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=0 mod256=0 mod4096=3328 mod131072=3328 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 address] track=12 pcm=0x48180d40 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=3392 mod131072=3392 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 address] track=13 pcm=0x481a0d80 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=0 mod256=128 mod4096=3456 mod131072=3456 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 address] track=14 pcm=0x481c0dc0 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=64 mod256=192 mod4096=3520 mod131072=3520 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 address] track=15 pcm=0x481e0e00 base=0x48000a40 bytes=131072 owner_usable_bytes=2098176 frames=65536 mod64=0 mod128=0 mod256=0 mod4096=3584 mod131072=3584 external=1 requested_caps=1028 free=31453664 largest=30932980
+[M213 locality] tag=1 order=0 eviction=0 repeats=32 reads=131072 us=4359 max=197 checksum=4293374976 sweep=0 concurrent_audio=0 cold_proven=0
+[M213 locality] tag=1 order=1 eviction=0 repeats=32 reads=131072 us=2305 max=73 checksum=4293374976 sweep=0 concurrent_audio=0 cold_proven=0
+[M213 locality] tag=1 order=2 eviction=0 repeats=32 reads=131072 us=5089 max=160 checksum=4293374976 sweep=0 concurrent_audio=0 cold_proven=0
+[M213 locality] tag=1 order=0 eviction=1 repeats=32 reads=131072 us=5996 max=189 checksum=4293374976 sweep=524288 concurrent_audio=0 cold_proven=0
+[M213 locality] tag=1 order=1 eviction=1 repeats=32 reads=131072 us=4004 max=129 checksum=4293374976 sweep=1048576 concurrent_audio=0 cold_proven=0
+[M213 locality] tag=1 order=2 eviction=1 repeats=32 reads=131072 us=6789 max=217 checksum=4293374976 sweep=1572864 concurrent_audio=0 cold_proven=0
+[M213 locality complete] tag=1
+[M213 address] track=0 pcm=0x48000a10 base=0x48000a10 bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=16 mod128=16 mod256=16 mod4096=2576 mod131072=2576 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=1 pcm=0x48021a14 base=0x48021a14 bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=20 mod128=20 mod256=20 mod4096=2580 mod131072=6676 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=2 pcm=0x48042a18 base=0x48042a18 bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=24 mod128=24 mod256=24 mod4096=2584 mod131072=10776 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=3 pcm=0x48063a1c base=0x48063a1c bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=28 mod128=28 mod256=28 mod4096=2588 mod131072=14876 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=4 pcm=0x48084a20 base=0x48084a20 bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=32 mod128=32 mod256=32 mod4096=2592 mod131072=18976 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=5 pcm=0x480a5a24 base=0x480a5a24 bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=36 mod128=36 mod256=36 mod4096=2596 mod131072=23076 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=6 pcm=0x480c6a28 base=0x480c6a28 bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=40 mod128=40 mod256=40 mod4096=2600 mod131072=27176 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=7 pcm=0x480e7a2c base=0x480e7a2c bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=44 mod128=44 mod256=44 mod4096=2604 mod131072=31276 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=8 pcm=0x48108a30 base=0x48108a30 bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=48 mod128=48 mod256=48 mod4096=2608 mod131072=35376 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=9 pcm=0x48129a34 base=0x48129a34 bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=52 mod128=52 mod256=52 mod4096=2612 mod131072=39476 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=10 pcm=0x4814aa38 base=0x4814aa38 bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=56 mod128=56 mod256=56 mod4096=2616 mod131072=43576 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=11 pcm=0x4816ba3c base=0x4816ba3c bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=60 mod128=60 mod256=60 mod4096=2620 mod131072=47676 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=12 pcm=0x4818ca40 base=0x4818ca40 bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=51776 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=13 pcm=0x481ada44 base=0x481ada44 bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=4 mod128=68 mod256=68 mod4096=2628 mod131072=55876 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=14 pcm=0x481cea48 base=0x481cea48 bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=8 mod128=72 mod256=72 mod4096=2632 mod131072=59976 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=15 pcm=0x481efa4c base=0x481efa4c bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=12 mod128=76 mod256=76 mod4096=2636 mod131072=64076 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 locality] tag=2 order=0 eviction=0 repeats=32 reads=131072 us=4367 max=212 checksum=4293374976 sweep=0 concurrent_audio=0 cold_proven=0
+[M213 locality] tag=2 order=1 eviction=0 repeats=32 reads=131072 us=2243 max=73 checksum=4293374976 sweep=0 concurrent_audio=0 cold_proven=0
+[M213 locality] tag=2 order=2 eviction=0 repeats=32 reads=131072 us=5074 max=159 checksum=4293374976 sweep=0 concurrent_audio=0 cold_proven=0
+[M213 locality] tag=2 order=0 eviction=1 repeats=32 reads=131072 us=6301 max=197 checksum=4293374976 sweep=524288 concurrent_audio=0 cold_proven=0
+[M213 locality] tag=2 order=1 eviction=1 repeats=32 reads=131072 us=4229 max=136 checksum=4293374976 sweep=1048576 concurrent_audio=0 cold_proven=0
+[M213 locality] tag=2 order=2 eviction=1 repeats=32 reads=131072 us=7013 max=224 checksum=4293374976 sweep=1572864 concurrent_audio=0 cold_proven=0
+[M213 locality complete] tag=2
+[M213 address] track=0 pcm=0x481efa4c bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=12 mod128=76 mod256=76 mod4096=2636 mod131072=64076 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=1 pcm=0x481cea48 base=0x481cea48 bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=8 mod128=72 mod256=72 mod4096=2632 mod131072=59976 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=2 pcm=0x481ada44 base=0x481ada44 bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=4 mod128=68 mod256=68 mod4096=2628 mod131072=55876 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=3 pcm=0x4818ca40 base=0x4818ca40 bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=51776 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=4 pcm=0x4816ba3c base=0x4816ba3c bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=60 mod128=60 mod256=60 mod4096=2620 mod131072=47676 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=5 pcm=0x4814aa38 base=0x4814aa38 bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=56 mod128=56 mod256=56 mod4096=2616 mod131072=43576 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=6 pcm=0x48129a34 base=0x48129a34 bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=52 mod128=52 mod256=52 mod4096=2612 mod131072=39476 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=7 pcm=0x48108a30 base=0x48108a30 bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=48 mod128=48 mod256=48 mod4096=2608 mod131072=35376 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=8 pcm=0x480e7a2c base=0x480e7a2c bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=44 mod128=44 mod256=44 mod4096=2604 mod131072=31276 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=9 pcm=0x480c6a28 base=0x480c6a28 bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=40 mod128=40 mod256=40 mod4096=2600 mod131072=27176 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=10 pcm=0x480a5a24 base=0x480a5a24 bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=36 mod128=36 mod256=36 mod4096=2596 mod131072=23076 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=11 pcm=0x48084a20 base=0x48084a20 bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=32 mod128=32 mod256=32 mod4096=2592 mod131072=18976 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=12 pcm=0x48063a1c base=0x48063a1c bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=28 mod128=28 mod256=28 mod4096=2588 mod131072=14876 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=13 pcm=0x48042a18 base=0x48042a18 bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=24 mod128=24 mod256=24 mod4096=2584 mod131072=10776 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=14 pcm=0x48021a14 base=0x48021a14 bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=20 mod128=20 mod256=20 mod4096=2580 mod131072=6676 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=15 pcm=0x48000a10 base=0x48000a10 bytes=131072 owner_usable_bytes=135156 frames=65536 mod64=16 mod128=16 mod256=16 mod4096=2576 mod131072=2576 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 locality] tag=3 order=0 eviction=0 repeats=32 reads=131072 us=4357 max=211 checksum=4293374976 sweep=0 concurrent_audio=0 cold_proven=0
+[M213 locality] tag=3 order=1 eviction=0 repeats=32 reads=131072 us=2244 max=74 checksum=4293374976 sweep=0 concurrent_audio=0 cold_proven=0
+[M213 locality] tag=3 order=2 eviction=0 repeats=32 reads=131072 us=5080 max=159 checksum=4293374976 sweep=0 concurrent_audio=0 cold_proven=0
+[M213 locality] tag=3 order=0 eviction=1 repeats=32 reads=131072 us=6274 max=197 checksum=4293374976 sweep=524288 concurrent_audio=0 cold_proven=0
+[M213 locality] tag=3 order=1 eviction=1 repeats=32 reads=131072 us=4228 max=136 checksum=4293374976 sweep=1048576 concurrent_audio=0 cold_proven=0
+[M213 locality] tag=3 order=2 eviction=1 repeats=32 reads=131072 us=7012 max=223 checksum=4293374976 sweep=1572864 concurrent_audio=0 cold_proven=0
+[M213 locality complete] tag=3
+[M213 address] track=0 pcm=0x48000a40 base=0x48000a10 bytes=131135 owner_usable_bytes=135156 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=2624 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=1 pcm=0x48021a40 base=0x48021a14 bytes=131135 owner_usable_bytes=135156 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=6720 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=2 pcm=0x48042a40 base=0x48042a18 bytes=131135 owner_usable_bytes=135156 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=10816 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=3 pcm=0x48063a40 base=0x48063a1c bytes=131135 owner_usable_bytes=135156 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=14912 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=4 pcm=0x48084a40 base=0x48084a20 bytes=131135 owner_usable_bytes=135156 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=19008 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=5 pcm=0x480a5a40 base=0x480a5a24 bytes=131135 owner_usable_bytes=135156 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=23104 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=6 pcm=0x480c6a40 base=0x480c6a28 bytes=131135 owner_usable_bytes=135156 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=27200 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=7 pcm=0x480e7a40 base=0x480e7a2c bytes=131135 owner_usable_bytes=135156 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=31296 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=8 pcm=0x48108a40 base=0x48108a30 bytes=131135 owner_usable_bytes=135156 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=35392 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=9 pcm=0x48129a40 base=0x48129a34 bytes=131135 owner_usable_bytes=135156 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=39488 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=10 pcm=0x4814aa40 base=0x4814aa38 bytes=131135 owner_usable_bytes=135156 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=43584 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=11 pcm=0x4816ba40 base=0x4816ba3c bytes=131135 owner_usable_bytes=135156 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=47680 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=12 pcm=0x4818ca40 base=0x4818ca40 bytes=131135 owner_usable_bytes=135156 frames=65536 mod64=0 mod128=64 mod256=64 mod4096=2624 mod131072=51776 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=13 pcm=0x481ada80 base=0x481ada44 bytes=131135 owner_usable_bytes=135156 frames=65536 mod64=0 mod128=0 mod256=128 mod4096=2688 mod131072=55936 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=14 pcm=0x481cea80 base=0x481cea48 bytes=131135 owner_usable_bytes=135156 frames=65536 mod64=0 mod128=0 mod256=128 mod4096=2688 mod131072=60032 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 address] track=15 pcm=0x481efa80 base=0x481efa4c bytes=131135 owner_usable_bytes=135156 frames=65536 mod64=0 mod128=0 mod256=128 mod4096=2688 mod131072=64128 external=1 requested_caps=1028 free=31389104 largest=30932980
+[M213 locality] tag=4 order=0 eviction=0 repeats=32 reads=131072 us=4409 max=254 checksum=4293374976 sweep=0 concurrent_audio=0 cold_proven=0
+[M213 locality] tag=4 order=1 eviction=0 repeats=32 reads=131072 us=2242 max=72 checksum=4293374976 sweep=0 concurrent_audio=0 cold_proven=0
+[M213 locality] tag=4 order=2 eviction=0 repeats=32 reads=131072 us=5059 max=159 checksum=4293374976 sweep=0 concurrent_audio=0 cold_proven=0
+[M213 locality] tag=4 order=0 eviction=1 repeats=32 reads=131072 us=6166 max=194 checksum=4293374976 sweep=524288 concurrent_audio=0 cold_proven=0
+[M213 locality] tag=4 order=1 eviction=1 repeats=32 reads=131072 us=4035 max=129 checksum=4293374976 sweep=1048576 concurrent_audio=0 cold_proven=0
+[M213 locality] tag=4 order=2 eviction=1 repeats=32 reads=131072 us=6819 max=216 checksum=4293374976 sweep=1572864 concurrent_audio=0 cold_proven=0
+[M213 locality complete] tag=4
+[M213 memory] COMPLETE layouts=5 audio_started=0 display_started=0

@@ -138,6 +138,13 @@ jobs:
       - run: pio run -e guition_m212_memory -e guition_m212_B_nearest -e guition_m212_B_linear32 -e guition_m212_C_nearest -e guition_m212_C_linear32 -e guition_m212_A_linear32 -e guition_m212_B_magnitude -e guition_m212_B_validated -e guition_m212_B_full_gain
       - run: python tests/archive_firmware.py guition_m212_B_nearest .pio/m212-ci-artifacts/B_NEAREST --pio-home ~/.platformio
       - run: python tests/analyze_m211.py
+      - run: python tests/m213_checks.py
+      - run: python tests/m213_capture_test.py
+      - run: python tests/m213_sd_prepare.py
+      - run: pio run -d .pio/m19p -e guition_m213_sd_0 -e guition_m213_sd_1 -e guition_m213_sd_2 -e guition_m213_sd_direct_1
+      - run: python tests/analyze_m213.py --require-memory --require-physical DIRECT_1 --require-case B_NORMAL --require-case B_STAGGER --require-case B_MAGNITUDE_DIRECT --require-case C_MAGNITUDE_DIRECT --require-case A_MAGNITUDE_DIRECT --require-case B_PAD_MAGNITUDE_DIRECT --require-case C_PAD_MAGNITUDE_DIRECT --require-case A_PAD_MAGNITUDE_DIRECT --require-case B_SUSTAINED --require-case B_PAD_SUSTAINED --require-case SYNTH --require-case SYNTH_PAD_SUSTAINED --require-rejection B_CURRENT --require-rejection B_LINEAR --require-rejection B_PAD_MAGNITUDE_CACHE
+      - run: pio run -e guition_m213_memory -e guition_m213_B_current -e guition_m213_B_stagger -e guition_m213_B_normal -e guition_m213_B_reverse_order -e guition_m213_B_normal_cache -e guition_m213_B_linear -e guition_m213_B_magnitude -e guition_m213_C_magnitude -e guition_m213_A_magnitude -e guition_m213_B_profile -e guition_m213_B_linear_direct -e guition_m213_B_magnitude_direct -e guition_m213_C_magnitude_direct -e guition_m213_A_magnitude_direct
+      - run: pio run -e guition_m213_B_sustained -e guition_m213_synth -e guition_m213_B_pad_linear_direct -e guition_m213_B_pad_linear_cache -e guition_m213_B_pad_magnitude_cache -e guition_m213_B_pad_magnitude_direct -e guition_m213_C_pad_magnitude_direct -e guition_m213_A_pad_magnitude_direct -e guition_m213_B_pad_sustained -e guition_m213_synth_pad_sustained
       - run: pio run -e guition_pcm_locality -e guition_pcm_cache_nearest_fractional -e guition_pcm_cache_linear_fractional -e guition_pcm_cache_nearest_mixed -e guition_pcm_cache_nearest_profile -e guition_pcm_cache_linear32_fractional
       - uses: actions/upload-artifact@v4
         if: always()
@@ -153,4 +160,7 @@ jobs:
             .pio/build/guition_m212*/bootloader.bin
             .pio/build/guition_m212*/partitions.bin
             .pio/m212-ci-artifacts/
+            .pio/build/guition_m213*/firmware.elf
+            .pio/build/guition_m213*/firmware.bin
+            .pio/build/guition_m213*/firmware.map
           retention-days: 30

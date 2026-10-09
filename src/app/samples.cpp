@@ -5,6 +5,15 @@
 #include "projects.h"
 #include "qualification.h"
 #include "transient_service.h"
+#ifndef P4SDM_M213_LAYOUT
+#define P4SDM_M213_LAYOUT 0
+#endif
+#if P4SDM_M213_LAYOUT
+#include "pcm_allocation.h"
+#endif
+#if P4SDM_M213_DIAGNOSTICS
+#include "sample_layout_diagnostics.h"
+#endif
 namespace samples {
 std::atomic<unsigned> waveform_builds{0}, waveform_build_max{0},
     waveform_large_us{0};
@@ -27,6 +36,9 @@ portMUX_TYPE lock = portMUX_INITIALIZER_UNLOCKED;
 size_t payload = 0;
 const sampler::Sample *previews[16]{};
 sampler::Sample *owned[16]{}, *project_retired[16]{};
+#if P4SDM_M213_LAYOUT
+struct LoadedSample : sampler::Sample { sampler::PcmAllocation pcm; };
+#endif
 void report(const char *s) {
   portENTER_CRITICAL(&lock);
   strlcpy(info, s, sizeof(info));
@@ -36,8 +48,14 @@ void report(const char *s) {
 void destroy(sampler::Sample *s) {
   if (s) {
     payload -= s->allocation;
+#if P4SDM_M213_LAYOUT
+    auto *loaded = static_cast<LoadedSample *>(s);
+    loaded->pcm.release([](void *base) { heap_caps_free(base); });
+    delete loaded;
+#else
     heap_caps_free(s->data);
     delete s;
+#endif
   }
 }
 void scan() {
@@ -111,29 +129,56 @@ bool load_name(const char *name) {
     return false;
   }
   size_t bytes = size_t(wav.frames) * 2;
+  size_t allocation_bytes = bytes;
+#if P4SDM_M213_LAYOUT
+  if (!sampler::PcmAllocation::request(bytes, P4SDM_M213_LAYOUT, target, allocation_bytes))
+    return false;
+#endif
   size_t free = heap_caps_get_free_size(MALLOC_CAP_SPIRAM),
          largest = heap_caps_get_largest_free_block(MALLOC_CAP_SPIRAM);
-  if (!sampler::fits_budget(bytes, free, largest)) {
+  // PCM limit stays 4 MiB; padding must also fit the same reserve/block check.
+  if (!sampler::fits_budget(bytes, free, largest) || allocation_bytes > largest ||
+      allocation_bytes > free - reserve) {
     report("Sample exceeds PSRAM budget");
     return false;
   }
+#if P4SDM_M213_LAYOUT
+  auto *s = new (std::nothrow) LoadedSample;
+#else
   auto *s = new (std::nothrow) sampler::Sample;
+#endif
   if (!s) {
     report("Metadata allocation failed");
     return false;
   }
+#if P4SDM_M213_LAYOUT
+  if (s->pcm.acquire(bytes, P4SDM_M213_LAYOUT, target, [](size_t n) {
+        return heap_caps_malloc(n, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
+      })) s->data = s->pcm.data;
+#else
   s->data =
       (int16_t *)heap_caps_malloc(bytes, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
+#endif
   if (!s->data) {
     delete s;
     report("PSRAM allocation failed");
     return false;
   }
+#if P4SDM_M213_LAYOUT
+  // Include allocator rounding and possible metadata fallback in the reserve,
+  // rather than assuming requested padding equals the actual heap decrease.
+  if (heap_caps_get_free_size(MALLOC_CAP_SPIRAM) < reserve) {
+    s->pcm.release([](void *base) { heap_caps_free(base); });
+    delete s;
+    report("Sample exceeds PSRAM reserve after allocation");
+    return false;
+  }
+#endif
   s->original_channels = wav.channels;
   s->rate = wav.rate;
   s->frames = wav.frames;
-  s->allocation = bytes;
-  payload += bytes;
+  s->allocation = allocation_bytes;
+  payload += allocation_bytes;
   size_t peak_payload = payload;
   strlcpy(s->name, name, sizeof(s->name));
   // Browser and project restoration loads share the single storage owner.
@@ -198,6 +243,15 @@ bool load_name(const char *name) {
       "[M6.1 replacement] retired_clear=%d ps_delta=%lld status=READY\n",
       transfer.retired.load() == nullptr,
       (long long)free - (long long)heap_caps_get_free_size(MALLOC_CAP_SPIRAM));
+#if P4SDM_M213_DIAGNOSTICS
+  sample_layout::address(target, *s,
+#if P4SDM_M213_LAYOUT
+    s->pcm.base,
+#else
+    s->data,
+#endif
+    [](const char *format, auto... args) { Serial.printf(format,args...); });
+#endif
   return true;
 }
 void load(int index) { load_name(names[index]); }
@@ -295,6 +349,31 @@ void worker(void *) {
                    "mounted card)");
 #endif
   for (;;) {
+#if P4SDM_M213_MONITOR
+    // Storage task only; no producer can retire/replace PCM during this sweep.
+    // This intentionally adds competing PSRAM reads during sustained playback.
+    static uint32_t monitor_due=0, hashes[16]{};
+    static const sampler::Sample *sources[16]{};
+    if(millis()>=monitor_due) {
+      monitor_due=millis()+30000;
+      unsigned resident=0, corrupt=0;
+      uint32_t digest=2166136261u;
+      for(unsigned t=0;t<16;++t) {
+        const auto *s=previews[t]; if(!s || !s->data) continue;
+        ++resident; uint32_t hash=2166136261u;
+        const volatile int16_t *pcm=s->data;
+        for(unsigned n=0;n<s->frames;++n) {
+          hash=(hash^uint16_t(pcm[n]))*16777619u;
+          if((n&4095)==4095) vTaskDelay(1);
+        }
+        if(sources[t]==s && hashes[t]!=hash) ++corrupt;
+        sources[t]=s;hashes[t]=hash;digest=(digest^hash)*16777619u;
+      }
+      Serial.printf("[M213 monitor] ms=%u resident=%u corrupt=%u digest=%u free=%u largest=%u internal=%u\n",
+        millis(),resident,corrupt,digest,unsigned(heap_caps_get_free_size(MALLOC_CAP_SPIRAM)),
+        unsigned(heap_caps_get_largest_free_block(MALLOC_CAP_SPIRAM)),unsigned(heap_caps_get_free_size(MALLOC_CAP_INTERNAL)));
+    }
+#endif
     transients::poll();
 #if P4SDM_TRANSIENT_STRESS
     transients::qualification_poll();

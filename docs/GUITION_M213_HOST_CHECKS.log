@@ -1,0 +1,974 @@
+# M19P host checks, UTC 2026-10-09T20:03:56.031099+00:00
+
+[1/92] g++ -std=c++17 -Wall -Wextra -Werror tests/pcm_mono_test.cpp -o /tmp/pcm_mono_test && /tmp/pcm_mono_test
+CHECK_EXIT=0
+
+[2/92] g++ -std=c++17 -Wall -Wextra -Werror -Itests/fx_stubs tests/fx_safety_test.cpp -o /tmp/fx_safety_test && /tmp/fx_safety_test
+Reverb 9820306123639470187
+Delay 9142958348501301539
+Chorus 16830972336306760560
+Flanger 14145039276880063251
+Tremolo 2591600101880633124
+RingMod 2113120103735823992
+Distortion 15837465598505139086
+Bitcrusher 15092323984955197239
+CHECK_EXIT=0
+
+[3/92] python tests/compare_fx_baseline.py
+Reverb 9820306123639470187
+
+Delay 9142958348501301539
+
+Chorus 16830972336306760560
+
+Flanger 14145039276880063251
+
+Tremolo 2591600101880633124
+
+RingMod 2113120103735823992
+
+Distortion 15837465598505139086
+
+Bitcrusher 15092323984955197239
+
+All eight FX match original output across 132352 deterministic stereo frames each.
+CHECK_EXIT=0
+
+[4/92] g++ -std=c++17 -Wall -Wextra -Werror tests/display_geometry_test.cpp -o /tmp/display_geometry_test && /tmp/display_geometry_test
+CHECK_EXIT=0
+
+[5/92] g++ -std=c++17 -Wall -Wextra -Werror tests/display_dirty_test.cpp -o /tmp/display_dirty_test && /tmp/display_dirty_test
+Dirty history: first frame, alternating buffers, disjoint/overlapping regions, clipping and full page transitions PASS
+CHECK_EXIT=0
+
+[6/92] python tests/analyze_m4.py docs/GUITION_M4_UI_AUDIO_SERIAL.log --display-log docs/GUITION_M4_DISPLAY_SERIAL.log
+| Stage | UI core | p99 us | Max us | Delta p99/max vs M3.2 Delay us | Headroom p99/worst us | Render misses | Result |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| A_STATIC | 1 | 2925 | 3647 | 27/55 | 2879.989/2157.989 | 0 | SAFE |
+| B_LIGHT | 1 | 5746 | 7085 | 2848/3493 | 58.989/-1280.011 | 3 | FAIL |
+| C_HEAVY | 1 | 6977 | 7071 | 4079/3479 | -1172.011/-1266.011 | 181 | FAIL |
+| A_STATIC | 0 | 2939 | 6617 | 41/3025 | 2865.989/-812.011 | 2 | FAIL |
+| B_LIGHT | 0 | 3767 | 3776 | 869/184 | 2037.989/2028.989 | 0 | SAFE |
+| C_HEAVY | 0 | 3767 | 3783 | 869/191 | 2037.989/2021.989 | 0 | SAFE |
+
+| Stage/UI core | Min us | Average us | p50 us | p95 us | p99 us | Max us | First block us | Top 3 block:us |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| A_STATIC/1 | 2860 | 2916.46 | 2915 | 2922 | 2925 | 3647 | 3647 | 0:3647, 205:2928, 294:2926 |
+| B_LIGHT/1 | 2907 | 3260.78 | 2925 | 5396 | 5746 | 7085 | 5412 | 3:7085, 1:6672, 2:6609 |
+| C_HEAVY/1 | 2868 | 4378.38 | 3025 | 6855 | 6977 | 7071 | 3870 | 413:7071, 208:7033, 299:6996 |
+| A_STATIC/0 | 2901 | 2935.27 | 2916 | 2925 | 2939 | 6617 | 6387 | 1:6617, 0:6387, 2:5327 |
+| B_LIGHT/0 | 2868 | 3121.97 | 2929 | 3724 | 3767 | 3776 | 2868 | 214:3776, 171:3773, 231:3771 |
+| C_HEAVY/0 | 2864 | 3390.45 | 3658 | 3733 | 3767 | 3783 | 2874 | 369:3783, 50:3780, 150:3771 |
+
+| Stage/UI core | Blocks/active | Peak L/R/mono | Nonzero frames | Silent blocks | Rail frames | Write errors/timeouts | Cycle crossings |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| A_STATIC/1 | 517/16 | 4725/6074/5133 | 132278 | 0 | 0 | 0/0 | 175 |
+| B_LIGHT/1 | 517/16 | 4757/6035/5103 | 132288 | 0 | 0 | 0/0 | 162 |
+| C_HEAVY/1 | 517/16 | 4757/6035/5103 | 132287 | 0 | 0 | 0/0 | 257 |
+| A_STATIC/0 | 517/16 | 4757/6035/5103 | 132287 | 0 | 0 | 0/0 | 192 |
+| B_LIGHT/0 | 517/16 | 4757/6035/5103 | 132287 | 0 | 0 | 0/0 | 196 |
+| C_HEAVY/0 | 517/16 | 4757/6035/5103 | 132287 | 0 | 0 | 0/0 | 131 |
+
+| Stage/UI core | Requested FPS | Achieved FPS | Frames | Update avg/max us | Skipped frames | UI errors | Touch polls/Hz | Touch errors | Fresh touch/press/release |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| A_STATIC/1 | 0 | 0.000 | 0 | 0.00/0 | 0 | 0 | 299/100.210 | 0 | 0/0/0 |
+| B_LIGHT/1 | 30 | 20.325 | 61 | 49922.95/68709 | 30 | 0 | 300/99.961 | 0 | 0/0/0 |
+| C_HEAVY/1 | 30 | 14.987 | 45 | 66883.18/99174 | 45 | 0 | 300/99.911 | 0 | 0/0/0 |
+| A_STATIC/0 | 0 | 0.000 | 0 | 0.00/0 | 0 | 0 | 300/100.021 | 0 | 0/0/0 |
+| B_LIGHT/0 | 30 | 19.993 | 60 | 50336.43/93241 | 30 | 0 | 300/99.963 | 0 | 0/0/0 |
+| C_HEAVY/0 | 30 | 8.644 | 26 | 116401.85/148843 | 64 | 0 | 301/100.072 | 0 | 0/0/0 |
+
+| Stage/UI core | PSRAM before/after | Largest block before/after | Internal before/after |
+| --- | --- | --- | --- |
+| A_STATIC/1 | 30884856/30884856 | 30408692/30408692 | 485864/485864 |
+| B_LIGHT/1 | 30884856/30884856 | 30408692/30408692 | 485864/485864 |
+| C_HEAVY/1 | 30884856/30884856 | 30408692/30408692 | 485864/485864 |
+| A_STATIC/0 | 30884856/30884856 | 30408692/30408692 | 485864/485864 |
+| B_LIGHT/0 | 30884856/30884856 | 30408692/30408692 | 485864/485864 |
+| C_HEAVY/0 | 30884856/30884856 | 30408692/30408692 | 485864/485864 |
+
+| Snapshot | PSRAM free bytes | PSRAM largest bytes | Internal free bytes |
+| --- | --- | --- | --- |
+| before display | 33551856 | 33030132 | 501944 |
+| after display | 31246628 | 30932980 | 500240 |
+| after touch | 31245360 | 30932980 | 500036 |
+| after Delay FX initialization | 30884904 | 30408692 | 500036 |
+| combined running before measurement | 30884856 | 30408692 | 485864 |
+| after UI audio stress before shutdown | 30884856 | 30408692 | 485864 |
+| after audio shutdown display remains active | 30884904 | 30408692 | 491156 |
+
+[M4] heap_loss psram=0 internal=0 workers_done=7 audio_shutdown=ESP_OK drain_errors=0
+[M4] touch_coverage_bits=0 event_overflow=0 codec_probe=ESP_OK touch_probe=ESP_OK
+[M4] result=FAIL audio_PCM_render_and_transport_only audible_unverified DMA_starvation_metric_unavailable
+Validated six modes, 3102 ordered audio block timings and the genuine 16-voice workload.
+Validated 52 genuine standalone touch transitions and their native/logical transforms; exact corner coverage remains a physical test.
+CHECK_EXIT=0
+
+[7/92] python tests/analyze_m41.py docs/GUITION_M41_SHORT_SERIAL.log docs/GUITION_M41_INTERACTION_SERIAL.log --require-interaction
+GUITION_M41_SHORT_SERIAL.log: 0 genuine touch events validated.
+GUITION_M41_INTERACTION_SERIAL.log: 512 genuine touch events validated.
+| Phase | Blocks | Min/mean us | p50/p95/p99 us | Max us | Misses | p99/max delta M3.2 us | Worst reserve | Result |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| PPA_STATIC | 517 | 3092/3155.80 | 3154/3167/3172 | 3913 | 0 | 274/321 | 32.59% | SAFE |
+| PPA_LIGHT | 517 | 3117/3262.18 | 3168/3873/3914 | 3961 | 0 | 1016/369 | 31.77% | SAFE |
+| PPA_HEAVY | 517 | 3130/3664.26 | 3868/3963/4007 | 4023 | 0 | 1109/431 | 30.70% | SAFE |
+| NATIVE_FULL_STATIC | 517 | 3100/3154.47 | 3154/3168/3171 | 3175 | 0 | 273/-417 | 45.31% | SAFE |
+| NATIVE_FULL_LIGHT | 517 | 3115/3675.64 | 3924/3974/3985 | 3999 | 0 | 1087/407 | 31.11% | SAFE |
+| NATIVE_FULL_HEAVY | 517 | 3138/3829.05 | 3934/3989/4000 | 4020 | 0 | 1102/428 | 30.75% | SAFE |
+| DIRTY_STATIC | 517 | 3139/3169.59 | 3154/3170/3919 | 3977 | 0 | 1021/385 | 31.49% | SAFE |
+| DIRTY_LIGHT | 517 | 3113/3401.91 | 3179/3976/3991 | 3998 | 0 | 1093/406 | 31.13% | SAFE |
+| DIRTY_HEAVY | 517 | 3105/3832.25 | 3935/3994/4005 | 4031 | 0 | 1107/439 | 30.56% | SAFE |
+| QUEUED_STATIC | 517 | 3102/3154.70 | 3155/3168/3173 | 3181 | 0 | 275/-411 | 45.20% | SAFE |
+| QUEUED_LIGHT | 517 | 3108/3422.07 | 3179/3963/3982 | 4000 | 0 | 1084/408 | 31.09% | SAFE |
+| QUEUED_HEAVY | 517 | 3119/3941.18 | 3943/3999/4018 | 4027 | 0 | 1120/435 | 30.63% | SAFE |
+| STATIC_TO_LIGHT | 517 | 3145/3398.28 | 3172/3968/3989 | 4003 | 0 | 1091/411 | 31.04% | SAFE |
+| LIGHT_TO_STATIC | 517 | 3122/3234.49 | 3156/3929/3974 | 3995 | 0 | 1076/403 | 31.18% | SAFE |
+| LIGHT_TO_HEAVY | 517 | 3125/3871.67 | 3938/3998/4013 | 4025 | 0 | 1115/433 | 30.66% | SAFE |
+| HEAVY_TO_LIGHT | 517 | 3148/3548.48 | 3486/3981/3997 | 4010 | 0 | 1099/418 | 30.92% | SAFE |
+| PAGE_TO_LIGHT | 517 | 3109/3449.05 | 3189/3967/3987 | 3997 | 0 | 1089/405 | 31.15% | SAFE |
+| LONG_LIGHT | 10336 | 3091/3415.79 | 3216/3974/4005 | 4046 | 0 | 1107/454 | 30.30% | SAFE |
+
+| Phase | Requested/acknowledged FPS | Completed/submitted/skips | Draw avg/max us | Repair avg/max us | PPA avg/max us | Cache avg/max us | Submit avg/max us | Wait avg/max us | Total avg/max us |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| PPA_STATIC | 0/0.000 | 0/0/0 | 0.00/0 | 0.00/0 | 0.00/0 | 0.00/0 | 0.00/0 | 0.00/0 | 0.00/0 |
+| PPA_LIGHT | 30/19.659 | 59/60/31 | 3552.78/66008 | 15.37/22 | 16585.77/21152 | 0.00/0 | 30.55/38 | 30440.52/34766 | 50708.43/116710 |
+| PPA_HEAVY | 10/8.330 | 25/25/4 | 79775.24/144503 | 13.88/18 | 16992.88/21449 | 0.00/0 | 30.64/34 | 21547.68/23158 | 118390.24/183335 |
+| NATIVE_FULL_STATIC | 0/0.333 | 1/0/0 | 0.00/0 | 0.00/0 | 0.00/0 | 0.00/0 | 0.00/0 | 0.00/0 | 0.00/0 |
+| NATIVE_FULL_LIGHT | 30/11.662 | 35/36/55 | 7207.83/69394 | 48434.78/51570 | 0.00/0 | 802.11/4207 | 126.44/3580 | 27547.28/28901 | 84270.25/145071 |
+| NATIVE_FULL_HEAVY | 10/5.998 | 18/18/12 | 95630.11/156420 | 48110.56/51657 | 0.00/0 | 1272.67/4692 | 27.44/30 | 23665.33/27493 | 169174.39/231509 |
+| DIRTY_STATIC | 0/0.333 | 1/0/0 | 0.00/0 | 0.00/0 | 0.00/0 | 0.00/0 | 0.00/0 | 0.00/0 | 0.00/0 |
+| DIRTY_LIGHT | 30/28.323 | 85/86/4 | 5150.88/69272 | 5467.06/48305 | 0.00/0 | 1305.05/4321 | 110.81/3599 | 22552.17/27083 | 34848.56/139273 |
+| DIRTY_HEAVY | 10/5.998 | 18/18/12 | 94467.44/152315 | 46619.00/52028 | 0.00/0 | 2165.00/4711 | 27.67/34 | 23513.89/33749 | 167055.22/197298 |
+| QUEUED_STATIC | 0/0.333 | 1/0/0 | 0.00/0 | 0.00/0 | 0.00/0 | 0.00/0 | 0.00/0 | 0.00/0 | 0.00/0 |
+| QUEUED_LIGHT | 30/28.323 | 85/86/4 | 3727.79/69303 | 7748.88/52177 | 0.00/0 | 2068.57/4349 | 106.57/3554 | 7681.51/20668 | 21641.78/118290 |
+| QUEUED_HEAVY | 10/6.664 | 20/21/9 | 91977.00/152144 | 50069.57/52526 | 0.00/0 | 3871.05/4716 | 28.62/44 | 4.48/5 | 146007.95/163545 |
+| STATIC_TO_LIGHT | 0/23.325 | 70/69/19 | 4246.71/69373 | 7670.80/52094 | 0.00/0 | 2144.33/4303 | 28.93/36 | 19637.30/26634 | 34145.00/118560 |
+| LIGHT_TO_STATIC | 30/5.331 | 16/15/2 | 8219.80/69693 | 11758.27/52211 | 0.00/0 | 1501.00/4342 | 28.47/35 | 17128.87/26603 | 39172.13/77029 |
+| LIGHT_TO_HEAVY | 30/9.996 | 30/32/9 | 51192.84/92676 | 31816.69/52583 | 0.00/0 | 2670.50/4749 | 28.66/42 | 7911.97/26650 | 93804.34/145557 |
+| HEAVY_TO_LIGHT | 10/23.658 | 71/71/7 | 10618.25/156792 | 9791.61/52342 | 0.00/0 | 2007.49/4460 | 28.51/36 | 19652.69/26662 | 42257.54/209717 |
+| PAGE_TO_LIGHT | 30/28.656 | 86/85/5 | 4609.04/69496 | 8189.91/52433 | 0.00/0 | 2179.94/4577 | 108.32/3629 | 6361.38/26688 | 21757.73/80348 |
+| LONG_LIGHT | 30/29.474 | 1768/1769/30 | 5463.02/74439 | 6949.61/52834 | 0.00/0 | 1527.31/4607 | 51.68/3660 | 10994.31/26672 | 25158.96/122380 |
+
+| Phase | Dirty/repair bytes avg | Peak L/R | Nonzero/silent/rail | Write errors/timeouts | UI/touch errors | Touch Hz | Press/release/drag | Audio activity blocks/misses |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| PPA_STATIC | 0.00/0.00 | 4725/6074 | 132278/0/0 | 0/0 | 0/0 | 100.171 | 0/0/0 | 0/0 |
+| PPA_LIGHT | 768000.00/0.00 | 4757/6035 | 132288/0/0 | 0/0 | 0/0 | 99.963 | 0/0/0 | 0/0 |
+| PPA_HEAVY | 768000.00/0.00 | 4757/6035 | 132287/0/0 | 0/0 | 0/0 | 99.965 | 0/0/0 | 0/0 |
+| NATIVE_FULL_STATIC | 0.00/0.00 | 4757/6035 | 132287/0/0 | 0/0 | 0/0 | 99.964 | 0/0/0 | 0/0 |
+| NATIVE_FULL_LIGHT | 133162.67/768000.00 | 4757/6035 | 132287/0/0 | 0/0 | 0/0 | 99.963 | 0/0/0 | 0/0 |
+| NATIVE_FULL_HEAVY | 768000.00/768000.00 | 4757/6035 | 132287/0/0 | 0/0 | 0/0 | 100.298 | 0/0/0 | 0/0 |
+| DIRTY_STATIC | 0.00/0.00 | 4757/6035 | 132287/0/0 | 0/0 | 0/0 | 99.965 | 0/0/0 | 0/0 |
+| DIRTY_LIGHT | 122624.00/130220.65 | 4757/6035 | 132287/0/0 | 0/0 | 0/0 | 99.964 | 0/0/0 | 0/0 |
+| DIRTY_HEAVY | 768000.00/731704.89 | 4757/6035 | 132287/0/0 | 0/0 | 0/0 | 99.964 | 0/0/0 | 0/0 |
+| QUEUED_STATIC | 0.00/0.00 | 4757/6035 | 132287/0/0 | 0/0 | 0/0 | 99.964 | 0/0/0 | 0/0 |
+| QUEUED_LIGHT | 122624.00/140645.21 | 4757/6035 | 132287/0/0 | 0/0 | 0/0 | 99.964 | 0/0/0 | 0/0 |
+| QUEUED_HEAVY | 768000.00/737036.19 | 4757/6035 | 132287/0/0 | 0/0 | 0/0 | 99.963 | 0/0/0 | 0/0 |
+| STATIC_TO_LIGHT | 124490.20/146216.81 | 4757/6035 | 132287/0/0 | 0/0 | 0/0 | 99.965 | 0/0/0 | 0/0 |
+| LIGHT_TO_STATIC | 158549.33/204561.07 | 4757/6035 | 132287/0/0 | 0/0 | 0/0 | 99.964 | 0/0/0 | 0/0 |
+| LIGHT_TO_HEAVY | 482320.00/483600.00 | 4757/6035 | 132287/0/0 | 0/0 | 0/0 | 100.296 | 0/0/0 | 0/0 |
+| HEAVY_TO_LIGHT | 161034.82/182062.87 | 4757/6035 | 132287/0/0 | 0/0 | 0/0 | 99.965 | 0/0/0 | 0/0 |
+| PAGE_TO_LIGHT | 130397.36/148582.40 | 4757/6035 | 132287/0/0 | 0/0 | 0/0 | 99.964 | 0/0/0 | 0/0 |
+| LONG_LIGHT | 121451.96/129957.99 | 4757/6074 | 2644708/0/0 | 0/0 | 0/0 | 100.010 | 221/221/1889 | 2331/0 |
+
+| Transition | Request block | In flight | Max around transition us | Misses blocks80–179 | Idle observations |
+| --- | --- | --- | --- | --- | --- |
+| STATIC_TO_LIGHT | 100 | 0 | 3988 | 0 | 303 |
+| LIGHT_TO_STATIC | 100 | 1 | 3989 | 0 | 1459 |
+| LIGHT_TO_HEAVY | 100 | 1 | 4025 | 0 | 0 |
+| HEAVY_TO_LIGHT | 100 | 1 | 4010 | 0 | 0 |
+| PAGE_TO_LIGHT | 100 | 1 | 3994 | 0 | 0 |
+
+| Phase | PSRAM before/after | Largest before/after | Internal before/after |
+| --- | --- | --- | --- |
+| PPA_STATIC | 30080968/30080968 | 29884404/29884404 | 505556/505556 |
+| PPA_LIGHT | 30080968/30080968 | 29884404/29884404 | 505556/505556 |
+| PPA_HEAVY | 30080968/30080968 | 29884404/29884404 | 505556/505556 |
+| NATIVE_FULL_STATIC | 30080968/30080968 | 29884404/29884404 | 505556/505556 |
+| NATIVE_FULL_LIGHT | 30080968/30080968 | 29884404/29884404 | 505556/505556 |
+| NATIVE_FULL_HEAVY | 30080968/30080968 | 29884404/29884404 | 505556/505556 |
+| DIRTY_STATIC | 30080968/30080968 | 29884404/29884404 | 505556/505556 |
+| DIRTY_LIGHT | 30080968/30080968 | 29884404/29884404 | 505556/505556 |
+| DIRTY_HEAVY | 30080968/30080968 | 29884404/29884404 | 505556/505556 |
+| QUEUED_STATIC | 30080968/30080968 | 29884404/29884404 | 505556/505556 |
+| QUEUED_LIGHT | 30080968/30080968 | 29884404/29884404 | 505556/505556 |
+| QUEUED_HEAVY | 30080968/30080968 | 29884404/29884404 | 505556/505556 |
+| STATIC_TO_LIGHT | 30080968/30080968 | 29884404/29884404 | 505556/505556 |
+| LIGHT_TO_STATIC | 30080968/30080968 | 29884404/29884404 | 505556/505556 |
+| LIGHT_TO_HEAVY | 30080968/30080968 | 29884404/29884404 | 505556/505556 |
+| HEAVY_TO_LIGHT | 30080968/30080968 | 29884404/29884404 | 505556/505556 |
+| PAGE_TO_LIGHT | 30080968/30080968 | 29884404/29884404 | 505556/505556 |
+| LONG_LIGHT | 30843520/30843520 | 30408692/30408692 | 505856/505856 |
+
+[MEM] M41 before display PSRAM total=33554432 free=33551856 largest=33030132 internal_free=521728
+[MEM] M41 after display PSRAM total=33554432 free=30478584 largest=30408692 internal_free=519924
+[MEM] M41 after touch PSRAM total=33554432 free=30477316 largest=30408692 internal_free=519720
+[MEM] M41 after Delay PSRAM total=33554432 free=30116860 largest=29884404 internal_free=519720
+[MEM] M41 tasks transport and capture storage live PSRAM total=33554432 free=30080968 largest=29884404 internal_free=514124
+[MEM] M41 after stress before audio shutdown PSRAM total=33554432 free=30080968 largest=29884404 internal_free=505556
+[M41] touch_coverage_bits=0 event_count=0 overflow=0 shared_codec=ESP_OK shared_touch=ESP_OK
+[M41] heap_loss psram=0 internal=0 largest_before=29884404 largest_after=29884404 workers=3 drain_errors=0 shutdown=ESP_OK result=PASS
+[MEM] M41 after audio shutdown PSRAM total=33554432 free=30081016 largest=29884404 internal_free=510852
+[MEM] M41 before display PSRAM total=33554432 free=33551856 largest=33030132 internal_free=521728
+[MEM] M41 after display PSRAM total=33554432 free=31247280 largest=30932980 internal_free=520192
+[MEM] M41 after touch PSRAM total=33554432 free=31246012 largest=30932980 internal_free=519996
+[MEM] M41 after Delay PSRAM total=33554432 free=30885556 largest
+[MEM] M41 tasks transport and capture storage live PSRAM total=33554432 free=30843520 largest=30408692 internal_free=514424
+[MEM] M41 after stress before audio shutdown PSRAM total=33554432 free=30843520 largest=30408692 internal_free=505856
+[M41] touch_coverage_bits=31 event_count=512 overflow=302 shared_codec=ESP_OK shared_touch=ESP_OK
+[M41] heap_loss psram=0 internal=0 largest_before=30408692 largest_after=30408692 workers=3 drain_errors=0 shutdown=ESP_OK result=PASS
+[MEM] M41 after audio shutdown PSRAM total=33554432 free=30843568 largest=30408692 internal_free=511132
+Physical interaction coverage and measured audio/API checks: PASS. Human picture verification remains separate.
+QUEUED_LIGHT: requested 30 FPS, acknowledged 28.323; includes cold/page reconstruction and skips. No strict 30-FPS guarantee.
+LONG_LIGHT: requested 30 FPS, acknowledged 29.474; includes cold/page reconstruction and skips. No strict 30-FPS guarantee.
+Validated 18 phases and 19125 ordered original-render timings.
+CHECK_EXIT=0
+
+[8/92] g++ -std=c++17 -Wall -Wextra -Werror tests/app_model_test.cpp -o /tmp/app_model_test && /tmp/app_model_test
+CHECK_EXIT=0
+
+[9/92] python tests/analyze_m5.py docs/GUITION_M5_STRESS_SERIAL.log --stress
+Estimated non-page dirty average 84985.6 bytes (aggregate rounding only).
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+CHECK_EXIT=0
+
+[10/92] python tests/generate_m6_fixtures.py /tmp/m6-fixtures
+Generated 8 synthetic WAV fixtures in C:\progs\P4SDM\.pio\m213-regression\m6-fixtures
+CHECK_EXIT=0
+
+[11/92] g++ -std=c++17 -Wall -Wextra -Werror -pthread tests/wav_sampler_test.cpp -o /tmp/wav_sampler_test && /tmp/wav_sampler_test /tmp/m6-fixtures
+WAV bounds, padding/order, format, playback and transfer tests passed
+CHECK_EXIT=0
+
+[12/92] python tests/analyze_m6.py docs/GUITION_M6_NO_CARD_STRESS_SERIAL.log
+Estimated non-page dirty average 87122.4 bytes (aggregate rounding only).
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M6 no-card boot, one mount attempt, synth/UI/audio and stable heap: PASS
+PHYSICAL SD VALIDATION PENDING; this capture does not qualify resident sample playback.
+CHECK_EXIT=0
+
+[13/92] python tests/analyze_m6.py docs/GUITION_M61_NO_CARD_STRESS_SERIAL.log
+Estimated non-page dirty average 87788.7 bytes (aggregate rounding only).
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M6 no-card boot, one mount attempt, synth/UI/audio and stable heap: PASS
+PHYSICAL SD VALIDATION PENDING; this capture does not qualify resident sample playback.
+CHECK_EXIT=0
+
+[14/92] g++ -std=c++17 -Wall -Wextra -Werror tests/pattern_engine_test.cpp -o /tmp/pattern_engine_test && /tmp/pattern_engine_test
+CHECK_EXIT=0
+
+[15/92] python tests/analyze_m7.py docs/GUITION_M7_STRESS_SERIAL.log
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M7 actual multi-pattern transitions, >=60s audio, PCM, deadlines, dirty rendering and stable heaps: PASS
+CHECK_EXIT=0
+
+[16/92] g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/groove_engine_test.cpp -o /tmp/groove_engine_test && /tmp/groove_engine_test
+CHECK_EXIT=0
+
+[17/92] python tests/analyze_m8.py docs/GUITION_M8_STRESS_SERIAL.log
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M8 >=60s realtime groove + 12s 16-track 4x ratchet qualification: PASS
+CHECK_EXIT=0
+
+[18/92] g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/pattern_tools_test.cpp -o /tmp/pattern_tools_test && /tmp/pattern_tools_test
+M9 pattern tools: PASS
+CHECK_EXIT=0
+
+[19/92] python tests/analyze_m9.py docs/GUITION_M9_STRESS_SERIAL.log
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M8 >=60s realtime groove + 12s 16-track 4x ratchet qualification: PASS
+M9 transforms + dense realtime stress: PASS
+CHECK_EXIT=0
+
+[20/92] g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/parameter_locks_test.cpp -o /tmp/parameter_locks_test && /tmp/parameter_locks_test
+M10 locks: PASS; Pattern=3106 bank=49696 Engine=52616
+CHECK_EXIT=0
+
+[21/92] python tests/no_lock_equivalence.py
+M10 vs actual M9 no-lock sample-by-sample equivalence: PASS; M9 Engine=13584 M10 Engine=52616
+CHECK_EXIT=0
+
+[22/92] python tests/analyze_m10.py docs/GUITION_M10_STRESS_SERIAL.log
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M8 >=60s realtime groove + 12s 16-track 4x ratchet qualification: PASS
+M9 transforms + dense realtime stress: PASS
+M10 locks + all-lock dense realtime + bounded dirty UI: PASS
+CHECK_EXIT=0
+
+[23/92] python tests/analyze_m10.py docs/GUITION_M10_NORMAL_SERIAL.log --normal
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M10 normal no-card idle, no parameter residue, stable heaps: PASS
+CHECK_EXIT=0
+
+[24/92] g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/track_tone_test.cpp -o /tmp/track_tone_test && /tmp/track_tone_test
+Track tone: mapping, coefficient refresh, history, wide numerical oracle, isolation, routing, locks, persistence, UI, no allocation PASS (peak=43027)
+CHECK_EXIT=0
+
+[25/92] python tests/tone_equivalence.py
+Actual M10 filter + unchanged stereo Delay: 132352 frames, default/full-send bit-exact; zero-send dry unchanged and tails retained PASS
+CHECK_EXIT=0
+
+[26/92] python tests/no_tone_equivalence.py
+M11 vs actual M10 default-tone sample-by-sample equivalence: PASS; M10 Engine=34184 M11 Engine=52616
+CHECK_EXIT=0
+
+[27/92] python tests/analyze_m11.py docs/GUITION_M11_STRESS_SERIAL.log
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M8 >=60s realtime groove + 12s 16-track 4x ratchet qualification: PASS
+M9 transforms + dense realtime stress: PASS
+M10 locks + all-lock dense realtime + bounded dirty UI: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+CHECK_EXIT=0
+
+[28/92] python tests/analyze_m11.py docs/GUITION_M11_NORMAL_SERIAL.log --normal
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M10 normal no-card idle, no parameter residue, stable heaps: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+CHECK_EXIT=0
+
+[29/92] g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/tone_locks_test.cpp -o /tmp/tone_locks_test && /tmp/tone_locks_test
+M12 tone locks: PASS; StepLocks=9 TriggerEvent=20 Pattern=3106 bank=49696 Engine=52616 VoiceState=24 mirror=105232
+CHECK_EXIT=0
+
+[30/92] python tests/no_tone_lock_equivalence.py
+M12 vs actual M11 no-tone-lock sample-by-sample equivalence: PASS; M11 Engine=34248 M12 Engine=52616
+CHECK_EXIT=0
+
+[31/92] python tests/tone_lock_routing_equivalence.py
+Actual M11 filter/mapping/send + M12 voice state: 132352 frames, varying unlocked tone/send bit-exact; zero-send dry unchanged and tails retained PASS
+CHECK_EXIT=0
+
+[32/92] python tests/analyze_m12.py docs/GUITION_M12_STRESS_SERIAL.log
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M8 >=60s realtime groove + 12s 16-track 4x ratchet qualification: PASS
+M9 transforms + dense realtime stress: PASS
+M10 locks + all-lock dense realtime + bounded dirty UI: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+CHECK_EXIT=0
+
+[33/92] python tests/analyze_m12.py docs/GUITION_M12_NORMAL_SERIAL.log --normal
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M10 normal no-card idle, no parameter residue, stable heaps: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+CHECK_EXIT=0
+
+[34/92] g++ -std=c++17 -O2 -Wall -Wextra -Werror -Itests/fx_stubs tests/sample_playback_test.cpp -o /tmp/sample_playback_test && /tmp/sample_playback_test
+M13 region/reverse/pitch/fades/gate/choke/retrigger/snapshots/replacement/no-allocation/UI PASS; Voice=64 Track=116 Event=20 Engine=52616
+CHECK_EXIT=0
+
+[35/92] python tests/analyze_m13.py docs/GUITION_M13_SAMPLE_STRESS_SERIAL.log
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M8 >=60s realtime groove + 12s 16-track 4x ratchet qualification: PASS
+M9 transforms + dense realtime stress: PASS
+M10 locks + all-lock dense realtime + bounded dirty UI: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+M13 playback coverage, heaps, inherited checks, 60s and >=20% headroom: PASS
+CHECK_EXIT=0
+
+[36/92] python tests/analyze_m13.py docs/GUITION_M13_SYNTH_STRESS_SERIAL.log --synth
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M8 >=60s realtime groove + 12s 16-track 4x ratchet qualification: PASS
+M9 transforms + dense realtime stress: PASS
+M10 locks + all-lock dense realtime + bounded dirty UI: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+M13 playback coverage, heaps, inherited checks, 60s and >=20% headroom: PASS
+CHECK_EXIT=0
+
+[37/92] python tests/analyze_m13.py docs/GUITION_M13_NORMAL_SERIAL.log --normal
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M10 normal no-card idle, no parameter residue, stable heaps: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+M13 playback coverage, heaps, inherited checks, 60s and >=20% headroom: PASS
+CHECK_EXIT=0
+
+[38/92] g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/slice_bank_test.cpp -o /tmp/slice_bank_test && /tmp/slice_bank_test
+Slice=4 SliceBank=66 Track=116 Engine=52616 Sample-independent StepLocks=9
+CHECK_EXIT=0
+
+[39/92] g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/waveform_test.cpp -o /tmp/waveform_test && /tmp/waveform_test
+CHECK_EXIT=0
+
+[40/92] g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/slice_playback_test.cpp -o /tmp/slice_playback_test && /tmp/slice_playback_test
+CHECK_EXIT=0
+
+[41/92] python tests/analyze_m14.py docs/GUITION_M14_SAMPLE_STRESS_SERIAL.log
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M8 >=60s realtime groove + 12s 16-track 4x ratchet qualification: PASS
+M9 transforms + dense realtime stress: PASS
+M10 locks + all-lock dense realtime + bounded dirty UI: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+M13 playback coverage, heaps, inherited checks, 60s and >=20% headroom: PASS
+M14 slices/waveform, unchanged dense workload, heaps, normal/synth and >=20% headroom: PASS
+CHECK_EXIT=0
+
+[42/92] python tests/analyze_m14.py docs/GUITION_M14_SYNTH_STRESS_SERIAL.log --synth
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M8 >=60s realtime groove + 12s 16-track 4x ratchet qualification: PASS
+M9 transforms + dense realtime stress: PASS
+M10 locks + all-lock dense realtime + bounded dirty UI: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+M13 playback coverage, heaps, inherited checks, 60s and >=20% headroom: PASS
+M14 slices/waveform, unchanged dense workload, heaps, normal/synth and >=20% headroom: PASS
+CHECK_EXIT=0
+
+[43/92] python tests/analyze_m14.py docs/GUITION_M14_NORMAL_SERIAL.log --normal
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M10 normal no-card idle, no parameter residue, stable heaps: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+M13 playback coverage, heaps, inherited checks, 60s and >=20% headroom: PASS
+M14 slices/waveform, unchanged dense workload, heaps, normal/synth and >=20% headroom: PASS
+CHECK_EXIT=0
+
+[44/92] g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/slice_lock_test.cpp -o /tmp/slice_lock_test && /tmp/slice_lock_test
+M15 slice locks PASS StepLocks=9 align=1 Pattern=3106 bank=49696 Engine=52616 two=105232
+CHECK_EXIT=0
+
+[45/92] python tests/no_slice_lock_equivalence.py
+Actual M14 no-slice-lock equivalence PASS (3600000 samples)
+CHECK_EXIT=0
+
+[46/92] python tests/analyze_m15.py docs/GUITION_M15_SAMPLE_STRESS_SERIAL.log
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M8 >=60s realtime groove + 12s 16-track 4x ratchet qualification: PASS
+M9 transforms + dense realtime stress: PASS
+M10 locks + all-lock dense realtime + bounded dirty UI: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+M13 playback coverage, heaps, inherited checks, 60s and >=20% headroom: PASS
+M14 slices/waveform, unchanged dense workload, heaps, normal/synth and >=20% headroom: PASS
+M15 slice lock coverage, inherited M14 workload, heaps and >=20% headroom: PASS
+CHECK_EXIT=0
+
+[47/92] python tests/analyze_m15.py docs/GUITION_M15_SYNTH_STRESS_SERIAL.log --synth
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M8 >=60s realtime groove + 12s 16-track 4x ratchet qualification: PASS
+M9 transforms + dense realtime stress: PASS
+M10 locks + all-lock dense realtime + bounded dirty UI: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+M13 playback coverage, heaps, inherited checks, 60s and >=20% headroom: PASS
+M14 slices/waveform, unchanged dense workload, heaps, normal/synth and >=20% headroom: PASS
+M15 slice lock coverage, inherited M14 workload, heaps and >=20% headroom: PASS
+CHECK_EXIT=0
+
+[48/92] python tests/analyze_m15.py docs/GUITION_M15_NORMAL_SERIAL.log --normal
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M10 normal no-card idle, no parameter residue, stable heaps: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+M13 playback coverage, heaps, inherited checks, 60s and >=20% headroom: PASS
+M14 slices/waveform, unchanged dense workload, heaps, normal/synth and >=20% headroom: PASS
+M15 slice lock coverage, inherited M14 workload, heaps and >=20% headroom: PASS
+CHECK_EXIT=0
+
+[49/92] g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/project_test.cpp -o /tmp/project_test && /tmp/project_test
+default_crc=2419985824 state=53192 file=52704
+Project V2 roundtrip, CRC-correct semantic rejection, all truncations, dual-slot recovery, runtime reset, UI and no-allocation boundaries PASS
+CHECK_EXIT=0
+
+[50/92] python tests/no_project_equivalence.py
+Actual M15 idle-persistence equivalence PASS (3600000 samples, all eight locks)
+CHECK_EXIT=0
+
+[51/92] python tests/analyze_m16.py docs/GUITION_M16_SAMPLE_STRESS_SERIAL.log
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M8 >=60s realtime groove + 12s 16-track 4x ratchet qualification: PASS
+M9 transforms + dense realtime stress: PASS
+M10 locks + all-lock dense realtime + bounded dirty UI: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+M13 playback coverage, heaps, inherited checks, 60s and >=20% headroom: PASS
+M14 slices/waveform, unchanged dense workload, heaps, normal/synth and >=20% headroom: PASS
+M15 slice lock coverage, inherited M14 workload, heaps and >=20% headroom: PASS
+M16 snapshot/apply, RAM V1 roundtrips, zero errors and >=20% headroom: PASS; PHYSICAL PROJECT SAVE/LOAD PENDING
+CHECK_EXIT=0
+
+[52/92] python tests/analyze_m16.py docs/GUITION_M16_SYNTH_STRESS_SERIAL.log --synth
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M8 >=60s realtime groove + 12s 16-track 4x ratchet qualification: PASS
+M9 transforms + dense realtime stress: PASS
+M10 locks + all-lock dense realtime + bounded dirty UI: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+M13 playback coverage, heaps, inherited checks, 60s and >=20% headroom: PASS
+M14 slices/waveform, unchanged dense workload, heaps, normal/synth and >=20% headroom: PASS
+M15 slice lock coverage, inherited M14 workload, heaps and >=20% headroom: PASS
+M16 snapshot/apply, RAM V1 roundtrips, zero errors and >=20% headroom: PASS; PHYSICAL PROJECT SAVE/LOAD PENDING
+CHECK_EXIT=0
+
+[53/92] python tests/analyze_m16.py docs/GUITION_M16_NORMAL_SERIAL.log --normal
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M10 normal no-card idle, no parameter residue, stable heaps: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+M13 playback coverage, heaps, inherited checks, 60s and >=20% headroom: PASS
+M14 slices/waveform, unchanged dense workload, heaps, normal/synth and >=20% headroom: PASS
+M15 slice lock coverage, inherited M14 workload, heaps and >=20% headroom: PASS
+M16 snapshot/apply, RAM V1 roundtrips, zero errors and >=20% headroom: PASS; PHYSICAL PROJECT SAVE/LOAD PENDING
+CHECK_EXIT=0
+
+[54/92] g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/chain_test.cpp -o /tmp/chain_test && /tmp/chain_test
+Chain bounds, golden playback, quantization, swing/odd lengths, edits, queue isolation, RNG, ratchets and allocation guard: PASS
+CHECK_EXIT=0
+
+[55/92] python tests/no_chain_equivalence.py
+Actual M16 idle-persistence equivalence PASS (3600000 samples, all eight locks)
+CHECK_EXIT=0
+
+[56/92] python tests/project_migration.py
+Actual M16 V1 bytes -> V2 migration, exact old-field payload, mixed slots, corrupt fallback, future prefix and safe save plan: PASS
+CHECK_EXIT=0
+
+[57/92] python tests/analyze_m17.py docs/GUITION_M17_SAMPLE_STRESS_SERIAL.log
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M8 >=60s realtime groove + 12s 16-track 4x ratchet qualification: PASS
+M9 transforms + dense realtime stress: PASS
+M10 locks + all-lock dense realtime + bounded dirty UI: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+M13 playback coverage, heaps, inherited checks, 60s and >=20% headroom: PASS
+M14 slices/waveform, unchanged dense workload, heaps, normal/synth and >=20% headroom: PASS
+M15 slice lock coverage, inherited M14 workload, heaps and >=20% headroom: PASS
+M17 Chain/V2, inherited dense workload, memory stability, snapshot/apply and >=20% headroom PASS; PHYSICAL V2 PROJECT MIGRATION / CHAIN PERSISTENCE PENDING
+CHECK_EXIT=0
+
+[58/92] python tests/analyze_m17.py docs/GUITION_M17_SYNTH_STRESS_SERIAL.log --synth
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M8 >=60s realtime groove + 12s 16-track 4x ratchet qualification: PASS
+M9 transforms + dense realtime stress: PASS
+M10 locks + all-lock dense realtime + bounded dirty UI: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+M13 playback coverage, heaps, inherited checks, 60s and >=20% headroom: PASS
+M14 slices/waveform, unchanged dense workload, heaps, normal/synth and >=20% headroom: PASS
+M15 slice lock coverage, inherited M14 workload, heaps and >=20% headroom: PASS
+M17 Chain/V2, inherited dense workload, memory stability, snapshot/apply and >=20% headroom PASS; PHYSICAL V2 PROJECT MIGRATION / CHAIN PERSISTENCE PENDING
+CHECK_EXIT=0
+
+[59/92] python tests/analyze_m17.py docs/GUITION_M17_NORMAL_SERIAL.log --normal
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M10 normal no-card idle, no parameter residue, stable heaps: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+M13 playback coverage, heaps, inherited checks, 60s and >=20% headroom: PASS
+M14 slices/waveform, unchanged dense workload, heaps, normal/synth and >=20% headroom: PASS
+M15 slice lock coverage, inherited M14 workload, heaps and >=20% headroom: PASS
+M17 Chain/V2, inherited dense workload, memory stability, snapshot/apply and >=20% headroom PASS; PHYSICAL V2 PROJECT MIGRATION / CHAIN PERSISTENCE PENDING
+CHECK_EXIT=0
+
+[60/92] g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/performance_test.cpp -o /tmp/performance_test && /tmp/performance_test
+M18 performance PASS (allocation guard, mix truth table, Pattern/Chain returns, Fill, lengths/swing, locks/slices, V2, resets, UI); state=352 engine=52616
+CHECK_EXIT=0
+
+[61/92] python tests/no_performance_equivalence.py
+Actual M17 inactive-performance PATTERN/CHAIN and V2 bytes PASS (7200000 samples, all eight locks)
+Engine M17=52160 M18=52616 Ui M17=112 M18=116
+CHECK_EXIT=0
+
+[62/92] python tests/analyze_m18.py docs/GUITION_M18_SAMPLE_STRESS_SERIAL.log
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M8 >=60s realtime groove + 12s 16-track 4x ratchet qualification: PASS
+M9 transforms + dense realtime stress: PASS
+M10 locks + all-lock dense realtime + bounded dirty UI: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+M13 playback coverage, heaps, inherited checks, 60s and >=20% headroom: PASS
+M14 slices/waveform, unchanged dense workload, heaps, normal/synth and >=20% headroom: PASS
+M15 slice lock coverage, inherited M14 workload, heaps and >=20% headroom: PASS
+M17 Chain/V2, inherited dense workload, memory stability, snapshot/apply and >=20% headroom PASS; PHYSICAL V2 PROJECT MIGRATION / CHAIN PERSISTENCE PENDING
+M18 Performance and all inherited M17 qualification PASS; physical SD/touch/listening remain separately pending
+CHECK_EXIT=0
+
+[63/92] python tests/analyze_m18.py docs/GUITION_M18_SYNTH_STRESS_SERIAL.log --synth
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M8 >=60s realtime groove + 12s 16-track 4x ratchet qualification: PASS
+M9 transforms + dense realtime stress: PASS
+M10 locks + all-lock dense realtime + bounded dirty UI: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+M13 playback coverage, heaps, inherited checks, 60s and >=20% headroom: PASS
+M14 slices/waveform, unchanged dense workload, heaps, normal/synth and >=20% headroom: PASS
+M15 slice lock coverage, inherited M14 workload, heaps and >=20% headroom: PASS
+M17 Chain/V2, inherited dense workload, memory stability, snapshot/apply and >=20% headroom PASS; PHYSICAL V2 PROJECT MIGRATION / CHAIN PERSISTENCE PENDING
+M18 Performance and all inherited M17 qualification PASS; physical SD/touch/listening remain separately pending
+CHECK_EXIT=0
+
+[64/92] python tests/analyze_m18.py docs/GUITION_M18_NORMAL_SERIAL.log --normal
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M10 normal no-card idle, no parameter residue, stable heaps: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+M13 playback coverage, heaps, inherited checks, 60s and >=20% headroom: PASS
+M14 slices/waveform, unchanged dense workload, heaps, normal/synth and >=20% headroom: PASS
+M15 slice lock coverage, inherited M14 workload, heaps and >=20% headroom: PASS
+M17 Chain/V2, inherited dense workload, memory stability, snapshot/apply and >=20% headroom PASS; PHYSICAL V2 PROJECT MIGRATION / CHAIN PERSISTENCE PENDING
+M18 Performance and all inherited M17 qualification PASS; physical SD/touch/listening remain separately pending
+CHECK_EXIT=0
+
+[65/92] g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/repeat_engine_test.cpp -o /tmp/repeat_engine_test && /tmp/repeat_engine_test
+M18.1 Repeat PASS: exact timing/drift, snapshots/RNG, 16 events, ratchet replacement, Chain/Fill/Override, resets/V2, hold recovery/allocation guard; capture=324 repeat=336 performance=352 engine=52616
+CHECK_EXIT=0
+
+[66/92] python tests/no_repeat_equivalence.py
+Actual M18 inactive-repeat PATTERN/CHAIN/Override/Fill/mix and V2 bytes PASS (7200000 samples, all eight locks)
+Engine M18=52224 M18.1=52616 Ui M18=116 M18.1=116
+CHECK_EXIT=0
+
+[67/92] python tests/analyze_m181.py docs/GUITION_M181_SAMPLE_STRESS_SERIAL.log
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M8 >=60s realtime groove + 12s 16-track 4x ratchet qualification: PASS
+M9 transforms + dense realtime stress: PASS
+M10 locks + all-lock dense realtime + bounded dirty UI: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+M13 playback coverage, heaps, inherited checks, 60s and >=20% headroom: PASS
+M14 slices/waveform, unchanged dense workload, heaps, normal/synth and >=20% headroom: PASS
+M15 slice lock coverage, inherited M14 workload, heaps and >=20% headroom: PASS
+M17 Chain/V2, inherited dense workload, memory stability, snapshot/apply and >=20% headroom PASS; PHYSICAL V2 PROJECT MIGRATION / CHAIN PERSISTENCE PENDING
+M18 Performance and all inherited M17 qualification PASS; physical SD/touch/listening remain separately pending
+M18.1 x2/x4/x8 immutable repeat, full 16-voice stress, cache/choke, inherited workload, normal/heaps and >=20% headroom PASS
+CHECK_EXIT=0
+
+[68/92] python tests/analyze_m181.py docs/GUITION_M181_SYNTH_STRESS_SERIAL.log --synth
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M8 >=60s realtime groove + 12s 16-track 4x ratchet qualification: PASS
+M9 transforms + dense realtime stress: PASS
+M10 locks + all-lock dense realtime + bounded dirty UI: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+M13 playback coverage, heaps, inherited checks, 60s and >=20% headroom: PASS
+M14 slices/waveform, unchanged dense workload, heaps, normal/synth and >=20% headroom: PASS
+M15 slice lock coverage, inherited M14 workload, heaps and >=20% headroom: PASS
+M17 Chain/V2, inherited dense workload, memory stability, snapshot/apply and >=20% headroom PASS; PHYSICAL V2 PROJECT MIGRATION / CHAIN PERSISTENCE PENDING
+M18 Performance and all inherited M17 qualification PASS; physical SD/touch/listening remain separately pending
+M18.1 x2/x4/x8 immutable repeat, full 16-voice stress, cache/choke, inherited workload, normal/heaps and >=20% headroom PASS
+CHECK_EXIT=0
+
+[69/92] python tests/analyze_m181.py docs/GUITION_M181_NORMAL_SERIAL.log --normal
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M10 normal no-card idle, no parameter residue, stable heaps: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+M13 playback coverage, heaps, inherited checks, 60s and >=20% headroom: PASS
+M14 slices/waveform, unchanged dense workload, heaps, normal/synth and >=20% headroom: PASS
+M15 slice lock coverage, inherited M14 workload, heaps and >=20% headroom: PASS
+M17 Chain/V2, inherited dense workload, memory stability, snapshot/apply and >=20% headroom PASS; PHYSICAL V2 PROJECT MIGRATION / CHAIN PERSISTENCE PENDING
+M18 Performance and all inherited M17 qualification PASS; physical SD/touch/listening remain separately pending
+M18.1 x2/x4/x8 immutable repeat, full 16-voice stress, cache/choke, inherited workload, normal/heaps and >=20% headroom PASS
+CHECK_EXIT=0
+
+[70/92] g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/transient_test.cpp -o /tmp/transient_test && /tmp/transient_test
+impulses expected=4 matched=4 missed=0 false_positive=0 tolerance=64
+ 4000 11000 21000 36000
+kicks expected=4 matched=4 missed=0 false_positive=0 tolerance=64
+ 4001 11001 21001 36001
+snares expected=4 matched=4 missed=0 false_positive=0 tolerance=64
+ 4000 11000 21000 36000
+hats expected=4 matched=4 missed=0 false_positive=0 tolerance=64
+ 4000 11000 21000 36000
+stereo expected=4 matched=4 missed=0 false_positive=0 tolerance=64
+ 4000 11000 21000 36000
+background_noise expected=4 matched=4 missed=0 false_positive=0 tolerance=64
+ 4000 10999 21000 36000
+compressed_attack expected=4 matched=4 missed=0 false_positive=0 tolerance=64
+ 4000 11000 21000 36000
+four_on_floor expected=4 matched=4 missed=0 false_positive=0 tolerance=64
+ 4001 14001 24001 34001
+four_on_floor differs_from_equal=1
+syncopated_break expected=4 matched=4 missed=0 false_positive=0 tolerance=64
+ 4000 15000 21000 32500
+syncopated_break differs_from_equal=1
+ghost_hats expected=6 matched=6 missed=0 false_positive=0 tolerance=64
+ 4000 8500 15000 22500 29000 36000
+ghost_hats differs_from_equal=1
+percussion expected=5 matched=5 missed=0 false_positive=0 tolerance=64
+ 4000 11000 17500 26000 36000
+percussion differs_from_equal=1
+vocal_consonants expected=4 matched=4 missed=0 false_positive=0 tolerance=64
+ 4000 12500 23500 36000
+vocal_consonants differs_from_equal=1
+fade_in candidates=0
+trim expected=1 matched=1 missed=0 false_positive=0 tolerance=64
+ 11000
+timing frames=44100 us=72 detector_bytes=624 candidates_bytes=512 proposal_bytes=84
+timing frames=176400 us=285 detector_bytes=624 candidates_bytes=512 proposal_bytes=84
+timing frames=2097152 us=2805 detector_bytes=624 candidates_bytes=512 proposal_bytes=84
+M19 detector PASS
+CHECK_EXIT=0
+
+[71/92] g++ -std=c++17 -O2 -Wall -Wextra -Werror -Itests/transient_stubs tests/transient_service_test.cpp -o /tmp/transient_service_test && /tmp/transient_service_test
+M19 proposal/cancel/owner/stale/SliceLock/reverse/Gate/Repeat PASS
+CHECK_EXIT=0
+
+[72/92] python tests/no_transient_equivalence.py
+Actual M18.1 inactive-transient (including Repeat) PATTERN/CHAIN/Override/Fill/mix and V2 bytes PASS (7200000 samples, all eight locks)
+Engine accepted=52616 M19=52616 Ui accepted=116 M19=116
+M19 inactive M18.1 event/RNG/Repeat and V2 byte equivalence PASS
+CHECK_EXIT=0
+
+[73/92] python tests/analyze_m19.py docs/GUITION_M19_SAMPLE_STRESS_SERIAL.log
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M8 >=60s realtime groove + 12s 16-track 4x ratchet qualification: PASS
+M9 transforms + dense realtime stress: PASS
+M10 locks + all-lock dense realtime + bounded dirty UI: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+M13 playback coverage, heaps, inherited checks, 60s and >=20% headroom: PASS
+M14 slices/waveform, unchanged dense workload, heaps, normal/synth and >=20% headroom: PASS
+M15 slice lock coverage, inherited M14 workload, heaps and >=20% headroom: PASS
+M17 Chain/V2, inherited dense workload, memory stability, snapshot/apply and >=20% headroom PASS; PHYSICAL V2 PROJECT MIGRATION / CHAIN PERSISTENCE PENDING
+M18 Performance and all inherited M17 qualification PASS; physical SD/touch/listening remain separately pending
+M18.1 x2/x4/x8 immutable repeat, full 16-voice stress, cache/choke, inherited workload, normal/heaps and >=20% headroom PASS
+M19 bounded offline PCM analysis, proposal ownership, concurrent x8, UI/heaps and >=20% audio headroom PASS
+CHECK_EXIT=0
+
+[74/92] python tests/analyze_m19.py docs/GUITION_M19_SYNTH_STRESS_SERIAL.log --synth
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M8 >=60s realtime groove + 12s 16-track 4x ratchet qualification: PASS
+M9 transforms + dense realtime stress: PASS
+M10 locks + all-lock dense realtime + bounded dirty UI: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+M13 playback coverage, heaps, inherited checks, 60s and >=20% headroom: PASS
+M14 slices/waveform, unchanged dense workload, heaps, normal/synth and >=20% headroom: PASS
+M15 slice lock coverage, inherited M14 workload, heaps and >=20% headroom: PASS
+M17 Chain/V2, inherited dense workload, memory stability, snapshot/apply and >=20% headroom PASS; PHYSICAL V2 PROJECT MIGRATION / CHAIN PERSISTENCE PENDING
+M18 Performance and all inherited M17 qualification PASS; physical SD/touch/listening remain separately pending
+M18.1 x2/x4/x8 immutable repeat, full 16-voice stress, cache/choke, inherited workload, normal/heaps and >=20% headroom PASS
+M19 bounded offline PCM analysis, proposal ownership, concurrent x8, UI/heaps and >=20% audio headroom PASS
+CHECK_EXIT=0
+
+[75/92] python tests/analyze_m19.py docs/GUITION_M19_NORMAL_SERIAL.log --normal
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M10 normal no-card idle, no parameter residue, stable heaps: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+M13 playback coverage, heaps, inherited checks, 60s and >=20% headroom: PASS
+M14 slices/waveform, unchanged dense workload, heaps, normal/synth and >=20% headroom: PASS
+M15 slice lock coverage, inherited M14 workload, heaps and >=20% headroom: PASS
+M17 Chain/V2, inherited dense workload, memory stability, snapshot/apply and >=20% headroom PASS; PHYSICAL V2 PROJECT MIGRATION / CHAIN PERSISTENCE PENDING
+M18 Performance and all inherited M17 qualification PASS; physical SD/touch/listening remain separately pending
+M18.1 x2/x4/x8 immutable repeat, full 16-voice stress, cache/choke, inherited workload, normal/heaps and >=20% headroom PASS
+M19 bounded offline PCM analysis, proposal ownership, concurrent x8, UI/heaps and >=20% audio headroom PASS
+CHECK_EXIT=0
+
+[76/92] python tests/physical_sd/analyze.py
+Physical synthetic SD load/reset/restore/fallback/heap/dense headroom PASS; music/touch/power-loss pending
+CHECK_EXIT=0
+
+[77/92] g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/ui_layout_test.cpp -o /tmp/ui_layout_test && /tmp/ui_layout_test
+M20 layout PASS pages=19 widgets=494 hit_edges=2904 overlaps=0 text_fit=PASS navigation=PASS slider_dirty=49152 playhead_dirty=24576
+CHECK_EXIT=0
+
+[78/92] python tests/no_ui_equivalence.py
+Actual M18.1 inactive-transient (including Repeat) PATTERN/CHAIN/Override/Fill/mix and V2 bytes PASS (7200000 samples, all eight locks)
+Engine accepted=52616 M19=52616 Ui accepted=116 M19=116
+Traceback (most recent call last):
+  File "C:\Python314\Lib\shutil.py", line 701, in _rmtree_unsafe
+    os.unlink(fullname)
+    ~~~~~~~~~^^^^^^^^^^
+PermissionError: [WinError 32] O arquivo já está sendo usado por outro processo: 'C:\\Users\\devx\\AppData\\Local\\Temp\\tmpngwxkax_\\comparison.exe'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\no_ui_equivalence.py", line 16, in <module>
+    exec(compile(test, "tests/no_transient_equivalence.py", "exec"))
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "tests/no_transient_equivalence.py", line 61, in <module>
+    with tempfile.TemporaryDirectory() as folder:
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Python314\Lib\tempfile.py", line 971, in __exit__
+    self.cleanup()
+    ~~~~~~~~~~~~^^
+  File "C:\Python314\Lib\tempfile.py", line 975, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\tempfile.py", line 955, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\shutil.py", line 852, in rmtree
+    _rmtree_impl(path, dir_fd, onexc)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\shutil.py", line 705, in _rmtree_unsafe
+    onexc(os.unlink, fullname, err)
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\tempfile.py", line 930, in onexc
+    _os.unlink(path)
+    ~~~~~~~~~~^^^^^^
+PermissionError: [WinError 32] O arquivo já está sendo usado por outro processo: 'C:\\Users\\devx\\AppData\\Local\\Temp\\tmpngwxkax_\\comparison.exe'
+CHECK_EXIT=1
+
+[79/92] python tests/render_ui.py
+Actual firmware UI host framebuffer dumps and zero render allocations PASS (800x480, fixed fixtures; not device photographs)
+CHECK_EXIT=0
+
+[80/92] python tests/analyze_m20.py docs/GUITION_M20_SAMPLE_STRESS_SERIAL.log
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M8 >=60s realtime groove + 12s 16-track 4x ratchet qualification: PASS
+M9 transforms + dense realtime stress: PASS
+M10 locks + all-lock dense realtime + bounded dirty UI: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+M13 playback coverage, heaps, inherited checks, 60s and >=20% headroom: PASS
+M14 slices/waveform, unchanged dense workload, heaps, normal/synth and >=20% headroom: PASS
+M15 slice lock coverage, inherited M14 workload, heaps and >=20% headroom: PASS
+M17 Chain/V2, inherited dense workload, memory stability, snapshot/apply and >=20% headroom PASS; PHYSICAL V2 PROJECT MIGRATION / CHAIN PERSISTENCE PENDING
+M18 Performance and all inherited M17 qualification PASS; physical SD/touch/listening remain separately pending
+M18.1 x2/x4/x8 immutable repeat, full 16-voice stress, cache/choke, inherited workload, normal/heaps and >=20% headroom PASS
+M19 bounded offline PCM analysis, proposal ownership, concurrent x8, UI/heaps and >=20% audio headroom PASS
+M20 full pages, dirty slider/playhead, bounded UI interval and inherited M19 >=20% realtime headroom PASS
+CHECK_EXIT=0
+
+[81/92] python tests/analyze_m20.py docs/GUITION_M20_SYNTH_STRESS_SERIAL.log --synth
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M8 >=60s realtime groove + 12s 16-track 4x ratchet qualification: PASS
+M9 transforms + dense realtime stress: PASS
+M10 locks + all-lock dense realtime + bounded dirty UI: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+M13 playback coverage, heaps, inherited checks, 60s and >=20% headroom: PASS
+M14 slices/waveform, unchanged dense workload, heaps, normal/synth and >=20% headroom: PASS
+M15 slice lock coverage, inherited M14 workload, heaps and >=20% headroom: PASS
+M17 Chain/V2, inherited dense workload, memory stability, snapshot/apply and >=20% headroom PASS; PHYSICAL V2 PROJECT MIGRATION / CHAIN PERSISTENCE PENDING
+M18 Performance and all inherited M17 qualification PASS; physical SD/touch/listening remain separately pending
+M18.1 x2/x4/x8 immutable repeat, full 16-voice stress, cache/choke, inherited workload, normal/heaps and >=20% headroom PASS
+M19 bounded offline PCM analysis, proposal ownership, concurrent x8, UI/heaps and >=20% audio headroom PASS
+M20 full pages, dirty slider/playhead, bounded UI interval and inherited M19 >=20% realtime headroom PASS
+CHECK_EXIT=0
+
+[82/92] python tests/interpolation_checks.py
+M21 all phases, edges, reverse, all MIDI, old Nearest, unity, fades/release/retrigger, duration, retirement, zero allocations PASS; Voice=64 accepted=64
+CHECK_EXIT=0
+
+[83/92] python tests/interpolation_quality.py
+M21 quality PASS: 357 rows, unity exact, low/mid-band ordering verified; upper band/alias/overshoot reported
+CHECK_EXIT=0
+
+[84/92] python tests/analyze_m21.py
+M21 NEAREST: 4118 us / 29.1% headroom / chain cycle=True / qualified=True
+M21 LINEAR: 4426 us / 23.8% headroom / chain cycle=False / qualified=False
+M21 HERMITE: 4963 us / 14.5% headroom / chain cycle=False / qualified=False
+M21 per-mode safety, retained dense workload, all six raw scenarios, SD workflows and stable heaps PASS; actual listening/touch remain pending
+CHECK_EXIT=0
+
+[85/92] python tests/analyze_m20.py docs/GUITION_M21_NEAREST_FINAL_SERIAL.log
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M8 >=60s realtime groove + 12s 16-track 4x ratchet qualification: PASS
+M9 transforms + dense realtime stress: PASS
+M10 locks + all-lock dense realtime + bounded dirty UI: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+M13 playback coverage, heaps, inherited checks, 60s and >=20% headroom: PASS
+M14 slices/waveform, unchanged dense workload, heaps, normal/synth and >=20% headroom: PASS
+M15 slice lock coverage, inherited M14 workload, heaps and >=20% headroom: PASS
+M17 Chain/V2, inherited dense workload, memory stability, snapshot/apply and >=20% headroom PASS; PHYSICAL V2 PROJECT MIGRATION / CHAIN PERSISTENCE PENDING
+M18 Performance and all inherited M17 qualification PASS; physical SD/touch/listening remain separately pending
+M18.1 x2/x4/x8 immutable repeat, full 16-voice stress, cache/choke, inherited workload, normal/heaps and >=20% headroom PASS
+M19 bounded offline PCM analysis, proposal ownership, concurrent x8, UI/heaps and >=20% audio headroom PASS
+M20 full pages, dirty slider/playhead, bounded UI interval and inherited M19 >=20% realtime headroom PASS
+CHECK_EXIT=0
+
+[86/92] python tests/analyze_m20.py docs/GUITION_M21_SYNTH_STRESS_SERIAL.log --synth
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M8 >=60s realtime groove + 12s 16-track 4x ratchet qualification: PASS
+M9 transforms + dense realtime stress: PASS
+M10 locks + all-lock dense realtime + bounded dirty UI: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+M13 playback coverage, heaps, inherited checks, 60s and >=20% headroom: PASS
+M14 slices/waveform, unchanged dense workload, heaps, normal/synth and >=20% headroom: PASS
+M15 slice lock coverage, inherited M14 workload, heaps and >=20% headroom: PASS
+M17 Chain/V2, inherited dense workload, memory stability, snapshot/apply and >=20% headroom PASS; PHYSICAL V2 PROJECT MIGRATION / CHAIN PERSISTENCE PENDING
+M18 Performance and all inherited M17 qualification PASS; physical SD/touch/listening remain separately pending
+M18.1 x2/x4/x8 immutable repeat, full 16-voice stress, cache/choke, inherited workload, normal/heaps and >=20% headroom PASS
+M19 bounded offline PCM analysis, proposal ownership, concurrent x8, UI/heaps and >=20% audio headroom PASS
+M20 full pages, dirty slider/playhead, bounded UI interval and inherited M19 >=20% realtime headroom PASS
+CHECK_EXIT=0
+
+[87/92] python tests/pcm_cache_checks.py
+M211 cached PCM all phases/modes, edges, reverse, MIDI, fades, release, replacement, zero allocations PASS; Voice=64 cache=88 mode=0
+M211 cached PCM all phases/modes, edges, reverse, MIDI, fades, release, replacement, zero allocations PASS; Voice=64 cache=88 mode=1
+M211 cached PCM all phases/modes, edges, reverse, MIDI, fades, release, replacement, zero allocations PASS; Voice=64 cache=88 mode=2
+CHECK_EXIT=0
+
+[88/92] python tests/pcm_cache_checks.py --full-gain
+M211 cached PCM all phases/modes, edges, reverse, MIDI, fades, release, replacement, zero allocations PASS; Voice=64 cache=88 mode=0
+M211 cached PCM all phases/modes, edges, reverse, MIDI, fades, release, replacement, zero allocations PASS; Voice=64 cache=88 mode=1
+M211 cached PCM all phases/modes, edges, reverse, MIDI, fades, release, replacement, zero allocations PASS; Voice=64 cache=88 mode=2
+CHECK_EXIT=0
+
+[89/92] python tests/m212_checks.py
+M212 cache frames=16 fill=0 bytes=72 hits=3967622 misses=276593 psram_reads=4176997 PASS
+M212 cache frames=16 fill=1 bytes=72 hits=3967622 misses=276593 psram_reads=4176997 PASS
+M212 cache frames=16 fill=2 bytes=72 hits=3967622 misses=276593 psram_reads=4176997 PASS
+M212 cache frames=32 fill=0 bytes=104 hits=4129209 misses=115006 psram_reads=3249552 PASS
+M212 cache frames=32 fill=1 bytes=104 hits=4129209 misses=115006 psram_reads=3249552 PASS
+M212 cache frames=32 fill=2 bytes=104 hits=4129209 misses=115006 psram_reads=3249552 PASS
+M212 cache frames=64 fill=0 bytes=168 hits=4202981 misses=41234 psram_reads=1993917 PASS
+M212 cache frames=64 fill=1 bytes=168 hits=4202981 misses=41234 psram_reads=1993917 PASS
+M212 cache frames=64 fill=2 bytes=168 hits=4202981 misses=41234 psram_reads=1993917 PASS
+M212 cache frames=128 fill=0 bytes=296 hits=4231924 misses=12291 psram_reads=873777 PASS
+M212 cache frames=128 fill=1 bytes=296 hits=4231924 misses=12291 psram_reads=873777 PASS
+M212 cache frames=128 fill=2 bytes=296 hits=4231924 misses=12291 psram_reads=873777 PASS
+CHECK_EXIT=0
+
+[90/92] python tests/m212_magnitude_checks.py
+M212 magnitude rounding vs Linear64: all phases/rails + 1000000 tuples PASS
+CHECK_EXIT=0
+
+[91/92] python tests/m212_trace_checks.py
+mode=0 cache=0 magnitude=0 validated=0 full_gain=0
+scenario=2 hash=978631659 events=126480 rng=1386399687 chain=230 x8=7168 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032
+scenario=3 hash=3904423500 events=126480 rng=1386399687 chain=230 x8=7168 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032
+
+mode=0 cache=1 magnitude=0 validated=0 full_gain=0
+scenario=2 hash=978631659 events=126480 rng=1386399687 chain=230 x8=7168 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032
+scenario=3 hash=3904423500 events=126480 rng=1386399687 chain=230 x8=7168 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032
+
+mode=1 cache=0 magnitude=0 validated=0 full_gain=0
+scenario=2 hash=978631659 events=126480 rng=1386399687 chain=230 x8=7168 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032
+scenario=3 hash=3904423500 events=126480 rng=1386399687 chain=230 x8=7168 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032
+
+mode=1 cache=1 magnitude=0 validated=0 full_gain=0
+scenario=2 hash=978631659 events=126480 rng=1386399687 chain=230 x8=7168 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032
+scenario=3 hash=3904423500 events=126480 rng=1386399687 chain=230 x8=7168 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032
+
+mode=1 cache=1 magnitude=1 validated=0 full_gain=0
+scenario=2 hash=978631659 events=126480 rng=1386399687 chain=230 x8=7168 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032
+scenario=3 hash=3904423500 events=126480 rng=1386399687 chain=230 x8=7168 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032
+
+mode=1 cache=1 magnitude=0 validated=1 full_gain=0
+scenario=2 hash=978631659 events=126480 rng=1386399687 chain=230 x8=7168 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032
+scenario=3 hash=3904423500 events=126480 rng=1386399687 chain=230 x8=7168 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032
+
+mode=1 cache=1 magnitude=0 validated=0 full_gain=1
+scenario=2 hash=978631659 events=126480 rng=1386399687 chain=230 x8=7168 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032
+scenario=3 hash=3904423500 events=126480 rng=1386399687 chain=230 x8=7168 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032 active=5292032
+
+M212 B/C deterministic complete Chain/Repeat/voice trace PASS
+CHECK_EXIT=0
+
+[92/92] python tests/analyze_m211.py
+nearest_cache_B: max=4283 us headroom=26.22% Chain=0 timing_and_chain_pass=False
+linear_cache_B: max=5058 us headroom=12.87% Chain=0 timing_and_chain_pass=False
+nearest_cache_profile_B: max=4417 us headroom=23.91% Chain=0 timing_and_chain_pass=False
+linear32_cache_B: max=4927 us headroom=15.12% Chain=1 timing_and_chain_pass=False
+nearest_cache_A: max=4279 us headroom=26.29% Chain=0 timing_and_chain_pass=False
+NEW candidate safety/heap/Repeat checks PASS. M21.1 acceptance: PARTIAL.
+CHECK_EXIT=0
+
+TOTAL=92 FAILURES=1
+
+# Independent repeat of failed Windows cleanup command: python tests/no_ui_equivalence.py
+Actual M18.1 inactive-transient (including Repeat) PATTERN/CHAIN/Override/Fill/mix and V2 bytes PASS (7200000 samples, all eight locks)
+Engine accepted=52616 M19=52616 Ui accepted=116 M19=116
+M19 inactive M18.1 event/RNG/Repeat and V2 byte equivalence PASS
+M20 exact accepted Engine source, DSP, detector and 52,704 V2 bytes PASS
