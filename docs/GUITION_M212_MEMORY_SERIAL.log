@@ -1,0 +1,164 @@
+# Production firmware guition_m212_memory; fresh esptool flash/hardware reset; UTC 2026-10-09T02:56:36.405262+00:00
+esptool v5.1.0
+Serial port COM13:
+Connecting...
+Connected to ESP32-P4 on COM13:
+Chip type:          ESP32-P4 (revision v1.3)
+Features:           Dual Core + LP Core, 400MHz
+Crystal frequency:  40MHz
+USB mode:           USB-Serial/JTAG
+MAC:                80:f1:b2:d3:cc:86
+
+Uploading stub flasher...
+Running stub flasher...
+Stub flasher running.
+Changing baud rate to 460800...
+Changed.
+
+Configuring flash size...
+Flash will be erased from 0x00002000 to 0x00007fff...
+Flash will be erased from 0x00008000 to 0x00008fff...
+Flash will be erased from 0x0000e000 to 0x0000ffff...
+Flash will be erased from 0x00010000 to 0x0005ffff...
+SHA digest in image updated.
+Compressed 21616 bytes to 13700...
+Writing at 0x00002000 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0.0% 0/13700 bytes... 
+Writing at 0x00007470 [██████████████████████████████] 100.0% 13700/13700 bytes... 
+Wrote 21616 bytes (13700 compressed) at 0x00002000 in 0.3 seconds (608.0 kbit/s).
+Hash of data verified.
+Compressed 3072 bytes to 146...
+Writing at 0x00008000 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0.0% 0/146 bytes... 
+Writing at 0x00008c00 [██████████████████████████████] 100.0% 146/146 bytes... 
+Wrote 3072 bytes (146 compressed) at 0x00008000 in 0.1 seconds (349.9 kbit/s).
+Hash of data verified.
+Compressed 8192 bytes to 47...
+Writing at 0x0000e000 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0.0% 0/47 bytes... 
+Writing at 0x00010000 [██████████████████████████████] 100.0% 47/47 bytes... 
+Wrote 8192 bytes (47 compressed) at 0x0000e000 in 0.1 seconds (668.2 kbit/s).
+Hash of data verified.
+Compressed 324960 bytes to 176686...
+Writing at 0x00010000 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0.0% 0/176686 bytes... 
+Writing at 0x0001c395 [██░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   9.3% 16384/176686 bytes... 
+Writing at 0x00024ae3 [█████░░░░░░░░░░░░░░░░░░░░░░░░░]  18.5% 32768/176686 bytes... 
+Writing at 0x0002aef9 [████████░░░░░░░░░░░░░░░░░░░░░░]  27.8% 49152/176686 bytes... 
+Writing at 0x0003117a [███████████░░░░░░░░░░░░░░░░░░░]  37.1% 65536/176686 bytes... 
+Writing at 0x000385eb [█████████████░░░░░░░░░░░░░░░░░]  46.4% 81920/176686 bytes... 
+Writing at 0x0003e5a0 [████████████████░░░░░░░░░░░░░░]  55.6% 98304/176686 bytes... 
+Writing at 0x000450f1 [███████████████████░░░░░░░░░░░]  64.9% 114688/176686 bytes... 
+Writing at 0x0004b240 [██████████████████████░░░░░░░░]  74.2% 131072/176686 bytes... 
+Writing at 0x00051383 [█████████████████████████░░░░░]  83.5% 147456/176686 bytes... 
+Writing at 0x00059394 [███████████████████████████░░░]  92.7% 163840/176686 bytes... 
+Writing at 0x0005f560 [██████████████████████████████] 100.0% 176686/176686 bytes... 
+Wrote 324960 bytes (176686 compressed) at 0x00010000 in 1.7 seconds (1502.8 kbit/s).
+Hash of data verified.
+
+Hard resetting via RTS pin...
+[M212 memory] revision=103 cpu_mhz=360 psram_bytes=33554432 sdk_speed_mhz=200 l2_bytes=131072 line_bytes=64
+[M212 registers] source=1 source_hz=400000000 source_status=0 core_div=1 bus_div=2 effective_hz=200000000 hex_read=1 hex_write=1 ddr=1 ecc=0
+[M212 address] layout=0 track=0 base=0x48108a40 align64=0
+[M212 address] layout=0 track=1 base=0x48128a40 align64=0
+[M212 address] layout=0 track=2 base=0x48148a40 align64=0
+[M212 address] layout=0 track=3 base=0x48168a40 align64=0
+[M212 address] layout=0 track=4 base=0x48188a40 align64=0
+[M212 address] layout=0 track=5 base=0x481a8a40 align64=0
+[M212 address] layout=0 track=6 base=0x481c8a40 align64=0
+[M212 address] layout=0 track=7 base=0x481e8a40 align64=0
+[M212 address] layout=0 track=8 base=0x48208a40 align64=0
+[M212 address] layout=0 track=9 base=0x48228a40 align64=0
+[M212 address] layout=0 track=10 base=0x48248a40 align64=0
+[M212 address] layout=0 track=11 base=0x48268a40 align64=0
+[M212 address] layout=0 track=12 base=0x48288a40 align64=0
+[M212 address] layout=0 track=13 base=0x482a8a40 align64=0
+[M212 address] layout=0 track=14 base=0x482c8a40 align64=0
+[M212 address] layout=0 track=15 base=0x482e8a40 align64=0
+[M212 bandwidth] layout=0 order=0 evicted=0 repeats=32 reads=131072 bytes=262144 us=65315 MBps=4.014 checksum=4284219392
+[M212 bandwidth] layout=0 order=1 evicted=0 repeats=32 reads=131072 bytes=262144 us=4001 MBps=65.520 checksum=4284219392
+[M212 bandwidth] layout=0 order=2 evicted=0 repeats=32 reads=131072 bytes=262144 us=6464 MBps=40.554 checksum=4284219392
+[M212 bandwidth] layout=0 order=3 evicted=0 repeats=32 reads=131072 bytes=262144 us=6393 MBps=41.005 checksum=4284219392
+[M212 bandwidth] layout=0 order=4 evicted=0 repeats=32 reads=131072 bytes=262144 us=6359 MBps=41.224 checksum=4284219392
+[M212 bandwidth] layout=0 order=0 evicted=1 repeats=32 reads=131072 bytes=262144 us=65305 MBps=4.014 checksum=4284219392
+[M212 bandwidth] layout=0 order=1 evicted=1 repeats=32 reads=131072 bytes=262144 us=3977 MBps=65.915 checksum=4284219392
+[M212 bandwidth] layout=0 order=2 evicted=1 repeats=32 reads=131072 bytes=262144 us=6498 MBps=40.342 checksum=4284219392
+[M212 bandwidth] layout=0 order=3 evicted=1 repeats=32 reads=131072 bytes=262144 us=6466 MBps=40.542 checksum=4284219392
+[M212 bandwidth] layout=0 order=4 evicted=1 repeats=32 reads=131072 bytes=262144 us=6496 MBps=40.355 checksum=4284219392
+[M212 address] layout=1 track=0 base=0x48108a40 align64=0
+[M212 address] layout=1 track=1 base=0x48128a80 align64=0
+[M212 address] layout=1 track=2 base=0x48148ac0 align64=0
+[M212 address] layout=1 track=3 base=0x48168b00 align64=0
+[M212 address] layout=1 track=4 base=0x48188b40 align64=0
+[M212 address] layout=1 track=5 base=0x481a8b80 align64=0
+[M212 address] layout=1 track=6 base=0x481c8bc0 align64=0
+[M212 address] layout=1 track=7 base=0x481e8c00 align64=0
+[M212 address] layout=1 track=8 base=0x48208c40 align64=0
+[M212 address] layout=1 track=9 base=0x48228c80 align64=0
+[M212 address] layout=1 track=10 base=0x48248cc0 align64=0
+[M212 address] layout=1 track=11 base=0x48268d00 align64=0
+[M212 address] layout=1 track=12 base=0x48288d40 align64=0
+[M212 address] layout=1 track=13 base=0x482a8d80 align64=0
+[M212 address] layout=1 track=14 base=0x482c8dc0 align64=0
+[M212 address] layout=1 track=15 base=0x482e8e00 align64=0
+[M212 bandwidth] layout=1 order=0 evicted=0 repeats=32 reads=131072 bytes=262144 us=3609 MBps=72.636 checksum=4284219392
+[M212 bandwidth] layout=1 order=1 evicted=0 repeats=32 reads=131072 bytes=262144 us=2318 MBps=113.091 checksum=4284219392
+[M212 bandwidth] layout=1 order=2 evicted=0 repeats=32 reads=131072 bytes=262144 us=4793 MBps=54.693 checksum=4284219392
+[M212 bandwidth] layout=1 order=3 evicted=0 repeats=32 reads=131072 bytes=262144 us=4720 MBps=55.539 checksum=4284219392
+[M212 bandwidth] layout=1 order=4 evicted=0 repeats=32 reads=131072 bytes=262144 us=4678 MBps=56.038 checksum=4284219392
+[M212 bandwidth] layout=1 order=0 evicted=1 repeats=32 reads=131072 bytes=262144 us=5186 MBps=50.548 checksum=4284219392
+[M212 bandwidth] layout=1 order=1 evicted=1 repeats=32 reads=131072 bytes=262144 us=4001 MBps=65.520 checksum=4284219392
+[M212 bandwidth] layout=1 order=2 evicted=1 repeats=32 reads=131072 bytes=262144 us=6467 MBps=40.536 checksum=4284219392
+[M212 bandwidth] layout=1 order=3 evicted=1 repeats=32 reads=131072 bytes=262144 us=6432 MBps=40.756 checksum=4284219392
+[M212 bandwidth] layout=1 order=4 evicted=1 repeats=32 reads=131072 bytes=262144 us=6434 MBps=40.744 checksum=4284219392
+[M212 address] layout=2 track=0 base=0x4830ca50 align64=16
+[M212 address] layout=2 track=1 base=0x4832da54 align64=20
+[M212 address] layout=2 track=2 base=0x4834ea58 align64=24
+[M212 address] layout=2 track=3 base=0x4836fa5c align64=28
+[M212 address] layout=2 track=4 base=0x48390a60 align64=32
+[M212 address] layout=2 track=5 base=0x483b1a64 align64=36
+[M212 address] layout=2 track=6 base=0x483d2a68 align64=40
+[M212 address] layout=2 track=7 base=0x483f3a6c align64=44
+[M212 address] layout=2 track=8 base=0x48414a70 align64=48
+[M212 address] layout=2 track=9 base=0x48435a74 align64=52
+[M212 address] layout=2 track=10 base=0x48456a78 align64=56
+[M212 address] layout=2 track=11 base=0x48477a7c align64=60
+[M212 address] layout=2 track=12 base=0x48498a80 align64=0
+[M212 address] layout=2 track=13 base=0x484b9a84 align64=4
+[M212 address] layout=2 track=14 base=0x484daa88 align64=8
+[M212 address] layout=2 track=15 base=0x484fba8c align64=12
+[M212 bandwidth] layout=2 order=0 evicted=0 repeats=32 reads=131072 bytes=262144 us=3522 MBps=74.430 checksum=4284219392
+[M212 bandwidth] layout=2 order=1 evicted=0 repeats=32 reads=131072 bytes=262144 us=2241 MBps=116.976 checksum=4284219392
+[M212 bandwidth] layout=2 order=2 evicted=0 repeats=32 reads=131072 bytes=262144 us=4768 MBps=54.980 checksum=4284219392
+[M212 bandwidth] layout=2 order=3 evicted=0 repeats=32 reads=131072 bytes=262144 us=4692 MBps=55.870 checksum=4284219392
+[M212 bandwidth] layout=2 order=4 evicted=0 repeats=32 reads=131072 bytes=262144 us=4671 MBps=56.122 checksum=4284219392
+[M212 bandwidth] layout=2 order=0 evicted=1 repeats=32 reads=131072 bytes=262144 us=5451 MBps=48.091 checksum=4284219392
+[M212 bandwidth] layout=2 order=1 evicted=1 repeats=32 reads=131072 bytes=262144 us=4195 MBps=62.490 checksum=4284219392
+[M212 bandwidth] layout=2 order=2 evicted=1 repeats=32 reads=131072 bytes=262144 us=6690 MBps=39.184 checksum=4284219392
+[M212 bandwidth] layout=2 order=3 evicted=1 repeats=32 reads=131072 bytes=262144 us=6626 MBps=39.563 checksum=4284219392
+[M212 bandwidth] layout=2 order=4 evicted=1 repeats=32 reads=131072 bytes=262144 us=6626 MBps=39.563 checksum=4284219392
+[M212 address] layout=3 track=0 base=0x4830ca50 align64=16
+[M212 address] layout=3 track=1 base=0x4832da54 align64=20
+[M212 address] layout=3 track=2 base=0x4834ea58 align64=24
+[M212 address] layout=3 track=3 base=0x4836fa5c align64=28
+[M212 address] layout=3 track=4 base=0x48390a60 align64=32
+[M212 address] layout=3 track=5 base=0x483b1a64 align64=36
+[M212 address] layout=3 track=6 base=0x483d2a68 align64=40
+[M212 address] layout=3 track=7 base=0x483f3a6c align64=44
+[M212 address] layout=3 track=8 base=0x48414a70 align64=48
+[M212 address] layout=3 track=9 base=0x48435a74 align64=52
+[M212 address] layout=3 track=10 base=0x48456a78 align64=56
+[M212 address] layout=3 track=11 base=0x48477a7c align64=60
+[M212 address] layout=3 track=12 base=0x48498a80 align64=0
+[M212 address] layout=3 track=13 base=0x484b9a84 align64=4
+[M212 address] layout=3 track=14 base=0x484daa88 align64=8
+[M212 address] layout=3 track=15 base=0x484fba8c align64=12
+[M212 bandwidth] layout=3 order=0 evicted=0 repeats=32 reads=131072 bytes=262144 us=3521 MBps=74.452 checksum=4284219392
+[M212 bandwidth] layout=3 order=1 evicted=0 repeats=32 reads=131072 bytes=262144 us=2241 MBps=116.976 checksum=4284219392
+[M212 bandwidth] layout=3 order=2 evicted=0 repeats=32 reads=131072 bytes=262144 us=4768 MBps=54.980 checksum=4284219392
+[M212 bandwidth] layout=3 order=3 evicted=0 repeats=32 reads=131072 bytes=262144 us=4699 MBps=55.787 checksum=4284219392
+[M212 bandwidth] layout=3 order=4 evicted=0 repeats=32 reads=131072 bytes=262144 us=4668 MBps=56.158 checksum=4284219392
+[M212 bandwidth] layout=3 order=0 evicted=1 repeats=32 reads=131072 bytes=262144 us=5440 MBps=48.188 checksum=4284219392
+[M212 bandwidth] layout=3 order=1 evicted=1 repeats=32 reads=131072 bytes=262144 us=4196 MBps=62.475 checksum=4284219392
+[M212 bandwidth] layout=3 order=2 evicted=1 repeats=32 reads=131072 bytes=262144 us=6690 MBps=39.184 checksum=4284219392
+[M212 bandwidth] layout=3 order=3 evicted=1 repeats=32 reads=131072 bytes=262144 us=6626 MBps=39.563 checksum=4284219392
+[M212 bandwidth] layout=3 order=4 evicted=1 repeats=32 reads=131072 bytes=262144 us=6626 MBps=39.563 checksum=4284219392
+[M212 bandwidth] layout=0 order=5 evicted=0 repeats=32 reads=0 bytes=67108864 us=581345 MBps=115.437 checksum=0
+[M212 bandwidth] layout=0 order=6 evicted=0 repeats=32 reads=0 bytes=67108864 us=744359 MBps=90.157 checksum=0
+[M212 bandwidth] layout=0 order=7 evicted=0 repeats=32 reads=16777216 bytes=67108864 us=646665 MBps=103.777 checksum=4227858432

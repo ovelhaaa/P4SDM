@@ -52,7 +52,7 @@ inline void qualify_interpolation(sampler::Sample *samples) {
   qualify_interpolation_mode<sampler::Interpolation::Hermite4>(samples,checksum);
   // Arithmetic candidate comparison, including conversions/rounding, with
   // varying phases so the compiler cannot fold the polynomial to a constant.
-  for (unsigned candidate = 0; candidate < 5; ++candidate) {
+  for (unsigned candidate = 0; candidate < 6; ++candidate) {
     const auto start = esp_timer_get_time();
     for (unsigned n = 0; n < 65536; ++n) {
       const uint16_t phase = uint16_t(n*97);
@@ -65,7 +65,8 @@ inline void qualify_interpolation(sampler::Sample *samples) {
           candidate == 1 ? sampler::quantize(sampler::linear_float(x0,x1,phase)) :
           candidate == 2 ? sampler::hermite_fixed(xm1,x0,x1,x2,phase) :
           candidate == 3 ? sampler::quantize(sampler::hermite_float(xm1,x0,x1,x2,phase)) :
-          sampler::linear_fixed32(x0,x1,phase);
+          candidate == 4 ? sampler::linear_fixed32(x0,x1,phase) :
+          sampler::linear_fixed32_magnitude(x0,x1,phase);
       checksum = checksum ^ y;
     }
     Serial.printf("[M21 arithmetic] candidate=%u iterations=65536 us=%u checksum=%ld\n",

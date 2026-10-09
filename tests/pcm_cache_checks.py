@@ -5,6 +5,7 @@ import sys
 import tempfile
 
 baseline = '7d90acea7aa18ddc7af1b8c5ad00d6b44cd4b16c'
+extra_flags = ['-DP4SDM_FULL_GAIN_FASTPATH=1'] if '--full-gain' in sys.argv else []
 with tempfile.TemporaryDirectory() as folder:
     root = Path(folder)
     (root/'accepted').mkdir()
@@ -14,13 +15,13 @@ with tempfile.TemporaryDirectory() as folder:
     binary = root/'cache.exe'
     for mode in range(3):
         command = ['g++', '-std=c++17', '-O2', '-Wall', '-Wextra', '-Werror',
-                   f'-DP4SDM_INTERPOLATION={mode}', '-DP4SDM_LINEAR_32BIT=1', '-I'+folder,
+                   f'-DP4SDM_INTERPOLATION={mode}', '-DP4SDM_LINEAR_32BIT=1', *extra_flags, '-I'+folder,
                    'tests/pcm_cache_test.cpp', '-o', str(binary)]
         subprocess.run(command, check=True)
         subprocess.run([str(binary)], check=True)
     if sys.platform != 'win32':
         subprocess.run(['g++', '-std=c++17', '-O1', '-g', '-Wall', '-Wextra', '-Werror',
                         '-fsanitize=address,undefined', '-fno-omit-frame-pointer',
-                        '-DP4SDM_LINEAR_32BIT=1', '-I'+folder,
+                        '-DP4SDM_LINEAR_32BIT=1', *extra_flags, '-I'+folder,
                         'tests/pcm_cache_test.cpp', '-o', str(binary)], check=True)
         subprocess.run([str(binary)], check=True)

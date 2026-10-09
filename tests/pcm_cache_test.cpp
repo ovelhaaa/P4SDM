@@ -47,7 +47,8 @@ int main() {
   const unsigned before=allocations;
   for (int pitch=0; pitch<128; ++pitch)
     for (bool reverse : {false,true})
-      for (unsigned mode=0; mode<3; ++mode) {
+      for (unsigned mode=0; mode<3; ++mode)
+      for (unsigned release_at : {17u,193u}) {
         Voice v; accepted::Voice old; PcmReadCache cache;
         Playback p{1000,62000,reverse,Mode::Gate};
         accepted::Playback op{p.start,p.end,reverse,accepted::Mode::Gate};
@@ -56,7 +57,7 @@ int main() {
         old.trigger(accepted::pitch_increment(pitch),op,true);
         for (unsigned n=0; v.active || old.active; ++n) {
           if (!(n%256)) cache.invalidate();
-          if (n==17) { v.release(); old.release(); }
+          if (n==release_at) { v.release(); old.release(); }
           assert(v.next(Interpolation(mode), &cache)==old.next(accepted::Interpolation(mode)));
           assert(v.position==old.position && v.remaining==old.remaining && v.active==old.active);
           assert(v.attack==old.attack && v.release_left==old.release_left);

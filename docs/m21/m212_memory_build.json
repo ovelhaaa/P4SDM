@@ -1,0 +1,72 @@
+{
+  "environment": "guition_m212_memory",
+  "baseline_sha": "59e1da5c223206e3505f74e752cb1f5fc82a8afb",
+  "files": {
+    "firmware.elf": "50397c419e3fdd376cb688bdbde1da8890c693ae190fabe8b43996cf1773d6f2",
+    "firmware.bin": "4b665fa0f429b1c91b4a25af0fda738ac932375a4195e91f008355fe1ee4ad4a",
+    "firmware.map": "a4456ccd2c9de565e36d159d8cecb5647e979e623a47a6b2e6d43f9eb9337578",
+    "bootloader.bin": "6a88d429ece0ae20f8ae18493b9f3dee05c35f4abaa22f0320e44c34d30631c2",
+    "partitions.bin": "bd0f7954aca2ef7d925ee21aaa1f3dc8822d1d6ce5cbbd26a135e5886bfff6ce"
+  },
+  "sdk_sha256": "bc766404b5cfcca6f8bcb48cdf1ccfd6183e7f3c94617a7d6710198013d58fa0",
+  "packages": {
+    "framework-arduinoespressif32": {
+      "name": "framework-arduinoespressif32",
+      "version": "3.3.6",
+      "description": "Arduino Wiring-based Framework for the Espressif ESP32, ESP32-P4, ESP32-S and ESP32-C series of SoCs",
+      "keywords": [
+        "framework",
+        "arduino",
+        "espressif",
+        "esp32"
+      ],
+      "license": "LGPL-2.1-or-later",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/espressif/arduino-esp32"
+      }
+    },
+    "framework-arduinoespressif32-libs": {
+      "name": "framework-arduinoespressif32-libs",
+      "description": "Precompiled libraries for Arduino Wiring-based Framework for the Espressif ESP32 series of SoCs",
+      "keywords": [
+        "framework",
+        "arduino",
+        "espressif",
+        "esp32"
+      ],
+      "license": "LGPL-2.1-or-later",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/espressif/esp32-arduino-lib-builder"
+      },
+      "version": "5.5.0+sha.f56bea3d1f"
+    },
+    "toolchain-riscv32-esp": {
+      "name": "toolchain-riscv32-esp",
+      "version": "14.2.0+20251107",
+      "description": "GCC Toolchain for Espressif 32-bit RISC-V based MCUs",
+      "keywords": [
+        "build tools",
+        "compiler",
+        "assembler",
+        "linker",
+        "preprocessor",
+        "espressif",
+        "esp32",
+        "esp32c2",
+        "esp32c3",
+        "esp32c6",
+        "risc-v"
+      ],
+      "license": "GPL-2.0-or-later",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/espressif/crosstool-NG"
+      },
+      "system": [
+        "*"
+      ]
+    }
+  }
+}

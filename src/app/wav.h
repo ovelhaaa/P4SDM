@@ -174,7 +174,14 @@ struct Voice {
         gain = unsigned(remaining - 1) < gain ? unsigned(remaining - 1) : gain;
       if (releasing && release_left - 1u < gain)
         gain = release_left - 1u;
+#if P4SDM_FULL_GAIN_FASTPATH
+      // Exact identity after attack and before end/release fades. Keep every
+      // envelope/transport update; skip only a redundant multiply/divide.
+      if (gain != fade)
+        result = int16_t(int32_t(result) * int(gain) / int(fade));
+#else
       result = int16_t(int32_t(result) * int(gain) / int(fade));
+#endif
       if (attack < fade)
         ++attack;
     }

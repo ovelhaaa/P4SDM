@@ -52,6 +52,17 @@ inline int16_t linear_fixed32(int16_t x0, int16_t x1, uint16_t fraction) {
   else if (remainder <= -32768) --rounded;
   return int16_t(rounded); // convex interpolation cannot exceed PCM16 rails
 }
+// Independent exact rounding experiment. Unsigned magnitude permits adding
+// 32768 even at INT32_MIN, without signed overflow or signed remainder/divide.
+// The old convex kernel remains above as a reference. Production never selects
+// this candidate unless both Linear32 and its explicit diagnostic flag are set.
+inline int16_t linear_fixed32_magnitude(int16_t x0, int16_t x1, uint16_t fraction) {
+  const int32_t value = int32_t(x0)*(65536-int32_t(fraction)) +
+                        int32_t(x1)*int32_t(fraction);
+  const uint32_t magnitude = value < 0 ? 0u-uint32_t(value) : uint32_t(value);
+  const int32_t rounded = int32_t((magnitude+32768u)>>16);
+  return int16_t(value < 0 ? -rounded : rounded);
+}
 inline int16_t hermite_fixed(int16_t xm1, int16_t x0, int16_t x1,
                              int16_t x2, uint16_t fraction) {
   const int32_t a = -int32_t(xm1) + 3*int32_t(x0) - 3*int32_t(x1) + x2;
@@ -72,7 +83,11 @@ inline __attribute__((always_inline)) int16_t interpolation_tap(
     const int16_t *pcm, Region region, bool reverse, uint32_t logical,
     PcmReadCache *cache = nullptr) {
   const uint32_t frame = reverse ? region.end-1-logical : region.start+logical;
+#if P4SDM_PCM_CACHE_VALIDATED
+  return cache ? cache->read_valid(pcm, region, frame) : pcm[frame];
+#else
   return cache ? cache->read(pcm, region, frame) : pcm[frame];
+#endif
 }
 // Voice validates transport before entering this hot path. No duplicated
 // allocation/region checks per output frame; ownership stays with Voice.
@@ -87,7 +102,11 @@ inline __attribute__((always_inline)) int16_t lookup_valid(const int16_t *pcm, R
   const int16_t x1 = interpolation_tap(pcm,region,reverse,k < length-1 ? k+1 : k,cache);
   if (mode == Interpolation::Linear) {
 #if P4SDM_LINEAR_32BIT
+#if P4SDM_LINEAR_MAGNITUDE
+    return linear_fixed32_magnitude(x0, x1, fraction);
+#else
     return linear_fixed32(x0, x1, fraction);
+#endif
 #else
     return linear_fixed(x0, x1, fraction);
 #endif

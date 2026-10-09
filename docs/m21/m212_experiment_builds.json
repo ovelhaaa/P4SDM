@@ -1,0 +1,54 @@
+[
+  {
+    "case": "B_MAGNITUDE",
+    "environment": "guition_m212_B_magnitude",
+    "baseline_sha": "59e1da5c223206e3505f74e752cb1f5fc82a8afb",
+    "files": {
+      "firmware.elf": "6a95f91efd90a3440286fe0708ad2a701f72f713a145178a2f51c5bd85df2d97",
+      "firmware.bin": "fd8d127a1b693b21b0834603a45c860d8cd950e7a7ce6f295c295f3185106b94",
+      "firmware.map": "7446556fdac88977d0d471541a96dca41812b32a0bb65a95e422bef8e1929e83",
+      "bootloader.bin": "6a88d429ece0ae20f8ae18493b9f3dee05c35f4abaa22f0320e44c34d30631c2",
+      "partitions.bin": "bd0f7954aca2ef7d925ee21aaa1f3dc8822d1d6ce5cbbd26a135e5886bfff6ce"
+    },
+    "sdk_sha256": "bc766404b5cfcca6f8bcb48cdf1ccfd6183e7f3c94617a7d6710198013d58fa0"
+  },
+  {
+    "case": "B_VALIDATED",
+    "environment": "guition_m212_B_validated",
+    "baseline_sha": "59e1da5c223206e3505f74e752cb1f5fc82a8afb",
+    "files": {
+      "firmware.elf": "baf47adecb0138a28afe2a010d5c41bb61e350b620538597187b22f1722dca69",
+      "firmware.bin": "cbd39a2a9ca7e8c337e29d7db711a449f03365871d8e4c5762ac9504feb046ca",
+      "firmware.map": "67ddbaa8e7a50349b1aca1877889183f1b819fff66b009468400792eef30d541",
+      "bootloader.bin": "6a88d429ece0ae20f8ae18493b9f3dee05c35f4abaa22f0320e44c34d30631c2",
+      "partitions.bin": "bd0f7954aca2ef7d925ee21aaa1f3dc8822d1d6ce5cbbd26a135e5886bfff6ce"
+    },
+    "sdk_sha256": "bc766404b5cfcca6f8bcb48cdf1ccfd6183e7f3c94617a7d6710198013d58fa0"
+  },
+  {
+    "case": "B_FULL_GAIN",
+    "environment": "guition_m212_B_full_gain",
+    "baseline_sha": "59e1da5c223206e3505f74e752cb1f5fc82a8afb",
+    "files": {
+      "firmware.elf": "d3318c02ad0150ff69ec12bae056444e49fbca2b63d97103f88eea88ed230bab",
+      "firmware.bin": "7bf9f301db60cdaca76dedd99e1f76e7e72cea8e15fa3a60e9d1b555732499bf",
+      "firmware.map": "4185e93b62028e53ca22a21893375bed0d039acf60eab7962f040e0ae084dce6",
+      "bootloader.bin": "6a88d429ece0ae20f8ae18493b9f3dee05c35f4abaa22f0320e44c34d30631c2",
+      "partitions.bin": "bd0f7954aca2ef7d925ee21aaa1f3dc8822d1d6ce5cbbd26a135e5886bfff6ce"
+    },
+    "sdk_sha256": "bc766404b5cfcca6f8bcb48cdf1ccfd6183e7f3c94617a7d6710198013d58fa0"
+  },
+  {
+    "case": "production-restored",
+    "environment": "guition_app",
+    "baseline_sha": "59e1da5c223206e3505f74e752cb1f5fc82a8afb",
+    "files": {
+      "firmware.elf": "04dd5d60ba4a7a0d1957bc2fdde459ec5f279bff8b10b819a428e18d30ea45a2",
+      "firmware.bin": "1bec0b761f42e8e750b6b06f1a339b2ba1506e0f0f44c4b4cdf059659375ec7f",
+      "firmware.map": "95742651d8993e00d585dcb3ab3379ae0d0bc4c3b0e314c2375a268411a087a3",
+      "bootloader.bin": "6a88d429ece0ae20f8ae18493b9f3dee05c35f4abaa22f0320e44c34d30631c2",
+      "partitions.bin": "bd0f7954aca2ef7d925ee21aaa1f3dc8822d1d6ce5cbbd26a135e5886bfff6ce"
+    },
+    "sdk_sha256": "bc766404b5cfcca6f8bcb48cdf1ccfd6183e7f3c94617a7d6710198013d58fa0"
+  }
+]
