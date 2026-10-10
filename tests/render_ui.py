@@ -61,6 +61,8 @@ void track_name(unsigned,char *out,unsigned size) { strlcpy(out,missing_fixture 
 void message(char *out,unsigned size) { strlcpy(out,"WAV LOADED / 44100 HZ / 16 BIT",size); }
 }
 namespace projects {
+bool busy_fixture=false;
+bool busy() { return busy_fixture; }
 bool dirty() { return true; }
 void current(char *out,unsigned size) { strlcpy(out,"PROJECT_9999",size); }
 void status(char *out,unsigned size) { strlcpy(out,"READY / PROJECT V2 / SD OK",size); }
@@ -130,6 +132,7 @@ else:
   ui.page=app::Page::Project;project_ui.mode=project::Workflow::Mode::Confirm;strlcpy(project_ui.target,"PROJECT_9999",sizeof(project_ui.target));display::fill(bg);header();render_page();save(std::string(argv[1])+"/confirm.ppm");
   ui.page=app::Page::SamplePlayback;view.tracks[15].sample=false;display::fill(bg);header();render_page();save(std::string(argv[1])+"/disabled_sample.ppm");
   ui.page=app::Page::Project;project_ui.mode=project::Workflow::Mode::Browser;display::fill(bg);header();render_page();save(std::string(argv[1])+"/load.ppm");
+  ui.page=app::Page::Project;project_ui.mode=project::Workflow::Mode::Home;projects::busy_fixture=true;ui_notification.show("PROJECT SAVED",millis());display::fill(bg);header();render_page();save(std::string(argv[1])+"/project_pending.ppm");projects::busy_fixture=false;
   ui.page=app::Page::Sample;view.tracks[15].sample=true;samples::missing_fixture=true;ui_notification.show("LOAD FAILED / MISSING WAV",millis());display::fill(bg);header();render_page();save(std::string(argv[1])+"/missing_sample.ppm");
     '''
 suffix=suffix.replace('PAGE_COUNT','18' if a.baseline else '19').replace('RENDER_PAGE',render).replace('EXTRA_VARIANTS',extra)

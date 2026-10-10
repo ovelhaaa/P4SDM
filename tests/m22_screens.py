@@ -17,7 +17,7 @@ views=[('SEQ','page_0'),('TRACK MAIN','page_1'),('TRACK TONE','page_11'),
        ('LOCKS BASIC','page_7'),('LOCKS TONE','page_10'),('LOCKS SAMPLE','page_14'),
        ('PERFORM PATTERNS','page_15'),('PERFORM MIX','mix'),('PERFORM REPEAT','page_16'),
        ('PERFORM CHAIN','page_8'),('PROJECT HOME','page_6'),('PROJECT CONFIRM','confirm'),
-       ('PROJECT LOAD','load'),('MISSING / LONG WAV','missing_sample'),('SYNTH DISABLED','disabled_sample')]
+       ('PROJECT LOAD','load'),('MISSING / LONG WAV','missing_sample'),('SYNTH DISABLED','disabled_sample'),('PROJECT PENDING','project_pending')]
 # Page enum is read below so this script cannot silently label a different view.
 source=Path('src/app/model.h').read_text();body=source.split('enum class Page {',1)[1].split('}',1)[0]
 names=[n.strip().split('=')[0].strip() for n in body.split(',') if n.strip()]
@@ -35,7 +35,7 @@ def sheet(rows,folders,path):
             y=48+row*264;draw.text((col*400+8,y+3),title+' / '+folder,fill='white');canvas.paste(image,(col*400,y+24))
     canvas.save(path)
 sheet(views,['m22-after'],out/'sections.png')
-sheet([views[n] for n in (0,3,5,13,14,17)],['m22-before','m22-after'],out/'before_after.png')
+sheet([views[n] for n in (0,3,5,13,14,17,21)],['m22-before','m22-after'],out/'before_after.png')
 for name,pixels in expected.items():
     assert Image.open(out/name).convert('RGB').tobytes()==pixels,'Framebuffer screenshot regression: '+name
 print('M22 before/after and full subtab host-render evidence PASS')

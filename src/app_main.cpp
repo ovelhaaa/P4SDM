@@ -589,7 +589,9 @@ void draw_content(int id) {
     char text[128]{};
     const auto r = app::page_widget(ui.page, id);
     if (id == 161) {
-      strlcpy(text, ui_notification.active ? ui_notification.text : "READY", sizeof(text));
+      if(projects::busy()) strlcpy(text,"PROJECT PENDING",sizeof(text));
+      else if(ui_notification.active) strlcpy(text,ui_notification.text,sizeof(text));
+      else projects::status(text,sizeof(text));
     } else if (id == 153)
       strlcpy(text, "PROJECT", sizeof(text));
     else if (project_ui.mode == project::Workflow::Mode::Confirm) {
@@ -624,6 +626,7 @@ void draw_content(int id) {
     if (id == 160)
       strlcpy(text, "BACK", sizeof(text));
     display::rect(r.x, r.y, r.w, r.h, panel);
+    if(projects::busy() && id>=154 && id<=157) display::rect(r.x,r.y,r.w,r.h,app::ui20::theme::disabled);
     ui_text(r.x + 8, r.y + 12, text, white, id == 161 ? 2 : app::ui20::control_scale);
     return;
   }
@@ -1108,7 +1111,8 @@ void header() {
   display::rect(r.x,r.y,r.w,r.h,bg); ui_text(8,8,line,white,2);
   snprintf(line,sizeof(line),"HEAR%02d Q%02d %s%s R%u",view.playing_pattern+1,view.queued_pattern+1,
       view.performance.override_active>=0 ? "O " : "",view.performance.fill_active>=0 ? "F " : "",view.performance.repeat.active);
-  ui_text(8,30,ui_notification.active ? ui_notification.text : line,ui_notification.active ? app::ui20::theme::warning : accent,2); display::reset_clip();
+  ui_text(8,30,projects::busy() ? "PROJECT PENDING" : ui_notification.active ? ui_notification.text : line,
+      projects::busy() || ui_notification.active ? app::ui20::theme::warning : accent,2); display::reset_clip();
   draw(306); draw(307); draw(29); draw(178); tempo_header();
 }
 void render_page() {
@@ -1384,8 +1388,11 @@ void interact(int id, int x, bool initial) {
       projects::request(Op::Scan);
     } else if (id == 157)
       submit = project_ui.confirm(Op::New, "UNTITLED", projects::dirty());
-    if (submit && projects::request(project_ui.pending, project_ui.target))
-      project_ui.cancel();
+    if(submit) {
+      const bool accepted=projects::request(project_ui.pending,project_ui.target);
+      ui_notification.show(accepted ? "PROJECT REQUESTED" : "PROJECT REQUEST REJECTED",millis());
+      if(accepted) project_ui.cancel();
+    }
     full = true;
     return;
   }
@@ -1796,8 +1803,11 @@ void interact(int id, int x, bool initial) {
       sample_index = app::clamp(sample_index + (id == 38 ? -1 : 1), 0,
                                 int(samples::count()) - 1);
       dirty[38] = true;
-    } else if (id == 40)
-      samples::request(ui.selected, sample_index);
+    } else if (id == 40) {
+      const bool accepted=samples::request(ui.selected,sample_index);
+      ui_notification.show(accepted ? "WAV LOAD REQUESTED" : "WAV LOAD REJECTED",millis());
+      dirty[45]=dirty[222]=true;
+    }
     else if (id == 41) {
       if (samples::has_sample(ui.selected) && !samples::busy())
         send({app::Kind::Source, uint8_t(ui.selected),
@@ -1989,10 +1999,18 @@ void ui_task(void *) {
       projects::view_ready.store(true, std::memory_order_release);
       full = true;
     }
-    if (project_revision != projects::revision.load() ||
+    static bool project_busy=false;
+    const bool next_project_busy=projects::busy();
+    if (project_revision != projects::revision.load() || next_project_busy!=project_busy ||
         project_changes != projects::changes.load()) {
-      if(project_revision != projects::revision.load()) { char message[96]; projects::status(message,sizeof(message)); ui_notification.show(message,millis()); }
+      if(project_revision != projects::revision.load() || next_project_busy!=project_busy) {
+        char message[96];
+        if(next_project_busy) strlcpy(message,"PROJECT PENDING",sizeof(message));
+        else projects::status(message,sizeof(message));
+        ui_notification.show(message,millis());
+      }
       project_revision = projects::revision.load();
+      project_busy=next_project_busy;
       project_changes = projects::changes.load();
       dirty[45]=true;
       if (ui.page == app::Page::Project)
