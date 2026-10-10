@@ -164,6 +164,28 @@ jobs:
             .pio/build/guition_m213*/firmware.bin
             .pio/build/guition_m213*/firmware.map
           retention-days: 30
+  m23:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.7'
+      - run: pip install platformio==6.1.18 numpy==2.2.6 scipy==1.15.3
+      - run: g++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread tests/midi_test.cpp -o /tmp/midi_test && /tmp/midi_test
+      - run: python tests/m23_sample_pack_test.py
+      - run: g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/m23_wav_test.cpp -o /tmp/m23_wav_test && /tmp/m23_wav_test assets/m23
+      - run: pio run -e guition_app -e guition_app_nearest_legacy -e guition_m23_midi -e guition_m23_sample -e guition_m23_synth -e guition_m23_sd_transfer
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m23-firmware-and-musical-library
+          include-hidden-files: true
+          path: |
+            .pio/build/guition_m23*/firmware.*
+            assets/m23/
+          retention-days: 30
   m214:
     runs-on: ubuntu-24.04
     steps:

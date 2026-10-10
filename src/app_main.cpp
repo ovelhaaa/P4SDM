@@ -1,4 +1,11 @@
 #include "app/model.h"
+#if P4SDM_USB_MIDI
+#include "midi/usb_midi_host.h"
+#include "midi/midi_mapping.h"
+namespace { midi::Ownership midi_owners; midi::ClockEstimator midi_clock; midi::Latency midi_latency; }
+static void consume_midi();
+static void midi_release(unsigned t);
+#endif
 #include "app/ui_touch.h"
 #if P4SDM_M212_SCENARIO
 #include "app/m212_fixture.h"
@@ -273,6 +280,9 @@ void flush_slice_release() {
 void trigger(app::TriggerEvent event, bool ratchet = false, int source = -1) {
   int t = event.track;
   const bool sample = source < 0 ? engine.tracks[t].sample : source != 0;
+  #if P4SDM_USB_MIDI
+  midi_owners.invalidate(t);
+  #endif
   voice_routing.trigger(t, sample);
   if (!ratchet && event.sequenced && sample) {
     auto &m = slice_lock_metrics;
@@ -320,6 +330,7 @@ void trigger(app::TriggerEvent event, bool ratchet = false, int source = -1) {
     synthESP32_TRIGGER_P(t, event.pitch);
   flashes[t].fetch_add(1, std::memory_order_relaxed);
 }
+
 void trigger(int t) { trigger(app::resolve_event(t, engine.tracks[t], 127)); }
 void update_track(int t) {
   auto &v = engine.tracks[t];
@@ -2971,6 +2982,9 @@ unsigned project_boundary() {
           AMP[t] = 0;
           FILTROS[t].reset();
           voice_state[t] = {};
+          #if P4SDM_USB_MIDI
+          midi_owners.invalidate(t);
+          #endif
           voice_routing.trigger(t, engine.tracks[t].sample);
           update_track(t);
         }
@@ -3033,6 +3047,9 @@ void audio_worker(void *) {
       transients::invalidate(t, true);
       if (!projects::restoring.load())
         engine.tracks[t].assigned();
+      #if P4SDM_USB_MIDI
+      midi_owners.invalidate(t);
+      #endif
       voice_routing.trigger(t, true);
       projects::assigned(t, samples::voices[t].sample->name);
       PITCH[t] = 255;
@@ -3144,6 +3161,9 @@ void audio_worker(void *) {
       ++applied_commands;
       applied_actions[unsigned(c.kind)].fetch_add(1, std::memory_order_relaxed);
       if (c.kind == app::Kind::Source) {
+        #if P4SDM_USB_MIDI
+        midi_owners.invalidate(c.track);
+        #endif
         voice_routing.trigger(c.track, engine.tracks[c.track].sample);
         voice_state[c.track].event = {};
         apply_active_voice_tone(c.track);
@@ -3191,6 +3211,9 @@ void audio_worker(void *) {
                                      samples::voices[c.track].release();
       else
         engine.audition(c.track, [](app::TriggerEvent e) { trigger(e); });
+    #if P4SDM_USB_MIDI
+    consume_midi();
+    #endif
     const unsigned chain_wraps_before =
         engine.chain_advances + engine.chain_repeats;
     const unsigned perf_before = engine.perf_metrics.boundaries;
@@ -3490,6 +3513,55 @@ static bool app_pcm(int t, int16_t &v) {
 static int16_t app_velocity(int t, int16_t v) {
   return app::scale_velocity(v, event_gain[t]);
 }
+#if P4SDM_USB_MIDI
+static void midi_release(unsigned t) {
+  if (voice_routing.pcm(t)) playback_metrics.releases += samples::voices[t].release();
+  else { PITCH[t]=255; AMP[t]=0; }
+}
+static void consume_midi() {
+  static uint32_t current=0, overflow=0;
+  const auto gen=midi::generation.load(std::memory_order_acquire);
+  const auto lost=midi::input.overflows.load(std::memory_order_acquire);
+  if(gen!=current || lost!=overflow || projects::locked()) {
+    midi_owners.clear(midi_release); current=gen; overflow=lost;
+    midi_clock={};
+  }
+  midi::Event e;
+  for(unsigned n=0;n<32 && midi::input.pop(e);++n) {
+    const auto live_generation=midi::generation.load(std::memory_order_acquire);
+    if(live_generation!=current) {
+      midi_owners.clear(midi_release); midi_clock={}; current=live_generation;
+    }
+    if(e.generation!=live_generation || projects::locked()) continue;
+    midi_latency.accept(e,esp_timer_get_time());
+    if(e.cable!=0) continue;
+    midi_clock.event(e);
+    if(e.type==midi::Type::Start || e.type==midi::Type::Stop) {
+      midi_owners.clear(midi_release);
+      engine.apply({app::Kind::Play,0,e.type==midi::Type::Start});
+      if(e.type==midi::Type::Stop) for(auto &v:samples::voices) if(v.sequenced) playback_metrics.releases+=v.release();
+    } else if(e.type==midi::Type::CC && (e.note==120 || e.note==123)) {
+      midi_owners.clear(midi_release,e.channel,e.cable);
+    } else {
+      const int t=midi::drum_track(e);
+      if(t<0) continue;
+      if(e.type==midi::Type::NoteOn && engine.sequence_enabled(t)) {
+        trigger(app::resolve_event(t,engine.tracks[t],e.velocity));
+        midi_owners.claim(t,e);
+      } else if(e.type==midi::Type::NoteOff && midi_owners.release(t,e)) midi_release(t);
+    }
+  }
+  auto &d=midi::diagnostics;
+  d.accepted.store(midi_latency.count,std::memory_order_relaxed);
+  d.rx_parse_max.store(midi_latency.receive_parse_max,std::memory_order_relaxed);
+  d.parse_queue_max.store(midi_latency.parse_queue_max,std::memory_order_relaxed);
+  d.queue_block_max.store(midi_latency.queue_block_max,std::memory_order_relaxed);
+  d.bpm_milli.store(unsigned(midi_clock.bpm()*1000),std::memory_order_relaxed);
+  d.clock_jitter.store(midi_clock.intervals?midi_clock.maximum-midi_clock.minimum:0,std::memory_order_relaxed);
+  d.missing.store(midi_clock.missing,std::memory_order_relaxed);
+  d.stale.store(midi_clock.timed_out(esp_timer_get_time()),std::memory_order_relaxed);
+}
+#endif
 static void app_sample() {
   engine.sample(
       [](app::TriggerEvent event, bool ratchet, bool sample) {
@@ -3636,6 +3708,9 @@ static void initialize(void *) {
         uint8_t(30 + t * 4);
     engine.tracks[t].filter_resonance = view.tracks[t].filter_resonance = 96;
 #endif
+    #if P4SDM_USB_MIDI
+    midi_owners.invalidate(t);
+    #endif
     voice_routing.trigger(t, engine.tracks[t].sample);
     update_track(t);
   }
@@ -3706,7 +3781,12 @@ static void initialize(void *) {
 #if P4SDM_M212_SCENARIO
   m212::configure(engine,P4SDM_M212_SCENARIO);
   view=engine;
-  for(unsigned t=0;t<16;++t) { voice_routing.trigger(t,true); update_track(t); }
+  for(unsigned t=0;t<16;++t) {
+#if P4SDM_USB_MIDI
+    midi_owners.invalidate(t);
+#endif
+    voice_routing.trigger(t,true); update_track(t);
+  }
 #endif
 #if P4SDM_INTERPOLATION_QUALIFICATION
   qualify_interpolation(fixture_samples);
@@ -3741,6 +3821,9 @@ static void initialize(void *) {
   xTaskCreatePinnedToCore(audio_worker, "app_audio", 8000, nullptr,
                           configMAX_PRIORITIES - 1, nullptr, 0);
   samples::start();
+#if P4SDM_USB_MIDI
+  midi::start_host();
+#endif
   xTaskCreatePinnedToCore(touch_worker, "app_touch", 5000, nullptr, 3, nullptr,
                           1);
   xTaskCreatePinnedToCore(ui_task, "app_ui", 8000, nullptr, 2, nullptr, 0);

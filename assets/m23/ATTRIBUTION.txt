@@ -1,0 +1,6 @@
+M23 musical sample library
+LaSonotheque: Joseph Sardin, CC0-1.0. Individual URLs and original hashes in manifest.
+uzu-drumkit: Mot4i, Switch Angel and Ludens, The Unlicense; electronic/analog processed sources, never described as acoustic recordings.
+Original M23 synthesis dedicated to CC0-1.0 by this pack. Loops retain both ingredient licenses.
+https://creativecommons.org/publicdomain/zero/1.0/
+https://github.com/tidalcycles/uzu-drumkit/blob/2f3e05c70ab4d73ad053a1467adec89bd27377a0/LICENSE

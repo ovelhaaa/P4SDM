@@ -1,0 +1,296 @@
+{
+  "hybrid": [
+    {
+      "track": 1,
+      "midi_channel": 10,
+      "midi_note": 36,
+      "filename": "M23_KICK_MODEL_01.wav"
+    },
+    {
+      "track": 2,
+      "midi_channel": 10,
+      "midi_note": 37,
+      "filename": "M23_KICK_ELECTRO_01.wav"
+    },
+    {
+      "track": 3,
+      "midi_channel": 10,
+      "midi_note": 38,
+      "filename": "M23_SNARE_ACOUSTIC_01.wav"
+    },
+    {
+      "track": 4,
+      "midi_channel": 10,
+      "midi_note": 39,
+      "filename": "M23_SNARE_ELECTRO_01.wav"
+    },
+    {
+      "track": 5,
+      "midi_channel": 10,
+      "midi_note": 40,
+      "filename": "M23_CLAP_01.wav"
+    },
+    {
+      "track": 6,
+      "midi_channel": 10,
+      "midi_note": 41,
+      "filename": "M23_HAT_CLOSED_ACOUSTIC_01.wav"
+    },
+    {
+      "track": 7,
+      "midi_channel": 10,
+      "midi_note": 42,
+      "filename": "M23_HAT_OPEN_01.wav"
+    },
+    {
+      "track": 8,
+      "midi_channel": 10,
+      "midi_note": 43,
+      "filename": "M23_SHAKER_01.wav"
+    },
+    {
+      "track": 9,
+      "midi_channel": 10,
+      "midi_note": 44,
+      "filename": "M23_TOM_LOW.wav"
+    },
+    {
+      "track": 10,
+      "midi_channel": 10,
+      "midi_note": 45,
+      "filename": "M23_TOM_HIGH.wav"
+    },
+    {
+      "track": 11,
+      "midi_channel": 10,
+      "midi_note": 46,
+      "filename": "M23_PERC_DJEMBE.wav"
+    },
+    {
+      "track": 12,
+      "midi_channel": 10,
+      "midi_note": 47,
+      "filename": "M23_RIM_01.wav"
+    },
+    {
+      "track": 13,
+      "midi_channel": 10,
+      "midi_note": 48,
+      "filename": "M23_PERC_AGOGO.wav"
+    },
+    {
+      "track": 14,
+      "midi_channel": 10,
+      "midi_note": 49,
+      "filename": "M23_BASS_PLUCK_C2.wav"
+    },
+    {
+      "track": 15,
+      "midi_channel": 10,
+      "midi_note": 50,
+      "filename": "M23_MALLET_C4.wav"
+    },
+    {
+      "track": 16,
+      "midi_channel": 10,
+      "midi_note": 51,
+      "filename": "M23_VOCAL_SYNTH_AH.wav"
+    }
+  ],
+  "electronic": [
+    {
+      "track": 1,
+      "midi_channel": 10,
+      "midi_note": 36,
+      "filename": "M23_KICK_ELECTRO_01.wav"
+    },
+    {
+      "track": 2,
+      "midi_channel": 10,
+      "midi_note": 37,
+      "filename": "M23_KICK_ELECTRO_02.wav"
+    },
+    {
+      "track": 3,
+      "midi_channel": 10,
+      "midi_note": 38,
+      "filename": "M23_SNARE_ELECTRO_01.wav"
+    },
+    {
+      "track": 4,
+      "midi_channel": 10,
+      "midi_note": 39,
+      "filename": "M23_SNARE_ELECTRO_02.wav"
+    },
+    {
+      "track": 5,
+      "midi_channel": 10,
+      "midi_note": 40,
+      "filename": "M23_CLAP_01.wav"
+    },
+    {
+      "track": 6,
+      "midi_channel": 10,
+      "midi_note": 41,
+      "filename": "M23_HAT_CLOSED_ELECTRO_01.wav"
+    },
+    {
+      "track": 7,
+      "midi_channel": 10,
+      "midi_note": 42,
+      "filename": "M23_HAT_OPEN_01.wav"
+    },
+    {
+      "track": 8,
+      "midi_channel": 10,
+      "midi_note": 43,
+      "filename": "M23_SHAKER_SYNTH_01.wav"
+    },
+    {
+      "track": 9,
+      "midi_channel": 10,
+      "midi_note": 44,
+      "filename": "M23_KICK_ELECTRO_03.wav"
+    },
+    {
+      "track": 10,
+      "midi_channel": 10,
+      "midi_note": 45,
+      "filename": "M23_RIM_02.wav"
+    },
+    {
+      "track": 11,
+      "midi_channel": 10,
+      "midi_note": 46,
+      "filename": "M23_PERC_COWBELL.wav"
+    },
+    {
+      "track": 12,
+      "midi_channel": 10,
+      "midi_note": 47,
+      "filename": "M23_CLAP_02.wav"
+    },
+    {
+      "track": 13,
+      "midi_channel": 10,
+      "midi_note": 48,
+      "filename": "M23_HAT_CLOSED_ELECTRO_02.wav"
+    },
+    {
+      "track": 14,
+      "midi_channel": 10,
+      "midi_note": 49,
+      "filename": "M23_BASS_PLUCK_A1.wav"
+    },
+    {
+      "track": 15,
+      "midi_channel": 10,
+      "midi_note": 50,
+      "filename": "M23_PLUCK_G3.wav"
+    },
+    {
+      "track": 16,
+      "midi_channel": 10,
+      "midi_note": 51,
+      "filename": "M23_TEXTURE_AMIN.wav"
+    }
+  ],
+  "organic_acoustic_led": [
+    {
+      "track": 1,
+      "midi_channel": 10,
+      "midi_note": 36,
+      "filename": "M23_KICK_MODEL_01.wav"
+    },
+    {
+      "track": 2,
+      "midi_channel": 10,
+      "midi_note": 37,
+      "filename": "M23_TOM_LOW.wav"
+    },
+    {
+      "track": 3,
+      "midi_channel": 10,
+      "midi_note": 38,
+      "filename": "M23_SNARE_ACOUSTIC_01.wav"
+    },
+    {
+      "track": 4,
+      "midi_channel": 10,
+      "midi_note": 39,
+      "filename": "M23_SNARE_ACOUSTIC_02.wav"
+    },
+    {
+      "track": 5,
+      "midi_channel": 10,
+      "midi_note": 40,
+      "filename": "M23_PERC_DJEMBE.wav"
+    },
+    {
+      "track": 6,
+      "midi_channel": 10,
+      "midi_note": 41,
+      "filename": "M23_HAT_CLOSED_ACOUSTIC_01.wav"
+    },
+    {
+      "track": 7,
+      "midi_channel": 10,
+      "midi_note": 42,
+      "filename": "M23_HAT_CLOSED_ACOUSTIC_02.wav"
+    },
+    {
+      "track": 8,
+      "midi_channel": 10,
+      "midi_note": 43,
+      "filename": "M23_TAMBOURINE_01.wav"
+    },
+    {
+      "track": 9,
+      "midi_channel": 10,
+      "midi_note": 44,
+      "filename": "M23_TOM_MID.wav"
+    },
+    {
+      "track": 10,
+      "midi_channel": 10,
+      "midi_note": 45,
+      "filename": "M23_TOM_HIGH.wav"
+    },
+    {
+      "track": 11,
+      "midi_channel": 10,
+      "midi_note": 46,
+      "filename": "M23_PERC_AGOGO.wav"
+    },
+    {
+      "track": 12,
+      "midi_channel": 10,
+      "midi_note": 47,
+      "filename": "M23_RIM_01.wav"
+    },
+    {
+      "track": 13,
+      "midi_channel": 10,
+      "midi_note": 48,
+      "filename": "M23_PERC_TRIANGLE.wav"
+    },
+    {
+      "track": 14,
+      "midi_channel": 10,
+      "midi_note": 49,
+      "filename": "M23_BASS_PLUCK_C2.wav"
+    },
+    {
+      "track": 15,
+      "midi_channel": 10,
+      "midi_note": 50,
+      "filename": "M23_MALLET_C4.wav"
+    },
+    {
+      "track": 16,
+      "midi_channel": 10,
+      "midi_note": 51,
+      "filename": "M23_BELL_C4.wav"
+    }
+  ]
+}

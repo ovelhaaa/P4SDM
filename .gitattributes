@@ -6,3 +6,7 @@ docs/GUITION_M214*.log -text -whitespace
 docs/m21/m214-captures/*.log -text -whitespace
 docs/m21/m214-captures/**/*.log -text -whitespace
 docs/m22/*.log -text -whitespace
+docs/m23/*.log -text -whitespace
+assets/m23/*.wav -text
+assets/m23/*.json text eol=lf
+assets/m23/*.txt text eol=lf
