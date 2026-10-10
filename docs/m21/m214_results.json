@@ -1,0 +1,141 @@
+{
+  "status": "PARTIAL — technical qualification incomplete",
+  "baseline_sha": "1c4c926326cc959cad711a74e5c058e08a718f2a",
+  "production_default": "Nearest",
+  "candidate": "guition_app_linear_candidate",
+  "cases": [
+    {
+      "case": "A",
+      "log": "docs/m21/m214-captures/20261010T023549Z/A.log",
+      "complete": true,
+      "safe": true,
+      "faults": [],
+      "timing": {
+        "blocks": 13782,
+        "p50": 2847,
+        "p95": 3699,
+        "p99": 3815,
+        "max": 4121,
+        "misses": 0,
+        "failures": 0,
+        "timeouts": 0,
+        "peak": 4198,
+        "nonzero": 7048260,
+        "rails": 0,
+        "active_min": 0,
+        "active_max": 16
+      },
+      "memory": {
+        "ps_before": 24265192,
+        "ps_after": 24265192,
+        "internal_before": 217644,
+        "internal_after": 217644,
+        "largest_before": 24117236,
+        "largest_after": 24117236
+      },
+      "trace_matches": true,
+      "reserve_pass": true,
+      "accepted": true,
+      "monitors": [],
+      "headroom_percent": 29.0093359375,
+      "immutable_events": "NOT ESTABLISHED",
+      "sha256": "bf5be72e9a32819da6864a5d79778ee9cf31120e7ac86e23b9f350fa55db7298"
+    },
+    {
+      "case": "B",
+      "log": "docs/m21/m214-captures/20261010T023549Z/B.log",
+      "complete": true,
+      "safe": true,
+      "faults": [],
+      "timing": {
+        "blocks": 20672,
+        "p50": 3764,
+        "p95": 3980,
+        "p99": 4024,
+        "max": 4099,
+        "misses": 0,
+        "failures": 0,
+        "timeouts": 0,
+        "peak": 489,
+        "nonzero": 10569119,
+        "rails": 0,
+        "active_min": 16,
+        "active_max": 16
+      },
+      "memory": {
+        "ps_before": 28590572,
+        "ps_after": 28590572,
+        "internal_before": 162320,
+        "internal_after": 162848,
+        "largest_before": 28311540,
+        "largest_after": 28311540
+      },
+      "trace_matches": true,
+      "reserve_pass": true,
+      "accepted": true,
+      "monitors": [],
+      "headroom_percent": 29.388320312499992,
+      "immutable_events": "PASS",
+      "sha256": "6d530cbdfaff3bfd968b9620d2eb4fe80b113220931bf2c86dea3ea4bc1006e7"
+    },
+    {
+      "case": "C",
+      "log": "docs/m21/m214-captures/20261010T024030Z/C.log",
+      "complete": true,
+      "safe": true,
+      "faults": [],
+      "timing": {
+        "blocks": 20672,
+        "p50": 3758,
+        "p95": 3980,
+        "p99": 4027,
+        "max": 4120,
+        "misses": 0,
+        "failures": 0,
+        "timeouts": 0,
+        "peak": 2534,
+        "nonzero": 10575454,
+        "rails": 0,
+        "active_min": 16,
+        "active_max": 16
+      },
+      "memory": {
+        "ps_before": 28590572,
+        "ps_after": 28590572,
+        "internal_before": 162320,
+        "internal_after": 162848,
+        "largest_before": 28311540,
+        "largest_after": 28311540
+      },
+      "trace_matches": true,
+      "reserve_pass": true,
+      "accepted": true,
+      "monitors": [],
+      "headroom_percent": 29.026562499999997,
+      "immutable_events": "PASS",
+      "sha256": "1789d81fd23d588ceee0d5adb52d037d86c0875e74d2b42eaca7180b7c3c87e5"
+    },
+    {
+      "case": "SAMPLE_sustained",
+      "log": "MISSING",
+      "accepted": false,
+      "complete": false,
+      "immutable_events": "NOT ESTABLISHED"
+    },
+    {
+      "case": "SYNTH_sustained",
+      "log": "MISSING",
+      "accepted": false,
+      "complete": false,
+      "immutable_events": "NOT ESTABLISHED"
+    }
+  ],
+  "physical": [],
+  "pending": [
+    "complete deterministic replay of original A UI/project/transient commands",
+    "explicit human musical listening approval",
+    "fresh A/B/C and sustained physical qualification",
+    "final physical SD qualification"
+  ],
+  "human_listening": "PENDING"
+}
