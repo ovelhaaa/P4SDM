@@ -30,6 +30,7 @@ for kit in kits.values():
     budget=sum(next(e['frames']*2 for e in m['samples'] if e['filename']==t['filename']) for t in kit)
     assert budget<16*1024**2
     assert [t['midi_note'] for t in kit]==list(range(36,52))
+(root/'.pio').mkdir(exist_ok=True)
 with tempfile.TemporaryDirectory(dir=root/'.pio') as temp:
     rebuilt=Path(temp)/'rebuilt';build(rebuilt,root/'.pio/m23-source-cache')
     for path in pack.iterdir():assert path.read_bytes()==(rebuilt/path.name).read_bytes(),path
