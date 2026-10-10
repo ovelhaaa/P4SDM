@@ -35,6 +35,22 @@ struct Gesture {
     return event.kind!=Kind::Play && event.initial && !u.down;
   }
 };
+// Three consecutive failed controller transactions cancel a held gesture.
+// Recovery cannot replay the old press: require an observed lift first.
+struct PollGuard {
+  unsigned errors=0;
+  bool cancelled=false;
+  bool fault(bool down) {
+    if(errors<3) ++errors;
+    if(errors<3 || cancelled || !down) return false;
+    cancelled=true; return true;
+  }
+  bool accept(bool pressed) {
+    errors=0;
+    if(cancelled) { if(!pressed) cancelled=false; return false; }
+    return true;
+  }
+};
 // Fixed 1 ms histogram bins. Quantiles are upper bounds, overflow uses max.
 // Atomics permit touch-task polling metrics to be read safely by the UI task.
 struct Histogram {

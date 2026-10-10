@@ -90,6 +90,12 @@ app::ui22::Histogram ui22_poll,ui22_dispatch,ui22_update,ui22_ack,
 uint32_t ui22_input_us=0,ui22_command_us=0;
 uint16_t ui22_command_ack=0;
 bool ui22_input_pending=false,ui22_command_pending=false;
+void report_ui22_metrics() {
+  const app::ui22::Histogram *histograms[]={&ui22_poll,&ui22_dispatch,&ui22_update,&ui22_ack,&ui22_prepare,&ui22_upload,&ui22_page,&ui22_submission};
+  const char *phases[]={"poll_call","dispatch","state_update","enqueue_ack","prepare","present_call","full_page_prepare","controller_to_submission"};
+  for(unsigned n=0;n<8;++n) summary_printf("[M22 latency] phase=%s count=%u p50_upper_us=%u p95_upper_us=%u p99_upper_us=%u max_us=%u boundary=software source=%s\n",
+      phases[n],histograms[n]->count.load(),histograms[n]->percentile(50),histograms[n]->percentile(95),histograms[n]->percentile(99),histograms[n]->maximum.load(),n==0||n==1||n==2||n==3||n==7 ? "controller_packets" : "mixed_real_and_scripted_redraws");
+}
 app::Queue<32> pad_triggers;
 std::atomic<int> visible_page{0}, visible_bank{0};
 std::atomic<uint32_t> input_errors{0}, input_overflow{0};
@@ -348,10 +354,11 @@ bool send(app::Command c) {
     ui_notification.show("QUEUE FULL",millis()); dirty[45]=true;
     return false;
   }
+  const uint32_t enqueued_us=uint32_t(esp_timer_get_time());
   ++sent_commands;
   view.apply(c);
   if(ui22_input_pending) {
-    ui22_command_us=uint32_t(esp_timer_get_time());
+    ui22_command_us=enqueued_us;
     ui22_command_ack=sent_commands; ui22_command_pending=true;
   }
   if (c.kind == app::Kind::Source) { full = true; dirty[45] = true; }
@@ -2491,7 +2498,11 @@ void ui_task(void *) {
       if(gesture.reconcile(event.release_generation,ui)) cancel_gesture();
       const uint32_t dispatch_start=uint32_t(esp_timer_get_time());
       ui22_dispatch.add(dispatch_start-event.observed_us);
-      if(!ui22_input_pending) { ui22_input_us=event.observed_us; ui22_input_pending=true; }
+      const bool feedback_event=event.kind==app::Kind::Play
+          ? repeat_gate.held || slice_audition_track>=0
+          : event.initial ? app::ui20::hit(ui,unsigned(event.value)&0xffff,unsigned(event.value)>>16)>=0
+                          : ui.down && app::ui20::slider(ui,ui.capture);
+      if(feedback_event && !ui22_input_pending) { ui22_input_us=event.observed_us; ui22_input_pending=true; }
       touch_state.pressed = event.kind != app::Kind::Play;
       touch_state.x = unsigned(event.value) & 0xffff;
       touch_state.y = unsigned(event.value) >> 16;
@@ -2761,10 +2772,7 @@ void ui_task(void *) {
     if (!reported && millis() - started >= 63000 &&
         audio_summary_ready.load(std::memory_order_acquire)) {
       reported = true;
-      const app::ui22::Histogram *histograms[]={&ui22_poll,&ui22_dispatch,&ui22_update,&ui22_ack,&ui22_prepare,&ui22_upload,&ui22_page,&ui22_submission};
-      const char *phases[]={"poll_call","dispatch","state_update","enqueue_ack","prepare","present_call","full_page_prepare","controller_to_submission"};
-      for(unsigned n=0;n<8;++n) summary_printf("[M22 latency] phase=%s count=%u p50_upper_us=%u p95_upper_us=%u p99_upper_us=%u max_us=%u boundary=software source=%s\n",
-          phases[n],histograms[n]->count.load(),histograms[n]->percentile(50),histograms[n]->percentile(95),histograms[n]->percentile(99),histograms[n]->maximum.load(),n==0||n==1||n==2||n==3||n==7 ? "controller_packets" : "mixed_real_and_scripted_redraws");
+      report_ui22_metrics();
 #if P4SDM_UI20_STRESS
       for(unsigned n=0;n<19;++n) summary_printf("[M20 page] page=%u frames=%u render_us=%u dirty_bytes=%u\n",n,ui_metrics[n].frames,ui_metrics[n].render_us,ui_metrics[n].dirty_bytes);
       summary_printf("[M20 updates] slider_us=%u slider_bytes=%u playhead_us=%u playhead_bytes=%u interval_us=%u\n",ui20_slider_us,ui20_slider_bytes,ui20_head_us,ui20_head_bytes,ui20_interval_us);
@@ -2867,15 +2875,22 @@ void touch_worker(void *) {
   bool down = false;
   uint16_t x = 0, y = 0;
   app::PadGate pad;
+  app::ui22::PollGuard poll_guard;
   for (;;) {
     pad.flush(pad_triggers);
     const uint32_t poll_start=uint32_t(esp_timer_get_time());
     const auto poll_result=touch::poll(state);
     const uint32_t observed_us=uint32_t(esp_timer_get_time());
     ui22_poll.add(observed_us-poll_start);
-    if (poll_result != ESP_OK)
+    if (poll_result != ESP_OK) {
       input_errors.fetch_add(1);
-    else {
+      if(poll_guard.fault(down)) {
+        pad.release(pad_triggers);
+        touch_release_generation.fetch_add(1,std::memory_order_release);
+        repeat_touch_up.store(true,std::memory_order_release);
+        down=false;
+      }
+    } else if(poll_guard.accept(state.pressed)) {
       repeat_touch_up.store(!state.pressed, std::memory_order_release);
       if (state.pressed != down ||
           (state.pressed && (state.x != x || state.y != y))) {
@@ -3717,6 +3732,10 @@ void setup() {
   xTaskCreatePinnedToCore(initialize, "app_init", 8000, nullptr, 1, nullptr, 0);
 }
 void loop() {
+#if !P4SDM_M213_DIAGNOSTICS
+  // Read-only software diagnostics; never injects musical/touch commands.
+  if(Serial.available() && Serial.read()=='U') report_ui22_metrics();
+#endif
 #if P4SDM_BLOCK_PROFILE
   static bool profile_reported = false;
   if (!profile_reported && captured.load(std::memory_order_acquire) == capture_blocks) {

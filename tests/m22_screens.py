@@ -1,10 +1,13 @@
 """Publish reproducible, labeled contact sheets from production framebuffer dumps."""
 from pathlib import Path
+import argparse
 import subprocess
 import sys
 from PIL import Image,ImageDraw
 
+parser=argparse.ArgumentParser();parser.add_argument('--check',action='store_true');args=parser.parse_args()
 root=Path('.pio');out=Path('docs/m22');out.mkdir(exist_ok=True)
+expected={name:Image.open(out/name).convert('RGB').tobytes() for name in ('sections.png','before_after.png')} if args.check else {}
 for revision,destination in [('72a9178','m22-before'),(None,'m22-after')]:
     subprocess.run([sys.executable,'tests/render_ui.py','--output',str(root/destination)]+(['--revision',revision] if revision else []),check=True)
 
@@ -33,4 +36,6 @@ def sheet(rows,folders,path):
     canvas.save(path)
 sheet(views,['m22-after'],out/'sections.png')
 sheet([views[n] for n in (0,3,5,13,14,17)],['m22-before','m22-after'],out/'before_after.png')
+for name,pixels in expected.items():
+    assert Image.open(out/name).convert('RGB').tobytes()==pixels,'Framebuffer screenshot regression: '+name
 print('M22 before/after and full subtab host-render evidence PASS')

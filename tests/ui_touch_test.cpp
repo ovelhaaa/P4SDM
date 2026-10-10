@@ -36,6 +36,13 @@ int main() {
   assert(u.capture==-1 && !gesture.begin(event,u));
   assert(gesture.reconcile(2000,u)); repeat.release(send);
   assert(!repeat.held && stops==2);
+  ui22::PollGuard guard;
+  assert(!guard.fault(true) && !guard.fault(true));
+  assert(guard.accept(true)); // a single/two transient I2C errors recover
+  assert(!guard.fault(true) && !guard.fault(true) && guard.fault(true));
+  assert(!guard.fault(true)); // exactly one cancellation
+  assert(!guard.accept(true) && !guard.accept(true)); // no stale retrigger
+  assert(!guard.accept(false) && guard.accept(true)); // actual lift/repress
   ui22::Histogram h;
   assert(h.percentile(95)==0);
   for(unsigned n=0;n<100;++n) h.add(n*1000);

@@ -216,7 +216,7 @@ jobs:
       - run: g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/ui_touch_test.cpp -o /tmp/ui_touch_test && /tmp/ui_touch_test
       - run: python tests/m22_font_checks.py
       - run: python tests/m214_config_checks.py
-      - run: python tests/m22_screens.py
+      - run: python tests/m22_screens.py --check
       - run: pio run -e guition_app -e guition_app_nearest_legacy -e guition_m22_sample -e guition_m22_synth
       - run: python tests/analyze_m22.py docs/m22/SAMPLE_SERIAL.log
       - run: python tests/analyze_m22.py docs/m22/SYNTH_SERIAL.log --synth

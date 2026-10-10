@@ -100,6 +100,7 @@ int main(int argc,char **argv) {
     const auto allocations_before=render_allocations;
     ui.page=app::Page(page);display::reset_clip();display::fill(bg);header();
     RENDER_PAGE
+    CHECK_STATES
     overlay(); assert(render_allocations==allocations_before);
     save(std::string(argv[1])+"/page_"+std::to_string(page)+".ppm");
   }
@@ -132,6 +133,16 @@ else:
   ui.page=app::Page::Sample;view.tracks[15].sample=true;samples::missing_fixture=true;ui_notification.show("LOAD FAILED / MISSING WAV",millis());display::fill(bg);header();render_page();save(std::string(argv[1])+"/missing_sample.ppm");
     '''
 suffix=suffix.replace('PAGE_COUNT','18' if a.baseline else '19').replace('RENDER_PAGE',render).replace('EXTRA_VARIANTS',extra)
+checks='''
+    if(ui.page==app::Page::Sequence) {
+      const auto head=app::page_widget(ui.page,3),selected=app::page_widget(ui.page,15),track=app::page_widget(ui.page,23);
+      assert(display::pixels[(head.y+4)*800+head.x+4]==accent);
+      assert(display::pixels[(head.y+4)*800+head.x+head.w-1]==app::ui20::theme::warning);
+      assert(display::pixels[selected.y*800+selected.x]==white);
+      assert(display::pixels[(track.y+4)*800+track.x+4]==accent);
+    }
+'''
+suffix=suffix.replace('CHECK_STATES',checks if not a.baseline and not a.revision else '')
 with tempfile.TemporaryDirectory() as folder:
     path=Path(folder)/'render.cpp'; path.write_text(includes+prefix+'\nnamespace display {\n'+font+'\n}\n'+draw+suffix)
     binary=Path(folder)/'render.exe'
