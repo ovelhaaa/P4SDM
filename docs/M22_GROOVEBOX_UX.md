@@ -1,6 +1,7 @@
 # M22 — touchscreen groovebox refinement
 
-**PARTIAL — human touchscreen UX acceptance pending.** Automated and device
+**TECHNICAL PASS / PHYSICAL UX PASS — user walkthrough reported successful.**
+Final remote Actions acceptance is tracked in PR #17. Automated and device
 qualification results below are independent of human finger/listening acceptance.
 No M23 work, DSP changes, migration, or persistent UI fields are included.
 
@@ -57,7 +58,8 @@ Track pad → SAMPLE → previous/next → LOAD → Playback/Slice/Auto; PATTERN
 Step/Locks; PERFORM → Patterns/Mix/Repeat/Chain; PROJECT → Save/Save As/Load/New.
 All footer destinations take one tap. Exact repeated file-browser tap counts
 depend on index position. Physical legibility, missed touches and relative
-responsiveness are pending H observations.
+responsiveness received the user's overall walkthrough pass; no more detailed
+per-control subjective ratings were supplied.
 
 ## 3. Visual evidence
 
@@ -93,11 +95,15 @@ framebuffers, dirty tiles, repair histories and display fence are retained.
 
 | Workflow | Automated status | Human status |
 |---|---|---|
-| A: beat, Track/bank/step/tempo/velocity/probability, return | Inherited navigation, geometry, model, groove and rendering checks | Pending |
-| B: WAV/region/slice/audition/transients Apply/Cancel | Inherited parser/ownership/waveform/slice/transient-service tests; real SD qualification reported separately | Pending |
-| C: expressive Step/locks and editor/playback context | Explicit command context, unsupported lock/source tests, immutable event replay | Pending |
-| D: Override/Fill/Mix/Repeat/Chain | Inherited scheduling/equivalence; added gesture/release overflow checks | Pending |
-| E: Save/Save As/Load/New/cancel/recovery/missing | Inherited codec, captured modal intent and recovery tests; final real SD evidence reported separately | Pending |
+| A: beat, Track/bank/step/tempo/velocity/probability, return | Inherited navigation, geometry, model, groove and rendering checks | User overall pass |
+| B: WAV/region/slice/audition/transients Apply/Cancel | Inherited parser/ownership/waveform/slice/transient-service tests; real SD qualification reported separately | User overall pass |
+| C: expressive Step/locks and editor/playback context | Explicit command context, unsupported lock/source tests, immutable event replay | User overall pass |
+| D: Override/Fill/Mix/Repeat/Chain | Inherited scheduling/equivalence; added gesture/release overflow checks | User overall pass |
+| E: Save/Save As/Load/New/cancel/recovery/missing | Inherited codec, captured modal intent and recovery tests; final real SD evidence reported separately | User overall pass |
+
+The A–E pass is the user's response **“everything seems ok”** to the explicit
+workflow/missed-touch/legibility/artifact/freeze/Repeat/audio question on
+2026-10-10. It is an overall qualitative report, not five detailed recordings.
 
 ## 6. Touch path and ownership
 
@@ -150,8 +156,24 @@ as provided by the existing HAL; it is not a scanout or visible-pixel timestamp.
 Existing completion fences are preserved. Controller event quantiles with zero
 events are **not measured**. Redraws under stress mix scripted navigation with
 real audio/playhead activity and are labeled accordingly. No camera/photodiode
-or observed human touch is available yet. The <120 ms p95 target is pending
-genuine human input-to-submission data, and no pixel-visible claim is made.
+is available. A post-walkthrough query on the unchanged normal image recorded
+the cumulative controller histograms below. This normal image injects no
+scripted touch or musical commands. No pixel-visible claim is made.
+
+| Human-session software boundary | Count | p50 / p95 / p99 upper bounds (ms) | Exact max (ms) |
+|---|---:|---|---:|
+| Observation → dispatch | 123 | 5 / 26 / 52 | 53.464 |
+| Dispatch/state update | 123 | 1 / 1 / 1 | 1.997 |
+| Enqueue → observed audio acknowledgement | 25 | 20 / 51 / 52 | 51.962 |
+| Redraw preparation | 154 | 5 / 71 / 80 | 79.947 |
+| Present call | 154 | 1 / 3 / 9 | 19.220 |
+| Full-page preparation | 19 | 71 / 80 / 80 | 79.947 |
+| Controller observation → display submission | 44 | 38 / 77 / 81 | 80.601 |
+
+The measured p95 submission upper bound **77 ms** passes the <120 ms target
+for these eligible/coalesced samples. Poll duration p50/p95/p99 upper bounds
+are 1/1/1 ms, maximum 1.079 ms; this excludes contact-to-poll waiting.
+No per-widget/per-workflow timing or scanout measurement is inferred.
 
 ## 8. Display correctness and task boundaries
 
@@ -168,9 +190,12 @@ is introduced in touch dispatch. Histograms execute in touch/UI tasks only.
 
 ## 9. Physical qualification and human checklist
 
-**HUMAN PHYSICAL UX ACCEPTANCE PENDING.** The user has agreed to a walkthrough
-after final firmware restoration. No LCD photos or subjective listening results
-have been synthesized. Boot and automated serial stress do not certify fingers.
+**HUMAN PHYSICAL UX ACCEPTANCE PASS (user report).** After final firmware
+restoration, the user replied **“everything seems ok”** to the A–E walkthrough
+and visual/touch/audio defect question. No defects were reported. This supports
+ordinary workflow/legibility/responsiveness acceptance; it does not establish
+deliberately induced physical controller faults, power loss or scanout timing.
+No LCD photos or detailed subjective listening ratings were supplied.
 
 The normal final image was restored and a ten-minute read-only serial capture
 was completed ([controller log](m22/HUMAN_CONTROLLER_SERIAL.log)). It contains
@@ -179,7 +204,10 @@ no finger interaction was recorded. Polling samples and idle redraws are not
 input latency evidence. The shared renderer label says
 `mixed_real_and_scripted_redraws`; this normal-image session injected no touches
 or musical commands. Only `U` queried existing software histograms. A–E remain
-pending until the human supplies observations.
+pending at that capture's end. The user's subsequent report supplies the
+qualitative acceptance. A second read-only query archived
+[post-walkthrough software counters](m22/HUMAN_POST_WALKTHROUGH_SERIAL.log)
+with 123 controller events and 44 eligible submissions (section 7).
 
 1. SEQ: select Track, toggle several steps rapidly, change tempo, EDIT STEP,
    velocity/probability, SEQ, bank A/B. Check white selection, yellow activity
@@ -253,7 +281,8 @@ max 158.056 ms. Native partial slider/playhead transfers remain 49,152 / 24,576
 bytes. Historical M21.4 full-page maxima were already 100–146 ms; reduced glyph
 calls did not remove that limit. No universal renderer speedup is claimed.
 Scripted captures have zero controller events, so input/ack quantiles are not
-measured. Human capture and observations remain separate pending evidence.
+measured in those scripted captures. Human evidence is reported separately
+in sections 7 and 9.
 
 ## 12. Musical event equivalence
 
@@ -290,16 +319,19 @@ contact-sheet regression compares RGB pixels against checked-in evidence.
 
 ## 15. Known issues and remaining validation
 
-Physical legibility, minimum-target comfort, missed controller releases, real
-finger latency and subjective audio remain pending. Polling/render timing is
-software-boundary evidence. Automated SD tests use existing generated fixtures,
-not human browser/save actions. Electrical power removal and scanout measurement
-remain independent. Do not start M23 to compensate for pending acceptance.
+The user reported no ordinary workflow, touch, visual or audio defects.
+Deliberate physical controller-failure recovery, electrical power removal and
+scanout measurement remain untested. Software latency is aggregated over
+eligible/coalesced samples, not every packet or a detailed per-widget study.
+Automated SD qualification uses existing generated fixtures independently of
+the user's overall browser/Project walkthrough report. Stop after M22.
 
 ## 16. Acceptance classification
 
 **TECHNICAL: PASS** host checks, command semantics, final firmware builds,
 display diagnostics and real-device audio/SD stress. Remote acceptance also
 requires all final PR checks to report SUCCESS as described above.
-**PHYSICAL UX: PENDING** user walkthrough. **Overall: PARTIAL.**
-Human acceptance must be updated only from actual recorded observations.
+**PHYSICAL UX: PASS** from the user's overall A–E report, with real controller
+software counters supporting responsiveness. **Overall: PASS once all final
+remote Actions jobs report SUCCESS.** Visible-pixel latency and deliberate
+physical fault tests are not claimed.
