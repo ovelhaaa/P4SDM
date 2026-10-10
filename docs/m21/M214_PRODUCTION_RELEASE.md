@@ -1,6 +1,6 @@
 # M21.4 — Linear production proposal and musical acceptance
 
-**PARTIAL — final remote release validation pending. Fresh physical and musical
+**PASS — Linear production approved. Fresh physical, musical and remote CI
 gates passed. `guition_app` selects Linear32 magnitude, direct PCM and staggered
 placement; Nearest remains independently buildable. No M22.**
 
@@ -254,7 +254,15 @@ or software attribution is claimed. A recurrence blocks stability acceptance.
 
 ## 17. Remote CI
 
-Final remote run is pending. Local host checks pass **108/108**, and normal
+Release-source workflow **SUCCESS**, both jobs completed:
+[Guition diagnostics run 88](https://github.com/ovelhaaa/P4SDM/actions/runs/38072252134),
+source `d5e2ea55906ffce379ff427cadf7a5157d26b999`. Linux ASan/UBSan, complete
+recorded A replay, strict original A, all inherited host/firmware checks,
+fresh capture validators and all final firmware builds passed. Documentation
+and evidence commits preserve that firmware source identity; latest PR checks
+also validate the final report commit.
+
+Local host checks pass **108/108**, and normal
 Linear production plus explicit Nearest fallback firmware both build SUCCESS.
 Retain all inherited checks and add final config,
 candidate interpolation/source output, direct B/C traces, owner tests,
@@ -264,7 +272,21 @@ Green CI validates the separate recorded A replay; explicit human approval is pr
 
 ## 18. Proposal SHA and reproduction
 
-Source/proposal commit and final remote run will be recorded after verification.
+Release source commit: `d5e2ea55906ffce379ff427cadf7a5157d26b999`.
+Normal production and fallback were built from that commit with no tracked
+source changes; the sole unrelated untracked user image remained preserved.
+Exact archives are `.pio/m214-artifacts/production_d5e2ea5` and
+`.pio/m214-artifacts/fallback_d5e2ea5`. Production BIN SHA256 is
+`c027b25108f39b3e16947064d29091a5b324af9864795aeec5ab9c0e33149bcb`;
+fallback BIN SHA256 is
+`9390dd820d4e6780d37325f7502011a6b4d336503e55d9d58683ad777f9d40f8`.
+The hash-verified normal Linear image is now running on the device; its fresh
+boot capture confirms I2S initialization, mounted SD and sample index. This is
+a boot smoke check, with full DSP qualification supplied by the identical
+production/candidate flags in A/B/C and the SD consoles.
+`.pio/m214-release-evidence.zip` contains all matching physical ELF/BIN/MAP,
+bootloader/partitions, manifests, SDK/config files and captures (including
+explicitly rejected attempts). Remote run status is in section 17.
 Exact artifact identities are in `m214_artifacts.json`; its per-build manifest
 records build-time baseline SHA, dirty source hashes and config/SDK hashes.
 These pre-commit builds must not be mislabeled as clean builds of that baseline.
@@ -300,6 +322,7 @@ as its match. Do not flash old partition images independently of their manifest.
 3. Fresh A/B/C meet the reserve; both fresh 600-second SAMPLE/SYNTH runs also pass with stable heaps and monitoring.
 4. Fair reproducible synthetic pairs exist; the user explicitly approved Linear after listening on 2026-10-10.
 5. Linear is promoted to the normal application configuration with a clean
-   Nearest fallback. Final release acceptance remains **PARTIAL** until the latest
-   remote CI completes SUCCESS. No antialiasing, time-stretch, Hermite optimization, UI redesign,
+   Nearest fallback. **PASS — Linear production approved**, with explicit human
+   approval and release-source remote CI SUCCESS. No antialiasing, time-stretch,
+   Hermite optimization, UI redesign,
    persistence change or M22 work is included.

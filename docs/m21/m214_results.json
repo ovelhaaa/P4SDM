@@ -1,5 +1,5 @@
 {
-  "status": "PASS — technical and musical acceptance",
+  "status": "PASS -- Linear production approved",
   "baseline_sha": "1c4c926326cc959cad711a74e5c058e08a718f2a",
   "production_default": "Linear32 magnitude, direct PCM, staggered placement",
   "candidate": "guition_app_linear_candidate",
@@ -799,5 +799,15 @@
     },
     "original_strict_A_qualification": "Separate unchanged analyzer required by analyze_m214.py",
     "note": "Every recorded actual A accepted command/boundary/transient bank replayed by audio blocks; physical journal digest and all active durations match. Journal Chain transitions are replayed, but this instrumented probe has zero complete Chain loops and is not strict original A coverage evidence. Original wall-clock runs are not declared identical."
+  },
+  "release_source_sha": "d5e2ea55906ffce379ff427cadf7a5157d26b999",
+  "remote_release_ci": {
+    "status": "SUCCESS",
+    "run_id": 38072252134,
+    "url": "https://github.com/ovelhaaa/P4SDM/actions/runs/38072252134",
+    "jobs": {
+      "build": "success",
+      "m214": "success"
+    }
   }
 }
