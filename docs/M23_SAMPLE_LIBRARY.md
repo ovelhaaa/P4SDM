@@ -1,8 +1,8 @@
 # M23 musical sample library
 
-Host status: **PASS**. Physical installation/loader qualification is in progress;
-final evidence and acceptance are recorded below when available. Human musical
-acceptance is **PENDING**. No generated sound is represented as a recording.
+Sample pack status: **PASS**. All 42 WAVs are physically installed, reopened with
+matching hashes, and accepted by the production loader on the board. Human
+musical acceptance is **PENDING**. No generated sound is represented as a recording.
 
 ## Inventory, provenance and rebuild
 
@@ -94,7 +94,7 @@ these absolute Track numbers in the opt-in candidate.
 ## Physical SD and qualification
 
 Windows exposes COM13 Serial/JTAG, not a mounted card drive. Actual baseline
-firmware mounted the8GB SDMMC card with9 existing WAVs. A dedicated temporary
+firmware mounted the 8GB SDMMC card with 9 existing WAVs. A dedicated temporary
 `guition_m23_sd_transfer` firmware owns the filesystem exclusively. It never
 formats or touches Projects; writes only validated M23 names to the flat
 `/P4SDM/SAMPLES`, with documentation under `/P4SDM/M23`. Browser limit is checked.
@@ -106,15 +106,29 @@ Normal firmware is restored after transfer, including failure paths. Diagnostic
 images are archived to avoid losing restoration inputs during other builds.
 
 The first transfer attempt exposed the small default Serial/JTAG RX buffer;
-the diagnostic enlarged it to2048 and the host paces64-byte USB writes. Rejected
+the diagnostic enlarged it to 2048 and the host paces 64-byte USB writes. Rejected
 attempt logs remain separate. A later interrupted file is resumed without
 overwriting verified files. Final hash evidence: `docs/m23/sd_hashes.json`.
 
 Loader qualification uses an ignored copy of the inherited serial console with
 production DSP/placement and unmodified storage loader, waveform, transient and
 audio paths. It dynamically resolves actual browser indexes; loads every sample
-and compares frame counts, then loads the16-Track hybrid kit, exercises pitch,
+and compares frame counts, then loads the 16-Track hybrid kit, exercises pitch,
 Reverse, slicing/Gate/transient analysis and simultaneous playback. Its edits
 are in RAM only. Human touch/audible feedback remains separate. Detailed final
 results: `docs/m23/loader_results.json` and `LOADER_SERIAL.log`; normal boot is
-captured after restoration. No physical PASS is claimed before these finish.
+captured after restoration. All 42 frame counts and waveform publications matched;
+all 16 hybrid assignments loaded simultaneously. The final 20-second kit capture
+had 3533 blocks, all 3533 timed, active_max=16, p99=3288us, max=3356us (42.2%
+headroom), zero deadline misses/write failures/timeouts. Resident-kit PSRAM free
+was 29,626,540 bytes and largest block 29,360,116 bytes, above reserve.
+Playback counters confirm a reverse trigger and a Gate release; the transient
+analyzer reached Ready before cancellation. Pitch changes also triggered playback.
+This is normal kit playback, not a USB-MIDI workload measurement. The host retries
+temporary loader-busy rejections until old PCM ownership is retired; the rejected
+earlier capture is retained separately. Musical listening remains pending.
+
+Host preview mixes (not device audio captures) can be generated with
+`python tools/m23_preview.py`: hybrid, electronic and organic/acoustic-led mixes
+appear in `.pio/m23-listening`. A person should audition these and the physical
+instrument before musical acceptance is marked PASS.

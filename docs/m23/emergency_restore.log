@@ -1,0 +1,187 @@
+esptool v5.1.0
+
+Serial port COM13:
+
+Connecting...
+
+Connected to ESP32-P4 on COM13:
+
+Chip type:          ESP32-P4 (revision v1.3)
+
+Features:           Dual Core + LP Core, 400MHz
+
+Crystal frequency:  40MHz
+
+USB mode:           USB-Serial/JTAG
+
+MAC:                80:f1:b2:d3:cc:86
+
+
+
+Uploading stub flasher...
+
+Running stub flasher...
+
+Stub flasher running.
+
+Changing baud rate to 460800...
+
+Changed.
+
+
+
+Configuring flash size...
+
+Flash will be erased from 0x00002000 to 0x00007fff...
+
+Flash will be erased from 0x00008000 to 0x00008fff...
+
+Flash will be erased from 0x0000e000 to 0x0000ffff...
+
+Flash will be erased from 0x00010000 to 0x000c3fff...
+
+SHA digest in image updated.
+
+Compressed 21616 bytes to 13700...
+
+
+Writing at 0x00002000 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0.0% 0/13700 bytes... 
+
+
+Writing at 0x00007470 [██████████████████████████████] 100.0% 13700/13700 bytes... 
+
+Wrote 21616 bytes (13700 compressed) at 0x00002000 in 0.3 seconds (608.9 kbit/s).
+
+Hash of data verified.
+
+Compressed 3072 bytes to 146...
+
+
+Writing at 0x00008000 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0.0% 0/146 bytes... 
+
+
+Writing at 0x00008c00 [██████████████████████████████] 100.0% 146/146 bytes... 
+
+Wrote 3072 bytes (146 compressed) at 0x00008000 in 0.1 seconds (340.6 kbit/s).
+
+Hash of data verified.
+
+Compressed 8192 bytes to 47...
+
+
+Writing at 0x0000e000 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0.0% 0/47 bytes... 
+
+
+Writing at 0x00010000 [██████████████████████████████] 100.0% 47/47 bytes... 
+
+Wrote 8192 bytes (47 compressed) at 0x0000e000 in 0.1 seconds (649.1 kbit/s).
+
+Hash of data verified.
+
+Compressed 734192 bytes to 425042...
+
+
+Writing at 0x00010000 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0.0% 0/425042 bytes... 
+
+
+Writing at 0x0001ba55 [█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   3.9% 16384/425042 bytes... 
+
+
+Writing at 0x000274f7 [██░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   7.7% 32768/425042 bytes... 
+
+
+Writing at 0x0002bc75 [███░░░░░░░░░░░░░░░░░░░░░░░░░░░]  11.6% 49152/425042 bytes... 
+
+
+Writing at 0x00031bfe [████░░░░░░░░░░░░░░░░░░░░░░░░░░]  15.4% 65536/425042 bytes... 
+
+
+Writing at 0x00036a0d [█████░░░░░░░░░░░░░░░░░░░░░░░░░]  19.3% 81920/425042 bytes... 
+
+
+Writing at 0x000408e0 [██████░░░░░░░░░░░░░░░░░░░░░░░░]  23.1% 98304/425042 bytes... 
+
+
+Writing at 0x00049eda [████████░░░░░░░░░░░░░░░░░░░░░░]  27.0% 114688/425042 bytes... 
+
+
+Writing at 0x0004fd70 [█████████░░░░░░░░░░░░░░░░░░░░░]  30.8% 131072/425042 bytes... 
+
+
+Writing at 0x0005620e [██████████░░░░░░░░░░░░░░░░░░░░]  34.7% 147456/425042 bytes... 
+
+
+Writing at 0x0005bcda [███████████░░░░░░░░░░░░░░░░░░░]  38.5% 163840/425042 bytes... 
+
+
+Writing at 0x000619f3 [████████████░░░░░░░░░░░░░░░░░░]  42.4% 180224/425042 bytes... 
+
+
+Writing at 0x00066fec [█████████████░░░░░░░░░░░░░░░░░]  46.3% 196608/425042 bytes... 
+
+
+Writing at 0x0006d2e4 [███████████████░░░░░░░░░░░░░░░]  50.1% 212992/425042 bytes... 
+
+
+Writing at 0x00074380 [████████████████░░░░░░░░░░░░░░]  54.0% 229376/425042 bytes... 
+
+
+Writing at 0x0007a6e0 [█████████████████░░░░░░░░░░░░░]  57.8% 245760/425042 bytes... 
+
+
+Writing at 0x00080eb9 [██████████████████░░░░░░░░░░░░]  61.7% 262144/425042 bytes... 
+
+
+Writing at 0x00087571 [███████████████████░░░░░░░░░░░]  65.5% 278528/425042 bytes... 
+
+
+Writing at 0x0008d78c [████████████████████░░░░░░░░░░]  69.4% 294912/425042 bytes... 
+
+
+Writing at 0x00093281 [█████████████████████░░░░░░░░░]  73.2% 311296/425042 bytes... 
+
+
+Writing at 0x00099918 [███████████████████████░░░░░░░]  77.1% 327680/425042 bytes... 
+
+
+Writing at 0x0009f9c2 [████████████████████████░░░░░░]  80.9% 344064/425042 bytes... 
+
+
+Writing at 0x000a5df6 [█████████████████████████░░░░░]  84.8% 360448/425042 bytes... 
+
+
+Writing at 0x000ad828 [██████████████████████████░░░░]  88.7% 376832/425042 bytes... 
+
+
+Writing at 0x000b3ec6 [███████████████████████████░░░]  92.5% 393216/425042 bytes... 
+
+
+Writing at 0x000ba524 [████████████████████████████░░]  96.4% 409600/425042 bytes... 
+
+
+Writing at 0x000c33f0 [██████████████████████████████] 100.0% 425042/425042 bytes... 
+
+Wrote 734192 bytes (425042 compressed) at 0x00010000 in 3.9 seconds (1490.1 kbit/s).
+
+Hash of data verified.
+
+
+
+Hard resetting via RTS pin...
+
+
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+
+[AUDIO] ES8311 found at 0x18
+
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+
+[AUDIO] PA GPIO11 enabled
+
+[M6 budget] total=33554432 display=2304000 fx_delay=352800 samples=0 reserve=4194304 free=30779004 largest=30408692 internal=262776
+[M6 SD] mounted=1 width=4 clock_khz=20000 mount_us=249870 capacity=8053063680 status=SD READY
+[M6 index] files=50 entries=51 limited=0 scan_us=293328 ps_free=30752712 largest=30408692 internal=261148

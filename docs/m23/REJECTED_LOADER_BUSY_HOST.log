@@ -1,0 +1,54 @@
+Production loader accepted 1 M23_SNARE_ACOUSTIC_01.wav
+Production loader accepted 2 M23_SNARE_ACOUSTIC_02.wav
+Production loader accepted 3 M23_HAT_CLOSED_ACOUSTIC_01.wav
+Production loader accepted 4 M23_HAT_CLOSED_ACOUSTIC_02.wav
+Production loader accepted 5 M23_TOM_LOW.wav
+Production loader accepted 6 M23_TOM_MID.wav
+Production loader accepted 7 M23_TOM_HIGH.wav
+Production loader accepted 8 M23_TAMBOURINE_01.wav
+Production loader accepted 9 M23_PERC_TRIANGLE.wav
+Production loader accepted 10 M23_PERC_AGOGO.wav
+Production loader accepted 11 M23_PERC_DJEMBE.wav
+Production loader accepted 12 M23_KICK_ELECTRO_01.wav
+Production loader accepted 13 M23_KICK_ELECTRO_02.wav
+Production loader accepted 14 M23_KICK_ELECTRO_03.wav
+Production loader accepted 15 M23_SNARE_ELECTRO_01.wav
+Production loader accepted 16 M23_SNARE_ELECTRO_02.wav
+Production loader accepted 17 M23_CLAP_01.wav
+Production loader accepted 18 M23_CLAP_02.wav
+Production loader accepted 19 M23_RIM_01.wav
+Production loader accepted 20 M23_RIM_02.wav
+Production loader accepted 21 M23_HAT_CLOSED_ELECTRO_01.wav
+Production loader accepted 22 M23_HAT_CLOSED_ELECTRO_02.wav
+Production loader accepted 23 M23_HAT_OPEN_01.wav
+Production loader accepted 24 M23_HAT_OPEN_02.wav
+Production loader accepted 25 M23_SHAKER_01.wav
+Production loader accepted 26 M23_PERC_COWBELL.wav
+Production loader accepted 27 M23_KICK_MODEL_01.wav
+Production loader accepted 28 M23_SHAKER_SYNTH_01.wav
+Production loader accepted 29 M23_BASS_PLUCK_C2.wav
+Production loader accepted 30 M23_BASS_PLUCK_E2.wav
+Production loader accepted 31 M23_BASS_PLUCK_G2.wav
+Production loader accepted 32 M23_BASS_PLUCK_A1.wav
+Production loader accepted 33 M23_MALLET_C4.wav
+Production loader accepted 34 M23_BELL_C4.wav
+Production loader accepted 35 M23_PLUCK_G3.wav
+Production loader accepted 36 M23_CHORD_CMAJ.wav
+Production loader accepted 37 M23_TEXTURE_CMAJ.wav
+Production loader accepted 38 M23_TEXTURE_AMIN.wav
+Production loader accepted 39 M23_VOCAL_SYNTH_AH.wav
+Production loader accepted 40 M23_VOCAL_SYNTH_OH.wav
+Production loader accepted 41 M23_LOOP_100BPM_01.wav
+Production loader accepted 42 M23_LOOP_120BPM_01.wav
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\m23_loader_device.py", line 53, in <module>
+    result['kit']=[load(e['track']-1,e['filename']) for e in kit]
+                   ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\progs\P4SDM\tests\m23_loader_device.py", line 41, in load
+    assert '[Q ACK] load=1' in text,text
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: M9 tools] rotate=0 reverse=0 copy_track=0 clear_track=0 duplicate=0 euclidean=0 randomize=0 mutate=0 reroll=0 blocks=0 dense_blocks=0 max=0
+[Q COMMAND] LOAD 3 41
+[Q ACK] load=0
+[M213 address] track=2 pcm=0x482bf0c0 base=0x482bf004 bytes=49421 owner_usable_bytes=50164 frames=24615 mod64=0 mod128=64 mod256=192 mod4096=192 mod131072=127168 external=1 requested_caps=1028 free=30624800 largest=30408692
+

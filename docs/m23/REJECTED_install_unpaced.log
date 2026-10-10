@@ -1,0 +1,72 @@
+Physical SD verified 1/45: M23_ATTRIBUTION.txt
+Physical SD verified 2/45: M23_kits.json
+Physical SD verified 3/45: M23_BASS_PLUCK_A1.wav
+Physical SD verified 4/45: M23_BASS_PLUCK_C2.wav
+Physical SD verified 5/45: M23_BASS_PLUCK_E2.wav
+Physical SD verified 6/45: M23_BASS_PLUCK_G2.wav
+Physical SD verified 7/45: M23_BELL_C4.wav
+Physical SD verified 8/45: M23_CHORD_CMAJ.wav
+Physical SD verified 9/45: M23_CLAP_01.wav
+Physical SD verified 10/45: M23_CLAP_02.wav
+Physical SD verified 11/45: M23_HAT_CLOSED_ACOUSTIC_01.wav
+Physical SD verified 12/45: M23_HAT_CLOSED_ACOUSTIC_02.wav
+Physical SD verified 13/45: M23_HAT_CLOSED_ELECTRO_01.wav
+Physical SD verified 14/45: M23_HAT_CLOSED_ELECTRO_02.wav
+Physical SD verified 15/45: M23_HAT_OPEN_01.wav
+Physical SD verified 16/45: M23_HAT_OPEN_02.wav
+Physical SD verified 17/45: M23_KICK_ELECTRO_01.wav
+Physical SD verified 18/45: M23_KICK_ELECTRO_02.wav
+Physical SD verified 19/45: M23_KICK_ELECTRO_03.wav
+Physical SD verified 20/45: M23_KICK_MODEL_01.wav
+Physical SD verified 21/45: M23_LOOP_100BPM_01.wav
+Physical SD verified 22/45: M23_LOOP_120BPM_01.wav
+Physical SD verified 23/45: M23_MALLET_C4.wav
+Physical SD verified 24/45: M23_PERC_AGOGO.wav
+Physical SD verified 25/45: M23_PERC_COWBELL.wav
+Physical SD verified 26/45: M23_PERC_DJEMBE.wav
+Physical SD verified 27/45: M23_PERC_TRIANGLE.wav
+Physical SD verified 28/45: M23_PLUCK_G3.wav
+Physical SD verified 29/45: M23_RIM_01.wav
+Physical SD verified 30/45: M23_RIM_02.wav
+Physical SD verified 31/45: M23_SHAKER_01.wav
+Physical SD verified 32/45: M23_SHAKER_SYNTH_01.wav
+Physical SD verified 33/45: M23_SNARE_ACOUSTIC_01.wav
+Physical SD verified 34/45: M23_SNARE_ACOUSTIC_02.wav
+Physical SD verified 35/45: M23_SNARE_ELECTRO_01.wav
+Physical SD verified 36/45: M23_SNARE_ELECTRO_02.wav
+Physical SD verified 37/45: M23_TAMBOURINE_01.wav
+Physical SD verified 38/45: M23_TEXTURE_AMIN.wav
+Physical SD verified 39/45: M23_TEXTURE_CMAJ.wav
+Physical SD verified 40/45: M23_TOM_HIGH.wav
+Physical SD verified 41/45: M23_TOM_LOW.wav
+Physical SD verified 42/45: M23_TOM_MID.wav
+Physical SD verified 43/45: M23_VOCAL_SYNTH_AH.wav
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\physical_sd\capture.py", line 19, in <module>
+    assert result.returncode == 0
+           ^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tools\m23_install_serial.py", line 38, in install
+    name=f'M23_{path.stem}_{digest[:8]}{path.suffix}'
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\progs\P4SDM\tools\m23_install_serial.py", line 26, in reply
+    raise TimeoutError(command[:100])
+TimeoutError: DATA 0 1125079982 524946463836010057415645666d7420100000000100010044ac000088580100020010006461746114
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tools\m23_install_serial.py", line 50, in <module>
+    (ROOT/'docs/m23/sd_hashes.json').write_text(json.dumps(dict(status='PHYSICAL FILE HASH PASS; loader qualification separate',files=verified),indent=2)+'\n')
+                                                                                                          ^^^^^^^^^^^^^^^
+  File "C:\progs\P4SDM\tools\m23_install_serial.py", line 48, in install
+    verified.append(dict(filename=name,bytes=len(data),host_sha256=digest,device_reopened_sha256=result.split()[-1]))
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\progs\P4SDM\tools\m23_install_serial.py", line 11, in capture
+    subprocess.run([sys.executable,'tests/physical_sd/capture.py',environment,str(seconds),str(path)],cwd=ROOT,check=True,stdout=subprocess.DEVNULL)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/physical_sd/capture.py', 'guition_app', '8', 'docs/m23/PRODUCTION_RESTORED_SERIAL.log']' returned non-zero exit status 1.

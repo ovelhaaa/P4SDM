@@ -1,0 +1,275 @@
+{
+  "status": "PHYSICAL FILE HASH PASS; loader qualification separate",
+  "files": [
+    {
+      "filename": "M23_ATTRIBUTION.txt",
+      "bytes": 496,
+      "host_sha256": "dc1c5374179380a5db75fedff88064c056605f5e412089b26edd8d1458552531",
+      "device_reopened_sha256": "dc1c5374179380a5db75fedff88064c056605f5e412089b26edd8d1458552531"
+    },
+    {
+      "filename": "M23_kits.json",
+      "bytes": 5921,
+      "host_sha256": "a5ebb33e59a7221a63b41885827ab129151dd3ee8d265bc750fb7d5041dc3714",
+      "device_reopened_sha256": "a5ebb33e59a7221a63b41885827ab129151dd3ee8d265bc750fb7d5041dc3714"
+    },
+    {
+      "filename": "M23_BASS_PLUCK_A1.wav",
+      "bytes": 105884,
+      "host_sha256": "c11f1388034991fa5b5f282aec23d847b11b17c864aa51648a1d265094b97b7d",
+      "device_reopened_sha256": "c11f1388034991fa5b5f282aec23d847b11b17c864aa51648a1d265094b97b7d"
+    },
+    {
+      "filename": "M23_BASS_PLUCK_C2.wav",
+      "bytes": 105884,
+      "host_sha256": "642cafdaae0c6b34772d0d42ac037fa5371efb6dbd33b7f6bf7fa914347a7359",
+      "device_reopened_sha256": "642cafdaae0c6b34772d0d42ac037fa5371efb6dbd33b7f6bf7fa914347a7359"
+    },
+    {
+      "filename": "M23_BASS_PLUCK_E2.wav",
+      "bytes": 105884,
+      "host_sha256": "ac9ca266649be5a2794f00f9bd066677a4431f0f94eb527a3b880a2679e7f09e",
+      "device_reopened_sha256": "ac9ca266649be5a2794f00f9bd066677a4431f0f94eb527a3b880a2679e7f09e"
+    },
+    {
+      "filename": "M23_BASS_PLUCK_G2.wav",
+      "bytes": 105884,
+      "host_sha256": "05a4e98e982d61f2cf54072054eec52b4406b6dcfab53a5a377ff19088e1c64c",
+      "device_reopened_sha256": "05a4e98e982d61f2cf54072054eec52b4406b6dcfab53a5a377ff19088e1c64c"
+    },
+    {
+      "filename": "M23_BELL_C4.wav",
+      "bytes": 158804,
+      "host_sha256": "4f086335c29ed1f4cf03827b89d0e4f375db3b2f8f02c30143c2af0039552b1f",
+      "device_reopened_sha256": "4f086335c29ed1f4cf03827b89d0e4f375db3b2f8f02c30143c2af0039552b1f"
+    },
+    {
+      "filename": "M23_CHORD_CMAJ.wav",
+      "bytes": 158804,
+      "host_sha256": "63da5833ef4d2217bf8cb386f93d040cad84113c81a64e71921686bb2fcafe46",
+      "device_reopened_sha256": "63da5833ef4d2217bf8cb386f93d040cad84113c81a64e71921686bb2fcafe46"
+    },
+    {
+      "filename": "M23_CLAP_01.wav",
+      "bytes": 37892,
+      "host_sha256": "7d9389b2aa2283bc4d8c0f18b090d6b64285a8d4b4115b30048bc73653740ce9",
+      "device_reopened_sha256": "7d9389b2aa2283bc4d8c0f18b090d6b64285a8d4b4115b30048bc73653740ce9"
+    },
+    {
+      "filename": "M23_CLAP_02.wav",
+      "bytes": 10432,
+      "host_sha256": "87857979ebf33428c115080f13f216693ee9d91b5849368e04c6c0a81dfd353a",
+      "device_reopened_sha256": "87857979ebf33428c115080f13f216693ee9d91b5849368e04c6c0a81dfd353a"
+    },
+    {
+      "filename": "M23_HAT_CLOSED_ACOUSTIC_01.wav",
+      "bytes": 22918,
+      "host_sha256": "dd78e961d7f6ec205b004dbbc25476d870a4656ca15fc4bea4dcfc55852bc10d",
+      "device_reopened_sha256": "dd78e961d7f6ec205b004dbbc25476d870a4656ca15fc4bea4dcfc55852bc10d"
+    },
+    {
+      "filename": "M23_HAT_CLOSED_ACOUSTIC_02.wav",
+      "bytes": 65696,
+      "host_sha256": "cb0cc65cf95103a6e0f35d2dce2c090c6eb41fbb78199f58e2bd158c8d6a0ddf",
+      "device_reopened_sha256": "cb0cc65cf95103a6e0f35d2dce2c090c6eb41fbb78199f58e2bd158c8d6a0ddf"
+    },
+    {
+      "filename": "M23_HAT_CLOSED_ELECTRO_01.wav",
+      "bytes": 26652,
+      "host_sha256": "7bc757675c62340480ef45761a1761fadfd14438138505d35519b4a267e5d245",
+      "device_reopened_sha256": "7bc757675c62340480ef45761a1761fadfd14438138505d35519b4a267e5d245"
+    },
+    {
+      "filename": "M23_HAT_CLOSED_ELECTRO_02.wav",
+      "bytes": 3144,
+      "host_sha256": "4e2e35d1333e2c6b1da198eafce644c3f3d995dbfc292daaf37574cd0662fb55",
+      "device_reopened_sha256": "4e2e35d1333e2c6b1da198eafce644c3f3d995dbfc292daaf37574cd0662fb55"
+    },
+    {
+      "filename": "M23_HAT_OPEN_01.wav",
+      "bytes": 134308,
+      "host_sha256": "50d30d61a44537ddd72fc0881e5655649759b9fc66e88ca8c93c6308b505f714",
+      "device_reopened_sha256": "50d30d61a44537ddd72fc0881e5655649759b9fc66e88ca8c93c6308b505f714"
+    },
+    {
+      "filename": "M23_HAT_OPEN_02.wav",
+      "bytes": 38558,
+      "host_sha256": "9cf82954a8782923c15bdd4e8962984d61413f6aee16b206a9f51868ba792f0e",
+      "device_reopened_sha256": "9cf82954a8782923c15bdd4e8962984d61413f6aee16b206a9f51868ba792f0e"
+    },
+    {
+      "filename": "M23_KICK_ELECTRO_01.wav",
+      "bytes": 24864,
+      "host_sha256": "56c4aa5e8c736c4b6c92b43aa176ddbbe6aad605f2916d2cee94ce863f082507",
+      "device_reopened_sha256": "56c4aa5e8c736c4b6c92b43aa176ddbbe6aad605f2916d2cee94ce863f082507"
+    },
+    {
+      "filename": "M23_KICK_ELECTRO_02.wav",
+      "bytes": 13410,
+      "host_sha256": "a98eeac83d46f29a2172e483871bde99435769e602ee915270368822432f8386",
+      "device_reopened_sha256": "a98eeac83d46f29a2172e483871bde99435769e602ee915270368822432f8386"
+    },
+    {
+      "filename": "M23_KICK_ELECTRO_03.wav",
+      "bytes": 26230,
+      "host_sha256": "d10f9f3d30d7ddaa9ae5a731445e24329267e0f8e20f30fb8cc0542c1a20a1ef",
+      "device_reopened_sha256": "d10f9f3d30d7ddaa9ae5a731445e24329267e0f8e20f30fb8cc0542c1a20a1ef"
+    },
+    {
+      "filename": "M23_KICK_MODEL_01.wav",
+      "bytes": 52964,
+      "host_sha256": "af6b6f3ad4655291a513907fc78e7d78be305c4d311e21198f77004109209eaf",
+      "device_reopened_sha256": "af6b6f3ad4655291a513907fc78e7d78be305c4d311e21198f77004109209eaf"
+    },
+    {
+      "filename": "M23_LOOP_100BPM_01.wav",
+      "bytes": 211724,
+      "host_sha256": "538236c0b9f3dce0a4cfbb7d610ddd9196e1f3ab5835a487d7bec98d153c5fe6",
+      "device_reopened_sha256": "538236c0b9f3dce0a4cfbb7d610ddd9196e1f3ab5835a487d7bec98d153c5fe6"
+    },
+    {
+      "filename": "M23_LOOP_120BPM_01.wav",
+      "bytes": 176444,
+      "host_sha256": "9e511d0b2068ba8e0608870536e0fe619929a00a3c64d205cbf700ff1a8e1767",
+      "device_reopened_sha256": "9e511d0b2068ba8e0608870536e0fe619929a00a3c64d205cbf700ff1a8e1767"
+    },
+    {
+      "filename": "M23_MALLET_C4.wav",
+      "bytes": 158804,
+      "host_sha256": "e218ba5893bf58674a7b4baf4d22d9fdfbc66aebd61902eb80d96fa825724229",
+      "device_reopened_sha256": "e218ba5893bf58674a7b4baf4d22d9fdfbc66aebd61902eb80d96fa825724229"
+    },
+    {
+      "filename": "M23_PERC_AGOGO.wav",
+      "bytes": 43708,
+      "host_sha256": "0af9d2358cc765246590b562fb89cfd983fb8532da8abc6ea8876a5997e7619b",
+      "device_reopened_sha256": "0af9d2358cc765246590b562fb89cfd983fb8532da8abc6ea8876a5997e7619b"
+    },
+    {
+      "filename": "M23_PERC_COWBELL.wav",
+      "bytes": 20636,
+      "host_sha256": "e994ed8a138c79d6febc99606101407fb78ba5a3c2c2b8e22b3c2ac750af81d4",
+      "device_reopened_sha256": "e994ed8a138c79d6febc99606101407fb78ba5a3c2c2b8e22b3c2ac750af81d4"
+    },
+    {
+      "filename": "M23_PERC_DJEMBE.wav",
+      "bytes": 70680,
+      "host_sha256": "f5453a82957fc44eba4a3e1d72f245acdafc554c6a627c35e8667b4685ce9e76",
+      "device_reopened_sha256": "f5453a82957fc44eba4a3e1d72f245acdafc554c6a627c35e8667b4685ce9e76"
+    },
+    {
+      "filename": "M23_PERC_TRIANGLE.wav",
+      "bytes": 260288,
+      "host_sha256": "1a47c53243325226d2f6bcdcfb582385a8f45b1d476d81635deb1b21a5ef43ba",
+      "device_reopened_sha256": "1a47c53243325226d2f6bcdcfb582385a8f45b1d476d81635deb1b21a5ef43ba"
+    },
+    {
+      "filename": "M23_PLUCK_G3.wav",
+      "bytes": 158804,
+      "host_sha256": "e8c797d07900c2097532927f41daff419dc0fcace4ecbf445a6be05d4855b6f0",
+      "device_reopened_sha256": "e8c797d07900c2097532927f41daff419dc0fcace4ecbf445a6be05d4855b6f0"
+    },
+    {
+      "filename": "M23_RIM_01.wav",
+      "bytes": 10898,
+      "host_sha256": "fd3e501df1527ce8e519d29bf10690d2b9c3d00967cc972b93f185db1642babb",
+      "device_reopened_sha256": "fd3e501df1527ce8e519d29bf10690d2b9c3d00967cc972b93f185db1642babb"
+    },
+    {
+      "filename": "M23_RIM_02.wav",
+      "bytes": 1674,
+      "host_sha256": "9400b5bdabb9300b6b58c8de19cfb76c755cb88107a65b9182f1838825aa7ea8",
+      "device_reopened_sha256": "9400b5bdabb9300b6b58c8de19cfb76c755cb88107a65b9182f1838825aa7ea8"
+    },
+    {
+      "filename": "M23_SHAKER_01.wav",
+      "bytes": 2860,
+      "host_sha256": "98a97c05ad3a736df8eb5d26e262cd881c3e6c34344df61a81ef3618f2d75963",
+      "device_reopened_sha256": "98a97c05ad3a736df8eb5d26e262cd881c3e6c34344df61a81ef3618f2d75963"
+    },
+    {
+      "filename": "M23_SHAKER_SYNTH_01.wav",
+      "bytes": 29730,
+      "host_sha256": "dacdef6aa832209490ba5f719677122d96d8db864c2cc0a8a276462f9e4da80e",
+      "device_reopened_sha256": "dacdef6aa832209490ba5f719677122d96d8db864c2cc0a8a276462f9e4da80e"
+    },
+    {
+      "filename": "M23_SNARE_ACOUSTIC_01.wav",
+      "bytes": 49274,
+      "host_sha256": "ea0459a79901591980601a45233dcd7d834eaf3337f952cd306534d0f2ad3d08",
+      "device_reopened_sha256": "ea0459a79901591980601a45233dcd7d834eaf3337f952cd306534d0f2ad3d08"
+    },
+    {
+      "filename": "M23_SNARE_ACOUSTIC_02.wav",
+      "bytes": 57460,
+      "host_sha256": "223aba917080cb2f2f5e984deca8ff1af0290293016b70fe025582be38344b4c",
+      "device_reopened_sha256": "223aba917080cb2f2f5e984deca8ff1af0290293016b70fe025582be38344b4c"
+    },
+    {
+      "filename": "M23_SNARE_ELECTRO_01.wav",
+      "bytes": 33340,
+      "host_sha256": "48bc47f9dfa353f775df46dc725e6ee3bc93e6134b6520793c2c038421923da4",
+      "device_reopened_sha256": "48bc47f9dfa353f775df46dc725e6ee3bc93e6134b6520793c2c038421923da4"
+    },
+    {
+      "filename": "M23_SNARE_ELECTRO_02.wav",
+      "bytes": 12744,
+      "host_sha256": "b3df6f7ec1513ab078890bea6b99075d4fd9f200f3598c4e9c22217c9e9163a8",
+      "device_reopened_sha256": "b3df6f7ec1513ab078890bea6b99075d4fd9f200f3598c4e9c22217c9e9163a8"
+    },
+    {
+      "filename": "M23_TAMBOURINE_01.wav",
+      "bytes": 63258,
+      "host_sha256": "1953804fed1bd81313df4c6c8d23a1a520cec6506dd7ae5d9152f1f435ce6e57",
+      "device_reopened_sha256": "1953804fed1bd81313df4c6c8d23a1a520cec6506dd7ae5d9152f1f435ce6e57"
+    },
+    {
+      "filename": "M23_TEXTURE_AMIN.wav",
+      "bytes": 257640,
+      "host_sha256": "d6c43463450e6d2bf79678c1d18d109811a01b0b88c060a7a96692f66e144136",
+      "device_reopened_sha256": "d6c43463450e6d2bf79678c1d18d109811a01b0b88c060a7a96692f66e144136"
+    },
+    {
+      "filename": "M23_TEXTURE_CMAJ.wav",
+      "bytes": 258678,
+      "host_sha256": "e503baa7a08bb8e75100409cd23cb81795de75b0b4ba0674313eb8adeb728e63",
+      "device_reopened_sha256": "e503baa7a08bb8e75100409cd23cb81795de75b0b4ba0674313eb8adeb728e63"
+    },
+    {
+      "filename": "M23_TOM_HIGH.wav",
+      "bytes": 175158,
+      "host_sha256": "ee5753c275561d437feb8eca8b66f39022e8b96ffbf7be32f0e7451e9b31f883",
+      "device_reopened_sha256": "ee5753c275561d437feb8eca8b66f39022e8b96ffbf7be32f0e7451e9b31f883"
+    },
+    {
+      "filename": "M23_TOM_LOW.wav",
+      "bytes": 106590,
+      "host_sha256": "5be69accf5e3514caa9fc094e2bf1ae84a35b296818fe2b25dab6df9c6497665",
+      "device_reopened_sha256": "5be69accf5e3514caa9fc094e2bf1ae84a35b296818fe2b25dab6df9c6497665"
+    },
+    {
+      "filename": "M23_TOM_MID.wav",
+      "bytes": 201028,
+      "host_sha256": "9611c7d9ca0f9b53c49eb4ed6ad79735579848a2f716345b4a0a26fb774ac21c",
+      "device_reopened_sha256": "9611c7d9ca0f9b53c49eb4ed6ad79735579848a2f716345b4a0a26fb774ac21c"
+    },
+    {
+      "filename": "M23_VOCAL_SYNTH_AH.wav",
+      "bytes": 79424,
+      "host_sha256": "6f8ee56189ee12e94f10f2d2a80dc5a79e3444529c3c905e1f2e710004c2bd95",
+      "device_reopened_sha256": "6f8ee56189ee12e94f10f2d2a80dc5a79e3444529c3c905e1f2e710004c2bd95"
+    },
+    {
+      "filename": "M23_VOCAL_SYNTH_OH.wav",
+      "bytes": 79424,
+      "host_sha256": "1ec29f6e8f82a38da3aa7d08dc907f58d47e02c46faa57e9f2b59a75f04b41dd",
+      "device_reopened_sha256": "1ec29f6e8f82a38da3aa7d08dc907f58d47e02c46faa57e9f2b59a75f04b41dd"
+    },
+    {
+      "filename": "M23_manifest.json",
+      "bytes": 57908,
+      "host_sha256": "96d89dd37424846534c40ff851b65cf5a9b08aafbc45f68dc1d7b4157ee5d49d",
+      "device_reopened_sha256": "96d89dd37424846534c40ff851b65cf5a9b08aafbc45f68dc1d7b4157ee5d49d"
+    }
+  ]
+}

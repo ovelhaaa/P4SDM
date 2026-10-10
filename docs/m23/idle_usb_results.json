@@ -1,0 +1,78 @@
+{
+  "sample": {
+    "scope": "IDLE HOST only; no physical MIDI controller/USB traffic",
+    "strict_inherited_suite_pass": false,
+    "firmware_sha256": "6cc0417f20e39f101a5fded1d24a7a4be5461d6afafca183f05776fe4511d701",
+    "metrics": {
+      "complete": true,
+      "safe": true,
+      "faults": [],
+      "timing": {
+        "blocks": 13782,
+        "p50": 2852,
+        "p95": 3731,
+        "p99": 3851,
+        "max": 4109,
+        "misses": 0,
+        "failures": 0,
+        "timeouts": 0,
+        "peak": 4075,
+        "nonzero": 6936073,
+        "rails": 0,
+        "active_min": 0,
+        "active_max": 16
+      },
+      "memory": {
+        "ps_before": 24264672,
+        "ps_after": 24264672,
+        "internal_before": 187800,
+        "internal_after": 187800,
+        "largest_before": 24117236,
+        "largest_after": 24117236
+      },
+      "trace_matches": true,
+      "reserve_pass": true,
+      "accepted": true,
+      "monitors": [],
+      "headroom_percent": 29.21605468749999
+    }
+  },
+  "synth": {
+    "scope": "IDLE HOST only; no physical MIDI controller/USB traffic",
+    "strict_inherited_suite_pass": true,
+    "firmware_sha256": "cc1d0c6564cd5c60e87f8ac46e6ba50bef832b77664a3832b387de6cca4ef864",
+    "metrics": {
+      "complete": true,
+      "safe": true,
+      "faults": [],
+      "timing": {
+        "blocks": 13782,
+        "p50": 3773,
+        "p95": 4144,
+        "p99": 4248,
+        "max": 4539,
+        "misses": 0,
+        "failures": 0,
+        "timeouts": 0,
+        "peak": 6904,
+        "nonzero": 7024433,
+        "rails": 0,
+        "active_min": 0,
+        "active_max": 16
+      },
+      "memory": {
+        "ps_before": 26427424,
+        "ps_after": 26427424,
+        "internal_before": 212936,
+        "internal_after": 212936,
+        "largest_before": 26214388,
+        "largest_after": 26214388
+      },
+      "trace_matches": true,
+      "reserve_pass": true,
+      "accepted": true,
+      "monitors": [],
+      "headroom_percent": 21.808632812499994
+    }
+  }
+}

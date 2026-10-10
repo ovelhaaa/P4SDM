@@ -3541,7 +3541,11 @@ static void consume_midi() {
       engine.apply({app::Kind::Play,0,e.type==midi::Type::Start});
       if(e.type==midi::Type::Stop) for(auto &v:samples::voices) if(v.sequenced) playback_metrics.releases+=v.release();
     } else if(e.type==midi::Type::CC && (e.note==120 || e.note==123)) {
-      midi_owners.clear(midi_release,e.channel,e.cable);
+      midi_owners.clear([&](unsigned t) {
+        if(e.note==120 && voice_routing.pcm(t))
+          playback_metrics.releases+=samples::voices[t].release(true);
+        else midi_release(t);
+      },e.channel,e.cable);
     } else {
       const int t=midi::drum_track(e);
       if(t<0) continue;

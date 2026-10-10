@@ -1,0 +1,405 @@
+Processing guition_m23_midi (platform: https://github.com/pioarduino/platform-espressif32/releases/download/55.03.36-1/platform-espressif32.zip; board: jc4880p4; framework: arduino)
+--------------------------------------------------------------------------------
+Verbose mode can be enabled via `-v, --verbose` option
+CONFIGURATION: https://docs.platformio.org/page/boards/espressif32/jc4880p4.html
+PLATFORM: Espressif 32 (55.3.36) > Guition JC4880P443C_I_W (JC-ESP32P4-M3, ESP32-P4 ES + C6)
+HARDWARE: ESP32P4 360MHz, 320KB RAM, 16MB Flash
+DEBUG: Current (cmsis-dap) External (cmsis-dap, esp-bridge, esp-builtin, esp-prog, iot-bus-jtag, jlink, minimodule, olimex-arm-usb-ocd, olimex-arm-usb-ocd-h, olimex-arm-usb-tiny-h, olimex-jtag-tiny, tumpa)
+PACKAGES: 
+ - contrib-piohome @ 3.4.4 
+ - framework-arduinoespressif32 @ 3.3.6 
+ - framework-arduinoespressif32-libs @ 5.5.0+sha.f56bea3d1f 
+ - tool-esptoolpy @ 5.1.0 
+ - toolchain-riscv32-esp @ 14.2.0+20251107
+LDF: Library Dependency Finder -> https://bit.ly/configure-pio-ldf
+LDF Modes: Finder ~ chain, Compatibility ~ soft
+Found 44 compatible libraries
+Scanning dependencies...
+Dependency Graph
+|-- p4sdm-es8311 @ 1.0.0
+|-- SD_MMC @ 3.3.6
+Building in release mode
+Compiling .pio\build\guition_m23_midi\lib94c\es8311\es8311.c.o
+Compiling .pio\build\guition_m23_midi\lib7fe\FS\FS.cpp.o
+Compiling .pio\build\guition_m23_midi\lib7fe\FS\vfs_api.cpp.o
+Compiling .pio\build\guition_m23_midi\liba11\SD_MMC\SD_MMC.cpp.o
+Compiling .pio\build\guition_m23_midi\src\app\projects.cpp.o
+Compiling .pio\build\guition_m23_midi\src\app\samples.cpp.o
+Compiling .pio\build\guition_m23_midi\src\app\transient_service.cpp.o
+Compiling .pio\build\guition_m23_midi\src\app_main.cpp.o
+Compiling .pio\build\guition_m23_midi\src\hal\audio_hal.cpp.o
+Compiling .pio\build\guition_m23_midi\src\hal\display_hal.cpp.o
+Compiling .pio\build\guition_m23_midi\src\hal\guition_board.cpp.o
+Compiling .pio\build\guition_m23_midi\src\hal\storage_hal.cpp.o
+Compiling .pio\build\guition_m23_midi\src\hal\touch_hal.cpp.o
+Compiling .pio\build\guition_m23_midi\src\midi\usb_midi_host.cpp.o
+Building .pio\build\guition_m23_midi\bootloader.bin
+Generating partitions .pio\build\guition_m23_midi\partitions.bin
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\ColorFormat.c.o
+esptool v5.1.0
+Creating ESP32P4 image...
+Merged 2 ELF sections.
+Successfully created ESP32P4 image.
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\Esp.cpp.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\FirmwareMSC.cpp.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\FunctionalInterrupt.cpp.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\HEXBuilder.cpp.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\HWCDC.cpp.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\HardwareSerial.cpp.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\HashBuilder.cpp.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\IPAddress.cpp.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\MD5Builder.cpp.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\MacAddress.cpp.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\Print.cpp.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\Stream.cpp.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\StreamString.cpp.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\Tone.cpp.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\USB.cpp.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\USBCDC.cpp.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\USBMSC.cpp.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\WMath.cpp.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\WString.cpp.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\base64.cpp.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\cbuf.cpp.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\chip-debug-report.cpp.o
+In file included from C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/esp_hw_support/include/esp_private/regi2c_ctrl.h:15,
+                 from C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/hal/platform_port/include/hal/regi2c_ctrl.h:17,
+                 from C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/hal/esp32p4/include/hal/clk_tree_ll.h:19,
+                 from C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/hal/esp32p4/include/hal/spimem_flash_ll.h:32,
+                 from C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/hal/esp32p4/include/hal/spi_flash_ll.h:18,
+                 from C:/.platformio/packages/framework-arduinoespressif32/cores/esp32/Esp.cpp:41:
+C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/esp_hw_support/include/esp_private/periph_ctrl.h:87:64: warning: invalid suffix on literal; C++11 requires a space between literal and string macro [-Wliteral-suffix]
+   87 | #define __PERIPH_CTRL_DEPRECATE_ATTR __attribute__((deprecated("This function is not functional on "CONFIG_IDF_TARGET)))
+      |                                                                ^
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\esp32-hal-adc.c.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\esp32-hal-bt.c.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\esp32-hal-cpu.c.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\esp32-hal-dac.c.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\esp32-hal-gpio.c.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\esp32-hal-hosted.c.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\esp32-hal-i2c-ng.c.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\esp32-hal-i2c-slave.c.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\esp32-hal-i2c.c.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\esp32-hal-ledc.c.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\esp32-hal-log-wrapper.c.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\esp32-hal-matrix.c.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\esp32-hal-misc.c.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\esp32-hal-periman.c.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\esp32-hal-psram.c.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\esp32-hal-rgb-led.c.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\esp32-hal-rmt.c.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\esp32-hal-sigmadelta.c.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\esp32-hal-spi.c.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\esp32-hal-time.c.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\esp32-hal-timer.c.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\esp32-hal-tinyusb.c.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\esp32-hal-touch-ng.c.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\esp32-hal-touch.c.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\esp32-hal-uart.c.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\firmware_msc_fat.c.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\freertos_stats.cpp.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\libb64\cdecode.c.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\libb64\cencode.c.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\main.cpp.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\stdlib_noniso.c.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\wiring_pulse.c.o
+Compiling .pio\build\guition_m23_midi\FrameworkArduino\wiring_shift.c.o
+In file included from C:/.platformio/packages/framework-arduinoespressif32/cores/esp32/esp32-hal-spi.c:65:
+C:/.platformio/packages/framework-arduinoespressif32/cores/esp32/esp32-hal-spi.c: In function '_spiSetClockDivInternal':
+C:/.platformio/packages/framework-arduinoespressif32/cores/esp32/esp32-hal-spi.c:582:32: warning: passing argument 1 of 'spi_ll_set_clk_source' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  582 |       spi_ll_set_clk_source(spi->dev, new_clk_src ? SPI_CLK_SRC_SPLL : SPI_CLK_SRC_XTAL);
+      |                             ~~~^~~~~
+C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/hal/esp32p4/include/hal/spi_ll.h:203:90: note: in definition of macro 'spi_ll_set_clk_source'
+  203 | #define spi_ll_set_clk_source(...) (void)__DECLARE_RCC_ATOMIC_ENV; spi_ll_set_clk_source(__VA_ARGS__)
+      |                                                                                          ^~~~~~~~~~~
+C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/hal/esp32p4/include/hal/spi_ll.h:177:53: note: expected 'spi_dev_t *' but argument is of type 'volatile spi_dev_t *'
+  177 | static inline void spi_ll_set_clk_source(spi_dev_t *hw, spi_clock_source_t clk_source)
+      |                                          ~~~~~~~~~~~^~
+Archiving .pio\build\guition_m23_midi\libFrameworkArduino.a
+Indexing .pio\build\guition_m23_midi\libFrameworkArduino.a
+Linking .pio\build\guition_m23_midi\firmware.elf
+Firmware metrics can not be shown. Set the terminal codepage to "utf-8" or "cp65001" on Windows.
+Retrieving maximum program size .pio\build\guition_m23_midi\firmware.elf
+Checking size .pio\build\guition_m23_midi\firmware.elf
+Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
+RAM:   [==        ]  20.4% (used 66824 bytes from 327680 bytes)
+Flash: [=         ]  12.0% (used 783196 bytes from 6553600 bytes)
+Building .pio\build\guition_m23_midi\firmware.bin
+esptool v5.1.0
+Creating ESP32P4 image...
+Merged 5 ELF sections.
+Successfully created ESP32P4 image.
+========================= [SUCCESS] Took 32.06 seconds =========================
+
+Processing guition_m23_sample (platform: https://github.com/pioarduino/platform-espressif32/releases/download/55.03.36-1/platform-espressif32.zip; board: jc4880p4; framework: arduino)
+--------------------------------------------------------------------------------
+Verbose mode can be enabled via `-v, --verbose` option
+CONFIGURATION: https://docs.platformio.org/page/boards/espressif32/jc4880p4.html
+PLATFORM: Espressif 32 (55.3.36) > Guition JC4880P443C_I_W (JC-ESP32P4-M3, ESP32-P4 ES + C6)
+HARDWARE: ESP32P4 360MHz, 320KB RAM, 16MB Flash
+DEBUG: Current (cmsis-dap) External (cmsis-dap, esp-bridge, esp-builtin, esp-prog, iot-bus-jtag, jlink, minimodule, olimex-arm-usb-ocd, olimex-arm-usb-ocd-h, olimex-arm-usb-tiny-h, olimex-jtag-tiny, tumpa)
+PACKAGES: 
+ - contrib-piohome @ 3.4.4 
+ - framework-arduinoespressif32 @ 3.3.6 
+ - framework-arduinoespressif32-libs @ 5.5.0+sha.f56bea3d1f 
+ - tool-esptoolpy @ 5.1.0 
+ - toolchain-riscv32-esp @ 14.2.0+20251107
+LDF: Library Dependency Finder -> https://bit.ly/configure-pio-ldf
+LDF Modes: Finder ~ chain, Compatibility ~ soft
+Found 44 compatible libraries
+Scanning dependencies...
+Dependency Graph
+|-- p4sdm-es8311 @ 1.0.0
+|-- SD_MMC @ 3.3.6
+Building in release mode
+Compiling .pio\build\guition_m23_sample\lib94c\es8311\es8311.c.o
+Compiling .pio\build\guition_m23_sample\lib7fe\FS\FS.cpp.o
+Compiling .pio\build\guition_m23_sample\lib7fe\FS\vfs_api.cpp.o
+Compiling .pio\build\guition_m23_sample\liba11\SD_MMC\SD_MMC.cpp.o
+Compiling .pio\build\guition_m23_sample\src\app\projects.cpp.o
+Compiling .pio\build\guition_m23_sample\src\app\samples.cpp.o
+Compiling .pio\build\guition_m23_sample\src\app\transient_service.cpp.o
+Compiling .pio\build\guition_m23_sample\src\app_main.cpp.o
+Compiling .pio\build\guition_m23_sample\src\hal\audio_hal.cpp.o
+Compiling .pio\build\guition_m23_sample\src\hal\display_hal.cpp.o
+Compiling .pio\build\guition_m23_sample\src\hal\guition_board.cpp.o
+Compiling .pio\build\guition_m23_sample\src\hal\storage_hal.cpp.o
+Compiling .pio\build\guition_m23_sample\src\hal\touch_hal.cpp.o
+Compiling .pio\build\guition_m23_sample\src\midi\usb_midi_host.cpp.o
+Building .pio\build\guition_m23_sample\bootloader.bin
+Generating partitions .pio\build\guition_m23_sample\partitions.bin
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\ColorFormat.c.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\Esp.cpp.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\FirmwareMSC.cpp.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\FunctionalInterrupt.cpp.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\HEXBuilder.cpp.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\HWCDC.cpp.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\HardwareSerial.cpp.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\HashBuilder.cpp.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\IPAddress.cpp.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\MD5Builder.cpp.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\MacAddress.cpp.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\Print.cpp.o
+esptool v5.1.0
+Creating ESP32P4 image...
+Merged 2 ELF sections.
+Successfully created ESP32P4 image.
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\Stream.cpp.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\StreamString.cpp.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\Tone.cpp.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\USB.cpp.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\USBCDC.cpp.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\USBMSC.cpp.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\WMath.cpp.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\WString.cpp.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\base64.cpp.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\cbuf.cpp.o
+In file included from C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/esp_hw_support/include/esp_private/regi2c_ctrl.h:15,
+                 from C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/hal/platform_port/include/hal/regi2c_ctrl.h:17,
+                 from C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/hal/esp32p4/include/hal/clk_tree_ll.h:19,
+                 from C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/hal/esp32p4/include/hal/spimem_flash_ll.h:32,
+                 from C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/hal/esp32p4/include/hal/spi_flash_ll.h:18,
+                 from C:/.platformio/packages/framework-arduinoespressif32/cores/esp32/Esp.cpp:41:
+C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/esp_hw_support/include/esp_private/periph_ctrl.h:87:64: warning: invalid suffix on literal; C++11 requires a space between literal and string macro [-Wliteral-suffix]
+   87 | #define __PERIPH_CTRL_DEPRECATE_ATTR __attribute__((deprecated("This function is not functional on "CONFIG_IDF_TARGET)))
+      |                                                                ^
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\chip-debug-report.cpp.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\esp32-hal-adc.c.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\esp32-hal-bt.c.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\esp32-hal-cpu.c.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\esp32-hal-dac.c.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\esp32-hal-gpio.c.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\esp32-hal-hosted.c.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\esp32-hal-i2c-ng.c.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\esp32-hal-i2c-slave.c.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\esp32-hal-i2c.c.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\esp32-hal-ledc.c.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\esp32-hal-log-wrapper.c.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\esp32-hal-matrix.c.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\esp32-hal-misc.c.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\esp32-hal-periman.c.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\esp32-hal-psram.c.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\esp32-hal-rgb-led.c.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\esp32-hal-rmt.c.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\esp32-hal-sigmadelta.c.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\esp32-hal-spi.c.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\esp32-hal-time.c.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\esp32-hal-timer.c.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\esp32-hal-tinyusb.c.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\esp32-hal-touch-ng.c.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\esp32-hal-touch.c.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\esp32-hal-uart.c.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\firmware_msc_fat.c.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\freertos_stats.cpp.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\libb64\cdecode.c.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\libb64\cencode.c.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\main.cpp.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\stdlib_noniso.c.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\wiring_pulse.c.o
+Compiling .pio\build\guition_m23_sample\FrameworkArduino\wiring_shift.c.o
+In file included from C:/.platformio/packages/framework-arduinoespressif32/cores/esp32/esp32-hal-spi.c:65:
+C:/.platformio/packages/framework-arduinoespressif32/cores/esp32/esp32-hal-spi.c: In function '_spiSetClockDivInternal':
+C:/.platformio/packages/framework-arduinoespressif32/cores/esp32/esp32-hal-spi.c:582:32: warning: passing argument 1 of 'spi_ll_set_clk_source' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  582 |       spi_ll_set_clk_source(spi->dev, new_clk_src ? SPI_CLK_SRC_SPLL : SPI_CLK_SRC_XTAL);
+      |                             ~~~^~~~~
+C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/hal/esp32p4/include/hal/spi_ll.h:203:90: note: in definition of macro 'spi_ll_set_clk_source'
+  203 | #define spi_ll_set_clk_source(...) (void)__DECLARE_RCC_ATOMIC_ENV; spi_ll_set_clk_source(__VA_ARGS__)
+      |                                                                                          ^~~~~~~~~~~
+C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/hal/esp32p4/include/hal/spi_ll.h:177:53: note: expected 'spi_dev_t *' but argument is of type 'volatile spi_dev_t *'
+  177 | static inline void spi_ll_set_clk_source(spi_dev_t *hw, spi_clock_source_t clk_source)
+      |                                          ~~~~~~~~~~~^~
+Archiving .pio\build\guition_m23_sample\libFrameworkArduino.a
+Indexing .pio\build\guition_m23_sample\libFrameworkArduino.a
+Linking .pio\build\guition_m23_sample\firmware.elf
+Firmware metrics can not be shown. Set the terminal codepage to "utf-8" or "cp65001" on Windows.
+Retrieving maximum program size .pio\build\guition_m23_sample\firmware.elf
+Checking size .pio\build\guition_m23_sample\firmware.elf
+Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
+RAM:   [===       ]  28.0% (used 91732 bytes from 327680 bytes)
+Flash: [=         ]  12.6% (used 825204 bytes from 6553600 bytes)
+Building .pio\build\guition_m23_sample\firmware.bin
+esptool v5.1.0
+Creating ESP32P4 image...
+Merged 5 ELF sections.
+Successfully created ESP32P4 image.
+========================= [SUCCESS] Took 48.16 seconds =========================
+
+Processing guition_m23_synth (platform: https://github.com/pioarduino/platform-espressif32/releases/download/55.03.36-1/platform-espressif32.zip; board: jc4880p4; framework: arduino)
+--------------------------------------------------------------------------------
+Verbose mode can be enabled via `-v, --verbose` option
+CONFIGURATION: https://docs.platformio.org/page/boards/espressif32/jc4880p4.html
+PLATFORM: Espressif 32 (55.3.36) > Guition JC4880P443C_I_W (JC-ESP32P4-M3, ESP32-P4 ES + C6)
+HARDWARE: ESP32P4 360MHz, 320KB RAM, 16MB Flash
+DEBUG: Current (cmsis-dap) External (cmsis-dap, esp-bridge, esp-builtin, esp-prog, iot-bus-jtag, jlink, minimodule, olimex-arm-usb-ocd, olimex-arm-usb-ocd-h, olimex-arm-usb-tiny-h, olimex-jtag-tiny, tumpa)
+PACKAGES: 
+ - contrib-piohome @ 3.4.4 
+ - framework-arduinoespressif32 @ 3.3.6 
+ - framework-arduinoespressif32-libs @ 5.5.0+sha.f56bea3d1f 
+ - tool-esptoolpy @ 5.1.0 
+ - toolchain-riscv32-esp @ 14.2.0+20251107
+LDF: Library Dependency Finder -> https://bit.ly/configure-pio-ldf
+LDF Modes: Finder ~ chain, Compatibility ~ soft
+Found 44 compatible libraries
+Scanning dependencies...
+Dependency Graph
+|-- p4sdm-es8311 @ 1.0.0
+|-- SD_MMC @ 3.3.6
+Building in release mode
+Compiling .pio\build\guition_m23_synth\lib94c\es8311\es8311.c.o
+Compiling .pio\build\guition_m23_synth\lib7fe\FS\FS.cpp.o
+Compiling .pio\build\guition_m23_synth\lib7fe\FS\vfs_api.cpp.o
+Compiling .pio\build\guition_m23_synth\liba11\SD_MMC\SD_MMC.cpp.o
+Compiling .pio\build\guition_m23_synth\src\app\projects.cpp.o
+Compiling .pio\build\guition_m23_synth\src\app\samples.cpp.o
+Compiling .pio\build\guition_m23_synth\src\app\transient_service.cpp.o
+Compiling .pio\build\guition_m23_synth\src\app_main.cpp.o
+Compiling .pio\build\guition_m23_synth\src\hal\audio_hal.cpp.o
+Compiling .pio\build\guition_m23_synth\src\hal\display_hal.cpp.o
+Compiling .pio\build\guition_m23_synth\src\hal\guition_board.cpp.o
+Compiling .pio\build\guition_m23_synth\src\hal\storage_hal.cpp.o
+Compiling .pio\build\guition_m23_synth\src\hal\touch_hal.cpp.o
+Compiling .pio\build\guition_m23_synth\src\midi\usb_midi_host.cpp.o
+Building .pio\build\guition_m23_synth\bootloader.bin
+Generating partitions .pio\build\guition_m23_synth\partitions.bin
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\ColorFormat.c.o
+esptool v5.1.0
+Creating ESP32P4 image...
+Merged 2 ELF sections.
+Successfully created ESP32P4 image.
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\Esp.cpp.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\FirmwareMSC.cpp.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\FunctionalInterrupt.cpp.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\HEXBuilder.cpp.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\HWCDC.cpp.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\HardwareSerial.cpp.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\HashBuilder.cpp.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\IPAddress.cpp.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\MD5Builder.cpp.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\MacAddress.cpp.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\Print.cpp.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\Stream.cpp.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\StreamString.cpp.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\Tone.cpp.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\USB.cpp.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\USBCDC.cpp.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\USBMSC.cpp.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\WMath.cpp.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\WString.cpp.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\base64.cpp.o
+In file included from C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/esp_hw_support/include/esp_private/regi2c_ctrl.h:15,
+                 from C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/hal/platform_port/include/hal/regi2c_ctrl.h:17,
+                 from C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/hal/esp32p4/include/hal/clk_tree_ll.h:19,
+                 from C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/hal/esp32p4/include/hal/spimem_flash_ll.h:32,
+                 from C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/hal/esp32p4/include/hal/spi_flash_ll.h:18,
+                 from C:/.platformio/packages/framework-arduinoespressif32/cores/esp32/Esp.cpp:41:
+C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/esp_hw_support/include/esp_private/periph_ctrl.h:87:64: warning: invalid suffix on literal; C++11 requires a space between literal and string macro [-Wliteral-suffix]
+   87 | #define __PERIPH_CTRL_DEPRECATE_ATTR __attribute__((deprecated("This function is not functional on "CONFIG_IDF_TARGET)))
+      |                                                                ^
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\cbuf.cpp.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\chip-debug-report.cpp.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\esp32-hal-adc.c.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\esp32-hal-bt.c.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\esp32-hal-cpu.c.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\esp32-hal-dac.c.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\esp32-hal-gpio.c.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\esp32-hal-hosted.c.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\esp32-hal-i2c-ng.c.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\esp32-hal-i2c-slave.c.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\esp32-hal-i2c.c.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\esp32-hal-ledc.c.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\esp32-hal-log-wrapper.c.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\esp32-hal-matrix.c.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\esp32-hal-misc.c.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\esp32-hal-periman.c.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\esp32-hal-psram.c.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\esp32-hal-rgb-led.c.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\esp32-hal-rmt.c.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\esp32-hal-sigmadelta.c.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\esp32-hal-spi.c.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\esp32-hal-time.c.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\esp32-hal-timer.c.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\esp32-hal-tinyusb.c.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\esp32-hal-touch-ng.c.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\esp32-hal-touch.c.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\esp32-hal-uart.c.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\firmware_msc_fat.c.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\freertos_stats.cpp.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\libb64\cdecode.c.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\libb64\cencode.c.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\main.cpp.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\stdlib_noniso.c.o
+In file included from C:/.platformio/packages/framework-arduinoespressif32/cores/esp32/esp32-hal-spi.c:65:
+C:/.platformio/packages/framework-arduinoespressif32/cores/esp32/esp32-hal-spi.c: In function '_spiSetClockDivInternal':
+C:/.platformio/packages/framework-arduinoespressif32/cores/esp32/esp32-hal-spi.c:582:32: warning: passing argument 1 of 'spi_ll_set_clk_source' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  582 |       spi_ll_set_clk_source(spi->dev, new_clk_src ? SPI_CLK_SRC_SPLL : SPI_CLK_SRC_XTAL);
+      |                             ~~~^~~~~
+C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/hal/esp32p4/include/hal/spi_ll.h:203:90: note: in definition of macro 'spi_ll_set_clk_source'
+  203 | #define spi_ll_set_clk_source(...) (void)__DECLARE_RCC_ATOMIC_ENV; spi_ll_set_clk_source(__VA_ARGS__)
+      |                                                                                          ^~~~~~~~~~~
+C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/hal/esp32p4/include/hal/spi_ll.h:177:53: note: expected 'spi_dev_t *' but argument is of type 'volatile spi_dev_t *'
+  177 | static inline void spi_ll_set_clk_source(spi_dev_t *hw, spi_clock_source_t clk_source)
+      |                                          ~~~~~~~~~~~^~
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\wiring_pulse.c.o
+Compiling .pio\build\guition_m23_synth\FrameworkArduino\wiring_shift.c.o
+Archiving .pio\build\guition_m23_synth\libFrameworkArduino.a
+Indexing .pio\build\guition_m23_synth\libFrameworkArduino.a
+Linking .pio\build\guition_m23_synth\firmware.elf
+Firmware metrics can not be shown. Set the terminal codepage to "utf-8" or "cp65001" on Windows.
+Retrieving maximum program size .pio\build\guition_m23_synth\firmware.elf
+Checking size .pio\build\guition_m23_synth\firmware.elf
+Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
+RAM:   [==        ]  20.4% (used 66836 bytes from 327680 bytes)
+Flash: [=         ]  12.1% (used 792084 bytes from 6553600 bytes)
+Building .pio\build\guition_m23_synth\firmware.bin
+esptool v5.1.0
+Creating ESP32P4 image...
+Merged 5 ELF sections.
+Successfully created ESP32P4 image.
+========================= [SUCCESS] Took 35.39 seconds =========================
+
+Environment         Status    Duration
+------------------  --------  ------------
+guition_m23_midi    SUCCESS   00:00:32.065
+guition_m23_sample  SUCCESS   00:00:48.163
+guition_m23_synth   SUCCESS   00:00:35.392
+========================= 3 succeeded in 00:01:55.620 =========================

@@ -1,0 +1,1291 @@
+# HOST INDEX
+[Q COMMAND] INDEX
+[M213 index] index=0 name=m19p_impulses.wav
+[M213 index] index=1 name=m19p_kick.wav
+[M213 index] index=2 name=m19p_snare.wav
+[M213 index] index=3 name=m19p_mixed.wav
+[M213 index] index=4 name=m19p_stereo.wav
+[M213 index] index=5 name=m19p_large.wav
+[M213 index] index=6 name=m19p_bad_depth.wav
+[M213 index] index=7 name=m19p_truncated.wav
+[M213 index] index=8 name=m19p_oneshot.wav
+[M213 index] index=9 name=M23_BASS_PLUCK_A1.wav
+[M213 index] index=10 name=M23_BASS_PLUCK_C2.wav
+[M213 index] index=11 name=M23_BASS_PLUCK_E2.wav
+[M213 index] index=12 name=M23_BASS_PLUCK_G2.wav
+[M213 index] index=13 name=M23_BELL_C4.wav
+[M213 index] index=14 name=M23_CHORD_CMAJ.wav
+[M213 index] index=15 name=M23_CLAP_01.wav
+[M213 index] index=16 name=M23_CLAP_02.wav
+[M213 index] index=17 name=M23_HAT_CLOSED_ACOUSTIC_01.wav
+[M213 index] index=18 name=M23_HAT_CLOSED_ACOUSTIC_02.wav
+[M213 index] index=19 name=M23_HAT_CLOSED_ELECTRO_01.wav
+[M213 index] index=20 name=M23_HAT_CLOSED_ELECTRO_02.wav
+[M213 index] index=21 name=M23_HAT_OPEN_01.wav
+[M213 index] index=22 name=M23_HAT_OPEN_02.wav
+[M213 index] index=23 name=M23_KICK_ELECTRO_01.wav
+[M213 index] index=24 name=M23_KICK_ELECTRO_02.wav
+[M213 index] index=25 name=M23_KICK_ELECTRO_03.wav
+[M213 index] index=26 name=M23_KICK_MODEL_01.wav
+[M213 index] index=27 name=M23_LOOP_100BPM_01.wav
+[M213 index] index=28 name=M23_LOOP_120BPM_01.wav
+[M213 index] index=29 name=M23_MALLET_C4.wav
+[M213 index] index=30 name=M23_PERC_AGOGO.wav
+[M213 index] index=31 name=M23_PERC_COWBELL.wav
+[M213 index] index=32 name=M23_PERC_DJEMBE.wav
+[M213 index] index=33 name=M23_PERC_TRIANGLE.wav
+[M213 index] index=34 name=M23_PLUCK_G3.wav
+[M213 index] index=35 name=M23_RIM_01.wav
+[M213 index] index=36 name=M23_RIM_02.wav
+[M213 index] index=37 name=M23_SHAKER_01.wav
+[M213 index] index=38 name=M23_SHAKER_SYNTH_01.wav
+[M213 index] index=39 name=M23_SNARE_ACOUSTIC_01.wav
+[M213 index] index=40 name=M23_SNARE_ACOUSTIC_02.wav
+[M213 index] index=41 name=M23_SNARE_ELECTRO_01.wav
+[M213 index] index=42 name=M23_SNARE_ELECTRO_02.wav
+[M213 index] index=43 name=M23_TAMBOURINE_01.wav
+[M213 index] index=44 name=M23_TEXTURE_AMIN.wav
+[M213 index] index=45 name=M23_TEXTURE_CMAJ.wav
+[M213 index] index=46 name=M23_TOM_HIGH.wav
+[M213 index] index=47 name=M23_TOM_LOW.wav
+[M213 index] index=48 name=M23_TOM_MID.wav
+[M213 index] index=49 name=M23_VOCAL_SYNTH_AH.wav
+[M213 index] index=50 name=M23_VOCAL_SYNTH_OH.wav
+# HOST LOAD 0 39
+[Q COMMAND] LOAD 0 39
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=0 waveform=5f6c8245 name=
+[M6 read] bytes=49230 read_us=93356 bytes_per_second=527336 origi# HOST TRACK 0
+nal_channels=1 rate=44100 total_psram=33554432
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=24615 waveform=4a4f177f name=M23_SNARE_ACOUSTIC_01.wav
+[M6 load] track=0 file_bytes=49274 pcm_bytes=49230 load_publish_us=624481 payload=49293 transient=49230 peak_payload=49293 ps_free=30703144 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=50180 status=READY
+[M213 address] track=0 pcm=0x482abe00 base=0x482abdfc bytes=49293 owner_usable_bytes=50164 frames=24615 mod64=0 mod128=0 mod256=0 mod4096=3584 mod131072=48640 external=1 requested_caps=1028 free=30703144 largest=30408692
+# HOST LOAD 0 40
+[Q COMMAND] LOAD 0 40
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=24615 waveform=4a4f177f name=M23_SNARE_ACOUSTIC_01.wav
+[M6 read] bytes=57416 read_us=109# HOST TRACK 0
+803 bytes_per_second=522900 original_channels=1 rate=44100 total_psram=33554432
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=28708 waveform=54fdc0b2 name=M23_SNARE_ACOUSTIC_02.wav
+[M6 load] track=0 file_bytes=57460 pcm_bytes=57416 load_publish_us=612920 payload=57479 transient=57416 peak_payload=106772 ps_free=30694952 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=8192 status=READY
+[M213 address] track=0 pcm=0x482b8200 base=0x482b8200 bytes=57479 owner_usable_bytes=58356 frames=28708 mod64=0 mod128=0 mod256=0 mod4096=512 mod131072=98816 external=1 requested_caps=1028 free=30694952 largest=30408692
+# HOST LOAD 0 17
+[Q COMMAND] LOAD 0 17
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=28708 waveform=54fdc0b2 name=M23_SNARE_ACOUSTIC_02.wav
+[M6 read] bytes=22874 read_us=43009 bytes_per_second=531842 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=22918 pcm_bytes=22874 load_publish_us=571018 payload=22937 transient=22874 peak_payload=80416 ps_free=30730280 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=-35328 status=READY
+[M213 address] track=0 pcm=0x482abe00 base=0x482abdfc bytes=22937 owner_usable_bytes=23028 frames# HOST TRACK 0
+=11437 mod64=0 mod128=0 mod256=0 mod4096=3584 mod131072=48640 external=1 requested_caps=1028 free=30730280 largest=30408692
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=11437 waveform=c6f25146 name=M23_HAT_CLOSED_ACOUSTIC_01.wav
+# HOST LOAD 0 18
+[Q COMMAND] LOAD 0 18
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=11437 waveform=c6f25146 name=M23_HAT_CLOSED_ACOUSTIC_01.wav
+[M6 read] bytes=65652 read_us=127907 bytes_per_second=513279 orig# HOST TRACK 0
+inal_channels=1 rate=44100 total_psram=33554432
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=32826 waveform=d41007c6 name=M23_HAT_CLOSED_ACOUSTIC_02.wav
+[M6 load] track=0 file_bytes=65696 pcm_bytes=65652 load_publish_us=633029 payload=65715 transient=65652 peak_payload=88652 ps_free=30685736 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=44544 status=READY
+[M213 address] track=0 pcm=0x482b1800 base=0x482b1800 bytes=65715 owner_usable_bytes=67572 frames=32826 mod64=0 mod128=0 mod256=0 mod4096=2048 mod131072=71680 external=1 requested_caps=1028 free=30685736 largest=30408692
+# HOST LOAD 0 47
+[Q COMMAND] LOAD 0 47
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=32826 waveform=d41007c6 name=M23_HAT_CLOSED_ACOUSTIC_02.wav
+[# HOST TRACK 0
+M6 read] bytes=106546 read_us=196464 bytes_per_second=542318 original_channels=1 rate=44100 total_psram=33554432
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=53273 waveform=82148776 name=M23_TOM_LOW.wav
+[M6 load] track=0 file_bytes=106590 pcm_bytes=106546 load_publish_us=633519 payload=106609 transient=106546 peak_payload=172324 ps_free=30644776 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=40960 status=READY
+[M213 address] track=0 pcm=0x482c2040 base=0x482c2004 bytes=106609 owner_usable_bytes=108532 frames=53273 mod64=0 mod128=64 mod256=64 mod4096=64 mod131072=8256 external=1 requested_caps=1028 free=30644776 largest=30408692
+# HOST LOAD 0 48
+[Q COMMAND] LOAD 0 48
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=53273 waveform=82148776 name=M23_TOM_LOW.wav
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=53273 waveform=82148776 name=M23_TOM_LOW.wav
+[M6 read] bytes=200984 read_us=378973 bytes_per_second=530338 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=201028 pcm_bytes=200984 load_publish_us=879982 payload=201047 transient=200984 peak_payload=307656 ps_free=30548520 largest=29884404 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=96256 status=READY
+[M213 address] track=0 pcm=0x482dc840 base=0x482dc808 bytes=201047 owner_usable_bytes=204788 frames=100492 mod64=0 mod128=64 mod256=64 mod4096=2112 mod131072=116# HOST TRACK 0
+800 external=1 requested_caps=1028 free=30548520 largest=29884404
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=100492 waveform=a8c67483 name=M23_TOM_MID.wav
+# HOST LOAD 0 46
+[Q COMMAND] LOAD 0 46
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=100492 waveform=a8c67483 name=M23_TOM_MID.wav
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=100492 waveform=a8c67483 name=M23_TOM_MID.wav
+[M6 read] bytes=175114 read_us=336682 bytes_per_second=520116 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=175158 pcm_bytes=175114 load_publish_us=838822 payload=175177 transient=175114 peak_payload=376224 ps_free=30577192 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=-28672 status=READY
+[M213 address] track=0 pcm=0x482abe00 base=0x482abdfc bytes=175177 owner_usable_bytes=176116 frames=87557 mod64=0 mod128=0 mod256=0 mod4096=3584 mod131072=48640 external=1 requested_caps=1028 free=30577192 largest=30408692
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=87557 waveform=681d45b8 name=M23_TOM_HIGH.wav
+# HOST LOAD 0 43
+[Q COMMAND] LOAD 0 43
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=87557 waveform=681d45b8 name=M23_TOM_HIGH.wav
+[M6 read] bytes=63214 read_us=117017 bytes_per_second=540212 ori# HOST TRACK 0
+ginal_channels=1 rate=44100 total_psram=33554432
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=31607 waveform=08b29946 name=M23_TAMBOURINE_01.wav
+[M6 load] track=0 file_bytes=63258 pcm_bytes=63214 load_publish_us=648134 payload=63277 transient=63214 peak_payload=238454 ps_free=30689832 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=-112640 status=READY
+[M213 address] track=0 pcm=0x482d6e00 base=0x482d6e00 bytes=63277 owner_usable_bytes=63476 frames=31607 mod64=0 mod128=0 mod256=0 mod4096=3584 mod131072=93696 external=1 requested_caps=1028 free=30689832 largest=30408692
+# HOST LOAD 0 33
+[Q COMMAND] LOAD 0 33
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=31607 waveform=08b29946 name=M23_TAMBOURINE_01.wav
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=31607 waveform=08b29946 name=M23_TAMBOURINE_01.wav
+[M6 read] bytes=260244 read_us=499858 bytes_per_second=520635 or# HOST TRACK 0
+iginal_channels=1 rate=44100 total_psram=33554432
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=130122 waveform=19ec6c30 name=M23_PERC_TRIANGLE.wav
+[M6 load] track=0 file_bytes=260288 pcm_bytes=260244 load_publish_us=1001979 payload=260307 transient=260244 peak_payload=323584 ps_free=30491176 largest=29884404 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=198656 status=READY
+[M213 address] track=0 pcm=0x482e6640 base=0x482e6604 bytes=260307 owner_usable_bytes=262132 frames=130122 mod64=0 mod128=64 mod256=64 mod4096=1600 mod131072=26176 external=1 requested_caps=1028 free=30491176 largest=29884404
+# HOST LOAD 0 30
+[Q COMMAND] LOAD 0 30
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=130122 waveform=19ec6c30 name=M23_PERC_TRIANGLE.wav
+[M6 read] bytes=43664 read_us=86827 bytes_per_second=502885 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=43708 pcm_bytes=43664 load_publish_us=582116 payload=43727 transient=43664 peak_payload=304034 ps_free=30709288 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[# HOST TRACK 0
+M6.1 replacement] retired_clear=1 ps_delta=-218112 status=READY
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=21832 waveform=e5795ef3 name=M23_PERC_AGOGO.wav
+[M213 address] track=0 pcm=0x482abe00 base=0x482abdfc bytes=43727 owner_usable_bytes=44020 frames=21832 mod64=0 mod128=0 mod256=0 mod4096=3584 mod131072=48640 external=1 requested_caps=1028 free=30709288 largest=30408692
+# HOST LOAD 0 32
+[Q COMMAND] LOAD 0 32
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=21832 waveform=e5795ef3 name=M23_PERC_AGOGO.wav
+[M6 read] bytes=70636 read_us=130794 bytes_per_second=540055 original_channels=1 rate=44100 total_psram=33554432
+[# HOST TRACK 0
+M6 load] track=0 file_bytes=70680 pcm_bytes=70636 load_publish_us=632479 payload=70699 transient=70636 peak_payload=114426 ps_free=30681640 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=35318 waveform=464b8f87 name=M23_PERC_DJEMBE.wav
+[M6.1 replacement] retired_clear=1 ps_delta=27648 status=READY
+[M213 address] track=0 pcm=0x482b6a00 base=0x482b6a00 bytes=70699 owner_usable_bytes=71668 frames=35318 mod64=0 mod128=0 mod256=0 mod4096=2560 mod131072=92672 external=1 requested_caps=1028 free=30681640 largest=30408692
+# HOST LOAD 0 23
+[Q COMMAND] LOAD 0 23
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=35318 waveform=464b8f87 name=M23_PERC_DJEMBE.wav
+[M6 read] bytes=24820 read_us=47494 bytes_per_second=522592 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=24864 pcm_bytes=24820 load_publish_us=551502 payload=24883 transient=24820 peak_payload=95582 ps_free=30728232 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=-46592 status=READY
+[M213 address] track=0 pcm=0x482abe00 base=0x482abdfc bytes=24883 owner_usable_bytes=25076 frames=12410 mod64=0 mod128=0 mod256=0 mod4096=3584 mod131072=48640 ex# HOST TRACK 0
+ternal=1 requested_caps=1028 free=30728232 largest=30408692
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=12410 waveform=bca71255 name=M23_KICK_ELECTRO_01.wav
+# HOST LOAD 0 24
+[Q COMMAND] LOAD 0 24
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=12410 waveform=bca71255 name=M23_KICK_ELECTRO_01.wav
+[M6 read] bytes=13366 read_us=24780 bytes_per_second=539386 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=13410 pcm_bytes=13366 load_publish_us=524788 payload=13429 transient=13366 peak_payload=38312 ps_free=30739752 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=-11520 status=READY
+[M213 address] track=0 pcm=0x482b2000 base=0x482b2000 bytes=13429 owner_usable_bytes=13556 frames=6683 mod64=0 mod128=0 mod256=0 mod4096=0 mod131072=73728 external=1 requested_caps=1028 free=30739752 largest=30408692
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=6683 waveform=b7cd8960 name=M23_KICK_ELECTRO_02.wav
+# HOST LOAD 0 25
+[Q COMMAND] LOAD 0 25
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=6683 waveform=b7cd8960 name=M23_KICK_ELECTRO_02.wav
+[M6 read] bytes=26186 read_us=46775 bytes_per_second=559828 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=26230 pcm_bytes=26186 load_publish_us=549784 payload=26249 transient=26186 peak_payload=39678 ps_free=30726696 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=13056 status=READY
+[M213 address] track=0 pcm=0x482b5540 base=0x482b5504 bytes=26249 owner_usable_bytes=26612 frames=13093 mod64=0 mod128=64 mod256=64 mod4096=1344 mod131072=87360 external=1 requested_caps=1028 free=30726696 largest=30408692
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=13093 waveform=fd20ad62 name=M23_KICK_ELECTRO_03.wav
+# HOST LOAD 0 41
+[Q COMMAND] LOAD 0 41
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=13093 waveform=fd20ad62 name=M23_KICK_ELECTRO_03.wav
+[M6 read] bytes=33296 read_us=66147 bytes_per_second=503363 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=33340 pcm_bytes=33296 load_publish_us=570807 payload=33359 transient=33296 peak_payload=59608 ps_free=30719528 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=7168 status=READY
+[M213 address] track=0 pcm=0x482abe00 base=0x482abdfc bytes=33359 owner_usable_bytes=33780 frames# HOST TRACK 0
+=16648 mod64=0 mod128=0 mod256=0 mod4096=3584 mod131072=48640 external=1 requested_caps=1028 free=30719528 largest=30408692
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=16648 waveform=948822fe name=M23_SNARE_ELECTRO_01.wav
+# HOST LOAD 0 42
+[Q COMMAND] LOAD 0 42
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=16648 waveform=948822fe name=M23_SNARE_ELECTRO_01.wav
+[M6 read] bytes=12700 read_us=22809 bytes_per_second=556797 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=12744 pcm_bytes=12700 load_publish_us=553817 payload=12763 transient=12700 peak_payload=46122 ps_free=30740520 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=-20992 status=READY
+[M213 address] track=0 pcm=0x482b4200 base=0x482b4200 bytes=12763 owner_usable_bytes=12788 frames=6350 mod64=0 mod128=0 mod256=0 mod4096=512 mod131072=82432 external=1 requested_caps=1028 free=30740520 largest=30408692
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=6350 waveform=e73bb9c7 name=M23_SNARE_ELECTRO_02.wav
+# HOST LOAD 0 15
+[Q COMMAND] LOAD 0 15
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=6350 waveform=e73bb9c7 name=M23_SNARE_ELECTRO_02.wav
+[M6 read] bytes=37848 read_us=74555 bytes_per_second=507652 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=37892 pcm_bytes=37848 load_publish_us=574563 payload=37911 transient=37848 peak_payload=50674 ps_free=30714408 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=26112 status=READY
+[M213 address] track=0 pcm=0x482b7440 base=0x482b7404 bytes=37911 owner_usable_bytes=38900 frames=18924 mod64=0 mod128=64 mod256=64 mod4096=1088 mod131072=95296 # HOST TRACK 0
+external=1 requested_caps=1028 free=30714408 largest=30408692
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=18924 waveform=078c0165 name=M23_CLAP_01.wav
+# HOST LOAD 0 16
+[Q COMMAND] LOAD 0 16
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=18924 waveform=078c0165 name=M23_CLAP_01.wav
+[M6 read] bytes=10388 read_us=20958 bytes_per_second=495657 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=10432 pcm_bytes=10388 load_publish_us=525967 payload=10451 transient=10388 peak_payload=48362 ps_free=30742824 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=-28416 status=READY
+[M213 address] track=0 pcm=0x482abe00 base=0x482abdfc bytes=10451 owner_usable_bytes=10484 frames=5194 mod64=0 mod128=0 mod256=0 mod4096=3584 mod131072=48640 external=1 requested_caps=1028 free=30742824 largest=30408692
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=5194 waveform=369f7261 name=M23_CLAP_02.wav
+# HOST LOAD 0 35
+[Q COMMAND] LOAD 0 35
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=5194 waveform=369f7261 name=M23_CLAP_02.wav
+[M6 read] bytes=10854 read_us=19724 bytes_per_second=550294 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=10898 pcm_bytes=10854 load_publish_us=522732 payload=10917 transient=10854 peak_payload=21368 ps_free=30742312 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=512 status=READY
+[M213 address] track=0 pcm=0x482ae700 base=0x482ae700 bytes=10917 owner_usable_bytes=10996 frames=5427 mod64=0 mod128=0 mod256=0 mod4096=1792 mod131072=59136 external=1 requested_caps=1028 free=30742312 largest=30408692
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=5427 waveform=55b96894 name=M23_RIM_01.wav
+# HOST LOAD 0 36
+[Q COMMAND] LOAD 0 36
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=5427 waveform=55b96894 name=M23_RIM_01.wav
+[M6 read] bytes=1630 read_us=2510 bytes_per_second=649402 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=1674 pcm_bytes=1630 load_publish_us=503983 payload=1693 transient=1630 peak_payload=12610 ps_free=30751592 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=-9280 status=READY
+[M213 address] track=0 pcm=0x482abe00 base=0x482abdfc bytes=1693 owner_usable_bytes=1716 frames=815 mod64=0 mod128=0 mod256=0 mod4096=3584 mod131072=48640 external=1 requested_caps=1028 free=30751592 largest=30408692
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=815 waveform=0416f8c8 name=M23_RIM_02.wav
+# HOST LOAD 0 19
+[Q COMMAND] LOAD 0 19
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=815 waveform=0416f8c8 name=M23_RIM_02.wav
+[M6 read] bytes=26608 read_us=49439 bytes_per_second=538198 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=26652 pcm_bytes=26608 load_publish_us=575447 payload=26671 transient=26608 peak_payload=28364 ps_free=30726184 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=25408 status=READY
+[M213 address] track=0 pcm=0x482ac4c0 base=0x482ac4c0 bytes=26671 owner_usable_bytes=27124 frames=13304 mod64=0 mod128=64 mod256=192 mod4096=1216 mod131072=50368 external=1 requested_caps=1028 # HOST TRACK 0
+free=30726184 largest=30408692
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=13304 waveform=d8c2cc2c name=M23_HAT_CLOSED_ELECTRO_01.wav
+# HOST LOAD 0 20
+[Q COMMAND] LOAD 0 20
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=13304 waveform=d8c2cc2c name=M23_HAT_CLOSED_ELECTRO_01.wav
+[M6 read] bytes=3100 read_us=7078 bytes_per_second=437976 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=3144 pcm_bytes=3100 load_publish_us=510086 payload=3163 transient=3100 peak_payload=29834 ps_free=30750120 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=-23936 status=READY
+[M213 address] track=0 pcm=0x482b2f00 base=0x482b2ec4 bytes=3163 owner_usable_bytes=3188 frames=1550 mod64=0 mod128=0 mod256=0 mod4096=3840 mod131072=77568 external=1 requested_caps=1028 free=30750120 largest=30408692
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=1550 waveform=be12a6e8 name=M23_HAT_CLOSED_ELECTRO_02.wav
+# HOST LOAD 0 21
+[Q COMMAND] LOAD 0 21
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=1550 waveform=be12a6e8 name=M23_HAT_CLOSED_ELECTRO_02.wav
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=1550 waveform=be12a6e8 name=M23_HAT_CLOSED_ELECTRO_02.wav
+[M6 read] bytes=134264 read_us=258892 bytes_per_second=518610 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=134308 pcm_bytes=134264 load_publish_us=763083 payload=134327 transient=134264 peak_payload=137490 ps_free=30618152 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=131968 status=READY
+[M213 address] track=0 pcm=0x482b3b80 base=0x482b3b48 bytes=134327 owner_usable_bytes=135156 frames=67132 mod64=0 mod128=0 mod256=128 mod4096=2944 mod131072=80768 external=1 requested_caps=1028 free=30618152 largest=30408692
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=67132 waveform=cad693f8 name=M23_HAT_OPEN_01.wav
+# HOST LOAD 0 22
+[Q COMMAND] LOAD 0 22
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=67132 waveform=cad693f8 name=M23_HAT_OPEN_01.wav
+[M6 read] bytes=38514 read_us=73349 bytes_per_second=525078 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=38558 pcm_bytes=38514 load_publish_us=570419 payload=38577 transient=38514 peak_payload=172904 ps_free=30714408 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=-96256 status=READY
+[M213 address] track=0 pcm=0x482d4b80 base=0x482d4b4c bytes=38577# HOST TRACK 0
+ owner_usable_bytes=38900 frames=19257 mod64=0 mod128=0 mod256=128 mod4096=2944 mod131072=84864 external=1 requested_caps=1028 free=30714408 largest=30408692
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=19257 waveform=17064cb6 name=M23_HAT_OPEN_02.wav
+# HOST LOAD 0 37
+[Q COMMAND] LOAD 0 37
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=19257 waveform=17064cb6 name=M23_HAT_OPEN_02.wav
+[M6 read] bytes=2816 read_us=5786 bytes_per_second=486692 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=2860 pcm_bytes=2816 load_publish_us=506794 payload=2879 transient=2816 peak_payload=41456 ps_free=30750376 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=-35968 status=READY
+[M213 address] track=0 pcm=0x482abe00 base=0x482abdfc bytes=2879 owner_usable_bytes=2932 frames=1408 mod64=0 mod128=0 mod256=0 mod4096=3584 mod131072=48640 external=1 requested_caps=1028 free=30750376 largest=30408692
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=1408 waveform=ae1bb4a0 name=M23_SHAKER_01.wav
+# HOST LOAD 0 31
+[Q COMMAND] LOAD 0 31
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=1408 waveform=ae1bb4a0 name=M23_SHAKER_01.wav
+[M6 read] bytes=20592 read_us=34804 bytes_per_second=591656 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=20636 pcm_bytes=20592 load_publish_us=531519 payload=20655 transient=20592 peak_payload=23534 ps_free=30732328 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=18048 status=READY
+[M213 address] track=0 pcm=0x482ac980 base=0x482ac980 bytes=20655 owner_usable_bytes=20980 frames=10296 mod64=0 mod128=0 mod256=128 mod4096=2432 mod131072=51584 external=1 requested_caps=1028 free=30732328 largest=30408692
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=10296 waveform=25f1d581 name=M23_PERC_COWBELL.wav
+# HOST LOAD 0 26
+[Q COMMAND] LOAD 0 26
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=10296 waveform=25f1d581 name=M23_PERC_COWBELL.wav
+[M6 read] bytes=52920 read_us=101068 bytes_per_second=523607 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=5296# HOST TRACK 0
+4 pcm_bytes=52920 load_publish_us=606076 payload=52983 transient=52920 peak_payload=73638 ps_free=30700072 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=26460 waveform=293d376b name=M23_KICK_MODEL_01.wav
+[M6.1 replacement] retired_clear=1 ps_delta=32256 status=READY
+[M213 address] track=0 pcm=0x482b1bc0 base=0x482b1b84 bytes=52983 owner_usable_bytes=53236 frames=26460 mod64=0 mod128=64 mod256=192 mod4096=3008 mod131072=72640 external=1 requested_caps=1028 free=30700072 largest=30408692
+# HOST LOAD 0 38
+[Q COMMAND] LOAD 0 38
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=26460 waveform=293d376b name=M23_KICK_MODEL_01.wav
+[M6 read] bytes=29686 read_us=56511 bytes_per_second=525313 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=29730 pcm_bytes=29686 load_publish_us=559519 payload=29749 transient=29686 peak_payload=82732 ps_free=30723112 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=-23040 status=READY
+[M213 address] track=0 pcm=0x482bebc0 base=0x482beb88 bytes=29749 owner_usable_bytes=30196 frames=14843 mod64=0 mod128=64 mod256=# HOST TRACK 0
+192 mod4096=3008 mod131072=125888 external=1 requested_caps=1028 free=30723112 largest=30408692
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=14843 waveform=7bc8a325 name=M23_SHAKER_SYNTH_01.wav
+# HOST LOAD 0 10
+[Q COMMAND] LOAD 0 10
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=14843 waveform=7bc8a325 name=M23_SHAKER_SYNTH_01.wav
+# HOST TRACK 0
+[M6 read] bytes=105840 read_us=203095 bytes_per_second=521135 original_channels=1 rate=44100 total_psram=33554432
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=52920 waveform=243ebbb5 name=M23_BASS_PLUCK_C2.wav
+[M6 load] track=0 file_bytes=105884 pcm_bytes=105840 load_publish_us=705299 payload=105903 transient=105840 peak_payload=135652 ps_free=30646824 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=76288 status=READY
+[M213 address] track=0 pcm=0x482c61c0 base=0x482c618c bytes=105903 owner_usable_bytes=106484 frames=52920 mod64=0 mod128=64 mod256=192 mod4096=448 mod131072=25024 external=1 requested_caps=1028 free=30646824 largest=30408692
+# HOST LOAD 0 11
+[Q COMMAND] LOAD 0 11
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=52920 waveform=243ebbb5 name=M23_BASS_PLUCK_C2.wav
+# HOST TRACK 0
+[M6 read] bytes=105840 read_us=203506 bytes_per_second=520082 original_channels=1 rate=44100 total_psram=33554432
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=52920 waveform=56a7857b name=M23_BASS_PLUCK_E2.wav
+[M6 load] track=0 file_bytes=105884 pcm_bytes=105840 load_publish_us=705631 payload=105903 transient=105840 peak_payload=211806 ps_free=30646824 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=0 pcm=0x482abe00 base=0x482abdfc bytes=105903 owner_usable_bytes=106484 frames=52920 mod64=0 mod128=0 mod256=0 mod4096=3584 mod131072=48640 external=1 requested_caps=1028 free=30646824 largest=30408692
+# HOST LOAD 0 12
+[Q COMMAND] LOAD 0 12
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=52920 waveform=56a7857b name=M23_BASS_PLUCK_E2.wav
+# HOST TRACK 0
+[M6 read] bytes=105840 read_us=197558 bytes_per_second=535741 original_channels=1 rate=44100 total_psram=33554432
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=52920 waveform=4f3b0d75 name=M23_BASS_PLUCK_G2.wav
+[M6 load] track=0 file_bytes=105884 pcm_bytes=105840 load_publish_us=660634 payload=105903 transient=105840 peak_payload=211806 ps_free=30646824 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=0 pcm=0x482c5e00 base=0x482c5e00 bytes=105903 owner_usable_bytes=106484 frames=52920 mod64=0 mod128=0 mod256=0 mod4096=3584 mod131072=24064 external=1 requested_caps=1028 free=30646824 largest=30408692
+# HOST LOAD 0 9
+[Q COMMAND] LOAD 0 9
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=52920 waveform=4f3b0d75 name=M23_BASS_PLUCK_G2.wav
+[M6 read] bytes=105840 read_us=201863 bytes_per_second=524315 or# HOST TRACK 0
+iginal_channels=1 rate=44100 total_psram=33554432
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=52920 waveform=39909260 name=M23_BASS_PLUCK_A1.wav
+[M6 load] track=0 file_bytes=105884 pcm_bytes=105840 load_publish_us=702984 payload=105903 transient=105840 peak_payload=211806 ps_free=30646824 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=0 pcm=0x482abe00 base=0x482abdfc bytes=105903 owner_usable_bytes=106484 frames=52920 mod64=0 mod128=0 mod256=0 mod4096=3584 mod131072=48640 external=1 requested_caps=1028 free=30646824 largest=30408692
+# HOST LOAD 0 29
+[Q COMMAND] LOAD 0 29
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=52920 waveform=39909260 name=M23_BASS_PLUCK_A1.wav
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=52920 waveform=39909260 name=M23_BASS_PLUCK_A1.wav
+[M6 read] bytes=158760 read_us=302276 bytes_per_second=525215 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=158804 pcm_bytes=158760 load_publish_us=801264 payload=158823 transient=158760 peak_payload=264726 ps_free=30593576 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=53248 status=READY
+[M213 address] track=0 pcm=0x482c5e00 base=0x482c5e00 bytes=158823 owner_usable_bytes=159732 frames=79380 mod64=0 mod128=0 mod256=0 mod4096=3584 mod131072=24064 external=1 requested_caps=1028 free=30593576 largest=30408692
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=79380 waveform=7fa1ad38 name=M23_MALLET_C4.wav
+# HOST LOAD 0 13
+[Q COMMAND] LOAD 0 13
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=79380 waveform=7fa1ad38 name=M23_MALLET_C4.wav
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=79380 waveform=7fa1ad38 name=M23_MALLET_C4.wav
+[M6 read] bytes=158760 read_us=309229 bytes_per_second=513405 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=158804 pcm_bytes=158760 load_publish_us=808075 payload=158823 transient=158760 peak_payload=317646 ps_free=30593576 largest=29884404 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=0 pcm=0x482ece40 base=0x482ece04 bytes=158823 owner_usable_bytes=159732 frames=79380 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=52800 external=1 requested_caps=1028 free=30593576 largest=29884404
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=79380 waveform=4bd93bce name=M23_BELL_C4.wav
+# HOST LOAD 0 34
+[Q COMMAND] LOAD 0 34
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=79380 waveform=4bd93bce name=M23_BELL_C4.wav
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=79380 waveform=4bd93bce name=M23_BELL_C4.wav
+[M6 read] bytes=158760 read_us=296459 bytes_per_second=535520 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=158804 pcm_bytes=158760 load_publish_us=801467 payload=158823 transient=158760 peak_payload=317646 ps_free=30593576 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=0 pcm=0x482abe00 base=0x482abdfc bytes=158823 owner_usable_bytes=159732 frames=79380 mod64=0 mod128=0 mod256=0 mod4096=3584 mod131072=48640 external=1 requested_caps=1028 free=30593576 largest=30408692
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=79380 waveform=29afebb3 name=M23_PLUCK_G3.wav
+# HOST LOAD 0 14
+[Q COMMAND] LOAD 0 14
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=79380 waveform=29afebb3 name=M23_PLUCK_G3.wav
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=79380 waveform=29afebb3 name=M23_PLUCK_G3.wav
+[M6 read] bytes=158760 read_us=314484 bytes_per_second=504826 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=158804 pcm_bytes=158760 load_publish_us=813321 payload=158823 transient=158760 peak_payload=317646 ps_free=30593576 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=0 pcm=0x482d2e00 base=0x482d2e00 bytes=158823 owner_usable_bytes=159732 frames=79380 mod64=0 mod128=0 mod256=0 mod4096=3584 mod131072=77312 external=1 requested_caps=1028 free=30593576 largest=30408692
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=79380 waveform=f1cae78e name=M23_CHORD_CMAJ.wav
+# HOST LOAD 0 45
+[Q COMMAND] LOAD 0 45
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=79380 waveform=f1cae78e name=M23_CHORD_CMAJ.wav
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=79380 waveform=f1cae78e name=M23_CHORD_CMAJ.wav
+[M6 read] bytes=258634 read_us=5# HOST TRACK 0
+02662 bytes_per_second=514528 original_channels=1 rate=44100 total_psram=33554432
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=129317 waveform=1314c91e name=M23_TEXTURE_CMAJ.wav
+[M6 load] track=0 file_bytes=258678 pcm_bytes=258634 load_publish_us=1004770 payload=258697 transient=258634 peak_payload=417520 ps_free=30491176 largest=29884404 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=102400 status=READY
+[M213 address] track=0 pcm=0x482f9e40 base=0x482f9e04 bytes=258697 owner_usable_bytes=262132 frames=129317 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=106048 external=1 requested_caps=1028 free=30491176 largest=29884404
+# HOST LOAD 0 44
+[Q COMMAND] LOAD 0 44
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=129317 waveform=1314c91e name=M23_TEXTURE_CMAJ.wav
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=129317 waveform=1314c91e name=M23_TEXTURE_CMAJ.wav
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=129317 waveform=1314c91e name=M23_TEXTURE_CMAJ.wav
+[M6 read] bytes=257596 read_us=503000 bytes_per_second=512119 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=257640 pcm_bytes=257596 load_publish_us=1009462 payload=257659 transient=257596 peak_payload=516356 ps_free=30495272 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=-4096 status=READY
+[M213 address] track=0 pcm=0x482abe00 base=0x482abdfc bytes=257659 owner_usable_bytes=258036 frames=128798 mod64=0 mod128=0 mod256=0 mod4096=3584 mod131072=48640 external=1 requested_caps=1028 free=30495272 largest=30408692
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=128798 waveform=48cb0f3b name=M23_TEXTURE_AMIN.wav
+# HOST LOAD 0 49
+[Q COMMAND] LOAD 0 49
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=128798 waveform=48cb0f3b name=M23_TEXTURE_AMIN.wav
+[M6 read] bytes=79380 read_us=147529 bytes_per_second=538063 ori# HOST TRACK 0
+ginal_channels=1 rate=44100 total_psram=33554432
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=39690 waveform=13273016 name=M23_VOCAL_SYNTH_AH.wav
+[M6 load] track=0 file_bytes=79424 pcm_bytes=79380 load_publish_us=681649 payload=79443 transient=79380 peak_payload=337102 ps_free=30673448 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=-178176 status=READY
+[M213 address] track=0 pcm=0x482eae00 base=0x482eae00 bytes=79443 owner_usable_bytes=79860 frames=39690 mod64=0 mod128=0 mod256=0 mod4096=3584 mod131072=44544 external=1 requested_caps=1028 free=30673448 largest=30408692
+# HOST LOAD 0 50
+[Q COMMAND] LOAD 0 50
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=39690 waveform=13273016 name=M23_VOCAL_SYNTH_AH.wav
+[M6 read] bytes=79380 read_us=152783 bytes_per_second=519560 ori# HOST TRACK 0
+ginal_channels=1 rate=44100 total_psram=33554432
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=39690 waveform=59a41b6d name=M23_VOCAL_SYNTH_OH.wav
+[M6 load] track=0 file_bytes=79424 pcm_bytes=79380 load_publish_us=679954 payload=79443 transient=79380 peak_payload=158886 ps_free=30673448 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=0 status=READY
+[M213 address] track=0 pcm=0x482abe00 base=0x482abdfc bytes=79443 owner_usable_bytes=79860 frames=39690 mod64=0 mod128=0 mod256=0 mod4096=3584 mod131072=48640 external=1 requested_caps=1028 free=30673448 largest=30408692
+# HOST LOAD 0 27
+[Q COMMAND] LOAD 0 27
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=39690 waveform=59a41b6d name=M23_VOCAL_SYNTH_OH.wav
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=39690 waveform=59a41b6d name=M23_VOCAL_SYNTH_OH.wav
+[M6 read] bytes=211680 read_us=405088 bytes_per_second=522553 original_channels=1 rate=44100 total_psram=33554432
+[# HOST TRACK 0
+M6 load] track=0 file_bytes=211724 pcm_bytes=211680 load_publish_us=906357 payload=211743 transient=211680 peak_payload=291186 ps_free=30540328 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=105840 waveform=aa48aac3 name=M23_LOOP_100BPM_01.wav
+[M6.1 replacement] retired_clear=1 ps_delta=133120 status=READY
+[M213 address] track=0 pcm=0x482bf600 base=0x482bf600 bytes=211743 owner_usable_bytes=212980 frames=105840 mod64=0 mod128=0 mod256=0 mod4096=1536 mod131072=128512 external=1 requested_caps=1028 free=30540328 largest=30408692
+# HOST LOAD 0 28
+[Q COMMAND] LOAD 0 28
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=105840 waveform=aa48aac3 name=M23_LOOP_100BPM_01.wav
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=105840 waveform=aa48aac3 name=M23_LOOP_100BPM_01.wav
+[M6 read] bytes=176400 read_us=335008 bytes_per_second=526554 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=176444 pcm_bytes=176400 load_publish_us=836072 payload=176463 transient=176400 peak_payload=388206 ps_free=30573096 largest=29884404 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=-32768 status=READY
+[M213 address] track=0 pcm=0x482f3640 base=0x482f3604 bytes=176463 owner_usable_bytes=180212 frames=88200 mod64=0 mod128=64 mod256=64 mod4096=1600 mod131072=79424 external=1 requested_caps=1028 free=30573096 largest=29884404
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=88200 waveform=e761231d name=M23_LOOP_120BPM_01.wav
+# HOST LOAD 0 26
+[Q COMMAND] LOAD 0 26
+[Q ACK] load=1
+# HOST TRACK 0
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=88200 waveform=e761231d name=M23_LOOP_120BPM_01.wav
+[M6 read] bytes=52920 read_us=100491 bytes_per_second=526614 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=0 file_bytes=5296# HOST TRACK 0
+4 pcm_bytes=52920 load_publish_us=605499 payload=52983 transient=52920 peak_payload=229446 ps_free=30700072 largest=30408692 internal=189656 display=2304000 fx_delay=352800 reserve=4194304
+[Q COMMAND] TRACK 0
+[M23 TRACK] track=0 frames=26460 waveform=293d376b name=M23_KICK_MODEL_01.wav
+[M6.1 replacement] retired_clear=1 ps_delta=-126976 status=READY
+[M213 address] track=0 pcm=0x482abe00 base=0x482abdfc bytes=52983 owner_usable_bytes=53236 frames=26460 mod64=0 mod128=0 mod256=0 mod4096=3584 mod131072=48640 external=1 requested_caps=1028 free=30700072 largest=30408692
+# HOST LOAD 1 23
+[Q COMMAND] LOAD 1 23
+[Q ACK] load=1
+# HOST TRACK 1
+[Q COMMAND] TRACK 1
+[M23 TRACK] track=1 frames=0 waveform=5f6c8245 name=
+[M6 read] bytes=24820 read_us=46586 bytes_per_second=532778 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=1 file_bytes=24864 pcm_bytes=24820 load_publish_us=547594 payload=77930 transient=24820 peak_payload=77930 ps_free=30674980 largest=30408692 internal=188052 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=25092 status=READY
+[M213 address] track=1 pcm=0x482b8e40 base=0x482b8e00 bytes=24947 owner_usable_bytes=25076 frames=12410 mod64=0 mod128=64 mod256=64 mod4096=3648 mod131072=101952 external=1 requested_caps=1028 # HOST TRACK 1
+free=30674980 largest=30408692
+[Q COMMAND] TRACK 1
+[M5] blocks=10337 p50=1707 p95=1836 p99=1864 max=1944 misses=0 failures=0 timeouts=0 peak=0 nonzero=0 rails=0 active_min=0 active_max=0
+[M8 groove] parents=0 passed=0 skipped=0 ratchets=0 pending_max=0 velocity_min=127 velocity_max=0 swing_changes=0
+[MEM] M8 after 60s PSRAM total=33554432 free=30674980 largest=30408692 internal_free=188052
+[M10 locks] locked=0 unlocked=0 pitch=0 volume=0 pan=0 wave=0 pattern_bytes=3106 bank_bytes=49696 engine_bytes=52616
+[M11 tone] cutoff=0 resonance=0 send=0 cutoff_min=127 cutoff_max=0 resonance_min=127 resonance_max=0 send_min=127 send_max=0 blocks=0 max=0 dense=0 dense_max=0
+[M23 TRACK] track=1 frames=12410 waveform=bca71255 name=M23_KICK_ELECTRO_01.wav
+[M12 locks] cutoff=0 resonance=0 send=0 coefficients=0 avoided=43 send_changes=0 coefficient_blocks=0 coefficient_max=0 edit_blocks=0 edit_max=0 commands=0 step_bytes=9 event_bytes=20 voice_bytes=384 idle_residue=0
+[M17 chain] starts=0 advances=0 repeats=0 loops=0 stops=0 switches=0 min_length=16 max_length=0 boundary_max=0 seen=0 entry_bytes=2 chain_bytes=66 engine_bytes=52616
+[M18 performance] override_requests=0 override_accepts=0 override_loops=0 override_cancels=0 returns=0 fill_requests=0 fill_accepts=0 fill_completions=0 fill_to_override=0 fill_to_arrangement=0 mute_edits=0 solo_edits=0 boundaries=0 boundary_max=0 state_bytes=352 engine_bytes=52616 publication_bytes=24
+[M181 repeat] requests=0 accepts=0 cancelled=0 x2_windows=0 x4_windows=0 x8_windows=0 hits=0 x8_hits=0 changes=0 releases=0 empty=0 captured_max=0 suppressed=0 worst=0 capture_bytes=324 repeat_bytes=336
+[M181 x8] blocks=0 worst=0 active_min=0 active_max=0 coefficients=0 avoided=0 chokes=0 full_blocks=0
+[M181 runtime] requested=0 active=0 count=0 ui_presses=0 ui_releases=0 ui_edits=0
+[M18 runtime] override_target=0 override_active=0 fill_pending=0 fill_active=0 return_pattern=0 return_end=0 mutes=0 solos=0 ui_bytes=116
+[M19 analysis] requests=0 completed=0 cancelled=0 stale_discarded=0 frames=0 candidates=0 selected=0 proposals=0 apply=0 cancel=0 min_count=0 max_count=0 sensitivity=0 target=0 duration_max_us=0 chunk_max_us=0
+[M19 overlap] blocks=0 worst=0 misses=0 x8_blocks=0 ui_interval_max_us=0 detector_bytes=616 candi# HOST LOAD 2 39
+date_bytes=512 proposal_bytes=84 status_bytes=100 storage_stack=7000 stack_free_min=0
+[M18 UI] entries=0 pads=0 fills=0 toggles=0 switches=0
+[Q COMMAND] LOAD 2 39
+[M17 UI] entries=0 edits=0 rows=0 scrolls=0
+[Q ACK] load=1
+[M16 project] state_bytes=53192 file_bytes=52704 snapshot_blocks=0 snapshot_max=0 apply_blocks=0 apply_max=0 fixtures=0 fixture_errors=0 dirty=1 physical_pending=1
+[M13 dense] blocks=2068 active_min=0
+[M13 playback] triggers=0 reverse=0 gate=0 releases=0 ends=0 choke_ops=0 choked=0 retriggers=0 region_min=0 region_max=0 max=1944 choke_max=0 retrigger_max=0 voice_bytes=64 track_bytes=116 event_bytes=20
+[M15 locks] locked=0 unlocked=0 unsliced=0 requested_min=0 requested_max=0 resolved_min=0 resolved_max=0 clamped=0 edits=0 ui_edits=0 align=1 requested_seen=0 resolved_seen=0
+[M14 slices] triggers=0 auditions=0 index_min=0 index_max=0 frames_min=0 frames_max=0 active_changes=0 divides=0 adds=0 deletes=0 resets=0 edit_blocks=0 edit_max=0 slice_bytes=4 bank_bytes=66 sample_bytes=1556
+[M10 worst] blocks=0 max=0
+[M9 tools] rotate=0 reverse=0 copy_track=0 clear_track=0 duplicate=0 euclidean=0 randomize=0 mutate=0 reroll=0 blocks=0 dense_blocks=0 max=0
+# HOST TRACK 2
+[Q COMMAND] TRACK 2
+[M23 TRACK] track=2 frames=0 waveform=5f6c8245 name=
+[M6 read] bytes=49230 read_us=95363 bytes_per_second=516237 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=2 file_bytes=49274 pcm_bytes=49230 load_publish_us=593371 payload=127351 transien# HOST TRACK 2
+t=49230 peak_payload=127351 ps_free=30624800 largest=30408692 internal=186448 display=2304000 fx_delay=352800 reserve=4194304
+[Q COMMAND] TRACK 2
+[M23 TRACK] track=2 frames=24615 waveform=4a4f177f name=M23_SNARE_ACOUSTIC_01.wav
+[M6.1 replacement] retired_clear=1 ps_delta=50180 status=READY
+[M213 address] track=2 pcm=0x482bf0c0 base=0x482bf004 bytes=49421 owner_usable_bytes=50164 frames=24615 mod64=0 mod128=64 mod256=192 mod4096=192 mod131072=127168 external=1 requested_caps=1028 free=30624800 largest=30408692
+# HOST LOAD 3 41
+[Q COMMAND] LOAD 3 41
+[Q ACK] load=1
+# HOST TRACK 3
+[Q COMMAND] TRACK 3
+[M23 TRACK] track=3 frames=0 waveform=5f6c8245 name=
+[M6 read] bytes=33296 read_us=66089 bytes_per_second=503805 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=3 file_bytes=33340 pcm_bytes=33296 load_publish_us=563211 payload=160902 transient=33296 peak_payload=160902 ps_free=30591004 largest=30408692 internal=184844 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=33796 status=READY
+[M213 address] track=3 pcm=0x482cb500 base=0x482cb408 bytes=33551 owner_usable_bytes=33780 frames# HOST TRACK 3
+=16648 mod64=0 mod128=0 mod256=0 mod4096=1280 mod131072=46336 external=1 requested_caps=1028 free=30591004 largest=30408692
+[Q COMMAND] TRACK 3
+[M23 TRACK] track=3 frames=16648 waveform=948822fe name=M23_SNARE_ELECTRO_01.wav
+# HOST LOAD 4 15
+[Q COMMAND] LOAD 4 15
+[Q ACK] load=1
+# HOST TRACK 4
+[Q COMMAND] TRACK 4
+[M23 TRACK] track=4 frames=0 waveform=5f6c8245 name=
+[M6 read] bytes=37848 read_us=75317 bytes_per_second=502516 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=4 file_bytes=37892 pcm_bytes=37848 load_publish_us=576326 payload=199069 transient=37848 peak_payload=199069 ps_free=30552088 largest=30408692 internal=183240 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=38916 status=READY
+[M213 address] track=4 pcm=0x482d3940 base=0x482d380c bytes=38167 owner_usable_bytes=38900 frames=18924 mod64=0 mod128=64 mod256=64 mod4096=2368 mod131072=80192 # HOST TRACK 4
+external=1 requested_caps=1028 free=30552088 largest=30408692
+[Q COMMAND] TRACK 4
+[M23 TRACK] track=4 frames=18924 waveform=078c0165 name=M23_CLAP_01.wav
+[M22 latency] phase=poll_call count=7948 p50_upper_us=1000 p95_upper_us=1000 p99_upper_us=1000 max_us=431 boundary=software source=controller_packets
+[M22 latency] phase=dispatch count=0 p50_upper_us=0 p95_upper_us=0 p99_upper_us=0 max_us=0 boundary=software source=controller_packets
+[M22 latency] phase=state_update count=0 p50_upper_us=0 p95_upper_us=0 p99_upper_us=0 max_us=0 boundary=software source=controller_packets
+[M22 latency] phase=enqueue_ack count=0 p50_upper_us=0 p95_upper_us=0 p99_upper_us=0 max_us=0 boundary=software source=controller_packets
+[M22 latency] phase=prepare count=104 p50_upper_us=62000 p95_upper_us=65000 p99_upper_us=65000 max_us=64135 boundary=software source=mixed_real_and_scripted_redraws
+[M22 latency] phase=present_call count=104 p50_upper_us=1000 p95_upper_us=3000 p99_upper_us=3000 max_us=2892 boundary=software source=mixed_real_and_scripted_redraws
+[M22 latency] phase=full_page_prepare count=95 p50_upper_us=64000 p95_upper_us=65000 p99_upper_us=65000 max_us=64135 boundary=software source=mixed_real_and_scripted_redraws
+[M22 latency] phase=controller_to_submission count=0 p50_upper_us=0 p95_upper_us=0 p99_upper_us=0 max_us=0 boundary=software source=controller_packets
+[M5 UI] seconds=63.179 submitted=104 completed=104 dirty_avg=710400 dirty_max=768000 full=95 preparation_max_us=64135 touch_errors=0 rejected=0 pads=0 steps=0 drags=0 pages=0 transport=0 bpm=0 skipped=0
+[M7 patterns] switches=0 loops=0 selections=0 copies=0 clears=0 lengths=0 solos=0 mutes=0 normal_frames=9 dirty_avg=102400 dirty_max=102400 pattern_bytes=3106 command_bytes=12
+[M7 applied] long_to_short=0 short_to_long=0 queue_replacements=0 copies=0 clears=0 lengths=0 solos=0 mutes=0 steps=0
+[M9 UI] entries=0 copies=0 randomize=0 cell_max=0 edit_full=0
+[M12 UI] entries=0 edits=0 widget# HOST LOAD 5 17
+s_max=0 edit_full=0
+[M11 UI] entries=0 edits=0 widgets_max=0 edit_full=0
+[M10 UI] entries=0 edits=0 widgets_max=0 edit_full=0
+[M13 UI] entries=0 edits=0 widgets_max=0 edit_full=0
+[M14 UI] entries=0 edits=0 edit_full=0 waveform_first_us=0 waveform_redraw_max_us=0 slice_redraw_max_us=0 build_count=47 build_max_us=420834 large_us=0 cache_bytes=1440 page_max_us=0 drag_dirty_max=0
+[M5 memory] ps_before=30753324 ps_after=30552088 internal_before=191260 internal_after=183240 largest_before=30408692 largest_after=30408692
+[Q COMMAND] LOAD 5 17
+[Q ACK] load=1
+# HOST TRACK 5
+[Q COMMAND] TRACK 5
+[M23 TRACK] track=5 frames=0 waveform=5f6c8245 name=
+[M6 read] bytes=22874 read_us=45190 bytes_per_second=506173 origi# HOST TRACK 5
+nal_channels=1 rate=44100 total_psram=33554432
+[Q COMMAND] TRACK 5
+[M23 TRACK] track=5 frames=11437 waveform=c6f25146 name=M23_HAT_CLOSED_ACOUSTIC_01.wav
+[M6 load] track=5 file_bytes=22918 pcm_bytes=22874 load_publish_us=567806 payload=222326 transient=22874 peak_payload=222326 ps_free=30528532 largest=30408692 internal=181368 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=23556 status=READY
+[M213 address] track=5 pcm=0x482dd180 base=0x482dd010 bytes=23257 owner_usable_bytes=23540 frames=11437 mod64=0 mod128=0 mod256=128 mod4096=384 mod131072=119168 external=1 requested_caps=1028 free=30528532 largest=30408692
+# HOST LOAD 6 21
+[Q COMMAND] LOAD 6 21
+[Q ACK] load=1
+# HOST TRACK 6
+[Q COMMAND] TRACK 6
+[M23 TRACK] track=6 frames=0 waveform=5f6c8245 name=
+# HOST TRACK 6
+[Q COMMAND] TRACK 6
+[M23 TRACK] track=6 frames=0 waveform=5f6c8245 name=
+[M6 read] bytes=134264 read_us=254575 bytes_per_second=527404 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=6 file_bytes=134308 pcm_bytes=134264 load_publish_us=758728 payload=357037 transient=134264 peak_payload=357037 ps_free=30393360 largest=29884404 internal=179764 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=135172 status=READY
+[M213 address] track=6 pcm=0x482e2dc0 base=0x482e2c14 bytes=134711 owner_usable_bytes=135156 frames=67132 mod64=0 mod128=64 mod256=192 mod4096=3520 mod131072=11712 external=1 requested_caps=1028 free=30393360 largest=29884404
+# HOST TRACK 6
+[Q COMMAND] TRACK 6
+[M23 TRACK] track=6 frames=67132 waveform=cad693f8 name=M23_HAT_OPEN_01.wav
+# HOST LOAD 7 37
+[Q COMMAND] LOAD 7 37
+[Q ACK] load=1
+# HOST TRACK 7
+[Q COMMAND] TRACK 7
+[M23 TRACK] track=7 frames=0 waveform=5f6c8245 name=
+[M6 read] bytes=2816 read_us=6805 bytes_per_second=413813 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=7 file_bytes=2860 pcm_bytes=2816 load_publish_us=505813 payload=360364 transient=2816 peak_payload=360364 ps_free=30389964 largest=29884404 internal=178160 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=3396 status=READY
+[M213 address] track=7 pcm=0x48303e00 base=0x48303c18 bytes=3327 owner_usable_bytes=3380 frames=1408 mod64=0 mod128=0 mod256=0 mod4096=3584 mod131072=15872 external=1 requested_caps=1028 free=30389964 largest=29884404
+# HOST TRACK 7
+[Q COMMAND] TRACK 7
+[M23 TRACK] track=7 frames=1408 waveform=ae1bb4a0 name=M23_SHAKER_01.wav
+# HOST LOAD 8 47
+[Q COMMAND] LOAD 8 47
+[Q ACK] load=1
+# HOST TRACK 8
+[Q COMMAND] TRACK 8
+[M23 TRACK] track=8 frames=0 waveform=5f6c8245 name=
+[M6 read] bytes=106546 read_us=2# HOST TRACK 8
+04129 bytes_per_second=521954 original_channels=1 rate=44100 total_psram=33554432
+[Q COMMAND] TRACK 8
+[M23 TRACK] track=8 frames=53273 waveform=82148776 name=M23_TOM_LOW.wav
+[M6 load] track=8 file_bytes=106590 pcm_bytes=106546 load_publish_us=705228 payload=467485 transient=106546 peak_payload=467485 ps_free=30281416 largest=29884404 internal=176556 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=108548 status=READY
+[M213 address] track=8 pcm=0x48304b80 base=0x4830495c bytes=107121 owner_usable_bytes=108532 frames=53273 mod64=0 mod128=0 mod256=128 mod4096=2944 mod131072=19328 external=1 requested_caps=1028 free=30281416 largest=29884404
+# HOST LOAD 9 46
+[Q COMMAND] LOAD 9 46
+[Q ACK] load=1
+# HOST TRACK 9
+[Q COMMAND] TRACK 9
+[M23 TRACK] track=9 frames=0 waveform=5f6c8245 name=
+# HOST TRACK 9
+[Q COMMAND] TRACK 9
+[M23 TRACK] track=9 frames=0 waveform=5f6c8245 name=
+[M6 read] bytes=175114 read_us=333739 bytes_per_second=524703 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=9 file_bytes=175158 pcm_bytes=175114 load_publish_us=835076 payload=643238 transient=175114 peak_payload=643238 ps_free=30105284 largest=29884404 internal=174952 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=176132 status=READY
+[M213 address] track=9 pcm=0x4831f3c0 base=0x4831f160 bytes=175753 owner_usable_bytes=176116 frames=87557 mod64=0 mod128=64 mod256=192 mod4096=960 mod131072=127936 external=1 requested_caps=1028 free=30105284 largest=29884404
+# HOST TRACK 9
+[Q COMMAND] TRACK 9
+[M23 TRACK] track=9 frames=87557 waveform=681d45b8 name=M23_TOM_HIGH.wav
+# HOST LOAD 10 32
+[Q COMMAND] LOAD 10 32
+[Q ACK] load=1
+# HOST TRACK 10
+[Q COMMAND] TRACK 10
+[M23 TRACK] track=10 frames=0 waveform=5f6c8245 name=
+[M6 read] bytes=70636 read_us=134172 bytes_per_second=526458 orig# HOST TRACK 10
+inal_channels=1 rate=44100 total_psram=33554432
+[Q COMMAND] TRACK 10
+[M23 TRACK] track=10 frames=35318 waveform=464b8f87 name=M23_PERC_DJEMBE.wav
+[M6 load] track=10 file_bytes=70680 pcm_bytes=70636 load_publish_us=661342 payload=714577 transient=70636 peak_payload=714577 ps_free=30033600 largest=29884404 internal=173348 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=71684 status=READY
+[M213 address] track=10 pcm=0x4834a400 base=0x4834a164 bytes=71339 owner_usable_bytes=71668 frames=35318 mod64=0 mod128=0 mod256=0 mod4096=1024 mod131072=41984 external=1 requested_caps=1028 free=30033600 largest=29884404
+# HOST LOAD 11 35
+[Q COMMAND] LOAD 11 35
+[Q ACK] load=1
+# HOST TRACK 11
+[Q COMMAND] TRACK 11
+[M23 TRACK] track=11 frames=0 waveform=5f6c8245 name=
+[M6 read] bytes=10854 read_us=19668 bytes_per_second=551860 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=11 file_bytes=10898 pcm_bytes=10854 load_publish_us=517772 payload=726198 transient=10854 peak_payload=726198 ps_free=30021820 largest=29884404 internal=171744 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=11780 status=READY
+[M213 address] track=11 pcm=0x4835bc40 base=0x4835b968 bytes=11621 owner_usable_bytes=11764 frames=5427 mod64=0 mod128=64 mod256=64 mod4096=3136 mod131072=113728 external=1 requested_caps=1028 free=30021820 largest=29884404
+# HOST TRACK 11
+[Q COMMAND] TRACK 11
+[M23 TRACK] track=11 frames=5427 waveform=55b96894 name=M23_RIM_01.wav
+# HOST LOAD 12 30
+[Q COMMAND] LOAD 12 30
+[Q ACK] load=1
+# HOST TRACK 12
+[Q COMMAND] TRACK 12
+[M23 TRACK] track=12 frames=0 waveform=5f6c8245 name=
+[M6 read] bytes=43664 read_us=84845 bytes_per_second=514632 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=12 file_bytes=43708 pcm_bytes=43664 load_publish_us=591885 payload=770693 transient=43664 peak_payload=770693 ps_free=29976760 largest=29884404 i# HOST TRACK 12
+nternal=170140 display=2304000 fx_delay=352800 reserve=4194304
+[Q COMMAND] TRACK 12
+[M23 TRACK] track=12 frames=21832 waveform=e5795ef3 name=M23_PERC_AGOGO.wav
+[M6.1 replacement] retired_clear=1 ps_delta=45060 status=READY
+[M213 address] track=12 pcm=0x4835ea80 base=0x4835e76c bytes=44495 owner_usable_bytes=45044 frames=21832 mod64=0 mod128=0 mod256=128 mod4096=2688 mod131072=125568 external=1 requested_caps=1028 free=29976760 largest=29884404
+# HOST LOAD 13 10
+[Q COMMAND] LOAD 13 10
+[Q ACK] load=1
+# HOST TRACK 13
+[Q COMMAND] TRACK 13
+[M23 TRACK] track=13 frames=0 waveform=5f6c8245 name=
+# HOST TRACK 13
+[M6 read] bytes=105840 read_us=208641 bytes_per_second=507282 original_channels=1 rate=44100 total_psram=33554432
+[Q COMMAND] TRACK 13
+[M23 TRACK] track=13 frames=52920 waveform=243ebbb5 name=M23_BASS_PLUCK_C2.wav
+[M6 load] track=13 file_bytes=105884 pcm_bytes=105840 load_publish_us=676341 payload=877428 transient=105840 peak_payload=877428 ps_free=29868212 largest=29360116 internal=168536 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=108548 status=READY
+[M213 address] track=13 pcm=0x48369ac0 base=0x48369770 bytes=106735 owner_usable_bytes=108532 frames=52920 mod64=0 mod128=64 mod256=192 mod4096=2752 mod131072=39616 external=1 requested_caps=1028 free=29868212 largest=29360116
+# HOST LOAD 14 29
+[Q COMMAND] LOAD 14 29
+[Q ACK] load=1
+# HOST TRACK 14
+[Q COMMAND] TRACK 14
+[M23 TRACK] track=14 frames=0 waveform=5f6c8245 name=
+# HOST TRACK 14
+[Q COMMAND] TRACK 14
+[M23 TRACK] track=14 frames=0 waveform=5f6c8245 name=
+[M6 read] bytes=158760 read_us=304567 bytes_per_second=521264 original_channels=1 rate=44100 total_psram=33554432
+[M6 load] track=14 file_bytes=158804 pcm_bytes=158760 load_publish_us=841575 payload=1037147 transient=158760 peak_payload=1037147 ps_free=29708464 largest=29360116 internal=166932 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=159748 status=READY
+[M213 address] track=14 pcm=0x48384300 base=0x48383f74 bytes=159719 owner_usable_bytes=159732 frames=79380 mod64=0 mod128=0 mod256=0 mod4096=768 mod131072=17152 external=1 requested_caps=1028 free=29708464 largest=29360116
+# HOST TRACK 14
+[Q COMMAND] TRACK 14
+[M23 TRACK] track=14 frames=79380 waveform=7fa1ad38 name=M23_MALLET_C4.wav
+# HOST LOAD 15 49
+[Q COMMAND] LOAD 15 49
+[Q ACK] load=1
+# HOST TRACK 15
+[Q COMMAND] TRACK 15
+[M23 TRACK] track=15 frames=0 waveform=5f6c8245 name=
+# HOST TRACK 15
+[M6 read] bytes=79380 read_us=154037 bytes_per_second=515330 original_channels=1 rate=44100 total_psram=33554432
+[Q COMMAND] TRACK 15
+[M23 TRACK] track=15 frames=39690 waveform=13273016 name=M23_VOCAL_SYNTH_AH.wav
+[M6 load] track=15 file_bytes=79424 pcm_bytes=79380 load_publish_us=661187 payload=1117550 transient=79380 peak_payload=1117550 ps_free=29626540 largest=29360116 internal=165328 display=2304000 fx_delay=352800 reserve=4194304
+[M6.1 replacement] retired_clear=1 ps_delta=81924 status=READY
+[M213 address] track=15 pcm=0x483ab340 base=0x483aaf78 bytes=80403 owner_usable_bytes=81908 frames=39690 mod64=0 mod128=64 mod256=64 mod4096=832 mod131072=45888 external=1 requested_caps=1028 free=29626540 largest=29360116
+# HOST CMD 6 0 48 0 0
+[Q COMMAND] CMD 6 0 48 0 0
+[Q ACK] sent=1
+# HOST CMD 3 0 0 0 0
+[Q COMMAND] CMD 3 0 0 0 0
+[Q ACK] sent=1
+# HOST CMD 6 0 72 0 0
+[Q COMMAND] CMD 6 0 72 0 0
+[Q ACK] sent=1
+# HOST CMD 3 0 0 0 0
+[Q COMMAND] CMD 3 0 0 0 0
+[Q ACK] sent=1
+# HOST CMD 6 0 60 0 0
+[Q COMMAND] CMD 6 0 60 0 0
+[Q ACK] sent=1
+# HOST CMD 3 0 0 0 0
+[Q COMMAND] CMD 3 0 0 0 0
+[Q ACK] sent=1
+# HOST CMD 46 0 1 0 0
+[Q COMMAND] CMD 46 0 1 0 0
+[Q ACK] sent=1
+# HOST CMD 3 0 0 0 0
+[Q COMMAND] CMD 3 0 0 0 0
+[Q ACK] sent=1
+# HOST CMD 46 0 0 0 0
+[Q COMMAND] CMD 46 0 0 0 0
+[Q ACK] sent=1
+# HOST CMD 3 0 0 0 0
+[Q COMMAND] CMD 3 0 0 0 0
+[Q ACK] sent=1
+# HOST CMD 55 0 4 0 0
+[Q COMMAND] CMD 55 0 4 0 0
+[Q ACK] sent=1
+# HOST CMD 51 0 1 0 0
+[Q COMMAND] CMD 51 0 1 0 0
+[Q ACK] sent=1
+# HOST CMD 3 0 0 0 0
+[Q COMMAND] CMD 3 0 0 0 0
+[Q ACK] sent=1
+# HOST CMD 51 0 0 0 0
+[Q COMMAND] CMD 51 0 0 0 0
+[Q ACK] sent=1
+# HOST CMD 47 0 1 0 0
+[Q COMMAND] CMD 47 0 1 0 0
+[Q ACK] sent=1
+# HOST CMD 3 0 0 0 0
+[Q COMMAND] CMD 3 0 0 0 0
+[Q ACK] sent=1
+# HOST CMD 50 0 0 0 0
+[Q COMMAND] CMD 50 0 0 0 0
+[Q ACK] sent=1
+# HOST CMD 47 0 0 0 0
+[Q COMMAND] CMD 47 0 0 0 0
+[Q ACK] sent=1
+# HOST CMD 78 0 256 0 0
+[Q COMMAND] CMD 78 0 256 0 0
+[Q ACK] sent=1
+# HOST STATE
+[Q COMMAND] STATE
+[Q STATE] bpm=120 swing=50 playing=0 mode=0 chain_length=0 chain_loop=0 project_busy=0 restoring=0 sample_busy=0 project_status=PROJECT READY sample_status=SAMPLE READY
+[Q TRACK] track=0 source=1 pitch=60 synth_pitch=36 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=4 enabled=0 selected=0 frames=26460 waveform=293d376b name=M23_KICK_MODEL_01.wav
+[Q SLICE] track=0 index=0 start=0 end=16383
+[Q SLICE] track=0 index=1 start=16383 end=32767
+[Q SLICE] track=0 index=2 start=32767 end=49151
+[Q SLICE] track=0 index=3 start=49151 end=65535
+[Q TRACK] track=1 source=1 pitch=60 synth_pitch=39 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=12410 waveform=bca71255 name=M23_KICK_ELECTRO_01.wav
+[Q SLICE] track=1 index=0 start=0 end=65535
+[Q TRACK] track=2 source=1 pitch=60 synth_pitch=42 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=24615 waveform=4a4f177f name=M23_SNARE_ACOUSTIC_01.wav
+[Q SLICE] track=2 index=0 start=0 end=65535
+[Q TRACK] track=3 source=1 pitch=60 synth_pitch=45 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=16648 waveform=948822fe name=M23_SNARE_ELECTRO_01.wav
+[Q SLICE] track=3 index=0 start=0 end=65535
+[Q TRACK] track=4 source=1 pitch=60 synth_pitch=48 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=18924 waveform=078c0165 name=M23_CLAP_01.wav
+[Q SLICE] track=4 index=0 start=0 end=65535
+[Q TRACK] track=5 source=1 pitch=60 synth_pitch=51 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=11437 waveform=c6f25146 name=M23_HAT_CLOSED_ACOUSTIC_01.wav
+[Q SLICE] track=5 index=0 start=0 end=65535
+[Q TRACK] track=6 source=1 pitch=60 synth_pitch=54 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=67132 waveform=cad693f8 name=M23_HAT_OPEN_01.wav
+[Q SLICE] track=6 index=0 start=0 end=65535
+[Q TRACK] track=7 source=1 pitch=60 synth_pitch=57 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=1408 waveform=ae1bb4a0 name=M23_SHAKER_01.wav
+[Q SLICE] track=7 index=0 start=0 end=65535
+[Q TRACK] track=8 source=1 pitch=60 synth_pitch=60 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=53273 waveform=82148776 name=M23_TOM_LOW.wav
+[Q SLICE] track=8 index=0 start=0 end=65535
+[Q TRACK] track=9 source=1 pitch=60 synth_pitch=63 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=87557 waveform=681d45b8 name=M23_TOM_HIGH.wav
+[Q SLICE] track=9 index=0 start=0 end=65535
+[Q TRACK] track=10 source=1 pitch=60 synth_pitch=66 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=35318 waveform=464b8f87 name=M23_PERC_DJEMBE.wav
+[Q SLICE] track=10 index=0 start=0 end=65535
+[Q TRACK] track=11 source=1 pitch=60 synth_pitch=69 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=5427 waveform=55b96894 name=M23_RIM_01.wav
+[Q SLICE] track=11 index=0 start=0 end=65535
+[Q TRACK] track=12 source=1 pitch=60 synth_pitch=72 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=21832 waveform=e5795ef3 name=M23_PERC_AGOGO.wav
+[Q SLICE] track=12 index=0 start=0 end=65535
+[Q TRACK] track=13 source=1 pitch=60 synth_pitch=75 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=52920 waveform=243ebbb5 name=M23_BASS_PLUCK_C2.wav
+[Q SLICE] track=13 index=0 start=0 end=65535
+[Q TRACK] track=14 source=1 pitch=60 synth_pitch=78 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=79380 waveform=7fa1ad38 name=M23_MALLET_C4.wav
+[Q SLICE] track=14 index=0 start=0 end=65535
+[Q TRACK] track=15 source=1 pitch=60 synth_pitch=81 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=39690 waveform=13273016 name=M23_VOCAL_SYNTH_AH.wav
+[Q SLICE] track=15 index=0 start=0 end=65535
+[Q PATTERN] index=0 length=16 masks=0000,0000,0000
+[Q LOCK] pattern=0 step=0 mask=0 slice=0
+[Q LOCK] pattern=0 step=1 mask=0 slice=0
+[Q LOCK] pattern=0 step=2 mask=0 slice=0
+[Q LOCK] pattern=0 step=3 mask=0 slice=0
+[Q PATTERN] index=1 length=16 masks=0000,0000,0000
+[Q LOCK] pattern=1 step=0 mask=0 slice=0
+[Q LOCK] pattern=1 step=1 mask=0 slice=0
+[Q LOCK] pattern=1 step=2 mask=0 slice=0
+[Q LOCK] pattern=1 step=3 mask=0 slice=0
+[Q PATTERN] index=2 length=16 masks=0000,0000,0000
+[Q LOCK] pattern=2 step=0 mask=0 slice=0
+[Q LOCK] pattern=2 step=1 mask=0 slice=0
+[Q LOCK] pattern=2 step=2 mask=0 slice=0
+[Q LOCK] pattern=2 step=3 mask=0 slice=0
+[Q PATTERN] index=3 length=16 masks=0000,0000,0000
+[Q LOCK] pattern=3 step=0 mask=0 slice=0
+[Q LOCK] pattern=3 step=1 mask=0 slice=0
+[Q LOCK] pattern=3 step=2 mask=0 slice=0
+[Q LOCK] pattern=3 step=3 mask=0 slice=0
+[Q TRANSIENT] state=3 request=1 progress=100 count=1 stale_discarded=0 apply=0 cancel=0 duration_max_us=9950 chunk_max_us=2221
+[Q PROPOSAL] index=0 start=0 end=65535
+[Q HEAP] tag=state internal=165328 free=29626540 largest=29360116
+[Q PLAYBACK] triggers=7 reverse=1 gate=1 releases=1 chokes=0 retriggers=5 repeat_accepts=0 repeat_hits=0 chain_loops=0
+# HOST CMD 80 0 0 0 0
+[Q COMMAND] CMD 80 0 0 0 0
+[Q ACK] sent=1
+# HOST CMD 51 0 0 0 0
+[Q COMMAND] CMD 51 0 0 0 0
+[Q ACK] sent=1
+# HOST CMD 17 0 0 0 0
+[Q COMMAND] CMD 17 0 0 0 0
+[Q ACK] sent=1
+# HOST CMD 2 0 0 0 0
+[Q COMMAND] CMD 2 0 0 0 0
+[Q ACK] sent=1
+# HOST CMD 2 0 4 0 0
+[Q COMMAND] CMD 2 0 4 0 0
+[Q ACK] sent=1
+# HOST CMD 2 0 8 0 0
+[Q COMMAND] CMD 2 0 8 0 0
+[Q ACK] sent=1
+# HOST CMD 2 0 12 0 0
+[Q COMMAND] CMD 2 0 12 0 0
+[Q ACK] sent=1
+# HOST CMD 2 1 0 0 0
+[Q COMMAND] CMD 2 1 0 0 0
+[Q ACK] sent=1
+# HOST CMD 2 1 4 0 0
+[Q COMMAND] CMD 2 1 4 0 0
+[Q ACK] sent=1
+# HOST CMD 2 1 8 0 0
+[Q COMMAND] CMD 2 1 8 0 0
+[Q ACK] sent=1
+# HOST CMD 2 1 12 0 0
+[Q COMMAND] CMD 2 1 12 0 0
+[Q ACK] sent=1
+# HOST CMD 2 2 0 0 0
+[Q COMMAND] CMD 2 2 0 0 0
+[Q ACK] sent=1
+# HOST CMD 2 2 4 0 0
+[Q COMMAND] CMD 2 2 4 0 0
+[Q ACK] sent=1
+# HOST CMD 2 2 8 0 0
+[Q COMMAND] CMD 2 2 8 0 0
+[Q ACK] sent=1
+# HOST CMD 2 2 12 0 0
+[Q COMMAND] CMD 2 2 12 0 0
+[Q ACK] sent=1
+# HOST CMD 2 3 0 0 0
+[Q COMMAND] CMD 2 3 0 0 0
+[Q ACK] sent=1
+# HOST CMD 2 3 4 0 0
+[Q COMMAND] CMD 2 3 4 0 0
+[Q ACK] sent=1
+# HOST CMD 2 3 8 0 0
+[Q COMMAND] CMD 2 3 8 0 0
+[Q ACK] sent=1
+# HOST CMD 2 3 12 0 0
+[Q COMMAND] CMD 2 3 12 0 0
+[Q ACK] sent=1
+# HOST CMD 2 4 0 0 0
+[Q COMMAND] CMD 2 4 0 0 0
+[Q ACK] sent=1
+# HOST CMD 2 4 4 0 0
+[Q COMMAND] CMD 2 4 4 0 0
+[Q ACK] sent=1
+# HOST CMD 2 4 8 0 0
+[Q COMMAND] CMD 2 4 8 0 0
+[Q ACK] sent=1
+# HOST CMD 2 4 12 0 0
+[Q COMMAND] CMD 2 4 12 0 0
+[Q ACK] sent=1
+# HOST CMD 2 5 0 0 0
+[Q COMMAND] CMD 2 5 0 0 0
+[Q ACK] sent=1
+# HOST CMD 2 5 4 0 0
+[Q COMMAND] CMD 2 5 4 0 0
+[Q ACK] sent=1
+# HOST CMD 2 5 8 0 0
+[Q COMMAND] CMD 2 5 8 0 0
+[Q ACK] sent=1
+# HOST CMD 2 5 12 0 0
+[Q COMMAND] CMD 2 5 12 0 0
+[Q ACK] sent=1
+# HOST CMD 2 6 0 0 0
+[Q COMMAND] CMD 2 6 0 0 0
+[Q ACK] sent=1
+# HOST CMD 2 6 4 0 0
+[Q COMMAND] CMD 2 6 4 0 0
+[Q ACK] sent=1
+# HOST CMD 2 6 8 0 0
+[Q COMMAND] CMD 2 6 8 0 0
+[Q ACK] sent=1
+# HOST CMD 2 6 12 0 0
+[Q COMMAND] CMD 2 6 12 0 0
+[Q ACK] sent=1
+# HOST CMD 2 7 0 0 0
+[Q COMMAND] CMD 2 7 0 0 0
+[Q ACK] sent=1
+# HOST CMD 2 7 4 0 0
+[Q COMMAND] CMD 2 7 4 0 0
+[Q ACK] sent=1
+# HOST CMD 2 7 8 0 0
+[Q COMMAND] CMD 2 7 8 0 0
+[Q ACK] sent=1
+# HOST CMD 2 7 12 0 0
+[Q COMMAND] CMD 2 7 12 0 0
+[Q ACK] sent=1
+# HOST CMD 2 8 0 0 0
+[Q COMMAND] CMD 2 8 0 0 0
+[Q ACK] sent=1
+# HOST CMD 2 8 4 0 0
+[Q COMMAND] CMD 2 8 4 0 0
+[Q ACK] sent=1
+# HOST CMD 2 8 8 0 0
+[Q COMMAND] CMD 2 8 8 0 0
+[Q ACK] sent=1
+# HOST CMD 2 8 12 0 0
+[Q COMMAND] CMD 2 8 12 0 0
+[Q ACK] sent=1
+# HOST CMD 2 9 0 0 0
+[Q COMMAND] CMD 2 9 0 0 0
+[Q ACK] sent=1
+# HOST CMD 2 9 4 0 0
+[Q COMMAND] CMD 2 9 4 0 0
+[Q ACK] sent=1
+# HOST CMD 2 9 8 0 0
+[Q COMMAND] CMD 2 9 8 0 0
+[Q ACK] sent=1
+# HOST CMD 2 9 12 0 0
+[Q COMMAND] CMD 2 9 12 0 0
+[Q ACK] sent=1
+# HOST CMD 2 10 0 0 0
+[Q COMMAND] CMD 2 10 0 0 0
+[Q ACK] sent=1
+# HOST CMD 2 10 4 0 0
+[Q COMMAND] CMD 2 10 4 0 0
+[Q ACK] sent=1
+# HOST CMD 2 10 8 0 0
+[Q COMMAND] CMD 2 10 8 0 0
+[Q ACK] sent=1
+# HOST CMD 2 10 12 0 0
+[Q COMMAND] CMD 2 10 12 0 0
+[Q ACK] sent=1
+# HOST CMD 2 11 0 0 0
+[Q COMMAND] CMD 2 11 0 0 0
+[Q ACK] sent=1
+# HOST CMD 2 11 4 0 0
+[Q COMMAND] CMD 2 11 4 0 0
+[Q ACK] sent=1
+# HOST CMD 2 11 8 0 0
+[Q COMMAND] CMD 2 11 8 0 0
+[Q ACK] sent=1
+# HOST CMD 2 11 12 0 0
+[Q COMMAND] CMD 2 11 12 0 0
+[Q ACK] sent=1
+# HOST CMD 2 12 0 0 0
+[Q COMMAND] CMD 2 12 0 0 0
+[Q ACK] sent=1
+# HOST CMD 2 12 4 0 0
+[Q COMMAND] CMD 2 12 4 0 0
+[Q ACK] sent=1
+# HOST CMD 2 12 8 0 0
+[Q COMMAND] CMD 2 12 8 0 0
+[Q ACK] sent=1
+# HOST CMD 2 12 12 0 0
+[Q COMMAND] CMD 2 12 12 0 0
+[Q ACK] sent=1
+# HOST CMD 2 13 0 0 0
+[Q COMMAND] CMD 2 13 0 0 0
+[Q ACK] sent=1
+# HOST CMD 2 13 4 0 0
+[Q COMMAND] CMD 2 13 4 0 0
+[Q ACK] sent=1
+# HOST CMD 2 13 8 0 0
+[Q COMMAND] CMD 2 13 8 0 0
+[Q ACK] sent=1
+# HOST CMD 2 13 12 0 0
+[Q COMMAND] CMD 2 13 12 0 0
+[Q ACK] sent=1
+# HOST CMD 2 14 0 0 0
+[Q COMMAND] CMD 2 14 0 0 0
+[Q ACK] sent=1
+# HOST CMD 2 14 4 0 0
+[Q COMMAND] CMD 2 14 4 0 0
+[Q ACK] sent=1
+# HOST CMD 2 14 8 0 0
+[Q COMMAND] CMD 2 14 8 0 0
+[Q ACK] sent=1
+# HOST CMD 2 14 12 0 0
+[Q COMMAND] CMD 2 14 12 0 0
+[Q ACK] sent=1
+# HOST CMD 2 15 0 0 0
+[Q COMMAND] CMD 2 15 0 0 0
+[Q ACK] sent=1
+# HOST CMD 2 15 4 0 0
+[Q COMMAND] CMD 2 15 4 0 0
+[Q ACK] sent=1
+# HOST CMD 2 15 8 0 0
+[Q COMMAND] CMD 2 15 8 0 0
+[Q ACK] sent=1
+# HOST CMD 2 15 12 0 0
+[Q COMMAND] CMD 2 15 12 0 0
+[Q ACK] sent=1
+# HOST MEASURE 1
+[Q COMMAND] MEASURE 1
+# HOST CMD 0 0 1 0 0
+[Q COMMAND] CMD 0 0 1 0 0
+[Q ACK] sent=1
+# HOST CMD 0 0 0 0 0
+[Q COMMAND] CMD 0 0 0 0 0
+[Q ACK] sent=1
+# HOST MEASURE 0
+[Q COMMAND] MEASURE 0
+# HOST METRICS
+[Q COMMAND] METRICS
+[Q METRICS] blocks=3533 stored=3533 p99=3288 max=3356 misses=0 failures=0 timeouts=0 nonzero=1799760 overlap=0 overlap_max=0 active_max=16
+# HOST STATE
+[Q COMMAND] STATE
+[Q STATE] bpm=120 swing=50 playing=0 mode=0 chain_length=0 chain_loop=0 project_busy=0 restoring=0 sample_busy=0 project_status=PROJECT READY sample_status=SAMPLE READY
+[Q TRACK] track=0 source=1 pitch=60 synth_pitch=36 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=4 enabled=0 selected=0 frames=26460 waveform=293d376b name=M23_KICK_MODEL_01.wav
+[Q SLICE] track=0 index=0 start=0 end=16383
+[Q SLICE] track=0 index=1 start=16383 end=32767
+[Q SLICE] track=0 index=2 start=32767 end=49151
+[Q SLICE] track=0 index=3 start=49151 end=65535
+[Q TRACK] track=1 source=1 pitch=60 synth_pitch=39 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=12410 waveform=bca71255 name=M23_KICK_ELECTRO_01.wav
+[Q SLICE] track=1 index=0 start=0 end=65535
+[Q TRACK] track=2 source=1 pitch=60 synth_pitch=42 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=24615 waveform=4a4f177f name=M23_SNARE_ACOUSTIC_01.wav
+[Q SLICE] track=2 index=0 start=0 end=65535
+[Q TRACK] track=3 source=1 pitch=60 synth_pitch=45 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=16648 waveform=948822fe name=M23_SNARE_ELECTRO_01.wav
+[Q SLICE] track=3 index=0 start=0 end=65535
+[Q TRACK] track=4 source=1 pitch=60 synth_pitch=48 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=18924 waveform=078c0165 name=M23_CLAP_01.wav
+[Q SLICE] track=4 index=0 start=0 end=65535
+[Q TRACK] track=5 source=1 pitch=60 synth_pitch=51 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=11437 waveform=c6f25146 name=M23_HAT_CLOSED_ACOUSTIC_01.wav
+[Q SLICE] track=5 index=0 start=0 end=65535
+[Q TRACK] track=6 source=1 pitch=60 synth_pitch=54 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=67132 waveform=cad693f8 name=M23_HAT_OPEN_01.wav
+[Q SLICE] track=6 index=0 start=0 end=65535
+[Q TRACK] track=7 source=1 pitch=60 synth_pitch=57 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=1408 waveform=ae1bb4a0 name=M23_SHAKER_01.wav
+[Q SLICE] track=7 index=0 start=0 end=65535
+[Q TRACK] track=8 source=1 pitch=60 synth_pitch=60 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=53273 waveform=82148776 name=M23_TOM_LOW.wav
+[Q SLICE] track=8 index=0 start=0 end=65535
+[Q TRACK] track=9 source=1 pitch=60 synth_pitch=63 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=87557 waveform=681d45b8 name=M23_TOM_HIGH.wav
+[Q SLICE] track=9 index=0 start=0 end=65535
+[Q TRACK] track=10 source=1 pitch=60 synth_pitch=66 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=35318 waveform=464b8f87 name=M23_PERC_DJEMBE.wav
+[Q SLICE] track=10 index=0 start=0 end=65535
+[Q TRACK] track=11 source=1 pitch=60 synth_pitch=69 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=5427 waveform=55b96894 name=M23_RIM_01.wav
+[Q SLICE] track=11 index=0 start=0 end=65535
+[Q TRACK] track=12 source=1 pitch=60 synth_pitch=72 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=21832 waveform=e5795ef3 name=M23_PERC_AGOGO.wav
+[Q SLICE] track=12 index=0 start=0 end=65535
+[Q TRACK] track=13 source=1 pitch=60 synth_pitch=75 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=52920 waveform=243ebbb5 name=M23_BASS_PLUCK_C2.wav
+[Q SLICE] track=13 index=0 start=0 end=65535
+[Q TRACK] track=14 source=1 pitch=60 synth_pitch=78 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=79380 waveform=7fa1ad38 name=M23_MALLET_C4.wav
+[Q SLICE] track=14 index=0 start=0 end=65535
+[Q TRACK] track=15 source=1 pitch=60 synth_pitch=81 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=39690 waveform=13273016 name=M23_VOCAL_SYNTH_AH.wav
+[Q SLICE] track=15 index=0 start=0 end=65535
+[Q PATTERN] index=0 length=16 masks=1111,1111,1111
+[Q LOCK] pattern=0 step=0 mask=0 slice=0
+[Q LOCK] pattern=0 step=1 mask=0 slice=0
+[Q LOCK] pattern=0 step=2 mask=0 slice=0
+[Q LOCK] pattern=0 step=3 mask=0 slice=0
+[Q PATTERN] index=1 length=16 masks=0000,0000,0000
+[Q LOCK] pattern=1 step=0 mask=0 slice=0
+[Q LOCK] pattern=1 step=1 mask=0 slice=0
+[Q LOCK] pattern=1 step=2 mask=0 slice=0
+[Q LOCK] pattern=1 step=3 mask=0 slice=0
+[Q PATTERN] index=2 length=16 masks=0000,0000,0000
+[Q LOCK] pattern=2 step=0 mask=0 slice=0
+[Q LOCK] pattern=2 step=1 mask=0 slice=0
+[Q LOCK] pattern=2 step=2 mask=0 slice=0
+[Q LOCK] pattern=2 step=3 mask=0 slice=0
+[Q PATTERN] index=3 length=16 masks=0000,0000,0000
+[Q LOCK] pattern=3 step=0 mask=0 slice=0
+[Q LOCK] pattern=3 step=1 mask=0 slice=0
+[Q LOCK] pattern=3 step=2 mask=0 slice=0
+[Q LOCK] pattern=3 step=3 mask=0 slice=0
+[Q TRANSIENT] state=5 request=1 progress=100 count=1 stale_discarded=0 apply=0 cancel=1 duration_max_us=9950 chunk_max_us=2221
+[Q PROPOSAL] index=0 start=0 end=65535
+[Q HEAP] tag=state internal=165328 free=29626540 largest=29360116
+[Q PLAYBACK] triggers=663 reverse=1 gate=1 releases=1 chokes=0 retriggers=365 repeat_accepts=0 repeat_hits=0 chain_loops=0

@@ -1,0 +1,40 @@
+Processing guition_m23_loader (platform: https://github.com/pioarduino/platform-espressif32/releases/download/55.03.36-1/platform-espressif32.zip; board: jc4880p4; framework: arduino)
+--------------------------------------------------------------------------------
+Verbose mode can be enabled via `-v, --verbose` option
+CONFIGURATION: https://docs.platformio.org/page/boards/espressif32/jc4880p4.html
+PLATFORM: Espressif 32 (55.3.36) > Guition JC4880P443C_I_W (JC-ESP32P4-M3, ESP32-P4 ES + C6)
+HARDWARE: ESP32P4 360MHz, 320KB RAM, 16MB Flash
+DEBUG: Current (cmsis-dap) External (cmsis-dap, esp-bridge, esp-builtin, esp-prog, iot-bus-jtag, jlink, minimodule, olimex-arm-usb-ocd, olimex-arm-usb-ocd-h, olimex-arm-usb-tiny-h, olimex-jtag-tiny, tumpa)
+PACKAGES: 
+ - contrib-piohome @ 3.4.4 
+ - framework-arduinoespressif32 @ 3.3.6 
+ - framework-arduinoespressif32-libs @ 5.5.0+sha.f56bea3d1f 
+ - tool-esptoolpy @ 5.1.0 
+ - toolchain-riscv32-esp @ 14.2.0+20251107
+LDF: Library Dependency Finder -> https://bit.ly/configure-pio-ldf
+LDF Modes: Finder ~ chain, Compatibility ~ soft
+Found 44 compatible libraries
+Scanning dependencies...
+Dependency Graph
+|-- p4sdm-es8311 @ 1.0.0
+|-- SD_MMC @ 3.3.6
+Building in release mode
+Compiling .pio\build\guition_m23_loader\src\app_main.cpp.o
+Linking .pio\build\guition_m23_loader\firmware.elf
+Firmware metrics can not be shown. Set the terminal codepage to "utf-8" or "cp65001" on Windows.
+Retrieving maximum program size .pio\build\guition_m23_loader\firmware.elf
+Checking size .pio\build\guition_m23_loader\firmware.elf
+Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
+RAM:   [==        ]  20.1% (used 65864 bytes from 327680 bytes)
+Flash: [=         ]  11.4% (used 744206 bytes from 6553600 bytes)
+Building .pio\build\guition_m23_loader\firmware.bin
+esptool v5.1.0
+Creating ESP32P4 image...
+Merged 4 ELF sections.
+Successfully created ESP32P4 image.
+========================= [SUCCESS] Took 15.64 seconds =========================
+
+Environment         Status    Duration
+------------------  --------  ------------
+guition_m23_loader  SUCCESS   00:00:15.640
+========================= 1 succeeded in 00:00:15.640 =========================

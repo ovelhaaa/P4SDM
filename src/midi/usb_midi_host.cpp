@@ -15,7 +15,8 @@ usb_device_handle_t device=nullptr;
 usb_transfer_t *receive=nullptr;
 Parser parser;
 uint8_t address=0, endpoint=0, interface_number=0;
-bool open_pending=false, closing=false, inflight=false, claimed=false;
+bool closing=false, inflight=false, claimed=false;
+PendingDevices pending;
 std::atomic<uint32_t> errors{0};
 uint32_t connects=0, disconnects=0, rejected=0;
 void fail() { ++errors; if(!closing) { closing=true; ++generation; } }
@@ -28,6 +29,7 @@ void received(usb_transfer_t *t) {
   inflight=false;
   if(closing) return;
   if(t->status!=USB_TRANSFER_STATUS_COMPLETED) { fail(); return; }
+  if(t->actual_num_bytes<0 || t->actual_num_bytes>t->num_bytes) { fail(); return; }
   const auto now=uint64_t(esp_timer_get_time());
   parser.transfer(t->data_buffer,t->actual_num_bytes,generation.load(),now,[](Event e) {
     e.parsed_us=esp_timer_get_time(); e.queued_us=esp_timer_get_time();
@@ -37,14 +39,12 @@ void received(usb_transfer_t *t) {
 }
 void client_event(const usb_host_client_event_msg_t *e,void *) {
   if(e->event==USB_HOST_CLIENT_EVENT_NEW_DEV) {
-    if(device || open_pending || closing) { ++rejected; return; }
-    address=e->new_dev.address; open_pending=true;
+    if((device && receive && !closing) || !pending.push(e->new_dev.address)) ++rejected;
   } else if(e->event==USB_HOST_CLIENT_EVENT_DEV_GONE && e->dev_gone.dev_hdl==device) {
     ++disconnects; closing=true; ++generation;
   }
 }
 void open_device() {
-  open_pending=false;
   if(usb_host_device_open(client,address,&device)!=ESP_OK) { device=nullptr; ++errors; return; }
   ++generation;
   const usb_device_desc_t *dd=nullptr;
@@ -88,7 +88,9 @@ void client_task(void *) {
   for(;;) {
     auto result=usb_host_client_handle_events(client,pdMS_TO_TICKS(10));
     if(result!=ESP_OK && result!=ESP_ERR_TIMEOUT) fail();
-    if(closing) teardown(); else if(open_pending) open_device();
+    if(closing) teardown();
+    else if(!device && pending.pop(address)) open_device();
+    else if(device && receive) { uint8_t ignored; while(pending.pop(ignored)) ++rejected; }
     if(millis()-report>10000) {
       report=millis();
       Serial.printf("[M23 MIDI host] connected=%u connects=%u disconnects=%u errors=%u rejected=%u overflow=%u malformed=%u unsupported=%u partial=%u\n",unsigned(device && !closing),connects,disconnects,errors.load(),rejected,input.overflows.load(),parser.malformed,parser.unsupported,parser.partial);

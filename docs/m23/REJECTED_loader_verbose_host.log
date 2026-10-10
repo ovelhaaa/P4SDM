@@ -1,0 +1,28 @@
+Production loader accepted 1 M23_SNARE_ACOUSTIC_01.wav
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\m23_loader_device.py", line 51, in <module>
+    result['loads'].append(load(0,name));print('Production loader accepted',len(result['loads']),name,flush=True)
+                           ~~~~^^^^^^^^
+  File "C:\progs\P4SDM\tests\m23_loader_device.py", line 41, in load
+    assert '[Q ACK] load=1' in text,text
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: waveform=5f6c8245 name=
+[Q SLICE] track=8 index=0 start=0 end=65535
+[Q TRACK] track=9 source=0 pitch=63 synth_pitch=63 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=9 index=0 start=0 end=65535
+[Q TRACK] track=10 source=0 pitch=66 synth_pitch=66 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=10 index=0 start=0 end=65535
+[Q TRACK] track=11 source=0 pitch=69 synth_pitch=69 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=11 index=0 start=0 end=65535
+[Q TRACK] track=12 source=0 pitch=72 synth_pitch=72 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=12 index=0 start=0 end=65535
+[Q TRACK] track=13 source=0 pitch=75 synth_pitch=75 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=13 index=0 start=0 end=65535
+[Q TRACK] track=14 source=0 pitch=78 synth_pitch=78 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=14 index=0 start=0 end=65535
+[Q TRACK] track=15 source=0 pitch=81 synth_pitch=81 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=15 index=0 start=0 end=65535
+[Q PATTERN] index=0 length=16 masks=0000,0000,0000
+[Q LOCK] pattern=0 step=0 mask=0 slice=0
+[Q LOCK] pattern=0 step=1 mask=0 slice=0
+[Q LOCK] pattern=0 step=2 mask=0 

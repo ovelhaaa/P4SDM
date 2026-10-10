@@ -1,0 +1,12 @@
+M23 READY
+M23 FILE m19p_impulses.wav 352844
+M23 FILE m19p_kick.wav 352844
+M23 FILE m19p_snare.wav 352844
+M23 FILE m19p_mixed.wav 352844
+M23 FILE m19p_stereo.wav 705644
+M23 FILE m19p_large.wav 4194348
+M23 FILE m19p_bad_depth.wav 352844
+M23 FILE m19p_truncated.wav 352841
+M23 FILE m19p_oneshot.wav 44144
+M23 COUNT 9
+M23 OFFSET 0

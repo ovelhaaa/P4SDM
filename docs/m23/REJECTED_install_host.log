@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tools\m23_install_serial.py", line 50, in <module>
+    p=argparse.ArgumentParser();p.add_argument('--pack',type=Path,default=ROOT/'assets/m23');a=p.parse_args();install(a.pack)
+                                                                                                              ~~~~~~~^^^^^^^^
+  File "C:\progs\P4SDM\tools\m23_install_serial.py", line 38, in install
+    result=reply(f'DATA {offset} {checksum} {chunk.hex()}')
+  File "C:\progs\P4SDM\tools\m23_install_serial.py", line 26, in reply
+    raise TimeoutError(command[:100])
+TimeoutError: DATA 0 2251315729 4d3233206d75736963616c2073616d706c65206c6962726172790d0a4c61536f6e6f7468657175653a

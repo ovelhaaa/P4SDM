@@ -1,0 +1,95 @@
+{
+  "complete": true,
+  "safe": true,
+  "faults": [],
+  "timing": {
+    "blocks": 13782,
+    "p50": 3773,
+    "p95": 4144,
+    "p99": 4248,
+    "max": 4539,
+    "misses": 0,
+    "failures": 0,
+    "timeouts": 0,
+    "peak": 6904,
+    "nonzero": 7024433,
+    "rails": 0,
+    "active_min": 0,
+    "active_max": 16
+  },
+  "memory": {
+    "ps_before": 26427424,
+    "ps_after": 26427424,
+    "internal_before": 212936,
+    "internal_after": 212936,
+    "largest_before": 26214388,
+    "largest_after": 26214388
+  },
+  "trace_matches": true,
+  "reserve_pass": true,
+  "accepted": true,
+  "monitors": [],
+  "headroom_percent": 21.808632812499994,
+  "latency": {
+    "poll_call": {
+      "count": 10097,
+      "p50_upper_us": 1000,
+      "p95_upper_us": 1000,
+      "p99_upper_us": 1000,
+      "max_us": 412
+    },
+    "dispatch": {
+      "count": 0,
+      "p50_upper_us": 0,
+      "p95_upper_us": 0,
+      "p99_upper_us": 0,
+      "max_us": 0
+    },
+    "state_update": {
+      "count": 0,
+      "p50_upper_us": 0,
+      "p95_upper_us": 0,
+      "p99_upper_us": 0,
+      "max_us": 0
+    },
+    "enqueue_ack": {
+      "count": 0,
+      "p50_upper_us": 0,
+      "p95_upper_us": 0,
+      "p99_upper_us": 0,
+      "max_us": 0
+    },
+    "prepare": {
+      "count": 1404,
+      "p50_upper_us": 19000,
+      "p95_upper_us": 119000,
+      "p99_upper_us": 165000,
+      "max_us": 169842
+    },
+    "present_call": {
+      "count": 1404,
+      "p50_upper_us": 1000,
+      "p95_upper_us": 6000,
+      "p99_upper_us": 13000,
+      "max_us": 22958
+    },
+    "full_page_prepare": {
+      "count": 131,
+      "p50_upper_us": 123000,
+      "p95_upper_us": 170000,
+      "p99_upper_us": 170000,
+      "max_us": 169842
+    },
+    "controller_to_submission": {
+      "count": 0,
+      "p50_upper_us": 0,
+      "p95_upper_us": 0,
+      "p99_upper_us": 0,
+      "max_us": 0
+    }
+  },
+  "touch_observations": "controller packets only; human finger interaction not established",
+  "pixel_visible_latency": "NOT MEASURED",
+  "ui_actions": "scripted",
+  "physical_ux": "PENDING"
+}

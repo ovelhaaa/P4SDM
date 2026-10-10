@@ -37,8 +37,15 @@ try:
     indexes={name:int(index) for index,name in re.findall(r'\[M213 index\] index=(\d+) name=(\S+)',indextext)}
     assert set(entries)<=set(indexes),indexes
     def load(track,name):
-        text=cmd(f'LOAD {track} {indexes[name]}',.3)
-        assert '[Q ACK] load=1' in text,text
+        # Preview publication can precede old-PCM retirement. A busy rejection
+        # is retryable; do not issue the next load before ownership handoff ends.
+        stop=time.monotonic()+15
+        while time.monotonic()<stop:
+            text=cmd(f'LOAD {track} {indexes[name]}',.4)
+            if '[Q ACK] load=1' in text:break
+            assert '[Q ACK] load=0' in text,text
+            read(.2)
+        else:raise AssertionError('loader stayed busy '+name)
         stop=time.monotonic()+15
         while time.monotonic()<stop:
             state=cmd(f'TRACK {track}',.3)
@@ -53,7 +60,9 @@ try:
     result['kit']=[load(e['track']-1,e['filename']) for e in kit]
     # Live controls exercise normal audio command paths without changing files.
     for kind,value in [('Pitch',48),('Pitch',72),('Pitch',60),('SampleReverse',1),('SampleReverse',0),('SliceDivide',4),('SliceEnable',1),('Trigger',0),('SampleMode',1),('Trigger',0),('GateRelease',0),('SampleMode',0)]:
+        if kind=='SampleMode' and value==1:send('SliceEnable',0,0)
         send(kind,0,value)
+        if kind in ('Pitch','SampleReverse'):send('Trigger',0,0)
     send('TransientAnalyze',0,0|(1<<8));read(2)
     result['analyzer_state']=cmd('STATE',3)
     assert re.search(r'\[Q TRANSIENT\] state=3 ',result['analyzer_state']),result['analyzer_state']

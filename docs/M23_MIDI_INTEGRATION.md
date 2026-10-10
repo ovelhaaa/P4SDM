@@ -15,11 +15,19 @@ remains pioarduino 55.03.36-1, Arduino 3.3.6 / IDF5.5, ESP32-P4 **ES** v1.3.
 Project V2 remains **52,704 bytes**. No DSP, PCM allocation or scheduling
 mathematics changed. MIDI-disabled code compiles out all MIDI work.
 
+`docs/m23/artifacts.json` records archived firmware/source hashes. The final
+disabled production image has the same 734,192-byte size as baseline; all bytes
+outside build time, ELF hash and image integrity fields are identical.
+
 `docs/m23/BASELINE_BOOT_SERIAL.log` is fresh COM13 evidence: USB-Serial/JTAG,
 chip v1.3, ES8311/I2S 44.1k/16 and SD mount/index initialization. Display/touch
 drivers are inherited; no human visual, touch or audible observation is claimed.
 Baseline host checks initially lacked numpy/Pillow (113/115); after installing
-dependencies both missing checks passed. Final host suite: **118/118 PASS**.
+dependencies both missing checks passed. Final host checks: **118/118 PASS**
+including one retry of `m22_font_checks.py`: its bitmap/clipping assertions
+passed in the full run, but Windows temporarily locked its executable during
+temporary-directory cleanup. The identical standalone retry passed completely;
+both logs are retained (`final_host.log`, `final_font_retry.log`).
 Build and capture evidence is under `docs/m23`; historical M22 captures remain
 historical. Release images are locally archived in `.pio/m23-release`.
 
@@ -67,6 +75,8 @@ Only Audio/MIDIStreaming protocol0 with **bcdMSC=1.00** and a discovered bulk-IN
 endpoint is accepted. Interface/alternate/endpoint/max packet are discovered;
 an OUT endpoint is unnecessary. One controller/interface and cable0 are routed.
 MIDI2/UMP without a compatible legacy interface is explicitly rejected.
+An eight-address bounded discovery buffer preserves hub-child connection events
+while a non-MIDI interface is closed; duplicate pending addresses are coalesced.
 Receive allocation is one endpoint max packet (8..64 FS, 512 HS), submission
 length is a packet multiple. Completion resubmits; failures/disconnect advance
 generation and initiate halt/flush. Teardown waits for completion before freeing,
@@ -107,7 +117,8 @@ Start uses existing Play/start semantics (restart accepted transport position).
 Stop uses existing stop semantics and releases sequenced gates plus MIDI-owned
 gates. Neither reconnect nor clock changes sequencer position. **Continue is
 parsed/diagnosed but does not resume transport** because inherited Play resets
-position. CC120/123 clear only matching MIDI owners; CC7/10/74 and Program are
+position. CC123 uses ordinary release; CC120 also fades owned OneShots using
+existing choke release. Both clear only matching MIDI owners. CC7/10/74 and Program are
 parsed but unused, avoiding silent persistent live edits. No MIDI learn/output.
 
 ## Timing and acceptance limits
@@ -134,3 +145,11 @@ Physical controller descriptors, actual routing/velocity/Gate/reconnect, input
 onset and sustained **USB traffic** headroom remain **PENDING**. Idle Host stress
 cannot establish USB workload acceptance. MIDI remains **PARTIAL** until these
 physical tests pass with >=20% worst-case audio reserve and zero audio faults.
+
+Fresh physical idle-Host captures contain 13,782 measured blocks each. SAMPLE
+p99/max were 3851/4109us (29.2% worst-case reserve); SYNTH 4248/4539us (21.8%).
+Both had zero misses/write failures/timeouts, stable heaps and 16 active voices.
+SYNTH passed the strict inherited analyzer. SAMPLE did not cover the required
+Chain loop phase; its strict result remains rejected, despite passing timing
+and heap checks. See `docs/m23/idle_usb_results.json` and the two raw captures.
+Neither capture includes a MIDI controller or USB MIDI packets.

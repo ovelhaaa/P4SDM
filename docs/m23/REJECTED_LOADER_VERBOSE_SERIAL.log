@@ -1,0 +1,156 @@
+# HOST INDEX
+[Q COMMAND] INDEX
+[M213 index] index=0 name=m19p_impulses.wav
+[M213 index] index=1 name=m19p_kick.wav
+[M213 index] index=2 name=m19p_snare.wav
+[M213 index] index=3 name=m19p_mixed.wav
+[M213 index] index=4 name=m19p_stereo.wav
+[M213 index] index=5 name=m19p_large.wav
+[M213 index] index=6 name=m19p_bad_depth.wav
+[M213 index] index=7 name=m19p_truncated.wav
+[M213 index] index=8 name=m19p_oneshot.wav
+[M213 index] index=9 name=M23_BASS_PLUCK_A1.wav
+[M213 index] index=10 name=M23_BASS_PLUCK_C2.wav
+[M213 index] index=11 name=M23_BASS_PLUCK_E2.wav
+[M213 index] index=12 name=M23_BASS_PLUCK_G2.wav
+[M213 index] index=13 name=M23_BELL_C4.wav
+[M213 index] index=14 name=M23_CHORD_CMAJ.wav
+[M213 index] index=15 name=M23_CLAP_01.wav
+[M213 index] index=16 name=M23_CLAP_02.wav
+[M213 index] index=17 name=M23_HAT_CLOSED_ACOUSTIC_01.wav
+[M213 index] index=18 name=M23_HAT_CLOSED_ACOUSTIC_02.wav
+[M213 index] index=19 name=M23_HAT_CLOSED_ELECTRO_01.wav
+[M213 index] index=20 name=M23_HAT_CLOSED_ELECTRO_02.wav
+[M213 index] index=21 name=M23_HAT_OPEN_01.wav
+[M213 index] index=22 name=M23_HAT_OPEN_02.wav
+[M213 index] index=23 name=M23_KICK_ELECTRO_01.wav
+[M213 index] index=24 name=M23_KICK_ELECTRO_02.wav
+[M213 index] index=25 name=M23_KICK_ELECTRO_03.wav
+[M213 index] index=26 name=M23_KICK_MODEL_01.wav
+[M213 index] index=27 name=M23_LOOP_100BPM_01.wav
+[M213 index] index=28 name=M23_LOOP_120BPM_01.wav
+[M213 index] index=29 name=M23_MALLET_C4.wav
+[M213 index] index=30 name=M23_PERC_AGOGO.wav
+[M213 index] index=31 name=M23_PERC_COWBELL.wav
+[M213 index] index=32 name=M23_PERC_DJEMBE.wav
+[M213 index] index=33 name=M23_PERC_TRIANGLE.wav
+[M213 index] index=34 name=M23_PLUCK_G3.wav
+[M213 index] index=35 name=M23_RIM_01.wav
+[M213 index] index=36 name=M23_RIM_02.wav
+[M213 index] index=37 name=M23_SHAKER_01.wav
+[M213 index] index=38 name=M23_SHAKER_SYNTH_01.wav
+[M213 index] index=39 name=M23_SNARE_ACOUSTIC_01.wav
+[M213 index] index=40 name=M23_SNARE_ACOUSTIC_02.wav
+[M213 index] index=41 name=M23_SNARE_ELECTRO_01.wav
+[M213 index] index=42 name=M23_SNARE_ELECTRO_02.wav
+[M213 index] index=43 name=M23_TAMBOURINE_01.wav
+[M213 index] index=44 name=M23_TEXTURE_AMIN.wav
+[M213 index] index=45 name=M23_TEXTURE_CMAJ.wav
+[M213 index] index=46 name=M23_TOM_HIGH.wav
+[M213 index] index=47 name=M23_TOM_LOW.wav
+[M213 index] index=48 name=M23_TOM_MID.wav
+[M213 index] index=49 name=M23_VOCAL_SYNTH_AH.wav
+[M213 index] index=50 name=M23_VOCAL_SYNTH_OH.wav
+# HOST LOAD 0 39
+[Q COMMAND] LOAD 0 39
+[Q ACK] load=1
+# HOST STATE
+[Q COMMAND] STATE
+[Q STATE] bpm=120 swing=50 playing=0 mode=0 chain_length=0 chain_loop=0 project_busy=0 restoring=0 sample_busy=1 project_status=PROJECT READY sample_status=LOADING
+[Q TRACK] track=0 source=0 pitch=36 synth_pitch=36 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=0 index=0 start=0 end=65535
+[Q TRACK] track=1 source=0 pitch=39 synth_pitch=39 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=1 index=0 start=0 end=65535
+[Q TRACK] track=2 source=0 pitch=42 synth_pitch=42 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=2 index=0 start=0 end=65535
+[Q TRACK] track=3 source=0 pitch=45 synth_pitch=45 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=3 index=0 start=0 end=65535
+[Q TRACK] track=4 source=0 pitch=48 synth_pitch=48 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=4 index=0 start=0 end=65535
+[Q TRACK] track=5 source=0 pitch=51 synth_pitch=51 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=5 index=0 start=0 end=65535
+[Q TRACK] track=6 source=0 pitch=54 synth_pitch=54 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=6 index=0 start=0 end=65535
+[Q TRACK] track=7 source=0 pitch=57 synth_pitch=57 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=7 index=0 start=0 end=65535
+[Q TRACK] track=8 source=0 pitch=60 synth_pitch=60 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=8 index=0 start=0 end=65535
+[Q TRACK] track=9 source=0 pitch=63 synth_pitch=63 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=9 index=0 start=0# HOST STATE
+ end=65535
+[Q TRACK] track=10 source=0 pitch=66 synth_pitch=66 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=10 index=0 start=0 end=65535
+[Q TRACK] track=11 source=0 pitch=69 synth_pitch=69 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=11 index=0 start=0 end=65535
+[Q TRACK] track=12 source=0 pitch=72 synth_pitch=72 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=12 index=0 start=0 end=65535
+[Q TRACK] track=13 source=0 pitch=75 synth_pitch=75 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=13 index=0 start=0 end=65535
+[Q TRACK] track=14 source=0 pitch=78 synth_pitch=78 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=14 index=0 start=0 end=65535
+[Q TRACK] track=15 source=0 pitch=81 synth_pitch=81 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=15 index=0 start=0 end=65535
+[Q PATTERN] index=0 length=16 masks=0000,0000,0000
+[Q LOCK] pattern=0 step=0 mask=0 slice=0
+[Q LOCK] pattern=0 step=1 mask=0 slice=0
+[Q LOCK] pattern=0 step=2 mask=0 slice=0
+[Q LOCK] pattern=0 step=3 mask=0 slice=0
+[Q PATTERN] index=1 length=16 masks=0000,0000,0000
+[Q LOCK] pattern=1 step=0 mask=0 slice=0
+[Q LOCK] pattern=1 step=1 mask=0 slice=0
+[Q LOCK] pattern=1 step=2 mask=0 slice=0
+[Q LOCK] pattern=1 step=3 mask=0 slice=0
+[Q PATTERN] index=2 length=16 masks=0000,0000,0000
+[Q LOCK] pattern=2 step=0 mask=0 slice=0
+[Q LOCK] pattern=2 step=1 mask=0 slice=0
+[Q LOCK] pattern=2 step=2 mask=0 slice=0
+[Q LOCK] pattern=2 step=3 mask=0 slice=0
+[Q PATTERN] index=3 length=16 masks=0000,0000,0000
+[Q LOCK] pattern=3 step=0 mask=0 slice=0
+[Q LOCK] pattern=3 step=1 mask=0 slice=0
+[Q LOCK] pattern=3 step=2 mask=0 slice=0
+[Q LOCK] pattern=3 step=3 mask=0 slice=0
+[Q TRANSIENT] state=0 request=0 progress=0 count=1 stale_discarde# HOST STATE
+d=0 apply=0 cancel=0 duration_max_us=0 chunk_max_us=0
+[Q PROPOSAL] index=0 start=0 end=65535
+[Q HEAP] tag=state internal=189656 free=30703144 largest=30408692
+[Q PLAYBACK] triggers=0 reverse=0 gate=0 releases=0 chokes=0 retriggers=0 repeat_accepts=0 repeat_hits=0 chain_loops=0
+[Q COMMAND] STATE
+[Q STATE] bpm=120 swing=50 playing=0 mode=0 chain_length=0 chain_loop=0 project_busy=0 restoring=0 sample_busy=1 project_status=PROJECT READY sample_status=SAMPLE READY
+[Q TRACK] track=0 source=0 pitch=36 synth_pitch=36 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=24615 waveform=4a4f177f name=M23_SNARE_ACOUSTIC_01.wav
+[Q SLICE] track=0 index=0 start=0 end=65535
+[Q TRACK] track=1 source=0 pitch=39 synth_pitch=39 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=1 index=0 start=0 end=65535
+[Q TRACK] track=2 source=0 pitch=42 synth_pitch=42 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=2 index=0 start=0 end=65535
+[Q TRACK] track=3 source=0 pitch=45 synth_pitch=45 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=3 index=0 start=0 end=65535
+[Q TRACK] track=4 source=0 pitch=48 synth_pitch=48 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=4 index=0 start=0 end=65535
+[Q TRACK] track=5 source=0 pitch=51 synth_pitch=51 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=5 index=0 start=0 end=65535
+[Q TRACK] track=6 source=0 pitch=54 synth_pitch=54 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=6 index=0 start=0 end=65535
+[Q TRACK] track=7 source=0 pitch=57 synth_pitch=57 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=7 index=0 start=0 end=65535
+[Q TRACK] track=8 source=0 pitch=60 synth_pitch=60 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 # HOST LOAD 0 40
+waveform=5f6c8245 name=
+[Q SLICE] track=8 index=0 start=0 end=65535
+[Q TRACK] track=9 source=0 pitch=63 synth_pitch=63 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=9 index=0 start=0 end=65535
+[Q TRACK] track=10 source=0 pitch=66 synth_pitch=66 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=10 index=0 start=0 end=65535
+[Q TRACK] track=11 source=0 pitch=69 synth_pitch=69 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=11 index=0 start=0 end=65535
+[Q TRACK] track=12 source=0 pitch=72 synth_pitch=72 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=12 index=0 start=0 end=65535
+[Q TRACK] track=13 source=0 pitch=75 synth_pitch=75 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=13 index=0 start=0 end=65535
+[Q TRACK] track=14 source=0 pitch=78 synth_pitch=78 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=14 index=0 start=0 end=65535
+[Q TRACK] track=15 source=0 pitch=81 synth_pitch=81 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=0 waveform=5f6c8245 name=
+[Q SLICE] track=15 index=0 start=0 end=65535
+[Q PATTERN] index=0 length=16 masks=0000,0000,0000
+[Q LOCK] pattern=0 step=0 mask=0 slice=0
+[Q LOCK] pattern=0 step=1 mask=0 slice=0
+[Q LOCK] pattern=0 step=2 mask=0 

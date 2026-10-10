@@ -1,0 +1,3 @@
+C:\progs\P4SDM\tools\m23_sample_pack.py:21: WavFileWarning: Chunk (non-data) not understood, skipping it.
+  rate,x=wavfile.read(path)
+M23: 42 WAVs, 3718480 bytes; largest resident 260244

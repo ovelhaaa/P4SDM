@@ -8,6 +8,10 @@
 #include <vector>
 #include <cstdio>
 int main() {
+  midi::PendingDevices pending;assert(!pending.push(0));
+  for(uint8_t address=1;address<=8;++address)assert(pending.push(address));
+  assert(pending.push(1) && !pending.push(9));
+  uint8_t address=0;for(uint8_t i=1;i<=8;++i){assert(pending.pop(address));assert(address==i);}assert(!pending.pop(address));
   uint8_t descriptor[]={9,2,32,0,1,1,0,0x80,50,9,4,7,0,1,1,3,0,0,7,0x24,1,0,1,7,0,7,5,0x83,2,64,0,0};
   midi::Endpoint ep;assert(midi::legacy_endpoint(descriptor,sizeof(descriptor),ep));
   assert(ep.interface_number==7 && ep.address==0x83 && ep.packet==64);

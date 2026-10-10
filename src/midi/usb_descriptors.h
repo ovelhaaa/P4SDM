@@ -2,6 +2,23 @@
 #include <cstddef>
 #include <cstdint>
 namespace midi {
+// Client callbacks and client loop share one task. Preserve child discovery
+// while an unsupported hub/interface is being closed; no dynamic allocation.
+struct PendingDevices {
+  uint8_t addresses[8]{};unsigned count=0;
+  bool push(uint8_t address) {
+    if(!address)return false;
+    for(unsigned i=0;i<count;++i)if(addresses[i]==address)return true;
+    if(count==8)return false;
+    addresses[count++]=address;return true;
+  }
+  bool pop(uint8_t &address) {
+    if(!count)return false;
+    address=addresses[0];--count;
+    for(unsigned i=0;i<count;++i)addresses[i]=addresses[i+1];
+    return true;
+  }
+};
 struct Endpoint { uint8_t interface_number=0,alt=0,address=0; uint16_t packet=0; };
 inline bool legacy_endpoint(const uint8_t *p,size_t size,Endpoint &out) {
   out={};

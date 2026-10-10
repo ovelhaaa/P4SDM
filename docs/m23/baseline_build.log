@@ -1,0 +1,63 @@
+Processing guition_app (platform: https://github.com/pioarduino/platform-espressif32/releases/download/55.03.36-1/platform-espressif32.zip; board: jc4880p4; framework: arduino)
+--------------------------------------------------------------------------------
+Verbose mode can be enabled via `-v, --verbose` option
+CONFIGURATION: https://docs.platformio.org/page/boards/espressif32/jc4880p4.html
+PLATFORM: Espressif 32 (55.3.36) > Guition JC4880P443C_I_W (JC-ESP32P4-M3, ESP32-P4 ES + C6)
+HARDWARE: ESP32P4 360MHz, 320KB RAM, 16MB Flash
+DEBUG: Current (cmsis-dap) External (cmsis-dap, esp-bridge, esp-builtin, esp-prog, iot-bus-jtag, jlink, minimodule, olimex-arm-usb-ocd, olimex-arm-usb-ocd-h, olimex-arm-usb-tiny-h, olimex-jtag-tiny, tumpa)
+PACKAGES: 
+ - contrib-piohome @ 3.4.4 
+ - framework-arduinoespressif32 @ 3.3.6 
+ - framework-arduinoespressif32-libs @ 5.5.0+sha.f56bea3d1f 
+ - tool-esptoolpy @ 5.1.0 
+ - toolchain-riscv32-esp @ 14.2.0+20251107
+LDF: Library Dependency Finder -> https://bit.ly/configure-pio-ldf
+LDF Modes: Finder ~ chain, Compatibility ~ soft
+Found 44 compatible libraries
+Scanning dependencies...
+Dependency Graph
+|-- p4sdm-es8311 @ 1.0.0
+|-- SD_MMC @ 3.3.6
+Building in release mode
+Compiling .pio\build\guition_app\src\app_main.cpp.o
+Retrieving maximum program size .pio\build\guition_app\firmware.elf
+Checking size .pio\build\guition_app\firmware.elf
+Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
+RAM:   [===       ]  31.4% (used 102876 bytes from 327680 bytes)
+Flash: [=         ]  10.8% (used 708602 bytes from 6553600 bytes)
+========================= [SUCCESS] Took 17.09 seconds =========================
+
+Processing guition_app_nearest_legacy (platform: https://github.com/pioarduino/platform-espressif32/releases/download/55.03.36-1/platform-espressif32.zip; board: jc4880p4; framework: arduino)
+--------------------------------------------------------------------------------
+Verbose mode can be enabled via `-v, --verbose` option
+CONFIGURATION: https://docs.platformio.org/page/boards/espressif32/jc4880p4.html
+PLATFORM: Espressif 32 (55.3.36) > Guition JC4880P443C_I_W (JC-ESP32P4-M3, ESP32-P4 ES + C6)
+HARDWARE: ESP32P4 360MHz, 320KB RAM, 16MB Flash
+DEBUG: Current (cmsis-dap) External (cmsis-dap, esp-bridge, esp-builtin, esp-prog, iot-bus-jtag, jlink, minimodule, olimex-arm-usb-ocd, olimex-arm-usb-ocd-h, olimex-arm-usb-tiny-h, olimex-jtag-tiny, tumpa)
+PACKAGES: 
+ - contrib-piohome @ 3.4.4 
+ - framework-arduinoespressif32 @ 3.3.6 
+ - framework-arduinoespressif32-libs @ 5.5.0+sha.f56bea3d1f 
+ - tool-esptoolpy @ 5.1.0 
+ - toolchain-riscv32-esp @ 14.2.0+20251107
+LDF: Library Dependency Finder -> https://bit.ly/configure-pio-ldf
+LDF Modes: Finder ~ chain, Compatibility ~ soft
+Found 44 compatible libraries
+Scanning dependencies...
+Dependency Graph
+|-- p4sdm-es8311 @ 1.0.0
+|-- SD_MMC @ 3.3.6
+Building in release mode
+Compiling .pio\build\guition_app_nearest_legacy\src\app_main.cpp.o
+Retrieving maximum program size .pio\build\guition_app_nearest_legacy\firmware.elf
+Checking size .pio\build\guition_app_nearest_legacy\firmware.elf
+Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
+RAM:   [===       ]  31.4% (used 102876 bytes from 327680 bytes)
+Flash: [=         ]  10.8% (used 708342 bytes from 6553600 bytes)
+========================= [SUCCESS] Took 14.42 seconds =========================
+
+Environment                 Status    Duration
+--------------------------  --------  ------------
+guition_app                 SUCCESS   00:00:17.090
+guition_app_nearest_legacy  SUCCESS   00:00:14.416
+========================= 2 succeeded in 00:00:31.507 =========================

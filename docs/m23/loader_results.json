@@ -1,0 +1,372 @@
+{
+  "status": "PHYSICAL SD + NORMAL LOADER PASS",
+  "loads": [
+    {
+      "track": 0,
+      "filename": "M23_SNARE_ACOUSTIC_01.wav",
+      "frames": 24615,
+      "waveform_hash": "4a4f177f"
+    },
+    {
+      "track": 0,
+      "filename": "M23_SNARE_ACOUSTIC_02.wav",
+      "frames": 28708,
+      "waveform_hash": "54fdc0b2"
+    },
+    {
+      "track": 0,
+      "filename": "M23_HAT_CLOSED_ACOUSTIC_01.wav",
+      "frames": 11437,
+      "waveform_hash": "c6f25146"
+    },
+    {
+      "track": 0,
+      "filename": "M23_HAT_CLOSED_ACOUSTIC_02.wav",
+      "frames": 32826,
+      "waveform_hash": "d41007c6"
+    },
+    {
+      "track": 0,
+      "filename": "M23_TOM_LOW.wav",
+      "frames": 53273,
+      "waveform_hash": "82148776"
+    },
+    {
+      "track": 0,
+      "filename": "M23_TOM_MID.wav",
+      "frames": 100492,
+      "waveform_hash": "a8c67483"
+    },
+    {
+      "track": 0,
+      "filename": "M23_TOM_HIGH.wav",
+      "frames": 87557,
+      "waveform_hash": "681d45b8"
+    },
+    {
+      "track": 0,
+      "filename": "M23_TAMBOURINE_01.wav",
+      "frames": 31607,
+      "waveform_hash": "08b29946"
+    },
+    {
+      "track": 0,
+      "filename": "M23_PERC_TRIANGLE.wav",
+      "frames": 130122,
+      "waveform_hash": "19ec6c30"
+    },
+    {
+      "track": 0,
+      "filename": "M23_PERC_AGOGO.wav",
+      "frames": 21832,
+      "waveform_hash": "e5795ef3"
+    },
+    {
+      "track": 0,
+      "filename": "M23_PERC_DJEMBE.wav",
+      "frames": 35318,
+      "waveform_hash": "464b8f87"
+    },
+    {
+      "track": 0,
+      "filename": "M23_KICK_ELECTRO_01.wav",
+      "frames": 12410,
+      "waveform_hash": "bca71255"
+    },
+    {
+      "track": 0,
+      "filename": "M23_KICK_ELECTRO_02.wav",
+      "frames": 6683,
+      "waveform_hash": "b7cd8960"
+    },
+    {
+      "track": 0,
+      "filename": "M23_KICK_ELECTRO_03.wav",
+      "frames": 13093,
+      "waveform_hash": "fd20ad62"
+    },
+    {
+      "track": 0,
+      "filename": "M23_SNARE_ELECTRO_01.wav",
+      "frames": 16648,
+      "waveform_hash": "948822fe"
+    },
+    {
+      "track": 0,
+      "filename": "M23_SNARE_ELECTRO_02.wav",
+      "frames": 6350,
+      "waveform_hash": "e73bb9c7"
+    },
+    {
+      "track": 0,
+      "filename": "M23_CLAP_01.wav",
+      "frames": 18924,
+      "waveform_hash": "078c0165"
+    },
+    {
+      "track": 0,
+      "filename": "M23_CLAP_02.wav",
+      "frames": 5194,
+      "waveform_hash": "369f7261"
+    },
+    {
+      "track": 0,
+      "filename": "M23_RIM_01.wav",
+      "frames": 5427,
+      "waveform_hash": "55b96894"
+    },
+    {
+      "track": 0,
+      "filename": "M23_RIM_02.wav",
+      "frames": 815,
+      "waveform_hash": "0416f8c8"
+    },
+    {
+      "track": 0,
+      "filename": "M23_HAT_CLOSED_ELECTRO_01.wav",
+      "frames": 13304,
+      "waveform_hash": "d8c2cc2c"
+    },
+    {
+      "track": 0,
+      "filename": "M23_HAT_CLOSED_ELECTRO_02.wav",
+      "frames": 1550,
+      "waveform_hash": "be12a6e8"
+    },
+    {
+      "track": 0,
+      "filename": "M23_HAT_OPEN_01.wav",
+      "frames": 67132,
+      "waveform_hash": "cad693f8"
+    },
+    {
+      "track": 0,
+      "filename": "M23_HAT_OPEN_02.wav",
+      "frames": 19257,
+      "waveform_hash": "17064cb6"
+    },
+    {
+      "track": 0,
+      "filename": "M23_SHAKER_01.wav",
+      "frames": 1408,
+      "waveform_hash": "ae1bb4a0"
+    },
+    {
+      "track": 0,
+      "filename": "M23_PERC_COWBELL.wav",
+      "frames": 10296,
+      "waveform_hash": "25f1d581"
+    },
+    {
+      "track": 0,
+      "filename": "M23_KICK_MODEL_01.wav",
+      "frames": 26460,
+      "waveform_hash": "293d376b"
+    },
+    {
+      "track": 0,
+      "filename": "M23_SHAKER_SYNTH_01.wav",
+      "frames": 14843,
+      "waveform_hash": "7bc8a325"
+    },
+    {
+      "track": 0,
+      "filename": "M23_BASS_PLUCK_C2.wav",
+      "frames": 52920,
+      "waveform_hash": "243ebbb5"
+    },
+    {
+      "track": 0,
+      "filename": "M23_BASS_PLUCK_E2.wav",
+      "frames": 52920,
+      "waveform_hash": "56a7857b"
+    },
+    {
+      "track": 0,
+      "filename": "M23_BASS_PLUCK_G2.wav",
+      "frames": 52920,
+      "waveform_hash": "4f3b0d75"
+    },
+    {
+      "track": 0,
+      "filename": "M23_BASS_PLUCK_A1.wav",
+      "frames": 52920,
+      "waveform_hash": "39909260"
+    },
+    {
+      "track": 0,
+      "filename": "M23_MALLET_C4.wav",
+      "frames": 79380,
+      "waveform_hash": "7fa1ad38"
+    },
+    {
+      "track": 0,
+      "filename": "M23_BELL_C4.wav",
+      "frames": 79380,
+      "waveform_hash": "4bd93bce"
+    },
+    {
+      "track": 0,
+      "filename": "M23_PLUCK_G3.wav",
+      "frames": 79380,
+      "waveform_hash": "29afebb3"
+    },
+    {
+      "track": 0,
+      "filename": "M23_CHORD_CMAJ.wav",
+      "frames": 79380,
+      "waveform_hash": "f1cae78e"
+    },
+    {
+      "track": 0,
+      "filename": "M23_TEXTURE_CMAJ.wav",
+      "frames": 129317,
+      "waveform_hash": "1314c91e"
+    },
+    {
+      "track": 0,
+      "filename": "M23_TEXTURE_AMIN.wav",
+      "frames": 128798,
+      "waveform_hash": "48cb0f3b"
+    },
+    {
+      "track": 0,
+      "filename": "M23_VOCAL_SYNTH_AH.wav",
+      "frames": 39690,
+      "waveform_hash": "13273016"
+    },
+    {
+      "track": 0,
+      "filename": "M23_VOCAL_SYNTH_OH.wav",
+      "frames": 39690,
+      "waveform_hash": "59a41b6d"
+    },
+    {
+      "track": 0,
+      "filename": "M23_LOOP_100BPM_01.wav",
+      "frames": 105840,
+      "waveform_hash": "aa48aac3"
+    },
+    {
+      "track": 0,
+      "filename": "M23_LOOP_120BPM_01.wav",
+      "frames": 88200,
+      "waveform_hash": "e761231d"
+    }
+  ],
+  "musical_listening": "PENDING",
+  "instrumentation": "inherited serial console added; production loader/DSP unchanged",
+  "kit": [
+    {
+      "track": 0,
+      "filename": "M23_KICK_MODEL_01.wav",
+      "frames": 26460,
+      "waveform_hash": "293d376b"
+    },
+    {
+      "track": 1,
+      "filename": "M23_KICK_ELECTRO_01.wav",
+      "frames": 12410,
+      "waveform_hash": "bca71255"
+    },
+    {
+      "track": 2,
+      "filename": "M23_SNARE_ACOUSTIC_01.wav",
+      "frames": 24615,
+      "waveform_hash": "4a4f177f"
+    },
+    {
+      "track": 3,
+      "filename": "M23_SNARE_ELECTRO_01.wav",
+      "frames": 16648,
+      "waveform_hash": "948822fe"
+    },
+    {
+      "track": 4,
+      "filename": "M23_CLAP_01.wav",
+      "frames": 18924,
+      "waveform_hash": "078c0165"
+    },
+    {
+      "track": 5,
+      "filename": "M23_HAT_CLOSED_ACOUSTIC_01.wav",
+      "frames": 11437,
+      "waveform_hash": "c6f25146"
+    },
+    {
+      "track": 6,
+      "filename": "M23_HAT_OPEN_01.wav",
+      "frames": 67132,
+      "waveform_hash": "cad693f8"
+    },
+    {
+      "track": 7,
+      "filename": "M23_SHAKER_01.wav",
+      "frames": 1408,
+      "waveform_hash": "ae1bb4a0"
+    },
+    {
+      "track": 8,
+      "filename": "M23_TOM_LOW.wav",
+      "frames": 53273,
+      "waveform_hash": "82148776"
+    },
+    {
+      "track": 9,
+      "filename": "M23_TOM_HIGH.wav",
+      "frames": 87557,
+      "waveform_hash": "681d45b8"
+    },
+    {
+      "track": 10,
+      "filename": "M23_PERC_DJEMBE.wav",
+      "frames": 35318,
+      "waveform_hash": "464b8f87"
+    },
+    {
+      "track": 11,
+      "filename": "M23_RIM_01.wav",
+      "frames": 5427,
+      "waveform_hash": "55b96894"
+    },
+    {
+      "track": 12,
+      "filename": "M23_PERC_AGOGO.wav",
+      "frames": 21832,
+      "waveform_hash": "e5795ef3"
+    },
+    {
+      "track": 13,
+      "filename": "M23_BASS_PLUCK_C2.wav",
+      "frames": 52920,
+      "waveform_hash": "243ebbb5"
+    },
+    {
+      "track": 14,
+      "filename": "M23_MALLET_C4.wav",
+      "frames": 79380,
+      "waveform_hash": "7fa1ad38"
+    },
+    {
+      "track": 15,
+      "filename": "M23_VOCAL_SYNTH_AH.wav",
+      "frames": 39690,
+      "waveform_hash": "13273016"
+    }
+  ],
+  "analyzer_state": "[Q COMMAND] STATE\n[Q STATE] bpm=120 swing=50 playing=0 mode=0 chain_length=0 chain_loop=0 project_busy=0 restoring=0 sample_busy=0 project_status=PROJECT READY sample_status=SAMPLE READY\n[Q TRACK] track=0 source=1 pitch=60 synth_pitch=36 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=4 enabled=0 selected=0 frames=26460 waveform=293d376b name=M23_KICK_MODEL_01.wav\n[Q SLICE] track=0 index=0 start=0 end=16383\n[Q SLICE] track=0 index=1 start=16383 end=32767\n[Q SLICE] track=0 index=2 start=32767 end=49151\n[Q SLICE] track=0 index=3 start=49151 end=65535\n[Q TRACK] track=1 source=1 pitch=60 synth_pitch=39 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=12410 waveform=bca71255 name=M23_KICK_ELECTRO_01.wav\n[Q SLICE] track=1 index=0 start=0 end=65535\n[Q TRACK] track=2 source=1 pitch=60 synth_pitch=42 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=24615 waveform=4a4f177f name=M23_SNARE_ACOUSTIC_01.wav\n[Q SLICE] track=2 index=0 start=0 end=65535\n[Q TRACK] track=3 source=1 pitch=60 synth_pitch=45 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=16648 waveform=948822fe name=M23_SNARE_ELECTRO_01.wav\n[Q SLICE] track=3 index=0 start=0 end=65535\n[Q TRACK] track=4 source=1 pitch=60 synth_pitch=48 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=18924 waveform=078c0165 name=M23_CLAP_01.wav\n[Q SLICE] track=4 index=0 start=0 end=65535\n[Q TRACK] track=5 source=1 pitch=60 synth_pitch=51 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=11437 waveform=c6f25146 name=M23_HAT_CLOSED_ACOUSTIC_01.wav\n[Q SLICE] track=5 index=0 start=0 end=65535\n[Q TRACK] track=6 source=1 pitch=60 synth_pitch=54 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=67132 waveform=cad693f8 name=M23_HAT_OPEN_01.wav\n[Q SLICE] track=6 index=0 start=0 end=65535\n[Q TRACK] track=7 source=1 pitch=60 synth_pitch=57 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=1408 waveform=ae1bb4a0 name=M23_SHAKER_01.wav\n[Q SLICE] track=7 index=0 start=0 end=65535\n[Q TRACK] track=8 source=1 pitch=60 synth_pitch=60 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=53273 waveform=82148776 name=M23_TOM_LOW.wav\n[Q SLICE] track=8 index=0 start=0 end=65535\n[Q TRACK] track=9 source=1 pitch=60 synth_pitch=63 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=87557 waveform=681d45b8 name=M23_TOM_HIGH.wav\n[Q SLICE] track=9 index=0 start=0 end=65535\n[Q TRACK] track=10 source=1 pitch=60 synth_pitch=66 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=35318 waveform=464b8f87 name=M23_PERC_DJEMBE.wav\n[Q SLICE] track=10 index=0 start=0 end=65535\n[Q TRACK] track=11 source=1 pitch=60 synth_pitch=69 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=5427 waveform=55b96894 name=M23_RIM_01.wav\n[Q SLICE] track=11 index=0 start=0 end=65535\n[Q TRACK] track=12 source=1 pitch=60 synth_pitch=72 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=21832 waveform=e5795ef3 name=M23_PERC_AGOGO.wav\n[Q SLICE] track=12 index=0 start=0 end=65535\n[Q TRACK] track=13 source=1 pitch=60 synth_pitch=75 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=52920 waveform=243ebbb5 name=M23_BASS_PLUCK_C2.wav\n[Q SLICE] track=13 index=0 start=0 end=65535\n[Q TRACK] track=14 source=1 pitch=60 synth_pitch=78 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=79380 waveform=7fa1ad38 name=M23_MALLET_C4.wav\n[Q SLICE] track=14 index=0 start=0 end=65535\n[Q TRACK] track=15 source=1 pitch=60 synth_pitch=81 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=39690 waveform=13273016 name=M23_VOCAL_SYNTH_AH.wav\n[Q SLICE] track=15 index=0 start=0 end=65535\n[Q PATTERN] index=0 length=16 masks=0000,0000,0000\n[Q LOCK] pattern=0 step=0 mask=0 slice=0\n[Q LOCK] pattern=0 step=1 mask=0 slice=0\n[Q LOCK] pattern=0 step=2 mask=0 slice=0\n[Q LOCK] pattern=0 step=3 mask=0 slice=0\n[Q PATTERN] index=1 length=16 masks=0000,0000,0000\n[Q LOCK] pattern=1 step=0 mask=0 slice=0\n[Q LOCK] pattern=1 step=1 mask=0 slice=0\n[Q LOCK] pattern=1 step=2 mask=0 slice=0\n[Q LOCK] pattern=1 step=3 mask=0 slice=0\n[Q PATTERN] index=2 length=16 masks=0000,0000,0000\n[Q LOCK] pattern=2 step=0 mask=0 slice=0\n[Q LOCK] pattern=2 step=1 mask=0 slice=0\n[Q LOCK] pattern=2 step=2 mask=0 slice=0\n[Q LOCK] pattern=2 step=3 mask=0 slice=0\n[Q PATTERN] index=3 length=16 masks=0000,0000,0000\n[Q LOCK] pattern=3 step=0 mask=0 slice=0\n[Q LOCK] pattern=3 step=1 mask=0 slice=0\n[Q LOCK] pattern=3 step=2 mask=0 slice=0\n[Q LOCK] pattern=3 step=3 mask=0 slice=0\n[Q TRANSIENT] state=3 request=1 progress=100 count=1 stale_discarded=0 apply=0 cancel=0 duration_max_us=9950 chunk_max_us=2221\n[Q PROPOSAL] index=0 start=0 end=65535\n[Q HEAP] tag=state internal=165328 free=29626540 largest=29360116\n[Q PLAYBACK] triggers=7 reverse=1 gate=1 releases=1 chokes=0 retriggers=5 repeat_accepts=0 repeat_hits=0 chain_loops=0\n",
+  "audio": {
+    "blocks": 3533,
+    "stored": 3533,
+    "p99": 3288,
+    "max": 3356,
+    "misses": 0,
+    "failures": 0,
+    "timeouts": 0,
+    "nonzero": 1799760,
+    "overlap": 0,
+    "overlap_max": 0,
+    "active_max": 16
+  },
+  "final_state": "[Q COMMAND] STATE\n[Q STATE] bpm=120 swing=50 playing=0 mode=0 chain_length=0 chain_loop=0 project_busy=0 restoring=0 sample_busy=0 project_status=PROJECT READY sample_status=SAMPLE READY\n[Q TRACK] track=0 source=1 pitch=60 synth_pitch=36 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=4 enabled=0 selected=0 frames=26460 waveform=293d376b name=M23_KICK_MODEL_01.wav\n[Q SLICE] track=0 index=0 start=0 end=16383\n[Q SLICE] track=0 index=1 start=16383 end=32767\n[Q SLICE] track=0 index=2 start=32767 end=49151\n[Q SLICE] track=0 index=3 start=49151 end=65535\n[Q TRACK] track=1 source=1 pitch=60 synth_pitch=39 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=12410 waveform=bca71255 name=M23_KICK_ELECTRO_01.wav\n[Q SLICE] track=1 index=0 start=0 end=65535\n[Q TRACK] track=2 source=1 pitch=60 synth_pitch=42 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=24615 waveform=4a4f177f name=M23_SNARE_ACOUSTIC_01.wav\n[Q SLICE] track=2 index=0 start=0 end=65535\n[Q TRACK] track=3 source=1 pitch=60 synth_pitch=45 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=16648 waveform=948822fe name=M23_SNARE_ELECTRO_01.wav\n[Q SLICE] track=3 index=0 start=0 end=65535\n[Q TRACK] track=4 source=1 pitch=60 synth_pitch=48 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=18924 waveform=078c0165 name=M23_CLAP_01.wav\n[Q SLICE] track=4 index=0 start=0 end=65535\n[Q TRACK] track=5 source=1 pitch=60 synth_pitch=51 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=11437 waveform=c6f25146 name=M23_HAT_CLOSED_ACOUSTIC_01.wav\n[Q SLICE] track=5 index=0 start=0 end=65535\n[Q TRACK] track=6 source=1 pitch=60 synth_pitch=54 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=67132 waveform=cad693f8 name=M23_HAT_OPEN_01.wav\n[Q SLICE] track=6 index=0 start=0 end=65535\n[Q TRACK] track=7 source=1 pitch=60 synth_pitch=57 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=1408 waveform=ae1bb4a0 name=M23_SHAKER_01.wav\n[Q SLICE] track=7 index=0 start=0 end=65535\n[Q TRACK] track=8 source=1 pitch=60 synth_pitch=60 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=53273 waveform=82148776 name=M23_TOM_LOW.wav\n[Q SLICE] track=8 index=0 start=0 end=65535\n[Q TRACK] track=9 source=1 pitch=60 synth_pitch=63 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=87557 waveform=681d45b8 name=M23_TOM_HIGH.wav\n[Q SLICE] track=9 index=0 start=0 end=65535\n[Q TRACK] track=10 source=1 pitch=60 synth_pitch=66 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=35318 waveform=464b8f87 name=M23_PERC_DJEMBE.wav\n[Q SLICE] track=10 index=0 start=0 end=65535\n[Q TRACK] track=11 source=1 pitch=60 synth_pitch=69 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=5427 waveform=55b96894 name=M23_RIM_01.wav\n[Q SLICE] track=11 index=0 start=0 end=65535\n[Q TRACK] track=12 source=1 pitch=60 synth_pitch=72 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=21832 waveform=e5795ef3 name=M23_PERC_AGOGO.wav\n[Q SLICE] track=12 index=0 start=0 end=65535\n[Q TRACK] track=13 source=1 pitch=60 synth_pitch=75 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=52920 waveform=243ebbb5 name=M23_BASS_PLUCK_C2.wav\n[Q SLICE] track=13 index=0 start=0 end=65535\n[Q TRACK] track=14 source=1 pitch=60 synth_pitch=78 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=79380 waveform=7fa1ad38 name=M23_MALLET_C4.wav\n[Q SLICE] track=14 index=0 start=0 end=65535\n[Q TRACK] track=15 source=1 pitch=60 synth_pitch=81 sample_pitch=60 mute=0 solo=0 start=0 end=65535 reverse=0 mode=0 choke=0 cutoff=0 resonance=0 send=127 slices=1 enabled=0 selected=0 frames=39690 waveform=13273016 name=M23_VOCAL_SYNTH_AH.wav\n[Q SLICE] track=15 index=0 start=0 end=65535\n[Q PATTERN] index=0 length=16 masks=1111,1111,1111\n[Q LOCK] pattern=0 step=0 mask=0 slice=0\n[Q LOCK] pattern=0 step=1 mask=0 slice=0\n[Q LOCK] pattern=0 step=2 mask=0 slice=0\n[Q LOCK] pattern=0 step=3 mask=0 slice=0\n[Q PATTERN] index=1 length=16 masks=0000,0000,0000\n[Q LOCK] pattern=1 step=0 mask=0 slice=0\n[Q LOCK] pattern=1 step=1 mask=0 slice=0\n[Q LOCK] pattern=1 step=2 mask=0 slice=0\n[Q LOCK] pattern=1 step=3 mask=0 slice=0\n[Q PATTERN] index=2 length=16 masks=0000,0000,0000\n[Q LOCK] pattern=2 step=0 mask=0 slice=0\n[Q LOCK] pattern=2 step=1 mask=0 slice=0\n[Q LOCK] pattern=2 step=2 mask=0 slice=0\n[Q LOCK] pattern=2 step=3 mask=0 slice=0\n[Q PATTERN] index=3 length=16 masks=0000,0000,0000\n[Q LOCK] pattern=3 step=0 mask=0 slice=0\n[Q LOCK] pattern=3 step=1 mask=0 slice=0\n[Q LOCK] pattern=3 step=2 mask=0 slice=0\n[Q LOCK] pattern=3 step=3 mask=0 slice=0\n[Q TRANSIENT] state=5 request=1 progress=100 count=1 stale_discarded=0 apply=0 cancel=1 duration_max_us=9950 chunk_max_us=2221\n[Q PROPOSAL] index=0 start=0 end=65535\n[Q HEAP] tag=state internal=165328 free=29626540 largest=29360116\n[Q PLAYBACK] triggers=663 reverse=1 gate=1 releases=1 chokes=0 retriggers=365 repeat_accepts=0 repeat_hits=0 chain_loops=0\n"
+}

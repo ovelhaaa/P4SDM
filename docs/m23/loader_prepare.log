@@ -1,0 +1,4 @@
+Prepared temporary qualification copy C:\progs\P4SDM\.pio\m19p
+M213 SD console prepared; STORE 8 reads resident PCM only
+M214 diagnostic SD consoles prepared; no flash or SD writes
+M23 ignored loader observation console prepared; no hardware write

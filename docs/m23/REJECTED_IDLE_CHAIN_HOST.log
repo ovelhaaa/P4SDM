@@ -1,0 +1,68 @@
+M5 measured checks PASS; physical touch, audible output and visual integrity remain separate.
+M8 >=60s realtime groove + 12s 16-track 4x ratchet qualification: PASS
+M9 transforms + dense realtime stress: PASS
+M10 locks + all-lock dense realtime + bounded dirty UI: PASS
+M11 tone/send commands, dense filters, bounded TONE UI and >=20% headroom: PASS
+M12 tone locks, coefficient/edit blocks, cache, memory and >=20% headroom: PASS
+M13 playback coverage, heaps, inherited checks, 60s and >=20% headroom: PASS
+M14 slices/waveform, unchanged dense workload, heaps, normal/synth and >=20% headroom: PASS
+M15 slice lock coverage, inherited M14 workload, heaps and >=20% headroom: PASS
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m17.py", line 31, in <module>
+    assert all(c[k]>0 for k in ('starts','advances','repeats','loops','stops','switches','boundary_max'))
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m18.py", line 25, in <module>
+    subprocess.run([sys.executable, 'tests/analyze_m17.py', a.log, '--engine-bytes', str(m['engine_bytes'])] + (['--normal'] if a.normal else []) + (['--synth'] if a.synth else []), check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m17.py', 'docs\\m23\\SAMPLE_IDLE_USB_SERIAL.log', '--engine-bytes', '52616']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m181.py", line 22, in <module>
+    subprocess.run([sys.executable, 'tests/analyze_m18.py', a.log,
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        '--engine-bytes','52616','--state-bytes','352','--publication-bytes','24'] +
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        (['--normal'] if a.normal else []) + (['--synth'] if a.synth else []), check=True)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m18.py', 'docs\\m23\\SAMPLE_IDLE_USB_SERIAL.log', '--engine-bytes', '52616', '--state-bytes', '352', '--publication-bytes', '24']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m19.py", line 17, in <module>
+    subprocess.run([sys.executable, 'tests/analyze_m181.py', a.log] +
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                   (['--normal'] if a.normal else []) + (['--synth'] if a.synth else []), check=True)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m181.py', 'docs\\m23\\SAMPLE_IDLE_USB_SERIAL.log']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m20.py", line 16, in <module>
+    subprocess.run([sys.executable,'tests/analyze_m19.py',a.log]+(['--synth'] if a.synth else []),check=True,env=environment)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m19.py', 'docs\\m23\\SAMPLE_IDLE_USB_SERIAL.log']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\analyze_m22.py", line 12, in <module>
+    subprocess.run([sys.executable,'tests/analyze_m20.py',str(a.log)]+(['--synth'] if a.synth else []),check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m20.py', 'docs\\m23\\SAMPLE_IDLE_USB_SERIAL.log']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "C:\progs\P4SDM\tests\m23_idle_usb_device.py", line 16, in <module>
+    subprocess.run([sys.executable,'tests/analyze_m22.py',log,'--output',output]+(['--synth'] if case=='synth' else []),cwd=root,check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devx\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\progs\\P4SDM\\.venv\\Scripts\\python.exe', 'tests/analyze_m22.py', 'docs/m23/SAMPLE_IDLE_USB_SERIAL.log', '--output', 'docs/m23/sample_idle_usb_results.json']' returned non-zero exit status 1.

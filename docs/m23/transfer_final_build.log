@@ -1,0 +1,127 @@
+Processing guition_m23_sd_transfer (platform: https://github.com/pioarduino/platform-espressif32/releases/download/55.03.36-1/platform-espressif32.zip; board: jc4880p4; framework: arduino)
+--------------------------------------------------------------------------------
+Verbose mode can be enabled via `-v, --verbose` option
+CONFIGURATION: https://docs.platformio.org/page/boards/espressif32/jc4880p4.html
+PLATFORM: Espressif 32 (55.3.36) > Guition JC4880P443C_I_W (JC-ESP32P4-M3, ESP32-P4 ES + C6)
+HARDWARE: ESP32P4 360MHz, 320KB RAM, 16MB Flash
+DEBUG: Current (cmsis-dap) External (cmsis-dap, esp-bridge, esp-builtin, esp-prog, iot-bus-jtag, jlink, minimodule, olimex-arm-usb-ocd, olimex-arm-usb-ocd-h, olimex-arm-usb-tiny-h, olimex-jtag-tiny, tumpa)
+PACKAGES: 
+ - contrib-piohome @ 3.4.4 
+ - framework-arduinoespressif32 @ 3.3.6 
+ - framework-arduinoespressif32-libs @ 5.5.0+sha.f56bea3d1f 
+ - tool-esptoolpy @ 5.1.0 
+ - toolchain-riscv32-esp @ 14.2.0+20251107
+LDF: Library Dependency Finder -> https://bit.ly/configure-pio-ldf
+LDF Modes: Finder ~ chain, Compatibility ~ soft
+Found 44 compatible libraries
+Scanning dependencies...
+Dependency Graph
+|-- SD_MMC @ 3.3.6
+Building in release mode
+Compiling .pio\build\guition_m23_sd_transfer\lib7fe\FS\FS.cpp.o
+Compiling .pio\build\guition_m23_sd_transfer\lib7fe\FS\vfs_api.cpp.o
+Compiling .pio\build\guition_m23_sd_transfer\liba11\SD_MMC\SD_MMC.cpp.o
+Compiling .pio\build\guition_m23_sd_transfer\src\hal\storage_hal.cpp.o
+Compiling .pio\build\guition_m23_sd_transfer\src\m23_sd_transfer.cpp.o
+Building .pio\build\guition_m23_sd_transfer\bootloader.bin
+Generating partitions .pio\build\guition_m23_sd_transfer\partitions.bin
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\ColorFormat.c.o
+esptool v5.1.0
+Creating ESP32P4 image...
+Merged 2 ELF sections.
+Successfully created ESP32P4 image.
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\Esp.cpp.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\FirmwareMSC.cpp.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\FunctionalInterrupt.cpp.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\HEXBuilder.cpp.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\HWCDC.cpp.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\HardwareSerial.cpp.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\HashBuilder.cpp.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\IPAddress.cpp.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\MD5Builder.cpp.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\MacAddress.cpp.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\Print.cpp.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\Stream.cpp.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\StreamString.cpp.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\Tone.cpp.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\USB.cpp.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\USBCDC.cpp.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\USBMSC.cpp.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\WMath.cpp.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\WString.cpp.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\base64.cpp.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\cbuf.cpp.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\chip-debug-report.cpp.o
+In file included from C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/esp_hw_support/include/esp_private/regi2c_ctrl.h:15,
+                 from C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/hal/platform_port/include/hal/regi2c_ctrl.h:17,
+                 from C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/hal/esp32p4/include/hal/clk_tree_ll.h:19,
+                 from C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/hal/esp32p4/include/hal/spimem_flash_ll.h:32,
+                 from C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/hal/esp32p4/include/hal/spi_flash_ll.h:18,
+                 from C:/.platformio/packages/framework-arduinoespressif32/cores/esp32/Esp.cpp:41:
+C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/esp_hw_support/include/esp_private/periph_ctrl.h:87:64: warning: invalid suffix on literal; C++11 requires a space between literal and string macro [-Wliteral-suffix]
+   87 | #define __PERIPH_CTRL_DEPRECATE_ATTR __attribute__((deprecated("This function is not functional on "CONFIG_IDF_TARGET)))
+      |                                                                ^
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\esp32-hal-adc.c.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\esp32-hal-bt.c.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\esp32-hal-cpu.c.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\esp32-hal-dac.c.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\esp32-hal-gpio.c.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\esp32-hal-hosted.c.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\esp32-hal-i2c-ng.c.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\esp32-hal-i2c-slave.c.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\esp32-hal-i2c.c.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\esp32-hal-ledc.c.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\esp32-hal-log-wrapper.c.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\esp32-hal-matrix.c.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\esp32-hal-misc.c.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\esp32-hal-periman.c.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\esp32-hal-psram.c.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\esp32-hal-rgb-led.c.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\esp32-hal-rmt.c.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\esp32-hal-sigmadelta.c.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\esp32-hal-spi.c.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\esp32-hal-time.c.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\esp32-hal-timer.c.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\esp32-hal-tinyusb.c.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\esp32-hal-touch-ng.c.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\esp32-hal-touch.c.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\esp32-hal-uart.c.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\firmware_msc_fat.c.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\freertos_stats.cpp.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\libb64\cdecode.c.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\libb64\cencode.c.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\main.cpp.o
+In file included from C:/.platformio/packages/framework-arduinoespressif32/cores/esp32/esp32-hal-spi.c:65:
+C:/.platformio/packages/framework-arduinoespressif32/cores/esp32/esp32-hal-spi.c: In function '_spiSetClockDivInternal':
+C:/.platformio/packages/framework-arduinoespressif32/cores/esp32/esp32-hal-spi.c:582:32: warning: passing argument 1 of 'spi_ll_set_clk_source' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  582 |       spi_ll_set_clk_source(spi->dev, new_clk_src ? SPI_CLK_SRC_SPLL : SPI_CLK_SRC_XTAL);
+      |                             ~~~^~~~~
+C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/hal/esp32p4/include/hal/spi_ll.h:203:90: note: in definition of macro 'spi_ll_set_clk_source'
+  203 | #define spi_ll_set_clk_source(...) (void)__DECLARE_RCC_ATOMIC_ENV; spi_ll_set_clk_source(__VA_ARGS__)
+      |                                                                                          ^~~~~~~~~~~
+C:/.platformio/packages/framework-arduinoespressif32-libs/esp32p4_es/include/hal/esp32p4/include/hal/spi_ll.h:177:53: note: expected 'spi_dev_t *' but argument is of type 'volatile spi_dev_t *'
+  177 | static inline void spi_ll_set_clk_source(spi_dev_t *hw, spi_clock_source_t clk_source)
+      |                                          ~~~~~~~~~~~^~
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\stdlib_noniso.c.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\wiring_pulse.c.o
+Compiling .pio\build\guition_m23_sd_transfer\FrameworkArduino\wiring_shift.c.o
+Archiving .pio\build\guition_m23_sd_transfer\libFrameworkArduino.a
+Indexing .pio\build\guition_m23_sd_transfer\libFrameworkArduino.a
+Linking .pio\build\guition_m23_sd_transfer\firmware.elf
+Firmware metrics can not be shown. Set the terminal codepage to "utf-8" or "cp65001" on Windows.
+Retrieving maximum program size .pio\build\guition_m23_sd_transfer\firmware.elf
+Checking size .pio\build\guition_m23_sd_transfer\firmware.elf
+Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
+RAM:   [=         ]   7.3% (used 24016 bytes from 327680 bytes)
+Flash: [=         ]   6.4% (used 420590 bytes from 6553600 bytes)
+Building .pio\build\guition_m23_sd_transfer\firmware.bin
+esptool v5.1.0
+Creating ESP32P4 image...
+Merged 4 ELF sections.
+Successfully created ESP32P4 image.
+========================= [SUCCESS] Took 46.07 seconds =========================
+
+Environment              Status    Duration
+-----------------------  --------  ------------
+guition_m23_sd_transfer  SUCCESS   00:00:46.071
+========================= 1 succeeded in 00:00:46.071 =========================
