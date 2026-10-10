@@ -203,3 +203,32 @@ jobs:
             .pio/m214-listening/manifest.json
             .pio/m214-listening/README.md
           retention-days: 30
+  m22:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.7'
+      - run: pip install platformio==6.1.18 pillow==11.3.0
+      - run: g++ -std=c++17 -O2 -Wall -Wextra -Werror tests/ui_touch_test.cpp -o /tmp/ui_touch_test && /tmp/ui_touch_test
+      - run: python tests/m22_font_checks.py
+      - run: python tests/m214_config_checks.py
+      - run: python tests/m22_screens.py --check
+      - run: pio run -e guition_app -e guition_app_nearest_legacy -e guition_m22_sample -e guition_m22_synth
+      - run: python tests/analyze_m22.py docs/m22/SAMPLE_SERIAL.log
+      - run: python tests/analyze_m22.py docs/m22/SYNTH_SERIAL.log --synth
+      - run: python tests/analyze_m22_sd.py docs/m22/SD_SERIAL.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: m22-firmware-and-framebuffer-renders
+          include-hidden-files: true
+          path: |
+            .pio/build/guition_m22*/firmware.*
+            .pio/m22-before/
+            .pio/m22-after/
+            docs/m22/
+          retention-days: 30

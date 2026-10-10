@@ -5,3 +5,4 @@ docs/GUITION_M213*.log -text
 docs/GUITION_M214*.log -text -whitespace
 docs/m21/m214-captures/*.log -text -whitespace
 docs/m21/m214-captures/**/*.log -text -whitespace
+docs/m22/*.log -text -whitespace

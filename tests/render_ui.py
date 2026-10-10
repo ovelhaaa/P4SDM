@@ -9,13 +9,14 @@ from pathlib import Path
 import subprocess
 import tempfile
 
-p=argparse.ArgumentParser(); p.add_argument('--baseline',action='store_true'); a=p.parse_args()
-root=Path.cwd(); output=root/'.pio'/('m20-before' if a.baseline else 'm20-after'); output.mkdir(exist_ok=True)
-source=subprocess.check_output(['git','show','66fff46:src/app_main.cpp']).decode() if a.baseline else Path('src/app_main.cpp').read_text()
+p=argparse.ArgumentParser(); p.add_argument('--baseline',action='store_true')
+p.add_argument('--revision'); p.add_argument('--output',type=Path); a=p.parse_args()
+root=Path.cwd(); output=a.output or root/'.pio'/('m20-before' if a.baseline else 'm20-after'); output.mkdir(parents=True,exist_ok=True)
+source=subprocess.check_output(['git','show',(a.revision or '66fff46')+':src/app_main.cpp']).decode() if a.baseline or a.revision else Path('src/app_main.cpp').read_text()
 draw=source[source.index('void draw_waveform()'):source.index('void interact(')]
 if a.baseline:
     draw=draw.replace('void draw(int id) {','void draw(int id) {\n display::reset_clip();',1)
-font=subprocess.check_output(['git','show','66fff46:src/hal/display_hal.cpp']).decode() if a.baseline else Path('src/hal/display_hal.cpp').read_text()
+font=subprocess.check_output(['git','show',(a.revision or '66fff46')+':src/hal/display_hal.cpp']).decode() if a.baseline or a.revision else Path('src/hal/display_hal.cpp').read_text()
 start=font.index('void text(int x,'); end=font.index('\n}\n}',start)+2; font=font[start:end]
 includes='\n'.join(f'#include "{(root/path).as_posix()}"' for path in ['src/app/model.h','src/app/project_ui.h','src/app/samples.h','src/app/transient_service.h'])
 prefix=r'''
@@ -49,16 +50,19 @@ void rect(int x,int y,int w,int h,uint16_t color) {
 void fill(uint16_t c) { rect(0,0,800,480,c); }
 }
 namespace samples {
+bool missing_fixture=false;
 unsigned revision() { return 0; }
 void preview(unsigned,Preview &out) {
   out.frames=44100; strlcpy(out.name,"BREAKBEAT_16BIT.WAV",sizeof(out.name));
   for(unsigned n=0;n<sampler::waveform_columns;++n) out.waveform.columns[n]={int16_t(-int(n%17)*1800),int16_t(int(n%13)*2200)};
 }
-void describe(int,char *out,unsigned size) { strlcpy(out,"16/16 BREAKBEAT_16BIT.WAV",size); }
-void track_name(unsigned,char *out,unsigned size) { strlcpy(out,"ASSIGNED: BREAKBEAT_16BIT.WAV",size); }
+void describe(int,char *out,unsigned size) { strlcpy(out,"16/16 BREAKBEAT_WITH_A_VERY_LONG_FILENAME_44100.WAV",size); }
+void track_name(unsigned,char *out,unsigned size) { strlcpy(out,missing_fixture ? "MISSING: BREAKBEAT_WITH_A_VERY_LONG_FILENAME.WAV" : "ASSIGNED: BREAKBEAT_16BIT.WAV",size); }
 void message(char *out,unsigned size) { strlcpy(out,"WAV LOADED / 44100 HZ / 16 BIT",size); }
 }
 namespace projects {
+bool busy_fixture=false;
+bool busy() { return busy_fixture; }
 bool dirty() { return true; }
 void current(char *out,unsigned size) { strlcpy(out,"PROJECT_9999",size); }
 void status(char *out,unsigned size) { strlcpy(out,"READY / PROJECT V2 / SD OK",size); }
@@ -87,7 +91,7 @@ void save(const std::string &name) {
 }
 int main(int argc,char **argv) {
   assert(argc==2); view.selected_pattern=15; view.playing_pattern=2; view.queued_pattern=7; view.bpm=400; view.playing=true;
-  ui.selected=15;ui.selected_step=15;
+  ui.selected=15;ui.bank=1;ui.selected_step=15;
   for(auto &t:view.tracks) { t.assigned(); t.slices.divide({},16); t.slice_enabled=true; }
   view.patterns[15].track_steps[15]=0xaaaa;
   view.patterns[15].locks[15][15]={255,127,127,127,15,127,127,127,15};
@@ -98,6 +102,7 @@ int main(int argc,char **argv) {
     const auto allocations_before=render_allocations;
     ui.page=app::Page(page);display::reset_clip();display::fill(bg);header();
     RENDER_PAGE
+    CHECK_STATES
     overlay(); assert(render_allocations==allocations_before);
     save(std::string(argv[1])+"/page_"+std::to_string(page)+".ppm");
   }
@@ -126,8 +131,21 @@ else:
   ui.page=app::Page::Tools;ui.tool_section=2;display::fill(bg);header();render_page();save(std::string(argv[1])+"/pattern_tools.ppm");
   ui.page=app::Page::Project;project_ui.mode=project::Workflow::Mode::Confirm;strlcpy(project_ui.target,"PROJECT_9999",sizeof(project_ui.target));display::fill(bg);header();render_page();save(std::string(argv[1])+"/confirm.ppm");
   ui.page=app::Page::SamplePlayback;view.tracks[15].sample=false;display::fill(bg);header();render_page();save(std::string(argv[1])+"/disabled_sample.ppm");
+  ui.page=app::Page::Project;project_ui.mode=project::Workflow::Mode::Browser;display::fill(bg);header();render_page();save(std::string(argv[1])+"/load.ppm");
+  ui.page=app::Page::Project;project_ui.mode=project::Workflow::Mode::Home;projects::busy_fixture=true;ui_notification.show("PROJECT SAVED",millis());display::fill(bg);header();render_page();save(std::string(argv[1])+"/project_pending.ppm");projects::busy_fixture=false;
+  ui.page=app::Page::Sample;view.tracks[15].sample=true;samples::missing_fixture=true;ui_notification.show("LOAD FAILED / MISSING WAV",millis());display::fill(bg);header();render_page();save(std::string(argv[1])+"/missing_sample.ppm");
     '''
 suffix=suffix.replace('PAGE_COUNT','18' if a.baseline else '19').replace('RENDER_PAGE',render).replace('EXTRA_VARIANTS',extra)
+checks='''
+    if(ui.page==app::Page::Sequence) {
+      const auto head=app::page_widget(ui.page,3),selected=app::page_widget(ui.page,15),track=app::page_widget(ui.page,23);
+      assert(display::pixels[(head.y+4)*800+head.x+4]==accent);
+      assert(display::pixels[(head.y+4)*800+head.x+head.w-1]==app::ui20::theme::warning);
+      assert(display::pixels[selected.y*800+selected.x]==white);
+      assert(display::pixels[(track.y+4)*800+track.x+4]==accent);
+    }
+'''
+suffix=suffix.replace('CHECK_STATES',checks if not a.baseline and not a.revision else '')
 with tempfile.TemporaryDirectory() as folder:
     path=Path(folder)/'render.cpp'; path.write_text(includes+prefix+'\nnamespace display {\n'+font+'\n}\n'+draw+suffix)
     binary=Path(folder)/'render.exe'

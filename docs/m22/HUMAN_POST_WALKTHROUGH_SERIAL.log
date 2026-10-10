@@ -1,0 +1,17 @@
+# Human walkthrough capture armed; source 432abf2aa65857ec03a46e9d1a840c954607dc2a; no scripted touch injection. Human observations must be supplied separately. U only reads timing histograms.
+[M22 latency] phase=poll_call count=226669 p50_upper_us=1000 p95_upper_us=1000 p99_upper_us=1000 max_us=1079 boundary=software source=controller_packets
+[M22 latency] phase=dispatch count=123 p50_upper_us=5000 p95_upper_us=26000 p99_upper_us=52000 max_us=53464 boundary=software source=controller_packets
+[M22 latency] phase=state_update count=123 p50_upper_us=1000 p95_upper_us=1000 p99_upper_us=1000 max_us=1997 boundary=software source=controller_packets
+[M22 latency] phase=enqueue_ack count=25 p50_upper_us=20000 p95_upper_us=51000 p99_upper_us=52000 max_us=51962 boundary=software source=controller_packets
+[M22 latency] phase=prepare count=154 p50_upper_us=5000 p95_upper_us=71000 p99_upper_us=80000 max_us=79947 boundary=software source=mixed_real_and_scripted_redraws
+[M22 latency] phase=present_call count=154 p50_upper_us=1000 p95_upper_us=3000 p99_upper_us=9000 max_us=19220 boundary=software source=mixed_real_and_scripted_redraws
+[M22 latency] phase=full_page_prepare count=19 p50_upper_us=71000 p95_upper_us=80000 p99_upper_us=80000 max_us=79947 boundary=software source=mixed_real_and_scripted_redraws
+[M22 latency] phase=controller_to_submission count=44 p50_upper_us=38000 p95_upper_us=77000 p99_upper_us=81000 max_us=80601 boundary=software source=controller_packets
+[M22 latency] phase=poll_call count=228566 p50_upper_us=1000 p95_upper_us=1000 p99_upper_us=1000 max_us=1079 boundary=software source=controller_packets
+[M22 latency] phase=dispatch count=123 p50_upper_us=5000 p95_upper_us=26000 p99_upper_us=52000 max_us=53464 boundary=software source=controller_packets
+[M22 latency] phase=state_update count=123 p50_upper_us=1000 p95_upper_us=1000 p99_upper_us=1000 max_us=1997 boundary=software source=controller_packets
+[M22 latency] phase=enqueue_ack count=25 p50_upper_us=20000 p95_upper_us=51000 p99_upper_us=52000 max_us=51962 boundary=software source=controller_packets
+[M22 latency] phase=prepare count=154 p50_upper_us=5000 p95_upper_us=71000 p99_upper_us=80000 max_us=79947 boundary=software source=mixed_real_and_scripted_redraws
+[M22 latency] phase=present_call count=154 p50_upper_us=1000 p95_upper_us=3000 p99_upper_us=9000 max_us=19220 boundary=software source=mixed_real_and_scripted_redraws
+[M22 latency] phase=full_page_prepare count=19 p50_upper_us=71000 p95_upper_us=80000 p99_upper_us=80000 max_us=79947 boundary=software source=mixed_real_and_scripted_redraws
+[M22 latency] phase=controller_to_submission count=44 p50_upper_us=38000 p95_upper_us=77000 p99_upper_us=81000 max_us=80601 boundary=software source=controller_packets

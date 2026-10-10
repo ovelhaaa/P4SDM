@@ -1,4 +1,5 @@
 #include "app/model.h"
+#include "app/ui_touch.h"
 #if P4SDM_M212_SCENARIO
 #include "app/m212_fixture.h"
 namespace { m212::Trace m212_trace; uint32_t m212_blocks=0; }
@@ -81,7 +82,20 @@ void summary_printf(const char *format, ...) {
   }
 }
 app::Queue<64> commands;
-app::Queue<128> input_events;
+app::ui22::TouchQueue<128> input_events;
+std::atomic<uint32_t> touch_release_generation{0};
+app::ui22::Gesture gesture;
+app::ui22::Histogram ui22_poll,ui22_dispatch,ui22_update,ui22_ack,
+    ui22_prepare,ui22_upload,ui22_page,ui22_submission;
+uint32_t ui22_input_us=0,ui22_command_us=0;
+uint16_t ui22_command_ack=0;
+bool ui22_input_pending=false,ui22_command_pending=false;
+void report_ui22_metrics() {
+  const app::ui22::Histogram *histograms[]={&ui22_poll,&ui22_dispatch,&ui22_update,&ui22_ack,&ui22_prepare,&ui22_upload,&ui22_page,&ui22_submission};
+  const char *phases[]={"poll_call","dispatch","state_update","enqueue_ack","prepare","present_call","full_page_prepare","controller_to_submission"};
+  for(unsigned n=0;n<8;++n) summary_printf("[M22 latency] phase=%s count=%u p50_upper_us=%u p95_upper_us=%u p99_upper_us=%u max_us=%u boundary=software source=%s\n",
+      phases[n],histograms[n]->count.load(),histograms[n]->percentile(50),histograms[n]->percentile(95),histograms[n]->percentile(99),histograms[n]->maximum.load(),n==0||n==1||n==2||n==3||n==7 ? "controller_packets" : "mixed_real_and_scripted_redraws");
+}
 app::Queue<32> pad_triggers;
 std::atomic<int> visible_page{0}, visible_bank{0};
 std::atomic<uint32_t> input_errors{0}, input_overflow{0};
@@ -340,8 +354,13 @@ bool send(app::Command c) {
     ui_notification.show("QUEUE FULL",millis()); dirty[45]=true;
     return false;
   }
+  const uint32_t enqueued_us=uint32_t(esp_timer_get_time());
   ++sent_commands;
   view.apply(c);
+  if(ui22_input_pending) {
+    ui22_command_us=enqueued_us;
+    ui22_command_ack=sent_commands; ui22_command_pending=true;
+  }
   if (c.kind == app::Kind::Source) { full = true; dirty[45] = true; }
   return true;
 }
@@ -570,7 +589,9 @@ void draw_content(int id) {
     char text[128]{};
     const auto r = app::page_widget(ui.page, id);
     if (id == 161) {
-      strlcpy(text, ui_notification.active ? ui_notification.text : "READY", sizeof(text));
+      if(projects::busy()) strlcpy(text,"PROJECT PENDING",sizeof(text));
+      else if(ui_notification.active) strlcpy(text,ui_notification.text,sizeof(text));
+      else projects::status(text,sizeof(text));
     } else if (id == 153)
       strlcpy(text, "PROJECT", sizeof(text));
     else if (project_ui.mode == project::Workflow::Mode::Confirm) {
@@ -605,6 +626,7 @@ void draw_content(int id) {
     if (id == 160)
       strlcpy(text, "BACK", sizeof(text));
     display::rect(r.x, r.y, r.w, r.h, panel);
+    if(projects::busy() && id>=154 && id<=157) display::rect(r.x,r.y,r.w,r.h,app::ui20::theme::disabled);
     ui_text(r.x + 8, r.y + 12, text, white, id == 161 ? 2 : app::ui20::control_scale);
     return;
   }
@@ -887,16 +909,12 @@ void draw_content(int id) {
     color = on ? accent : panel;
     if (id >= view.patterns[view.selected_pattern].length)
       color = app::ui20::theme::background;
-    if (id == old_head)
-      color = app::ui20::theme::warning;
     if (id == ui.selected_step && !on)
       color = app::ui20::theme::secondary;
     snprintf(s, sizeof(s), "%02d", id + 1);
   } else if (id < 24) {
     int t = ui.bank * 8 + id - 16;
     color = t == ui.selected ? accent : panel;
-    if (millis() < flash_until[t])
-      color = app::ui20::theme::warning;
     snprintf(s, sizeof(s), "%02d %s%s", t + 1,
              view.tracks[t].muted    ? "MUTE"
              : view.tracks[t].sample ? "SAMPLE"
@@ -928,6 +946,12 @@ void draw_content(int id) {
   if(view.tracks[ui.selected].sample && (id==27||id==28||id==102||id==103)) color=app::ui20::theme::disabled;
   display::rect(r.x, r.y, r.w, r.h, color);
   ui_text(r.x + 8, r.y + 16, s, white, app::ui20::control_scale);
+  // Activity occupies a separate stripe; it cannot hide canonical ON/OFF or
+  // selected Track fill, and the selected Step keeps its white top/bottom.
+  if(id<16 && id==old_head)
+    display::rect(r.x+r.w-4,r.y+4,4,r.h-8,app::ui20::theme::warning);
+  if(id>=16 && id<24 && millis()<flash_until[ui.bank*8+id-16])
+    display::rect(r.x+r.w-4,r.y+4,4,r.h-8,app::ui20::theme::warning);
   if (id < 16 &&
       view.patterns[view.selected_pattern].locks[ui.selected][id].mask)
     display::rect(r.x + r.w - 12, r.y + 8, 6, 6, white);
@@ -951,7 +975,7 @@ void sample_status() {
   text_bounds = r; display::clip(r.x,r.y,r.w,r.h);
   display::rect(r.x,r.y,r.w,r.h,bg);
   char line[128];
-  samples::describe(sample_index,line,sizeof(line)); ui_text(r.x+8,r.y+8,line,white,1);
+  samples::describe(sample_index,line,sizeof(line)); ui_text(r.x+8,r.y+8,line,white,2);
   samples::track_name(ui.selected,line,sizeof(line)); ui_text(r.x+8,r.y+32,line,accent,2);
   ui_text(r.x+8,r.y+60,ui_notification.active ? ui_notification.text : "",white,2);
   ui_text(r.x+8,r.y+88,view.tracks[ui.selected].sample ? "SOURCE SAMPLE" : "SELECT A WAV AND LOAD TO USE SAMPLE",white,2);
@@ -1085,14 +1109,20 @@ void header() {
   char line[64];
   snprintf(line,sizeof(line),"P%02d T%02d %s%s",view.selected_pattern+1,ui.selected+1,view.tracks[ui.selected].sample ? "SAMPLE" : "SYNTH",projects::dirty() ? " *" : "");
   display::rect(r.x,r.y,r.w,r.h,bg); ui_text(8,8,line,white,2);
-  snprintf(line,sizeof(line),"PLAY P%02d Q%02d %s%s R%u",view.playing_pattern+1,view.queued_pattern+1,
+  snprintf(line,sizeof(line),"HEAR%02d Q%02d %s%s R%u",view.playing_pattern+1,view.queued_pattern+1,
       view.performance.override_active>=0 ? "O " : "",view.performance.fill_active>=0 ? "F " : "",view.performance.repeat.active);
-  ui_text(8,30,ui_notification.active ? ui_notification.text : line,ui_notification.active ? app::ui20::theme::warning : accent,1); display::reset_clip();
+  ui_text(8,30,projects::busy() ? "PROJECT PENDING" : ui_notification.active ? ui_notification.text : line,
+      projects::busy() || ui_notification.active ? app::ui20::theme::warning : accent,2); display::reset_clip();
   draw(306); draw(307); draw(29); draw(178); tempo_header();
 }
 void render_page() {
   const auto &layout=app::ui20::layout(ui.page);
-  for(unsigned n=0;n<layout.count;++n) draw(layout.widgets[n].id);
+  for(unsigned n=0;n<layout.count;++n) {
+    const int id=layout.widgets[n].id;
+    // header() already drew the persistent controls on a full page.
+    if(id==306 || id==307 || id==29 || id==178 || id==34 || id==35) continue;
+    draw(id);
+  }
 }
 void render_sequence() { render_page(); }
 void render_track() { render_page(); }
@@ -1358,8 +1388,11 @@ void interact(int id, int x, bool initial) {
       projects::request(Op::Scan);
     } else if (id == 157)
       submit = project_ui.confirm(Op::New, "UNTITLED", projects::dirty());
-    if (submit && projects::request(project_ui.pending, project_ui.target))
-      project_ui.cancel();
+    if(submit) {
+      const bool accepted=projects::request(project_ui.pending,project_ui.target);
+      ui_notification.show(accepted ? "PROJECT REQUESTED" : "PROJECT REQUEST REJECTED",millis());
+      if(accepted) project_ui.cancel();
+    }
     full = true;
     return;
   }
@@ -1770,8 +1803,11 @@ void interact(int id, int x, bool initial) {
       sample_index = app::clamp(sample_index + (id == 38 ? -1 : 1), 0,
                                 int(samples::count()) - 1);
       dirty[38] = true;
-    } else if (id == 40)
-      samples::request(ui.selected, sample_index);
+    } else if (id == 40) {
+      const bool accepted=samples::request(ui.selected,sample_index);
+      ui_notification.show(accepted ? "WAV LOAD REQUESTED" : "WAV LOAD REJECTED",millis());
+      dirty[45]=dirty[222]=true;
+    }
     else if (id == 41) {
       if (samples::has_sample(ui.selected) && !samples::busy())
         send({app::Kind::Source, uint8_t(ui.selected),
@@ -1950,7 +1986,7 @@ void ui_task(void *) {
       ui.selected_step = -1;
       ui.capture = -1;
       ui.down = false;
-      app::Command stale;
+      app::ui22::TouchEvent stale;
       while (input_events.pop(stale)) {
       }
       ui.cancel_tool();
@@ -1963,10 +1999,18 @@ void ui_task(void *) {
       projects::view_ready.store(true, std::memory_order_release);
       full = true;
     }
-    if (project_revision != projects::revision.load() ||
+    static bool project_busy=false;
+    const bool next_project_busy=projects::busy();
+    if (project_revision != projects::revision.load() || next_project_busy!=project_busy ||
         project_changes != projects::changes.load()) {
-      if(project_revision != projects::revision.load()) { char message[96]; projects::status(message,sizeof(message)); ui_notification.show(message,millis()); }
+      if(project_revision != projects::revision.load() || next_project_busy!=project_busy) {
+        char message[96];
+        if(next_project_busy) strlcpy(message,"PROJECT PENDING",sizeof(message));
+        else projects::status(message,sizeof(message));
+        ui_notification.show(message,millis());
+      }
       project_revision = projects::revision.load();
+      project_busy=next_project_busy;
       project_changes = projects::changes.load();
       dirty[45]=true;
       if (ui.page == app::Page::Project)
@@ -2460,19 +2504,34 @@ void ui_task(void *) {
     if(ui20_stage==20 && !full) dirty[24]=true;
     if(ui20_stage==21 && !full) dirty[0]=dirty[1]=true;
 #endif
-    app::Command event;
+    auto cancel_gesture=[&]() {
+      if(slice_audition_track>=0) { slice_audition_release=true; flush_slice_release(); }
+      if(repeat_gate.held) {
+        repeat_gate.release([](app::Command c) { return send(c); });
+        repeat_ui_releases.fetch_add(1);
+      }
+    };
+    app::ui22::TouchEvent event;
     while (input_events.pop(event)) {
+      if(gesture.reconcile(event.release_generation,ui)) cancel_gesture();
+      const uint32_t dispatch_start=uint32_t(esp_timer_get_time());
+      ui22_dispatch.add(dispatch_start-event.observed_us);
+      const bool feedback_event=event.kind==app::Kind::Play
+          ? repeat_gate.held || slice_audition_track>=0
+          : event.initial ? app::ui20::hit(ui,unsigned(event.value)&0xffff,unsigned(event.value)>>16)>=0
+                          : ui.down && app::ui20::slider(ui,ui.capture);
+      if(feedback_event && !ui22_input_pending) { ui22_input_us=event.observed_us; ui22_input_pending=true; }
       touch_state.pressed = event.kind != app::Kind::Play;
       touch_state.x = unsigned(event.value) & 0xffff;
       touch_state.y = unsigned(event.value) >> 16;
-      if (touch_state.pressed && !ui.down) {
+      if (gesture.begin(event,ui)) {
         ui.capture = app::ui20::hit(ui, touch_state.x, touch_state.y);
         if (ui.page == app::Page::Track && ui.capture >= 24 &&
             ui.capture < 29 &&
             !app::track_control_enabled(view.tracks[ui.selected], ui.capture))
           ui.capture = -1;
         interact(ui.capture, touch_state.x, true);
-      } else if (touch_state.pressed &&
+      } else if (touch_state.pressed && ui.down &&
                  ((((ui.capture >= 96 && ui.capture <= 102) || (ui.capture >= 114 && ui.capture <= 118)) && ui.capture % 2 == 0) || (ui.capture == 137 || ui.capture == 138 ||
                    ui.capture == 124 || ui.capture == 125) ||
                   (ui.capture >= 107 && ui.capture <= 109) ||
@@ -2490,10 +2549,12 @@ void ui_task(void *) {
         repeat_gate.release([](app::Command c) { return send(c); });
         repeat_ui_releases.fetch_add(1);
       }
-      ui.down = touch_state.pressed;
+      ui.down = touch_state.pressed && (ui.down || event.initial);
       if (!ui.down)
         ui.capture = -1;
+      ui22_update.add(uint32_t(esp_timer_get_time())-dispatch_start);
     }
+    if(gesture.reconcile(touch_release_generation.load(std::memory_order_acquire),ui)) cancel_gesture();
     // Independent physical publication survives an overflowing input queue.
     if (repeat_gate.held && repeat_touch_up.load(std::memory_order_acquire)) {
       repeat_gate.release([](app::Command c) { return send(c); });
@@ -2504,6 +2565,10 @@ void ui_task(void *) {
     const uint32_t pp = perf_patterns.load(std::memory_order_relaxed);
     const uint32_t pm = perf_mix.load(std::memory_order_relaxed);
     const uint32_t pa = perf_ack.load(std::memory_order_relaxed);
+    if(ui22_command_pending && uint16_t(pa-ui22_command_ack)<32768) {
+      ui22_ack.add(uint32_t(esp_timer_get_time())-ui22_command_us);
+      ui22_command_pending=false;
+    }
     const uint32_t pt = perf_transport.load(std::memory_order_relaxed);
     const uint32_t pr = perf_repeat.load(std::memory_order_relaxed);
     std::atomic_thread_fence(std::memory_order_acquire);
@@ -2625,7 +2690,12 @@ void ui_task(void *) {
     if(ui_notification.expire(millis())) { dirty[45]=dirty[161]=dirty[222]=true; }
     static app::ui20::Context ui_context;
     const app::ui20::Context next_context{ui.selected,view.selected_pattern,view.tracks[ui.selected].sample,samples::revision(),projects::revision.load()};
-    if(app::ui20::full_invalidation(ui_context,next_context,ui.page)) { full=true; ui_confirmation.cancel(); }
+    if(app::ui20::full_invalidation(ui_context,next_context,ui.page)) {
+      full=true; ui_confirmation.cancel();
+      // A held slider must not retarget an edit after sample/project/Track
+      // replacement. Keep down until release so its next move is not a tap.
+      if(ui_context.track>=0) { ui.capture=-1; cancel_gesture(); }
+    }
     ui_context=next_context;
     bool changed = full || diag;
     for (bool d : dirty)
@@ -2682,9 +2752,16 @@ void ui_task(void *) {
       std::fill(std::begin(dirty), std::end(dirty), false);
       const uint32_t render_us=uint32_t(esp_timer_get_time()-start);
       prep_max = std::max(prep_max,render_us);
+      ui22_prepare.add(render_us);
+      if(page_change) ui22_page.add(render_us);
       if (display::present() != ESP_OK)
         vTaskSuspend(nullptr);
       auto tel = display::telemetry();
+      ui22_upload.add(tel.present_us);
+      if(ui22_input_pending) {
+        ui22_submission.add(uint32_t(esp_timer_get_time())-ui22_input_us);
+        ui22_input_pending=false;
+      }
 #if P4SDM_UI20_STRESS
       if(page_change) { auto &m=ui_metrics[int(ui.page)]; ++m.frames; m.render_us=std::max(m.render_us,render_us); m.dirty_bytes=std::max(m.dirty_bytes,tel.dirty_bytes); }
       if(slider_update) { ui20_slider_us=std::max(ui20_slider_us,render_us); ui20_slider_bytes=std::max(ui20_slider_bytes,tel.dirty_bytes); }
@@ -2713,6 +2790,7 @@ void ui_task(void *) {
     if (!reported && millis() - started >= 63000 &&
         audio_summary_ready.load(std::memory_order_acquire)) {
       reported = true;
+      report_ui22_metrics();
 #if P4SDM_UI20_STRESS
       for(unsigned n=0;n<19;++n) summary_printf("[M20 page] page=%u frames=%u render_us=%u dirty_bytes=%u\n",n,ui_metrics[n].frames,ui_metrics[n].render_us,ui_metrics[n].dirty_bytes);
       summary_printf("[M20 updates] slider_us=%u slider_bytes=%u playhead_us=%u playhead_bytes=%u interval_us=%u\n",ui20_slider_us,ui20_slider_bytes,ui20_head_us,ui20_head_bytes,ui20_interval_us);
@@ -2815,11 +2893,22 @@ void touch_worker(void *) {
   bool down = false;
   uint16_t x = 0, y = 0;
   app::PadGate pad;
+  app::ui22::PollGuard poll_guard;
   for (;;) {
     pad.flush(pad_triggers);
-    if (touch::poll(state) != ESP_OK)
+    const uint32_t poll_start=uint32_t(esp_timer_get_time());
+    const auto poll_result=touch::poll(state);
+    const uint32_t observed_us=uint32_t(esp_timer_get_time());
+    ui22_poll.add(observed_us-poll_start);
+    if (poll_result != ESP_OK) {
       input_errors.fetch_add(1);
-    else {
+      if(poll_guard.fault(down)) {
+        pad.release(pad_triggers);
+        touch_release_generation.fetch_add(1,std::memory_order_release);
+        repeat_touch_up.store(true,std::memory_order_release);
+        down=false;
+      }
+    } else if(poll_guard.accept(state.pressed)) {
       repeat_touch_up.store(!state.pressed, std::memory_order_release);
       if (state.pressed != down ||
           (state.pressed && (state.x != x || state.y != y))) {
@@ -2830,11 +2919,14 @@ void touch_worker(void *) {
               !pad.press(visible_bank.load() * 8 + id - 16, pad_triggers))
             input_overflow.fetch_add(1);
         }
-        if (!state.pressed && down)
+        if (!state.pressed && down) {
           pad.release(pad_triggers);
+          touch_release_generation.fetch_add(1,std::memory_order_release);
+        }
         if (!input_events.push(
-                {state.pressed ? app::Kind::Trigger : app::Kind::Play, 0,
-                 int(unsigned(state.x) | (unsigned(state.y) << 16))}))
+                {state.pressed ? app::Kind::Trigger : app::Kind::Play,
+                 int(unsigned(state.x) | (unsigned(state.y) << 16)),observed_us,
+                 touch_release_generation.load(std::memory_order_relaxed),state.pressed && !down}))
           input_overflow.fetch_add(1);
       }
       down = state.pressed;
@@ -3658,6 +3750,10 @@ void setup() {
   xTaskCreatePinnedToCore(initialize, "app_init", 8000, nullptr, 1, nullptr, 0);
 }
 void loop() {
+#if !P4SDM_M213_DIAGNOSTICS
+  // Read-only software diagnostics; never injects musical/touch commands.
+  if(Serial.available() && Serial.read()=='U') report_ui22_metrics();
+#endif
 #if P4SDM_BLOCK_PROFILE
   static bool profile_reported = false;
   if (!profile_reported && captured.load(std::memory_order_acquire) == capture_blocks) {
