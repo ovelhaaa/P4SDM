@@ -220,6 +220,7 @@ jobs:
       - run: pio run -e guition_app -e guition_app_nearest_legacy -e guition_m22_sample -e guition_m22_synth
       - run: python tests/analyze_m22.py docs/m22/SAMPLE_SERIAL.log
       - run: python tests/analyze_m22.py docs/m22/SYNTH_SERIAL.log --synth
+      - run: python tests/analyze_m22_sd.py docs/m22/SD_SERIAL.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:

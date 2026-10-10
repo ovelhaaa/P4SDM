@@ -1,0 +1,30 @@
+{
+  "complete": true,
+  "timing": {
+    "blocks": 17999,
+    "stored": 16384,
+    "p99": 3669,
+    "max": 3743,
+    "misses": 0,
+    "failures": 0,
+    "timeouts": 0,
+    "nonzero": 9131114,
+    "overlap": 21,
+    "overlap_max": 1794,
+    "active_max": 16
+  },
+  "faults": [],
+  "safe": true,
+  "reserve_pass": true,
+  "repeat_hits": 24816,
+  "chain_loops": 12,
+  "dense_component_complete": false,
+  "dense_component_timing_pass": false,
+  "quantiles_cover_all_blocks": false,
+  "project_restored": true,
+  "accepted": true,
+  "headroom_percent": 35.520976562499996,
+  "source_sha": "6936720",
+  "control": "scripted serial commands; no finger UX observation",
+  "quantile_limitation": "p99 covers the first 16384 of 17999 blocks; maximum covers all measured blocks"
+}

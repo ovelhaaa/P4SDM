@@ -1,0 +1,26 @@
+{
+  "SAMPLE_SERIAL.log": {
+    "archive": ".pio\\m22-artifacts\\20261010T210339Z\\sample",
+    "source_sha": "432abf2aa65857ec03a46e9d1a840c954607dc2a",
+    "sha256": "dc14be3ee2b9ef5ed0903944d3a13bfde5adfd5a833cdd8b32db2fb0c85f1a5f",
+    "interaction": "scripted stress / no observed fingers"
+  },
+  "SYNTH_SERIAL.log": {
+    "archive": ".pio\\m22-artifacts\\20261010T210339Z\\synth",
+    "source_sha": "432abf2aa65857ec03a46e9d1a840c954607dc2a",
+    "sha256": "c33a0ca6800477c47634a2b0a94130dfd8a705485e016eee114866a45899b10b",
+    "interaction": "scripted stress / no observed fingers"
+  },
+  "PRODUCTION_BOOT_SERIAL.log": {
+    "archive": ".pio\\m22-artifacts\\20261010T210339Z\\production",
+    "source_sha": "432abf2aa65857ec03a46e9d1a840c954607dc2a",
+    "sha256": "32eecf183eebc0f3e60dbbee9aadb14fc0a14d7badd86c2dbf01b72978a45419",
+    "interaction": "normal boot / no observed fingers"
+  },
+  "REJECTED_SAMPLE_CHAIN_SERIAL.log": {
+    "archive": ".pio\\m22-artifacts\\20261010T210339Z\\sample",
+    "source_sha": "432abf2aa65857ec03a46e9d1a840c954607dc2a",
+    "sha256": "8b48ac85c9cb6d5dec7945018b32936b99e49550375830c06af83a84846dcf86",
+    "interaction": "scripted stress / no observed fingers"
+  }
+}

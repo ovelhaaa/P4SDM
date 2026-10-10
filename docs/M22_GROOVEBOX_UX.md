@@ -38,6 +38,13 @@ Evidence labels: **S** = source-derived; **R** = inspected host framebuffer;
 | PERFORM Patterns / Mix / Repeat / Chain | E/A/O/F and pending markers distinguish temporary launch from arrangement/editor state; base/temporary mix flags remain separate. Repeat retains accepted-event capture, quantization and Stop retry. Its owner survives navigation until release. Chain rows and controls remain 52 px high; Delete captures intent and Clear confirms. Full redraw scripts exercise page traversal. | S,R |
 | PROJECT Home / Naming / Confirm / Load | Captured operation/name survives selection changes; Cancel and navigation clear intent. `request()` can reject busy/unavailable storage; `busy()` represents pending work. Only successful verified storage save reports PROJECT SAVED (`projects.cpp`). Load validates before apply, stops transport and restores samples incrementally; missing names remain SAMPLE/silent. CRC/recovery codec tests are inherited. | S,R |
 
+Two additional S concerns were corrected: sample/project request rejection was
+silent, and Project request publication increments revision before the storage
+status necessarily changes. UI reports REQUESTED, PENDING and REJECTED, watches
+busy transitions independently of revision, and disables pending Project actions.
+A previous SAVED notification cannot replace pending status in header or Project
+row. Completion/error still comes from storage; persistence is unchanged.
+
 Source geometry tests cover all nineteen pages, footer/header, edge pixels,
 nonoverlap and minimum **52×52** actionable rectangles. Segments use the same
 registry parent and shared subdivision as drawing/hit testing; no thin slider
@@ -107,6 +114,10 @@ retry. A move whose press was dropped cannot become an unrelated tap. Release
 never hit-tests another widget. Navigation clears capture but preserves the
 original release owner. Source/Track/sample/Project context replacement clears
 capture and releases held owners, preventing a drag from silently retargeting.
+Three consecutive failed GT911 polls cancel a held gesture through the same
+release generation. Recovery suppresses the stale held state until a real
+release is observed; it cannot replay the previous press. Deterministic tests
+cover transient-error recovery, one cancellation and lift/repress gating.
 
 No audio command kind, queue acceptance rule or musical Repeat window changed.
 The GT911's last state intentionally persists between nonfresh packets; if the
@@ -127,6 +138,12 @@ Quantiles are explicitly labeled **upper bounds**; overflow uses measured max.
 The acknowledgement boundary is observed by the UI from the existing audio
 publication; it includes any UI sampling delay. Poll-call duration cannot
 measure the interval from finger contact to the next poll.
+The normal application's read-only serial `U` query prints the histograms;
+`tests/m22_human_capture.py` requests them every 15 seconds during a walkthrough,
+without injecting coordinates or musical commands. Background empty taps and
+unowned moves do not start a submission-latency sample. Samples represent
+the oldest eligible pending packet in a coalesced redraw, not every individual
+packet. Successful controller recovery still requires a fresh observed lift.
 
 Display `present()` telemetry includes repair/cache/transfer/submission work
 as provided by the existing HAL; it is not a scanout or visible-pixel timestamp.
@@ -173,14 +190,61 @@ have been synthesized. Boot and automated serial stress do not certify fingers.
 
 ## 10. Physical SD results
 
-Final qualification pending. Baseline actual SD mount/index passed. Historical
-M21.4 SD load/save/recovery evidence is not relabeled as fresh M22 evidence.
+Fresh [SD serial evidence](m22/SD_SERIAL.log) passes `analyze_m22_sd.py`:
+indexed WAV loads, replacement/retirement, invalid depth/truncation,
+fragmentation/reserve rejection, Project Save/Load, CRC generation fallback
+and restoration, three missing references/restoration, and rejected missing
+Project preserving current state. Unmount, short-read and allocation failure
+are injected failures, not physical card removal/power cutting. Reserved files:
+M22_LAYOUT_QUAL / M22_MISSING_QUAL.
+
+The isolated SD console derives from `6936720`, before final touch/pending-message
+refinements; loader, DSP, ownership and codec match final source. It is controlled
+by serial, not human UI. It recorded 24,816 Repeat hits and twelve Chain loops,
+maximum 3,743 µs (35.5% reserve), zero errors and 21 loading/analysis overlap blocks.
+p99=3,669 µs covers the first 16,384 of 17,999 measured blocks; maximum/error
+counters cover all blocks. No p50/p95 or complete-interval p99 is invented.
+The optional dense-component marker is absent; actual timing/hit records and
+the passing overall SD gate are reported independently.
 
 ## 11. Fresh SAMPLE/SYNTH realtime results
 
-Final captures pending. Required: 13,782 blocks each, original M20/M19 stress,
-zero misses/failures/timeouts/watchdogs, maximum ≤4,643 µs against 5,804.989 µs,
-stable heaps. UI diagnostics do not relax any inherited assertion.
+Initial M22 source `6936720` passed both complete real-board runs, before the
+additional controller-error cancellation/serial query. SAMPLE p50/p95/p99/max:
+2,867/3,732/3,857/4,065 µs (30.0% reserve); SYNTH:
+3,738/4,089/4,201/4,402 µs (24.2%). These initial captures are retained separately
+and will not substitute for final-source qualification.
+
+Final firmware source: `432abf2aa65857ec03a46e9d1a840c954607dc2a`.
+Saved images were hash-verified before flash; production, Nearest, SAMPLE and
+SYNTH all compiled successfully.
+
+| Final real-device scripted stress | Blocks | p50 / p95 / p99 / max (µs) | Worst reserve |
+|---|---:|---|---:|
+| SAMPLE | 13,782 | 2,865 / 3,696 / 3,828 / 4,116 | 29.1% |
+| SYNTH | 13,782 | 3,730 / 4,119 / 4,228 / 4,489 | 22.7% |
+
+Both pass the original strict M20→M19→Repeat→Chain analyzer chain, with zero
+misses, failures, timeouts, watchdogs or rails. SAMPLE free/largest/internal heap
+remains 24,265,192 / 24,117,236 / 208,348 bytes; SYNTH remains
+26,427,944 / 26,214,388 / 233,484. Histogram/packet additions cost about 9.3 KB
+internal memory versus historical SAMPLE, with stable before/after heap and no
+audio allocation.
+
+One final SAMPLE attempt had max=4,116 µs and zero audio errors but **zero Chain
+loops**; strict coverage rejected it. It is retained as [rejected capture](m22/REJECTED_SAMPLE_CHAIN_SERIAL.log).
+The unchanged saved image was rerun and completed one loop. No analyzer was
+weakened and the rejected attempt is not counted as a pass. Wall-clock coverage
+variability remains separate from deterministic musical equivalence.
+
+Final SAMPLE redraw p50/p95/p99 upper bounds: 26/95/124 ms; max 145.493 ms.
+Full-page upper bounds: 85/129/140 ms. Present-call upper bounds: 1/5/15 ms,
+max 20.987 ms. SYNTH full-page preparation upper bounds: 110/153/158 ms,
+max 158.056 ms. Native partial slider/playhead transfers remain 49,152 / 24,576
+bytes. Historical M21.4 full-page maxima were already 100–146 ms; reduced glyph
+calls did not remove that limit. No universal renderer speedup is claimed.
+Scripted captures have zero controller events, so input/ack quantiles are not
+measured. Human capture and observations remain separate pending evidence.
 
 ## 12. Musical event equivalence
 
@@ -205,6 +269,10 @@ font and screenshot checks, verifies production flags and runs strict inherited
 analyzers against fresh M22 captures. Firmware ELF/BIN/MAP, build/package/source
 hashes and raw serial capture archives are retained. Final remote SUCCESS is
 pending; local checks are not substituted for it.
+The local suite passed **114/114** after the initial refinement. Added
+screenshot assertions use real widget geometry to verify ON fill, yellow
+activity stripe, selected white Step edges and selected Track fill; the
+contact-sheet regression compares RGB pixels against checked-in evidence.
 
 ## 15. Known issues and remaining validation
 
