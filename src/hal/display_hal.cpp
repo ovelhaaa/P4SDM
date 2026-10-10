@@ -297,8 +297,20 @@ void text(int x,int y,const char *value,uint16_t color,int scale) {
         case ']': glyph=0x324b; break;
         default: break;
         }
-        for(int row=0;row<5;++row) for(int col=0;col<3;++col)
-            if(glyph&(1u<<(14-row*3-col))) rect(x+col*scale,y+row*scale,scale,scale,color);
+        // Coalesce identical adjacent scanlines and contiguous bits. The exact
+        // 3x5 bitmap is unchanged; fewer rectangles touch the dirty-tile mask.
+        for(int row=0;row<5;) {
+            const unsigned bits=(glyph>>(12-row*3))&7;
+            int end=row+1;
+            while(end<5 && ((glyph>>(12-end*3))&7)==bits) ++end;
+            for(int col=0;col<3;) {
+                if(!(bits&(4u>>col))) {++col;continue;}
+                const int first=col++;
+                while(col<3 && (bits&(4u>>col))) ++col;
+                rect(x+first*scale,y+row*scale,(col-first)*scale,(end-row)*scale,color);
+            }
+            row=end;
+        }
     }
 }
 }
