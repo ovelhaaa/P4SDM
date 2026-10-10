@@ -14,6 +14,8 @@ kinds={name.strip():i for i,name in enumerate(model.split(','))}
 log=(root/'docs/m23/LOADER_SERIAL.log').open('w',encoding='utf-8');port=None
 result=dict(status='PENDING',loads=[],musical_listening='PENDING',instrumentation='inherited serial console added; production loader/DSP unchanged')
 def capture(name,seconds,destination):
+    archive=root/'.pio/m23-release'/name
+    if archive.exists():shutil.copytree(archive,root/'.pio/build'/name,dirs_exist_ok=True)
     subprocess.run([sys.executable,'tests/physical_sd/capture.py',name,str(seconds),destination],cwd=root,stdout=subprocess.DEVNULL,check=True)
 try:
     capture('guition_m23_loader',8,'docs/m23/LOADER_BOOT_SERIAL.log')
@@ -39,8 +41,8 @@ try:
         assert '[Q ACK] load=1' in text,text
         stop=time.monotonic()+15
         while time.monotonic()<stop:
-            state=cmd('STATE',.4)
-            match=re.search(rf'\[Q TRACK\] track={track} .*?frames=(\d+) waveform=([0-9a-f]+) name=(\S+)',state)
+            state=cmd(f'TRACK {track}',.3)
+            match=re.search(rf'\[M23 TRACK\] track={track} frames=(\d+) waveform=([0-9a-f]+) name=(\S+)',state)
             if match and match[3]==name:
                 assert int(match[1])==entries[name]['frames']
                 return dict(track=track,filename=name,frames=int(match[1]),waveform_hash=match[2])
@@ -53,7 +55,7 @@ try:
     for kind,value in [('Pitch',48),('Pitch',72),('Pitch',60),('SampleReverse',1),('SampleReverse',0),('SliceDivide',4),('SliceEnable',1),('Trigger',0),('SampleMode',1),('Trigger',0),('GateRelease',0),('SampleMode',0)]:
         send(kind,0,value)
     send('TransientAnalyze',0,0|(1<<8));read(2)
-    result['analyzer_state']=cmd('STATE',.5)
+    result['analyzer_state']=cmd('STATE',3)
     assert re.search(r'\[Q TRANSIENT\] state=3 ',result['analyzer_state']),result['analyzer_state']
     send('TransientCancel');send('SliceEnable',0,0)
     send('ClearPattern',0,0)
@@ -65,7 +67,7 @@ try:
     result['audio']={k:int(v) for k,v in re.findall(r'(\w+)=(\d+)',match[1])}
     for key in ['misses','failures','timeouts']:assert result['audio'][key]==0
     assert result['audio']['active_max']==16 and result['audio']['max']<=4644,result['audio']
-    result['final_state']=cmd('STATE',1);result['status']='PHYSICAL SD + NORMAL LOADER PASS'
+    result['final_state']=cmd('STATE',3);result['status']='PHYSICAL SD + NORMAL LOADER PASS'
 finally:
     if port:port.close()
     log.close()

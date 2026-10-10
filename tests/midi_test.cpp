@@ -44,6 +44,9 @@ int main() {
   midi::ClockEstimator clock;e.type=midi::Type::Start;clock.event(e);assert(clock.running);
   e.type=midi::Type::Clock;for(unsigned i=0;i<49;++i){e.received_us=1000+uint64_t(i)*20833;clock.event(e);}
   assert(std::abs(clock.bpm()-120)<.01 && clock.minimum==clock.maximum);
+  midi::ClockEstimator batched;
+  for(unsigned i=0;i<49;++i){e.received_us=1000+uint64_t(i/2)*41666;batched.event(e);}
+  assert(std::abs(batched.bpm()-120)<.01 && batched.minimum==0); // callback batching is visible jitter
   assert(clock.timed_out(e.received_us+250001));e.received_us+=300000;clock.event(e);assert(clock.missing==1 && clock.bpm()==0);
   e.type=midi::Type::Stop;clock.event(e);assert(!clock.running);e.type=midi::Type::Continue;clock.event(e);assert(clock.running);
   app::Engine engine;engine.apply({app::Kind::Play,0,1});assert(engine.playing);engine.apply({app::Kind::Play,0,0});assert(!engine.playing);

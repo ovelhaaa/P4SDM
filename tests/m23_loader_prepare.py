@@ -10,6 +10,12 @@ target=Path('.pio/m23-loader')
 shutil.copytree('.pio/m214-sd',target,dirs_exist_ok=True,ignore=shutil.ignore_patterns('.pio'))
 console=target/'src/qconsole.inc'
 s=console.read_text().replace('for(unsigned i=0;i<4;i++)','for(unsigned i=0;i<16;i++)')
+s=s.replace('else if(sscanf(line,"LOAD %d %d",&t,&value)==2)', '''else if(sscanf(line,"TRACK %d",&t)==1 && t>=0 && t<16) {
+      samples::Preview preview; samples::preview(t,preview);
+      uint32_t hash=2166136261u; const auto *raw=reinterpret_cast<const uint8_t*>(&preview.waveform);
+      for(unsigned j=0;j<sizeof(preview.waveform);++j) hash=(hash^raw[j])*16777619;
+      summary_printf("[M23 TRACK] track=%u frames=%u waveform=%08x name=%s\\n",unsigned(t),preview.frames,hash,preview.name);
+    } else if(sscanf(line,"LOAD %d %d",&t,&value)==2)''')
 console.write_text(s)
 with (target/'platformio.ini').open('a') as f:
     f.write('''

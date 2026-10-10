@@ -36,7 +36,7 @@ struct ClockEstimator {
     if(e.type==Type::Stop) { running=false; last=0; }
     if(e.type!=Type::Clock) return;
     ++pulses;
-    if(last && e.received_us>last) {
+    if(last && e.received_us>=last) {
       auto d=e.received_us-last;
       if(d>250000) { ++missing; intervals=total=0; minimum=UINT64_MAX; maximum=0; }
       else { ++intervals; total+=d; minimum=std::min(minimum,d); maximum=std::max(maximum,d); }
