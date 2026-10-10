@@ -3,7 +3,7 @@ from pathlib import Path
 import subprocess
 out=Path('.pio/m212-host');out.mkdir(parents=True,exist_ok=True)
 reference=None
-for mode,cache,magnitude,validated,full_gain in ((0,0,0,0,0),(0,1,0,0,0),(1,0,0,0,0),(1,1,0,0,0),(1,1,1,0,0),(1,1,0,1,0),(1,1,0,0,1)):
+for mode,cache,magnitude,validated,full_gain in ((0,0,0,0,0),(0,1,0,0,0),(1,0,0,0,0),(1,0,1,0,0),(1,1,0,0,0),(1,1,1,0,0),(1,1,0,1,0),(1,1,0,0,1)):
     exe=out/'trace.exe'
     subprocess.run(['g++','-std=c++17','-O2','-Wall','-Wextra','-Werror',
         f'-DP4SDM_INTERPOLATION={mode}',f'-DP4SDM_PCM_READ_CACHE={cache}',

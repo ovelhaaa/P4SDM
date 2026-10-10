@@ -1,5 +1,6 @@
 from pathlib import Path
 import shutil
+import re
 root=Path(__file__).resolve().parents[2]
 target=root/'.pio'/'m19p'
 target.mkdir(exist_ok=True)
@@ -9,6 +10,12 @@ for pattern in ('*.ino','*.h'):
     for file in root.glob(pattern):
         shutil.copyfile(file,target/file.name)
 ini=(root/'platformio.ini').read_text()
+if '[env:guition_app_base]' in ini:
+    # Historical M19/SD consoles keep their original expanded flags. Explicit
+    # M21.x diagnostic environments select their own interpolation separately.
+    ini=re.sub(r'\[env:guition_app\]\n.*?(?=\n\[|\Z)',
+               '[env:guition_app]\nextends = env:guition_app_base\n'
+               'build_flags = ${env:guition_app_base.build_flags}\n',ini,flags=re.S)
 ini=ini.replace('boards_dir = boards','boards_dir = '+(root/'boards').as_posix())
 (target/'platformio.ini').write_text(ini)
 samples=target/'src/app/samples.cpp'

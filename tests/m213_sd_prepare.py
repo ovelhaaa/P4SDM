@@ -81,12 +81,12 @@ s=console.read_text().replace('else if(!strcmp(line,"STATE")) {', '''else if(!st
 console.write_text(s)
 with (target/'platformio.ini').open('a') as f:
     for policy in (0,1,2):
-        f.write(f'\n[env:guition_m213_sd_{policy}]\nextends = env:guition_app\n'
-                f'build_flags = ${{env:guition_app.build_flags}} -DP4SDM_M213_DIAGNOSTICS=1 '
+        f.write(f'\n[env:guition_m213_sd_{policy}]\nextends = env:guition_app_base\n'
+                f'build_flags = ${{env:guition_app_base.build_flags}} -DP4SDM_M213_DIAGNOSTICS=1 '
                 f'-DP4SDM_M213_LAYOUT={policy} -DP4SDM_PCM_READ_CACHE=1 '
                 '-DP4SDM_INTERPOLATION=1 -DP4SDM_LINEAR_32BIT=1 -DP4SDM_LINEAR_MAGNITUDE=1\n')
-    f.write('\n[env:guition_m213_sd_direct_1]\nextends = env:guition_app\n'
-            'build_flags = ${env:guition_app.build_flags} -DP4SDM_M213_DIAGNOSTICS=1 '
+    f.write('\n[env:guition_m213_sd_direct_1]\nextends = env:guition_app_base\n'
+            'build_flags = ${env:guition_app_base.build_flags} -DP4SDM_M213_DIAGNOSTICS=1 '
             '-DP4SDM_M213_LAYOUT=1 -DP4SDM_INTERPOLATION=1 -DP4SDM_LINEAR_32BIT=1 '
             '-DP4SDM_LINEAR_MAGNITUDE=1\n')
 print('M213 SD console prepared; STORE 8 reads resident PCM only')

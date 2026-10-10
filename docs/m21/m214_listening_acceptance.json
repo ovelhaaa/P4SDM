@@ -1,0 +1,9 @@
+{
+  "status": "APPROVED",
+  "date": "2026-10-10",
+  "response": "Aprovo Linear após escuta",
+  "package": ".pio/m214-listening/m214-listening.zip",
+  "pair_mapping": "A=Nearest, B=Linear32 magnitude",
+  "sources": "synthetic",
+  "specific_artifact_or_pitch_issues_reported": false
+}

@@ -1,0 +1,157 @@
+# Production firmware guition_m214_SYNTH_sustained; fresh esptool flash/hardware reset; UTC 2026-10-10T02:53:02.975178+00:00
+esptool v5.1.0
+Serial port COM13:
+Connecting...
+Connected to ESP32-P4 on COM13:
+Chip type:          ESP32-P4 (revision v1.3)
+Features:           Dual Core + LP Core, 400MHz
+Crystal frequency:  40MHz
+USB mode:           USB-Serial/JTAG
+MAC:                80:f1:b2:d3:cc:86
+
+Uploading stub flasher...
+Running stub flasher...
+Stub flasher running.
+Changing baud rate to 460800...
+Changed.
+
+Configuring flash size...
+Flash will be erased from 0x00002000 to 0x00007fff...
+Flash will be erased from 0x00008000 to 0x00008fff...
+Flash will be erased from 0x0000e000 to 0x0000ffff...
+Flash will be erased from 0x00010000 to 0x000c5fff...
+SHA digest in image updated.
+Compressed 21616 bytes to 13700...
+Writing at 0x00002000 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0.0% 0/13700 bytes... 
+Writing at 0x00007470 [██████████████████████████████] 100.0% 13700/13700 bytes... 
+Wrote 21616 bytes (13700 compressed) at 0x00002000 in 0.3 seconds (624.3 kbit/s).
+Hash of data verified.
+Compressed 3072 bytes to 146...
+Writing at 0x00008000 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0.0% 0/146 bytes... 
+Writing at 0x00008c00 [██████████████████████████████] 100.0% 146/146 bytes... 
+Wrote 3072 bytes (146 compressed) at 0x00008000 in 0.1 seconds (361.5 kbit/s).
+Hash of data verified.
+Compressed 8192 bytes to 47...
+Writing at 0x0000e000 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0.0% 0/47 bytes... 
+Writing at 0x00010000 [██████████████████████████████] 100.0% 47/47 bytes... 
+Wrote 8192 bytes (47 compressed) at 0x0000e000 in 0.1 seconds (662.2 kbit/s).
+Hash of data verified.
+Compressed 741776 bytes to 429906...
+Writing at 0x00010000 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0.0% 0/429906 bytes... 
+Writing at 0x0001ba4f [█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   3.8% 16384/429906 bytes... 
+Writing at 0x00027586 [██░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   7.6% 32768/429906 bytes... 
+Writing at 0x0002bd05 [███░░░░░░░░░░░░░░░░░░░░░░░░░░░]  11.4% 49152/429906 bytes... 
+Writing at 0x00031c90 [████░░░░░░░░░░░░░░░░░░░░░░░░░░]  15.2% 65536/429906 bytes... 
+Writing at 0x00036a8d [█████░░░░░░░░░░░░░░░░░░░░░░░░░]  19.1% 81920/429906 bytes... 
+Writing at 0x00040970 [██████░░░░░░░░░░░░░░░░░░░░░░░░]  22.9% 98304/429906 bytes... 
+Writing at 0x0004a035 [████████░░░░░░░░░░░░░░░░░░░░░░]  26.7% 114688/429906 bytes... 
+Writing at 0x0004fee5 [█████████░░░░░░░░░░░░░░░░░░░░░]  30.5% 131072/429906 bytes... 
+Writing at 0x00056360 [██████████░░░░░░░░░░░░░░░░░░░░]  34.3% 147456/429906 bytes... 
+Writing at 0x0005bdd2 [███████████░░░░░░░░░░░░░░░░░░░]  38.1% 163840/429906 bytes... 
+Writing at 0x00061b44 [████████████░░░░░░░░░░░░░░░░░░]  41.9% 180224/429906 bytes... 
+Writing at 0x000671fc [█████████████░░░░░░░░░░░░░░░░░]  45.7% 196608/429906 bytes... 
+Writing at 0x0006cc8e [██████████████░░░░░░░░░░░░░░░░]  49.5% 212992/429906 bytes... 
+Writing at 0x0007432e [████████████████░░░░░░░░░░░░░░]  53.4% 229376/429906 bytes... 
+Writing at 0x0007a259 [█████████████████░░░░░░░░░░░░░]  57.2% 245760/429906 bytes... 
+Writing at 0x00080eaa [██████████████████░░░░░░░░░░░░]  61.0% 262144/429906 bytes... 
+Writing at 0x000874d2 [███████████████████░░░░░░░░░░░]  64.8% 278528/429906 bytes... 
+Writing at 0x0008db66 [████████████████████░░░░░░░░░░]  68.6% 294912/429906 bytes... 
+Writing at 0x00093264 [█████████████████████░░░░░░░░░]  72.4% 311296/429906 bytes... 
+Writing at 0x00099b82 [██████████████████████░░░░░░░░]  76.2% 327680/429906 bytes... 
+Writing at 0x0009fb54 [████████████████████████░░░░░░]  80.0% 344064/429906 bytes... 
+Writing at 0x000a59f4 [█████████████████████████░░░░░]  83.8% 360448/429906 bytes... 
+Writing at 0x000ad90c [██████████████████████████░░░░]  87.7% 376832/429906 bytes... 
+Writing at 0x000b4121 [███████████████████████████░░░]  91.5% 393216/429906 bytes... 
+Writing at 0x000ba540 [████████████████████████████░░]  95.3% 409600/429906 bytes... 
+Writing at 0x000c17bb [█████████████████████████████░]  99.1% 425984/429906 bytes... 
+Writing at 0x000c5190 [██████████████████████████████] 100.0% 429906/429906 bytes... 
+Wrote 741776 bytes (429906 compressed) at 0x00010000 in 4.0 seconds (1472.1 kbit/s).
+Hash of data verified.
+
+Hard resetting via RTS pin...
+PSRAM PRE DELAY: 31246012
+PSRAM POST DELAY: 30885556
+[AUDIO] I2C init OK
+[AUDIO] ES8311 found at 0x18
+[AUDIO] I2S init 44100/16 OK, MCLK=11289600 Hz
+[AUDIO] ES8311 playback configured (capture serial port disabled)
+[AUDIO] PA GPIO11 enabled
+[M6 budget] total=33554432 display=2304000 fx_delay=352800 samples=0 reserve=4194304 free=25618032 largest=25165812 internal=353364
+[M6 SD] mounted=1 width=4 clock_khz=20000 mount_us=253418 capacity=8053063680 status=SD READY
+[M6 index] files=9 entries=9 limited=0 scan_us=46179 ps_free=25591740 largest=25165812 internal=351740
+[M213 monitor] ms=1017 resident=0 corrupt=0 digest=2166136261 free=25592352 largest=25165812 internal=352060
+[M213 monitor] ms=31116 resident=0 corrupt=0 digest=2166136261 free=25592352 largest=25165812 internal=352060
+[M213 monitor] ms=61209 resident=0 corrupt=0 digest=2166136261 free=25592352 largest=25165812 internal=352060
+[M213 monitor] ms=91216 resident=0 corrupt=0 digest=2166136261 free=25592352 largest=25165812 internal=352060
+[M213 monitor] ms=121232 resident=0 corrupt=0 digest=2166136261 free=25592352 largest=25165812 internal=352060
+[M213 monitor] ms=151232 resident=0 corrupt=0 digest=2166136261 free=25592352 largest=25165812 internal=352060
+[M213 monitor] ms=181244 resident=0 corrupt=0 digest=2166136261 free=25592352 largest=25165812 internal=352060
+[M213 monitor] ms=211249 resident=0 corrupt=0 digest=2166136261 free=25592352 largest=25165812 internal=352060
+[M213 monitor] ms=241261 resident=0 corrupt=0 digest=2166136261 free=25592352 largest=25165812 internal=352060
+[M213 monitor] ms=271261 resident=0 corrupt=0 digest=2166136261 free=25592352 largest=25165812 internal=352060
+[M213 monitor] ms=301275 resident=0 corrupt=0 digest=2166136261 free=25592352 largest=25165812 internal=352060
+[M213 monitor] ms=331279 resident=0 corrupt=0 digest=2166136261 free=25592352 largest=25165812 internal=352060
+[M213 monitor] ms=361291 resident=0 corrupt=0 digest=2166136261 free=25592352 largest=25165812 internal=352060
+[M213 monitor] ms=391299 resident=0 corrupt=0 digest=2166136261 free=25592352 largest=25165812 internal=352060
+[M213 monitor] ms=421305 resident=0 corrupt=0 digest=2166136261 free=25592352 largest=25165812 internal=352060
+[M213 monitor] ms=451309 resident=0 corrupt=0 digest=2166136261 free=25592352 largest=25165812 internal=352060
+[M213 monitor] ms=481322 resident=0 corrupt=0 digest=2166136261 free=25592352 largest=25165812 internal=352060
+[M213 monitor] ms=511338 resident=0 corrupt=0 digest=2166136261 free=25592352 largest=25165812 internal=352060
+[M213 monitor] ms=541352 resident=0 corrupt=0 digest=2166136261 free=25592352 largest=25165812 internal=352060
+[M213 monitor] ms=571362 resident=0 corrupt=0 digest=2166136261 free=25592352 largest=25165812 internal=352060
+[M5] blocks=103360 p50=3139 p95=3900 p99=4107 max=4545 misses=0 failures=0 timeouts=0 peak=6922 nonzero=52848457 rails=0 active_min=0 active_max=16
+[M8 groove] parents=142885 passed=142299 skipped=586 ratchets=425653 pending_max=48 velocity_min=1 velocity_max=127 swing_changes=8
+[M8 worst] blocks=2068 bpm=240 voices=16 ratchet=4 swing=50 delay=1 max=4545 triggers=12304 triggers_per_second=1024
+[MEM] M8 after 60s PSRAM total=33554432 free=25592352 largest=25165812 internal_free=352060
+[M10 locks] locked=142266 unlocked=33 pitch=142222 volume=142203 pan=142235 wave=142225 pattern_bytes=3106 bank_bytes=49696 engine_bytes=52616
+[M11 tone] cutoff=651 resonance=650 send=648 cutoff_min=0 cutoff_max=127 resonance_min=0 resonance_max=127 send_min=0 send_max=127 blocks=630 max=4545 dense=2068 dense_max=4545
+[M12 locks] cutoff=142199 resonance=142208 send=142223 coefficients=7237 avoided=575734 send_changes=6987 coefficient_blocks=725 coefficient_max=4469 edit_blocks=176 edit_max=4469 commands=121 step_bytes=9 event_bytes=20 voice_bytes=384 idle_residue=16
+[M17 chain] starts=6 advances=203 repeats=27 loops=3 stops=2 switches=200 min_length=1 max_length=5 boundary_max=4379 seen=4294967295 entry_bytes=2 chain_bytes=66 engine_bytes=52616
+[M18 performance] override_requests=6 override_accepts=4 override_loops=11 override_cancels=5 returns=4 fill_requests=6 fill_accepts=5 fill_completions=5 fill_to_override=2 fill_to_arrangement=3 mute_edits=17 solo_edits=49 boundaries=24 boundary_max=4247 state_bytes=352 engine_bytes=52616 publication_bytes=24
+[M181 repeat] requests=3 accepts=1 cancelled=2 x2_windows=8 x4_windows=8 x8_windows=99 hits=13409 x8_hits=12672 changes=3 releases=1 empty=0 captured_max=16 suppressed=15 worst=4185 capture_bytes=324 repeat_bytes=336
+[M181 x8] blocks=1067 worst=4142 active_min=16 active_max=16 coefficients=0 avoided=12704 chokes=0 full_blocks=1066
+[M181 runtime] requested=0 active=0 count=0 ui_presses=1 ui_releases=1 ui_edits=8
+[M18 runtime] override_target=0 override_active=0 fill_pending=0 fill_active=0 return_pattern=0 return_end=0 mutes=0 solos=0 ui_bytes=116
+[M19 analysis] requests=0 completed=0 cancelled=0 stale_discarde[M213 monitor] ms=601373 resident=0 corrupt=0 digest=2166136261 free=25592352 largest=25165812 internal=352060
+d=0 frames=2317652 candidates=64 selected=16 proposals=0 apply=0 cancel=0 min_count=0 max_count=0 sensitivity=0 target=0 duration_max_us=1079093 chunk_max_us=4130
+[M19 overlap] blocks=207 worst=3250 misses=0 x8_blocks=207 ui_interval_max_us=27363 detector_bytes=616 candidate_bytes=512 proposal_bytes=84 status_bytes=100 storage_stack=7000 stack_free_min=4580
+[M19 timing] one_second_us=23136 loop_us=93057 large_us=1079093 chunk_max_us=4130 completed=3 pcm_bytes=4194304
+[M18 UI] entries=13 pads=7 fills=3 toggles=64 switches=1
+[M17 UI] entries=18 edits=10 rows=9 scrolls=3
+[M16 project] state_bytes=53192 file_bytes=52704 snapshot_blocks=51 snapshot_max=4209 apply_blocks=312 apply_max=1927 fixtures=3 fixture_errors=0 dirty=1 physical_pending=1
+[M13 dense] blocks=2068 active_min=0
+[M13 playback] triggers=0 reverse=0 gate=0 releases=0 ends=0 choke_ops=0 choked=0 retriggers=0 region_min=0 region_max=0 max=4545 choke_max=0 retrigger_max=0 voice_bytes=64 track_bytes=116 event_bytes=20
+[M15 locks] locked=0 unlocked=0 unsliced=0 requested_min=0 requested_max=0 resolved_min=0 resolved_max=0 clamped=0 edits=0 ui_edits=0 align=1 requested_seen=0 resolved_seen=0
+[M14 slices] triggers=0 auditions=0 index_min=0 index_max=0 frames_min=0 frames_max=0 active_changes=0 divides=0 adds=0 deletes=0 resets=0 edit_blocks=0 edit_max=0 slice_bytes=4 bank_bytes=66 sample_bytes=1556
+[M10 worst] blocks=2068 max=4545
+[M9 tools] rotate=26 reverse=21 copy_track=23 clear_track=13 duplicate=20 euclidean=12 randomize=16 mutate=13 reroll=13 blocks=139 dense_blocks=54 max=4545
+[M20 page] page=0 frames=7 render_us=147180 dirty_bytes=768000
+[M20 page] page=1 frames=7 render_us=163683 dirty_bytes=768000
+[M20 page] page=2 frames=7 render_us=168140 dirty_bytes=768000
+[M20 page] page=3 frames=1 render_us=156546 dirty_bytes=768000
+[M20 page] page=4 frames=15 render_us=163820 dirty_bytes=768000
+[M20 page] page=5 frames=4 render_us=158642 dirty_bytes=768000
+[M20 page] page=6 frames=4 render_us=158407 dirty_bytes=768000
+[M20 page] page=7 frames=11 render_us=169241 dirty_bytes=768000
+[M20 page] page=8 frames=24 render_us=157368 dirty_bytes=768000
+[M20 page] page=9 frames=10 render_us=152321 dirty_bytes=768000
+[M20 page] page=10 frames=1 render_us=151963 dirty_bytes=768000
+[M20 page] page=11 frames=1 render_us=153146 dirty_bytes=768000
+[M20 page] page=12 frames=1 render_us=151533 dirty_bytes=768000
+[M20 page] page=13 frames=1 render_us=147046 dirty_bytes=768000
+[M20 page] page=14 frames=19 render_us=158006 dirty_bytes=768000
+[M20 page] page=15 frames=15 render_us=164349 dirty_bytes=768000
+[M20 page] page=16 frames=2 render_us=150494 dirty_bytes=768000
+[M20 page] page=17 frames=1 render_us=158273 dirty_bytes=768000
+[M20 page] page=18 frames=1 render_us=152759 dirty_bytes=768000
+[M20 updates] slider_us=59477 slider_bytes=49152 playhead_us=58058 playhead_bytes=24576 interval_us=180139
+[M5 UI] seconds=600.338 submitted=15750 completed=15750 dirty_avg=38886 dirty_max=768000 full=132 preparation_max_us=169241 touch_errors=0 rejected=0 pads=3 steps=6 drags=119 pages=18 transport=0 bpm=0 skipped=348
+[M7 patterns] switches=202 loops=8757 selections=25 copies=3 clears=3 lengths=15 solos=6 mutes=6 normal_frames=15618 dirty_avg=32724 dirty_max=544768 pattern_bytes=3106 command_bytes=12
+[M7 applied] long_to_short=1 short_to_long=1 queue_replacements=3 copies=3 clears=4 lengths=52 solos=4 mutes=6 steps=5
+[M9 UI] entries=3 copies=3 randomize=6 cell_max=16 edit_full=0
+[M12 UI] entries=6 edits=41 widgets_max=6 edit_full=0
+[M11 UI] entries=9 edits=89 widgets_max=1 edit_full=0
+[M10 UI] entries=10 edits=48 widgets_max=6 edit_full=0
+[M13 UI] entries=0 edits=0 widgets_max=0 edit_full=0
+[M14 UI] entries=0 edits=0 edit_full=0 waveform_first_us=0 waveform_redraw_max_us=0 slice_redraw_max_us=0 build_count=0 build_max_us=0 large_us=0 cache_bytes=1440 page_max_us=0 drag_dirty_max=0
+[M5 memory] ps_before=25592352 ps_after=25592352 internal_before=352060 internal_after=352060 largest_before=25165812 largest_after=25165812

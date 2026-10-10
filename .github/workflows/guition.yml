@@ -164,3 +164,42 @@ jobs:
             .pio/build/guition_m213*/firmware.bin
             .pio/build/guition_m213*/firmware.map
           retention-days: 30
+  m214:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.7'
+      - run: pip install platformio==6.1.18 numpy==2.3.5
+      - run: python tests/m214_config_checks.py
+      - run: python tests/interpolation_checks.py --linear-candidate
+      - run: python tests/m212_magnitude_checks.py
+      - run: python tests/m212_trace_checks.py
+      - run: python tests/m213_checks.py
+      - run: python tests/m214_checks.py
+      - run: python tests/m214_journal_checks.py
+      - run: python tests/m214_listening.py
+      - run: python tests/analyze_m214.py --require-captures --require-technical
+      - run: python tests/m214_placement_analysis.py
+      - run: python tests/m214_ci_build.py
+      - run: python tests/m214_sd_prepare.py
+      - run: pio run -d .pio/m214-sd -e guition_m214_sd_0 -e guition_m214_sd_1
+      - run: python tests/m214_journal_prepare.py
+      - run: pio run -d .pio/m214-journal -e guition_m214_A_journal
+      # Original strict A and the complete recorded journal are separate gates.
+      # Human acceptance comes from the explicit user response, never green CI.
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: m214-proposal-firmware-and-listening
+          include-hidden-files: true
+          path: |
+            .pio/m214-ci-artifacts/
+            .pio/m214-listening/*.wav
+            .pio/m214-listening/m214-listening.zip
+            .pio/m214-listening/manifest.json
+            .pio/m214-listening/README.md
+          retention-days: 30

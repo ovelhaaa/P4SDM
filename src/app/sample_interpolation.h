@@ -52,10 +52,10 @@ inline int16_t linear_fixed32(int16_t x0, int16_t x1, uint16_t fraction) {
   else if (remainder <= -32768) --rounded;
   return int16_t(rounded); // convex interpolation cannot exceed PCM16 rails
 }
-// Independent exact rounding experiment. Unsigned magnitude permits adding
+// Exact unsigned-magnitude rounding. Unsigned magnitude permits adding
 // 32768 even at INT32_MIN, without signed overflow or signed remainder/divide.
-// The old convex kernel remains above as a reference. Production never selects
-// this candidate unless both Linear32 and its explicit diagnostic flag are set.
+// The old convex and Linear64 kernels remain independent references. The release
+// candidate selects this kernel with Linear32 and the magnitude flag together.
 inline int16_t linear_fixed32_magnitude(int16_t x0, int16_t x1, uint16_t fraction) {
   const int32_t value = int32_t(x0)*(65536-int32_t(fraction)) +
                         int32_t(x1)*int32_t(fraction);

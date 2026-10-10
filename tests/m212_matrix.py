@@ -21,7 +21,7 @@ if sys.argv[1]=='prepare':
         target=copy/file; target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(root/file,target)
     ini=(root/'platformio.ini').read_text().replace('boards_dir = boards','boards_dir = '+(root/'boards').as_posix())
     for size,fill in cases:
-        ini+=f'\n[env:matrix_{size}_{fill}]\nextends = env:guition_app\nbuild_flags = ${{env:guition_app.build_flags}} -DP4SDM_SAMPLE_PLAYBACK_STRESS=1 -DP4SDM_INTERPOLATION_QUALIFICATION=1 -DP4SDM_M212_SCENARIO=2 -DP4SDM_INTERPOLATION=1 -DP4SDM_LINEAR_32BIT=1 -DP4SDM_PCM_READ_CACHE=1 -DP4SDM_PCM_CACHE_METRICS=1 -DP4SDM_PCM_CACHE_FRAMES={size} -DP4SDM_PCM_CACHE_FILL={fill} -DP4SDM_BLOCK_PROFILE=1\n'
+        ini+=f'\n[env:matrix_{size}_{fill}]\nextends = env:guition_app_base\nbuild_flags = ${{env:guition_app_base.build_flags}} -DP4SDM_SAMPLE_PLAYBACK_STRESS=1 -DP4SDM_INTERPOLATION_QUALIFICATION=1 -DP4SDM_M212_SCENARIO=2 -DP4SDM_INTERPOLATION=1 -DP4SDM_LINEAR_32BIT=1 -DP4SDM_PCM_READ_CACHE=1 -DP4SDM_PCM_CACHE_METRICS=1 -DP4SDM_PCM_CACHE_FRAMES={size} -DP4SDM_PCM_CACHE_FILL={fill} -DP4SDM_BLOCK_PROFILE=1\n'
     (copy/'platformio.ini').write_text(ini)
     shutil.copytree(root/'boards',copy/'boards',dirs_exist_ok=True)
     path=copy/'src/app_main.cpp';source=path.read_text()

@@ -1,0 +1,119 @@
+[
+  {
+    "case": "A",
+    "archive": ".pio/m214-artifacts/20261010T023304Z/A",
+    "capture": "docs/m21/m214-captures/20261010T023549Z/A.log",
+    "accepted": null,
+    "reason": null,
+    "capture_sha256": "bf5be72e9a32819da6864a5d79778ee9cf31120e7ac86e23b9f350fa55db7298",
+    "firmware_sha256": "c97e9194bf0922ea8d6eb51f6ded50d7b9f223150d029163e43f7710f0d15495"
+  },
+  {
+    "case": "B",
+    "archive": ".pio/m214-artifacts/20261010T023304Z/B",
+    "capture": "docs/m21/m214-captures/20261010T023549Z/B.log",
+    "accepted": null,
+    "reason": null,
+    "capture_sha256": "6d530cbdfaff3bfd968b9620d2eb4fe80b113220931bf2c86dea3ea4bc1006e7",
+    "firmware_sha256": "582e7952ce09f0200a17675299a9e816b6131d767e5d04c38c7fedbb53eb67ce"
+  },
+  {
+    "case": "C",
+    "archive": ".pio/m214-artifacts/20261010T023304Z/C",
+    "capture": "docs/m21/m214-captures/20261010T024030Z/C.log",
+    "accepted": null,
+    "reason": null,
+    "capture_sha256": "1789d81fd23d588ceee0d5adb52d037d86c0875e74d2b42eaca7180b7c3c87e5",
+    "firmware_sha256": "05bd4d7d13c0ff29a2f12387e181f4ba8e674d72ca2ffb5ea4675a28a2a379d1"
+  },
+  {
+    "case": "SAMPLE_sustained",
+    "archive": ".pio/m214-artifacts/20261010T023304Z/SAMPLE_sustained",
+    "capture": "docs/m21/m214-captures/20261010T024030Z/SAMPLE_sustained.log",
+    "accepted": null,
+    "reason": null,
+    "capture_sha256": "c1f626b51feb67b21cc5f7d0156583b3164171a54dd87dba682786d0d48b1ba6",
+    "firmware_sha256": "7785f3c1c9b931e6525cb778dae8df5645718193677f92b5c2e759ff7f3f065b"
+  },
+  {
+    "case": "SYNTH_sustained",
+    "archive": ".pio/m214-artifacts/20261010T023304Z/SYNTH_sustained",
+    "capture": "docs/m21/m214-captures/20261010T024030Z/SYNTH_sustained.log",
+    "accepted": null,
+    "reason": null,
+    "capture_sha256": "f3eda340a6ef8bcc42688bdba8bccef28e38882e7b3ff59385d2c43d3475c369",
+    "firmware_sha256": "0210fd5f48ff3f2f2cba55d7d1baaa201c0ffcda9913ab15a4a976d439112b0e"
+  },
+  {
+    "case": "SD_0",
+    "archive": ".pio/m214-artifacts/SD_0_recovery_v2",
+    "capture": "docs/m21/m214-captures/20261010T170741Z/SD_0.log",
+    "accepted": null,
+    "reason": null,
+    "capture_sha256": "93b65da87b4ac7d2d3c96f4372813bd815b6d22162cb2b421ab487c50efda7e0",
+    "firmware_sha256": "84d32b6c16705a01a38102ba308d5dd426cd5c91eec669c4e18ddf13f5e695c4"
+  },
+  {
+    "case": "SD_1",
+    "archive": ".pio/m214-artifacts/SD_1_recovery_v2",
+    "capture": "docs/m21/m214-captures/20261010T170741Z/SD_1.log",
+    "accepted": null,
+    "reason": null,
+    "capture_sha256": "1fb2ae08a05bf25ef20b780a01f6a4e8fb573a549d8cca055c4d17ef6a533f25",
+    "firmware_sha256": "836a695dd943f016e32c20f32393bc93280c486fb9b179e2ff1a2be86ba2bc51"
+  },
+  {
+    "case": "A_journal",
+    "archive": ".pio/m214-artifacts/A_journal_release",
+    "capture": "docs/m21/m214-captures/20261010T170359Z/A_journal.log",
+    "accepted": null,
+    "reason": null,
+    "capture_sha256": "c64d37b82740dbb1f465922cd65ed03fdc8f6a15bb422fd5f9c63db2401a0c84",
+    "firmware_sha256": "0d904a5616c690f6face227214c1dc06cfb4cfa5490c76c1be9f620cd315f835"
+  },
+  {
+    "case": "A_journal_rejected_nearest",
+    "archive": ".pio/m214-artifacts/A_journal_durations",
+    "capture": "docs/m21/m214-captures/20261010T030414Z/A_journal.log",
+    "accepted": false,
+    "reason": "Original strict Chain coverage requires at least one loop; this attempt has zero. Not promotion evidence.",
+    "capture_sha256": "feb896349790860547989dff7d9724348750fcd8d0ad0c74fafa0b2890492c82",
+    "firmware_sha256": "816b75c988465ba3f4000749e67c48e346fea84c75eec63a11779ac4f60f43b8"
+  },
+  {
+    "case": "A_journal_rejected_linear",
+    "archive": ".pio/m214-artifacts/A_journal_linear",
+    "capture": "docs/m21/m214-captures/20261010T165120Z/A_journal.log",
+    "accepted": false,
+    "reason": "Original strict Chain coverage requires at least one loop; this attempt has zero. Not promotion evidence.",
+    "capture_sha256": "d0236bf8b908c8e4e7bd08a7a1c37985cf0e029b68c57021ec523d7b352365a2",
+    "firmware_sha256": "ebe04c956bea5118874bddba6d9d6ff8e20eac04788e94d0800e4d9a158fd643"
+  },
+  {
+    "case": "SD_0_rejected_20261010T164921Z",
+    "archive": ".pio/m214-artifacts/SD_0_recovery",
+    "capture": "docs/GUITION_M214_SD_20261010T164921Z_0_SERIAL.log",
+    "accepted": false,
+    "reason": "Host requested next load before previous audio ownership handoff completed.",
+    "capture_sha256": "4777141eb0f6d45fc84f4f1cbce63e2cc64d4f5ca2e55292aae4afebd956e36d",
+    "firmware_sha256": "05dabeb4ff067c74a71355d58c017a54e2ae9cd436f1806183597e9a6ac1f2cd"
+  },
+  {
+    "case": "SD_0_rejected_20261010T165454Z",
+    "archive": ".pio/m214-artifacts/SD_0_recovery",
+    "capture": "docs/GUITION_M214_SD_20261010T165454Z_0_SERIAL.log",
+    "accepted": false,
+    "reason": "Fault oracle compared heap across SD unmount; filesystem buffer release caused unequal free count. PCM owner and payload preserved.",
+    "capture_sha256": "d71361ea3eab2f6c4d14f023037751f8b41de4f03a2d4784855b7e6a0f062f40",
+    "firmware_sha256": "05dabeb4ff067c74a71355d58c017a54e2ae9cd436f1806183597e9a6ac1f2cd"
+  },
+  {
+    "case": "production_release",
+    "archive": ".pio/m214-artifacts/production_d5e2ea5",
+    "capture": "docs/m21/m214-captures/20261010T173502Z/production_boot.log",
+    "accepted": null,
+    "reason": null,
+    "capture_sha256": "99867a174623623301a21794e46938c61737b9054e4afb54e7b53beadb661a51",
+    "firmware_sha256": "c027b25108f39b3e16947064d29091a5b324af9864795aeec5ab9c0e33149bcb"
+  }
+]
