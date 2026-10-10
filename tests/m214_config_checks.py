@@ -8,8 +8,17 @@ baseline='1c4c926326cc959cad711a74e5c058e08a718f2a'
 ini=configparser.ConfigParser(interpolation=None);ini.read('platformio.ini')
 def flags(section):
     return re.sub(r'\$\{([^}]+)\.build_flags\}',lambda m:flags(m[1]),ini[section]['build_flags'])
+old_ini=configparser.ConfigParser(interpolation=None)
+old_ini.read_string(subprocess.check_output(['git','show',baseline+':platformio.ini'],text=True))
+def old_flags(section):
+    return re.sub(r'\$\{([^}]+)\.build_flags\}',lambda m:old_flags(m[1]),old_ini[section]['build_flags'])
+for section in old_ini.sections():
+    if 'build_flags' not in old_ini[section]: continue
+    current='env:guition_app_base' if section=='env:guition_app' and 'env:guition_app_base' in ini else section
+    assert flags(current).split()==old_flags(section).split(),f'Historical flags changed: {section}'
+print('Every inherited diagnostic retains its exact expanded baseline flags PASS')
 out=Path('.pio/m214-host');out.mkdir(parents=True,exist_ok=True)
-for environment,placement,mode in [('guition_app',0,0),('guition_app_nearest_legacy',0,0),
+for environment,placement,mode in [('guition_app',1,1),('guition_app_nearest_legacy',0,0),
                                  ('guition_app_linear_candidate',1,1)]:
     defined=[f for f in flags('env:'+environment).split() if f.startswith('-DP4SDM_')]
     exe=out/'config.exe'
@@ -18,6 +27,7 @@ for environment,placement,mode in [('guition_app',0,0),('guition_app_nearest_leg
                     'tests/m214_config.cpp','-o',str(exe)],check=True)
     subprocess.run([str(exe)],check=True)
 candidate=flags('env:guition_app_linear_candidate')
+assert flags('env:guition_app').split()==candidate.split(), 'Production/candidate DSP flags differ'
 for flag in ('INTERPOLATION=1','LINEAR_32BIT=1','LINEAR_MAGNITUDE=1','PCM_READ_CACHE=0','PCM_PLACEMENT=1'):
     assert '-DP4SDM_'+flag in candidate
 assert 'STRESS' not in candidate and 'M21' not in candidate

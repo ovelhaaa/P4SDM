@@ -64,7 +64,9 @@ for label,signal in sources.items():
         rows[-1]['pair_difference_rms_pcm']=float(np.sqrt(np.mean(difference**2)))
         for y,row in zip(pair,rows[-2:]):
             row['first_50ms_peak_pcm']=int(np.max(np.abs(y[:4410].astype(np.int32))))
-manifest=dict(status='HUMAN LISTENING PENDING',synthetic=True,rate=rate,channels=2,
+acceptance_path=Path('docs/m21/m214_listening_acceptance.json')
+acceptance=json.loads(acceptance_path.read_text(encoding='utf-8')) if acceptance_path.exists() else {'status':'PENDING'}
+manifest=dict(status='HUMAN LISTENING '+acceptance['status'],human_acceptance=acceptance,synthetic=True,rate=rate,channels=2,
               processing='Actual Voice/Q16/fades, velocity 100, default filter, Delay time 12000/feedback 120/input 160/send 32; wet gain 1/4, common output gain 1/2',
               schedule='3 seconds: OneShot at 0 and 70560; reverse Gate slice 8192..57344 at 33075, release at 50715; default 32-frame fades',
               metrics_note='Integrated full-file RMS dBFS and PCM sample peak; not LUFS or reconstructed true peak',rows=rows)
@@ -81,8 +83,8 @@ edges, reverse/release clicks and Delay tails. At upward pitches both algorithms
 can alias: Linear is not an antialias resampler. A smaller RMS is not acceptance.
 
 For each pair, report preference A/B/no preference, transient or tonal defects,
-pitch, source and playback system. Human approval remains PENDING until explicit
-feedback is supplied. These component renders do not certify full-device sound.
+pitch, source and playback system. The recorded human acceptance is in
+manifest.json. These component renders do not certify full-device sound.
 ''')
 with zipfile.ZipFile(root/'m214-listening.zip','w',zipfile.ZIP_DEFLATED) as z:
     for file in sorted(root.glob('*.wav')): z.write(file,file.name)
@@ -96,4 +98,4 @@ if sys.platform!='win32':
     for mode in (0,1):
         subprocess.run([str(sanitized),str(root/'kick.pcm'),str(root/'sanitized.pcm'),'67',str(mode)],
                        env={**os.environ,'UBSAN_OPTIONS':'halt_on_error=1'},check=True)
-print('98 paired WAVs, exact unity controls, fixed gain; human listening PENDING',root)
+print('98 paired WAVs, exact unity controls, fixed gain; human listening',acceptance['status'],root)

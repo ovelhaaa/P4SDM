@@ -2,5 +2,6 @@
 docs/GUITION_M211_*.log -text
 docs/GUITION_M212_*.log -text
 docs/GUITION_M213*.log -text
-docs/m21/m214-captures/*.log -text
-docs/m21/m214-captures/**/*.log -text
+docs/GUITION_M214*.log -text -whitespace
+docs/m21/m214-captures/*.log -text -whitespace
+docs/m21/m214-captures/**/*.log -text -whitespace

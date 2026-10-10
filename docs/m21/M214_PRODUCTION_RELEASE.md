@@ -1,7 +1,8 @@
 # M21.4 — Linear production proposal and musical acceptance
 
-**PARTIAL — technical qualification incomplete. Normal production remains
-Nearest. Human musical acceptance is PENDING. No M22.**
+**PARTIAL — final remote release validation pending. Fresh physical and musical
+gates passed. `guition_app` selects Linear32 magnitude, direct PCM and staggered
+placement; Nearest remains independently buildable. No M22.**
 
 ## 1. Baseline and preserved fallback
 
@@ -36,7 +37,12 @@ M21.3 measured same-size genuine WAV interleaved lookup at 2,714.09 vs 141.25 us
 per 4,096 reads for ordinary vs staggered placement. Its complete magnitude B
 renderer maxima were 4,105 vs 4,099 us, a difference of only 6 us (0.15%). This
 supports reducing pathological placement risk, not a universal 94.8% renderer
-speedup. Fresh M21.4 SD layout comparisons are required separately below.
+speedup. Fresh M21.4 equal-WAV lookup averages are 2,739.53 vs 196.00 us per
+4,096 reads. The sixteen WAVs request 8,688 extra padding bytes while actual
+free PSRAM/largest/internal remain identical (24,986,092 / 24,641,524 / 174,908
+bytes). Full SD renderer maxima are 3,809 vs 3,777 us, only 32 us (0.84%) apart.
+The measured risk reduction is locality-specific; no universal renderer speedup
+or guaranteed cold-cache result is claimed.
 
 ## 4. Why direct PCM
 
@@ -71,21 +77,42 @@ allocation, deallocation, mutex or new synchronization enters the audio callback
 transients and SYNTH/filter/Delay sources are unchanged. No dead diagnostic
 reference kernel was removed merely to reduce code count.
 
-## 6. Scenario A equivalence — open technical gate
+## 6. Scenario A deterministic equivalence
 
-The original wall-clock A scenario and strict M20/M19/M18.1 analyzers remain
-untouched. Its fresh timing run passes those analyzers. It is **not declared
-byte-identical** to the Nearest wall-clock run.
+The original wall-clock A workload and strict M20/M19/M18.1 analyzers remain
+unchanged. The fresh uninstrumented A capture passes every inherited strict
+check, including a complete Chain loop. It is **not declared byte-identical**
+to another wall-clock run.
 
-`tests/m214_replay.cpp` adds a supplemental block-scheduled control-family
-replay: 13,782 blocks, 4,717 commands, three real Project V2 snapshot/encode/
-decode/apply transactions, 92,864 events, 133 Chain loops and 21,504 x8 hits.
-Nearest, Linear64 and direct magnitude Linear32 share hash `3236740295` and
-per-sample transport/fade/route state. This starts from the deterministic mixed
-fixture and does **not** reproduce every original A UI/project/transient command.
-It strengthens regression coverage but does not close the requested complete
-original-A replay gap. That requirement remains PENDING and prevents TECHNICAL
-PASS or production promotion.
+A private instrumented copy records every actual accepted Engine/queued/pad
+command, including pitch-source intent, direct Repeat fixture mutations,
+Project snapshot/apply boundaries and the actual applied transient SliceBank.
+It captures the initial Engine before audio and schedules replay at the exact
+audio block positions. The completed journal contains 4,019 records,
+48,461 TriggerEvents, three Project V2 snapshot/encode/decode/apply
+transactions, one transient bank and 12,672 x8 hits. All sixteen active
+voice durations match the physical capture exactly.
+
+Nearest, Linear64 and direct magnitude Linear32 share physical event/transport
+hash `2300787454` and canonical SHA256
+`397f37ce1c679f205804ddb8c63972871ec311c2a0366bfec201bfc8ce75075d`. Canonical records include sample-frame event times,
+RNG, locks, slices, source routing, phase/step/ratchet timing, pitch increments,
+regions, fade/release state, durations and Project V2 bytes. Allocation and
+record initialization occur before audio; audio only writes bounded records.
+The immutable journal is exported after capture, outside rendering.
+
+**Separate coverage:** instrumentation shifts wall-clock UI actions. This
+journal has zero complete Chain loops, while recording 122 advances and 18
+repeats. It does not pass the original strict Chain-loop coverage check and is
+not used as that evidence. The unchanged uninstrumented A supplies strict
+coverage/timing; this full journal supplies deterministic equivalence of its
+entire accepted action stream. The separate deterministic control-family test
+also retains 133 Chain loops and 21,504 x8 hits. No original analyzer or original
+workload was relaxed, and no wall-clock runs are declared identical.
+
+`m214_a_replay.json` links the complete byte-preserved journal to its digest.
+Earlier incomplete-coverage probes and their matching archives are retained
+and explicitly distinguished in `m214_artifacts.json`.
 
 ## 7. B/C equivalence and mathematical regressions
 
@@ -100,7 +127,7 @@ arbitrary bounded regions, forward/reverse, fades, Gate/OneShot, release,
 retrigger, duration, replacement and allocation guards. Magnitude separately
 matches Linear64 for all rail/control phase combinations and one million random
 tuples. The 49 complete component listening renders also match Linear64 PCM
-exactly. Voice remains 56 bytes on the target / 64 on this 64-bit host.
+exactly. Voice remains 64 bytes on the ESP32-P4 target and this 64-bit host; the fresh target configuration and playback rows verify that ABI.
 
 ## 8. Objective audio comparison and limits
 
@@ -132,10 +159,12 @@ under `m214-proposal-firmware-and-listening`, with 30-day retention.
 
 ## 10. Human listening
 
-**PENDING.** Explicit listening feedback was requested. No human listening,
-instrument recording or subjective approval is inferred from numerical tests,
-CI or synthetic proxies. Feedback should identify source, pitch, preference,
-transient/timbre defects and playback system. Keep a fixed listening volume.
+**APPROVED.** On 2026-10-10 the user explicitly responded to the listening
+package question: “Aprovo Linear após escuta”. The package identifies A=Nearest
+and B=Linear32 magnitude, with synthetic sources. No source-specific defect or
+pitch issue was reported. Playback hardware was not specified. The exact human
+response is preserved in `m214_listening_acceptance.json`. This closes musical
+acceptance; technical qualification remains independently required.
 
 ## 11–13. Fresh physical A/B/C and endurance
 
@@ -147,11 +176,17 @@ a fresh final-flags run.
 
 | Run | p50 | p95 | p99 | max us | headroom | status |
 |---|---:|---:|---:|---:|---:|---|
-| A, original workload | 2847 | 3699 | 3815 | 4121 | 29.01% | strict timing/application PASS; complete immutable equivalence PENDING |
+| A, original workload | 2847 | 3699 | 3815 | 4121 | 29.01% | strict timing/application PASS; deterministic journal equivalence PASS separately |
 | B, full fractional regions | 3764 | 3980 | 4024 | 4099 | 29.39% | timing/events PASS |
-| C, mixed fractional | see `m214_results.json` | | | 4120 | 29.03% | timing/events PASS |
-| SAMPLE, >=10 minutes | PENDING | | | | | capture underway |
-| SYNTH, extended final flags | PENDING | | | | | fresh capture required |
+| C, mixed fractional | 3758 | 3980 | 4027 | 4120 | 29.03% | timing/events PASS |
+| SAMPLE, 600 seconds / 103360 blocks | 3771 | 3976 | 4021 | 4113 | 29.15% | PASS |
+| SYNTH, 600 seconds / 103360 blocks | 3139 | 3900 | 4107 | 4545 | 21.71% | PASS |
+
+Each sustained run completes 103,360 blocks / 600 seconds and 20 monitor rows.
+SAMPLE keeps PSRAM/largest/internal at 27,754,980 / 27,262,964 / 327,208 bytes
+and PCM digest 2302980405. SYNTH keeps 25,592,352 / 25,165,812 / 352,060 bytes;
+its 2166136261 digest represents zero resident PCM. Neither run has heap drift,
+PCM corruption, deadline misses, I2S failures or timeouts.
 
 The machine-readable results contain voice counts, Chain/x8 counts, exact
 timing quantiles, misses, I2S failures/timeouts, faults, heap/largest-block
@@ -170,8 +205,31 @@ Reverse, Slice Locks, Gate/choke, x8 Repeat, Analyze/Apply/Cancel, Chain,
 Project Save/Load, invalid/truncated/missing WAV, simulated unmounted SD,
 short-read and allocator failure, generation/CRC fallback and missing references.
 No touch gesture or physical card-removal approval is inferred from this console.
-Fresh results remain PENDING until the entire host procedure and recorded
-physical timing/reserve validate.
+Both complete procedures PASS. Ordinary and staggered maxima are 3,809 and
+3,777 us, with 34.38% and 34.94% headroom and zero misses/failures/timeouts.
+There are 307 validated owning/view address rows in each run. Every post-load
+free PSRAM retains the 4 MiB reserve. Actual largest blocks are positive and
+bounded by free memory. Every candidate PCM address equals aligned owning base
++ Track*64; requested allocations include the exact bounded padding.
+`m214_placement_results.json` compares paired equal/mixed/replacement/
+fragmentation/restoration lookup passes and actual heap snapshots.
+
+The SD console's p99 buffer stores 16,384 timings out of 18,101/18,223 measured
+blocks. Its maximum and error counters cover all blocks; this report does not
+present that p99 as a full-run quantile. Qualification uses the full-run maximum.
+Main A/B/C and long captures retain their required timing quantiles.
+
+Unmounted/short-read/allocation failures preserve owner, payload and free memory
+within one storage state. The unmount comparison excludes legitimate filesystem
+buffer release. An earlier host attempt requested replacement before handoff;
+another used an incorrect cross-unmount heap oracle. Both attempts and matching
+images remain explicitly labeled as rejected evidence.
+
+Corrected complete rounds include successful remount/load, latest-slot CRC
+corruption with BPM143 generation fallback, restored BPM144, a missing WAV
+reference, restored zero-missing references, and a nonexistent Project preserving
+BPM144 without PCM publication. Reserved diagnostic backups/renames were restored;
+existing generated WAV contents remain unchanged.
 
 ## 15. Memory and PCM integrity
 
@@ -184,20 +242,25 @@ snapshots; required sustained evidence is not inferred from short captures.
 
 ## 16. Reset and brownout observations
 
-No recurrence is visible in completed A/B/C captures. Native USB reconnect
+No recurrence is visible in A/B/C, both 600-second runs or either complete SD
+procedure. Native USB reconnect
 can omit early ROM reset lines; their absence is not an electrical diagnosis.
 The final SD console adds read-only `POWER` queries of `esp_reset_reason()` and
-the brownout enum before/after the workload. Protection is unchanged. The
+the brownout enum before/after the workload. Both SD runs retain reset reason
+11, brownout=0, with increasing uptime (4,265→554,880 and 4,251→558,897 ms).
+No intervening reset is indicated. Protection is unchanged. The
 earlier alignment-only M21.3 brownout remains unexplained; no power measurement
 or software attribution is claimed. A recurrence blocks stability acceptance.
 
 ## 17. Remote CI
 
-PENDING final remote run. Retain all inherited checks and add final config,
+Final remote run is pending. Local host checks pass **108/108**, and normal
+Linear production plus explicit Nearest fallback firmware both build SUCCESS.
+Retain all inherited checks and add final config,
 candidate interpolation/source output, direct B/C traces, owner tests,
-supplemental A replay, fresh physical capture validation, Linux ASan/UBSan,
+complete recorded original A replay and supplemental controls, fresh physical capture validation, Linux ASan/UBSan,
 standalone candidate/fallback builds, and reproducible listening outputs.
-Green CI cannot satisfy the open complete-A or human listening gate.
+Green CI validates the separate recorded A replay; explicit human approval is preserved independently.
 
 ## 18. Proposal SHA and reproduction
 
@@ -216,26 +279,27 @@ SAMPLE_sustained SYNTH_sustained`. Finish each build operation before capture.
 Prepare/build/archive SD consoles via `tests/m214_sd_prepare.py`, then
 `tests/m214_sd_device.py 0 1`; every physical driver restores the preserved
 production image in `finally`. Re-run `tests/analyze_m214.py --require-captures`.
-`--require-technical` deliberately fails while the complete-A gate is open.
+`--require-technical` fails until all fresh physical SD evidence is complete and musical approval is recorded.
 
 ## 19. Nearest fallback
 
 `pio run -e guition_app_nearest_legacy` is independently buildable with explicit
-Nearest/cache-off/ordinary-placement flags. Normal `guition_app` also remains
-Nearest. To restore the exact original image, use the hash-verified
+Nearest/cache-off/ordinary-placement flags. Normal `guition_app` selects Linear.
+`guition_app_base` holds only original shared flags: all historical qualification
+environments and generated consoles retain their exact expanded baseline flags.
+Production and standalone candidate flags match exactly.
+To restore the exact original image, use the hash-verified
 `.pio/m214-artifacts/baseline/production` archive, not a rebuilt image relabeled
 as its match. Do not flash old partition images independently of their manifest.
 
 ## 20. Acceptance answers and promotion gate
 
 1. Mathematical, transport, B/C scheduling and Project V2 regression evidence
-   passes; the full original-A deterministic replay is incomplete.
-2. Bounded ownership tests pass; final real SD recovery/fragmentation evidence
-   must finish before making the fresh physical safety claim.
-3. Fresh A/B/C meet the reserve; fresh extended SAMPLE/SYNTH are still required.
-4. Fair reproducible synthetic pairs exist; worthwhile musical improvement and
-   acceptable transients require explicit human feedback.
-5. Linear is a reproducible separate proposal with a clean Nearest fallback;
-   promotion is blocked. This is **PARTIAL**, not TECHNICAL PASS or production
-   approval. No antialiasing, time-stretch, Hermite optimization, UI redesign,
+   passes, including the entire recorded A action stream. The unchanged original A strict coverage/timing capture passes separately.
+2. Bounded ownership and both complete real SD recovery/fragmentation procedures pass.
+3. Fresh A/B/C meet the reserve; both fresh 600-second SAMPLE/SYNTH runs also pass with stable heaps and monitoring.
+4. Fair reproducible synthetic pairs exist; the user explicitly approved Linear after listening on 2026-10-10.
+5. Linear is promoted to the normal application configuration with a clean
+   Nearest fallback. Final release acceptance remains **PARTIAL** until the latest
+   remote CI completes SUCCESS. No antialiasing, time-stretch, Hermite optimization, UI redesign,
    persistence change or M22 work is included.

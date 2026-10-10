@@ -21,6 +21,7 @@ with zipfile.ZipFile('.pio/m214-release-evidence.zip','w',zipfile.ZIP_DEFLATED) 
         if capture:
             file=Path(capture); z.write(file,'captures/'+case+'.log')
             inventory.append(dict(case=case,archive=entry['archive'],capture=capture,
+                                  accepted=entry.get('accepted'),reason=entry.get('reason'),
                                   capture_sha256=hashlib.sha256(file.read_bytes()).hexdigest(),
                                   firmware_sha256=manifest['files']['firmware.bin']))
 Path('docs/m21/m214_inventory.json').write_text(json.dumps(inventory,indent=2)+'\n')

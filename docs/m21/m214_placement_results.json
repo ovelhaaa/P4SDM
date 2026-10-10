@@ -1,0 +1,506 @@
+{
+  "status": "PASS",
+  "equal_wav_heap": {
+    "0": {
+      "internal": 174908,
+      "free": 24986092,
+      "largest": 24641524,
+      "payload": 5644800
+    },
+    "1": {
+      "internal": 174908,
+      "free": 24986092,
+      "largest": 24641524,
+      "payload": 5653488
+    }
+  },
+  "actual_equal_wav_extra_psram": 0,
+  "requested_equal_wav_padding": 8688,
+  "address_rows": {
+    "0": 307,
+    "1": 307
+  },
+  "rows": [
+    {
+      "tag": 1,
+      "order": 0,
+      "eviction": 0,
+      "ordinary_us_per_4096_reads": 2739.53125,
+      "staggered_us_per_4096_reads": 196.0,
+      "ordinary_max_us": 4014,
+      "staggered_max_us": 1977,
+      "checksum": 14336000
+    },
+    {
+      "tag": 1,
+      "order": 1,
+      "eviction": 0,
+      "ordinary_us_per_4096_reads": 196.125,
+      "staggered_us_per_4096_reads": 75.25,
+      "ordinary_max_us": 1982,
+      "staggered_max_us": 106,
+      "checksum": 14336000
+    },
+    {
+      "tag": 1,
+      "order": 2,
+      "eviction": 0,
+      "ordinary_us_per_4096_reads": 456.375,
+      "staggered_us_per_4096_reads": 218.15625,
+      "ordinary_max_us": 2128,
+      "staggered_max_us": 1999,
+      "checksum": 14336000
+    },
+    {
+      "tag": 1,
+      "order": 0,
+      "eviction": 1,
+      "ordinary_us_per_4096_reads": 2821.96875,
+      "staggered_us_per_4096_reads": 323.6875,
+      "ordinary_max_us": 3998,
+      "staggered_max_us": 2244,
+      "checksum": 14336000
+    },
+    {
+      "tag": 1,
+      "order": 1,
+      "eviction": 1,
+      "ordinary_us_per_4096_reads": 278.71875,
+      "staggered_us_per_4096_reads": 275.21875,
+      "ordinary_max_us": 2187,
+      "staggered_max_us": 2245,
+      "checksum": 14336000
+    },
+    {
+      "tag": 1,
+      "order": 2,
+      "eviction": 1,
+      "ordinary_us_per_4096_reads": 361.875,
+      "staggered_us_per_4096_reads": 299.75,
+      "ordinary_max_us": 2335,
+      "staggered_max_us": 2271,
+      "checksum": 14336000
+    },
+    {
+      "tag": 2,
+      "order": 0,
+      "eviction": 0,
+      "ordinary_us_per_4096_reads": 2649.875,
+      "staggered_us_per_4096_reads": 266.0,
+      "ordinary_max_us": 3670,
+      "staggered_max_us": 2142,
+      "checksum": 3150639360
+    },
+    {
+      "tag": 2,
+      "order": 1,
+      "eviction": 0,
+      "ordinary_us_per_4096_reads": 252.5625,
+      "staggered_us_per_4096_reads": 80.34375,
+      "ordinary_max_us": 1948,
+      "staggered_max_us": 96,
+      "checksum": 3150639360
+    },
+    {
+      "tag": 2,
+      "order": 2,
+      "eviction": 0,
+      "ordinary_us_per_4096_reads": 342.71875,
+      "staggered_us_per_4096_reads": 281.3125,
+      "ordinary_max_us": 2072,
+      "staggered_max_us": 2011,
+      "checksum": 3150639360
+    },
+    {
+      "tag": 2,
+      "order": 0,
+      "eviction": 1,
+      "ordinary_us_per_4096_reads": 2957.75,
+      "staggered_us_per_4096_reads": 327.625,
+      "ordinary_max_us": 4002,
+      "staggered_max_us": 2216,
+      "checksum": 3150639360
+    },
+    {
+      "tag": 2,
+      "order": 1,
+      "eviction": 1,
+      "ordinary_us_per_4096_reads": 149.84375,
+      "staggered_us_per_4096_reads": 272.28125,
+      "ordinary_max_us": 199,
+      "staggered_max_us": 2209,
+      "checksum": 3150639360
+    },
+    {
+      "tag": 2,
+      "order": 2,
+      "eviction": 1,
+      "ordinary_us_per_4096_reads": 488.5625,
+      "staggered_us_per_4096_reads": 424.9375,
+      "ordinary_max_us": 2393,
+      "staggered_max_us": 2338,
+      "checksum": 3150639360
+    },
+    {
+      "tag": 3,
+      "order": 0,
+      "eviction": 0,
+      "ordinary_us_per_4096_reads": 286.8125,
+      "staggered_us_per_4096_reads": 191.9375,
+      "ordinary_max_us": 2035,
+      "staggered_max_us": 1932,
+      "checksum": 3441764352
+    },
+    {
+      "tag": 3,
+      "order": 1,
+      "eviction": 0,
+      "ordinary_us_per_4096_reads": 73.78125,
+      "staggered_us_per_4096_reads": 72.5,
+      "ordinary_max_us": 85,
+      "staggered_max_us": 80,
+      "checksum": 3441764352
+    },
+    {
+      "tag": 3,
+      "order": 2,
+      "eviction": 0,
+      "ordinary_us_per_4096_reads": 217.21875,
+      "staggered_us_per_4096_reads": 159.3125,
+      "ordinary_max_us": 1968,
+      "staggered_max_us": 166,
+      "checksum": 3441764352
+    },
+    {
+      "tag": 3,
+      "order": 0,
+      "eviction": 1,
+      "ordinary_us_per_4096_reads": 435.03125,
+      "staggered_us_per_4096_reads": 259.34375,
+      "ordinary_max_us": 2355,
+      "staggered_max_us": 2187,
+      "checksum": 3441764352
+    },
+    {
+      "tag": 3,
+      "order": 1,
+      "eviction": 1,
+      "ordinary_us_per_4096_reads": 273.09375,
+      "staggered_us_per_4096_reads": 203.96875,
+      "ordinary_max_us": 2139,
+      "staggered_max_us": 2133,
+      "checksum": 3441764352
+    },
+    {
+      "tag": 3,
+      "order": 2,
+      "eviction": 1,
+      "ordinary_us_per_4096_reads": 369.4375,
+      "staggered_us_per_4096_reads": 417.75,
+      "ordinary_max_us": 2288,
+      "staggered_max_us": 2226,
+      "checksum": 3441764352
+    },
+    {
+      "tag": 4,
+      "order": 0,
+      "eviction": 0,
+      "ordinary_us_per_4096_reads": 286.46875,
+      "staggered_us_per_4096_reads": 136.59375,
+      "ordinary_max_us": 2031,
+      "staggered_max_us": 223,
+      "checksum": 3441764352
+    },
+    {
+      "tag": 4,
+      "order": 1,
+      "eviction": 0,
+      "ordinary_us_per_4096_reads": 73.28125,
+      "staggered_us_per_4096_reads": 128.5625,
+      "ordinary_max_us": 84,
+      "staggered_max_us": 1868,
+      "checksum": 3441764352
+    },
+    {
+      "tag": 4,
+      "order": 2,
+      "eviction": 0,
+      "ordinary_us_per_4096_reads": 217.0,
+      "staggered_us_per_4096_reads": 215.5,
+      "ordinary_max_us": 1960,
+      "staggered_max_us": 1964,
+      "checksum": 3441764352
+    },
+    {
+      "tag": 4,
+      "order": 0,
+      "eviction": 1,
+      "ordinary_us_per_4096_reads": 437.375,
+      "staggered_us_per_4096_reads": 323.0625,
+      "ordinary_max_us": 2376,
+      "staggered_max_us": 2187,
+      "checksum": 3441764352
+    },
+    {
+      "tag": 4,
+      "order": 1,
+      "eviction": 1,
+      "ordinary_us_per_4096_reads": 146.90625,
+      "staggered_us_per_4096_reads": 266.3125,
+      "ordinary_max_us": 211,
+      "staggered_max_us": 2136,
+      "checksum": 3441764352
+    },
+    {
+      "tag": 4,
+      "order": 2,
+      "eviction": 1,
+      "ordinary_us_per_4096_reads": 431.46875,
+      "staggered_us_per_4096_reads": 359.65625,
+      "ordinary_max_us": 2306,
+      "staggered_max_us": 2274,
+      "checksum": 3441764352
+    },
+    {
+      "tag": 5,
+      "order": 0,
+      "eviction": 0,
+      "ordinary_us_per_4096_reads": 276.5,
+      "staggered_us_per_4096_reads": 191.65625,
+      "ordinary_max_us": 2035,
+      "staggered_max_us": 1949,
+      "checksum": 3442474688
+    },
+    {
+      "tag": 5,
+      "order": 1,
+      "eviction": 0,
+      "ordinary_us_per_4096_reads": 73.46875,
+      "staggered_us_per_4096_reads": 72.28125,
+      "ordinary_max_us": 93,
+      "staggered_max_us": 81,
+      "checksum": 3442474688
+    },
+    {
+      "tag": 5,
+      "order": 2,
+      "eviction": 0,
+      "ordinary_us_per_4096_reads": 217.1875,
+      "staggered_us_per_4096_reads": 216.09375,
+      "ordinary_max_us": 1965,
+      "staggered_max_us": 1962,
+      "checksum": 3442474688
+    },
+    {
+      "tag": 5,
+      "order": 0,
+      "eviction": 1,
+      "ordinary_us_per_4096_reads": 431.9375,
+      "staggered_us_per_4096_reads": 198.375,
+      "ordinary_max_us": 2369,
+      "staggered_max_us": 219,
+      "checksum": 3442474688
+    },
+    {
+      "tag": 5,
+      "order": 1,
+      "eviction": 1,
+      "ordinary_us_per_4096_reads": 210.34375,
+      "staggered_us_per_4096_reads": 206.03125,
+      "ordinary_max_us": 2134,
+      "staggered_max_us": 2194,
+      "checksum": 3442474688
+    },
+    {
+      "tag": 5,
+      "order": 2,
+      "eviction": 1,
+      "ordinary_us_per_4096_reads": 431.0625,
+      "staggered_us_per_4096_reads": 235.375,
+      "ordinary_max_us": 2250,
+      "staggered_max_us": 281,
+      "checksum": 3442474688
+    },
+    {
+      "tag": 6,
+      "order": 0,
+      "eviction": 0,
+      "ordinary_us_per_4096_reads": 279.25,
+      "staggered_us_per_4096_reads": 135.4375,
+      "ordinary_max_us": 2032,
+      "staggered_max_us": 206,
+      "checksum": 3441764352
+    },
+    {
+      "tag": 6,
+      "order": 1,
+      "eviction": 0,
+      "ordinary_us_per_4096_reads": 129.40625,
+      "staggered_us_per_4096_reads": 127.59375,
+      "ordinary_max_us": 1873,
+      "staggered_max_us": 1862,
+      "checksum": 3441764352
+    },
+    {
+      "tag": 6,
+      "order": 2,
+      "eviction": 0,
+      "ordinary_us_per_4096_reads": 217.59375,
+      "staggered_us_per_4096_reads": 215.84375,
+      "ordinary_max_us": 1958,
+      "staggered_max_us": 1960,
+      "checksum": 3441764352
+    },
+    {
+      "tag": 6,
+      "order": 0,
+      "eviction": 1,
+      "ordinary_us_per_4096_reads": 298.0625,
+      "staggered_us_per_4096_reads": 257.6875,
+      "ordinary_max_us": 407,
+      "staggered_max_us": 2176,
+      "checksum": 3441764352
+    },
+    {
+      "tag": 6,
+      "order": 1,
+      "eviction": 1,
+      "ordinary_us_per_4096_reads": 152.53125,
+      "staggered_us_per_4096_reads": 205.53125,
+      "ordinary_max_us": 250,
+      "staggered_max_us": 2132,
+      "checksum": 3441764352
+    },
+    {
+      "tag": 6,
+      "order": 2,
+      "eviction": 1,
+      "ordinary_us_per_4096_reads": 361.5625,
+      "staggered_us_per_4096_reads": 294.4375,
+      "ordinary_max_us": 2226,
+      "staggered_max_us": 2231,
+      "checksum": 3441764352
+    },
+    {
+      "tag": 7,
+      "order": 0,
+      "eviction": 0,
+      "ordinary_us_per_4096_reads": 285.53125,
+      "staggered_us_per_4096_reads": 134.6875,
+      "ordinary_max_us": 2030,
+      "staggered_max_us": 197,
+      "checksum": 3441764352
+    },
+    {
+      "tag": 7,
+      "order": 1,
+      "eviction": 0,
+      "ordinary_us_per_4096_reads": 129.3125,
+      "staggered_us_per_4096_reads": 185.40625,
+      "ordinary_max_us": 1872,
+      "staggered_max_us": 1881,
+      "checksum": 3441764352
+    },
+    {
+      "tag": 7,
+      "order": 2,
+      "eviction": 0,
+      "ordinary_us_per_4096_reads": 217.125,
+      "staggered_us_per_4096_reads": 272.09375,
+      "ordinary_max_us": 1959,
+      "staggered_max_us": 1967,
+      "checksum": 3441764352
+    },
+    {
+      "tag": 7,
+      "order": 0,
+      "eviction": 1,
+      "ordinary_us_per_4096_reads": 442.875,
+      "staggered_us_per_4096_reads": 382.59375,
+      "ordinary_max_us": 2377,
+      "staggered_max_us": 2190,
+      "checksum": 3441764352
+    },
+    {
+      "tag": 7,
+      "order": 1,
+      "eviction": 1,
+      "ordinary_us_per_4096_reads": 270.96875,
+      "staggered_us_per_4096_reads": 139.03125,
+      "ordinary_max_us": 2211,
+      "staggered_max_us": 148,
+      "checksum": 3441764352
+    },
+    {
+      "tag": 7,
+      "order": 2,
+      "eviction": 1,
+      "ordinary_us_per_4096_reads": 498.9375,
+      "staggered_us_per_4096_reads": 417.625,
+      "ordinary_max_us": 2304,
+      "staggered_max_us": 2291,
+      "checksum": 3441764352
+    },
+    {
+      "tag": 8,
+      "order": 0,
+      "eviction": 0,
+      "ordinary_us_per_4096_reads": 406.78125,
+      "staggered_us_per_4096_reads": 191.65625,
+      "ordinary_max_us": 2261,
+      "staggered_max_us": 1933,
+      "checksum": 3441540352
+    },
+    {
+      "tag": 8,
+      "order": 1,
+      "eviction": 0,
+      "ordinary_us_per_4096_reads": 73.4375,
+      "staggered_us_per_4096_reads": 72.25,
+      "ordinary_max_us": 82,
+      "staggered_max_us": 85,
+      "checksum": 3441540352
+    },
+    {
+      "tag": 8,
+      "order": 2,
+      "eviction": 0,
+      "ordinary_us_per_4096_reads": 217.34375,
+      "staggered_us_per_4096_reads": 215.8125,
+      "ordinary_max_us": 1971,
+      "staggered_max_us": 1962,
+      "checksum": 3441540352
+    },
+    {
+      "tag": 8,
+      "order": 0,
+      "eviction": 1,
+      "ordinary_us_per_4096_reads": 385.71875,
+      "staggered_us_per_4096_reads": 258.65625,
+      "ordinary_max_us": 2371,
+      "staggered_max_us": 2185,
+      "checksum": 3441540352
+    },
+    {
+      "tag": 8,
+      "order": 1,
+      "eviction": 1,
+      "ordinary_us_per_4096_reads": 461.21875,
+      "staggered_us_per_4096_reads": 141.59375,
+      "ordinary_max_us": 2192,
+      "staggered_max_us": 175,
+      "checksum": 3441540352
+    },
+    {
+      "tag": 8,
+      "order": 2,
+      "eviction": 1,
+      "ordinary_us_per_4096_reads": 303.34375,
+      "staggered_us_per_4096_reads": 302.6875,
+      "ordinary_max_us": 2218,
+      "staggered_max_us": 2286,
+      "checksum": 3441540352
+    }
+  ],
+  "note": "Real WAVs, concurrent audio; eviction sweeps do not prove cold cache. Lookup averages/maxima are not full-renderer speedup. Requested padding and actual heap delta differ."
+}

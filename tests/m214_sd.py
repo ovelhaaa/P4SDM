@@ -5,6 +5,19 @@ source=Path('tests/m213_sd.py').read_text()
 source=source.replace('GUITION_M213_SD_', 'GUITION_M214_SD_')
 source=source.replace('M213_LAYOUT_QUAL','M214_LAYOUT_QUAL')
 source=source.replace('M213 SD policy=', 'M214 SD policy=')
+source=source.replace('    for t in range(16): load(t,wav[\'mixed\'])', """    load(0,wav['mixed'])
+    for op in (14,16,17):
+        text=store(op)
+        assert f'op={op} accepted=0 preserved=1 payload_equal=1 free_equal=1' in text,text
+    for t in range(16): load(t,wav['mixed'])""")
+source=source.replace("    wait_for('[M6 load]',initial=text)", """    wait_for('[M6 load]',initial=text)
+    # The load report precedes the audio handoff and retirement cleanup.
+    # Wait for that existing ownership boundary before requesting replacement.
+    stop=time.monotonic()+20
+    while time.monotonic()<stop:
+        if 'sample_busy=0' in state(): break
+        read(.1)
+    else: raise AssertionError('sample ownership handoff did not finish')""")
 source=source.replace('    reset()\n', "    reset(); cmd('POWER',1)\n")
 source=source.replace('    log.write(f\'\\n# HOST', "    cmd('POWER',1)\n    log.write(f'\\n# HOST")
 extra='''    # Reserved diagnostic files only. Test generation/CRC fallback and a

@@ -1,5 +1,14 @@
 {
-  "status": "HUMAN LISTENING PENDING",
+  "status": "HUMAN LISTENING APPROVED",
+  "human_acceptance": {
+    "status": "APPROVED",
+    "date": "2026-10-10",
+    "response": "Aprovo Linear ap\u00f3s escuta",
+    "package": ".pio/m214-listening/m214-listening.zip",
+    "pair_mapping": "A=Nearest, B=Linear32 magnitude",
+    "sources": "synthetic",
+    "specific_artifact_or_pitch_issues_reported": false
+  },
   "synthetic": true,
   "rate": 44100,
   "channels": 2,

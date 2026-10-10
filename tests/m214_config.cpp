@@ -12,8 +12,9 @@
 static_assert(P4SDM_PCM_PLACEMENT==EXPECTED_PLACEMENT);
 static_assert(unsigned(sampler::default_interpolation)==EXPECTED_INTERPOLATION);
 static_assert(project::file_bytes==52704);
-// Host pointer width differs from the 32-bit target; freeze both accepted sizes.
-static_assert(sizeof(sampler::Voice)==(sizeof(void*)==8 ? 64 : 56));
+// ESP32-P4 and this host align uint64_t to eight bytes: both use 64 bytes.
+// A 32-bit ABI with four-byte uint64_t alignment uses the accepted 56-byte form.
+static_assert(sizeof(sampler::Voice)==(sizeof(void*)==8 || alignof(uint64_t)==8 ? 64 : 56));
 int main() {
   assert(sampler::lookup(nullptr,{0,1},false,0)==0);
   const int16_t pcm[]{-32768,32767};

@@ -35,9 +35,11 @@ loader.write_text(text)
 store=root/'src/app/qstore.inc'
 text=store.read_text().replace('  if(op==1) qseed();', '''  if(op==14 || op==16 || op==17) {
     const auto *before=owned[0]; const size_t before_payload=payload;
-    const size_t before_free=heap_caps_get_free_size(MALLOC_CAP_SPIRAM);
     target=0;
     if(op==14) storage::unmount();
+    // Compare the failed loader in one storage state. Unmount legitimately
+    // frees filesystem buffers and is not a PCM allocation leak.
+    const size_t before_free=heap_caps_get_free_size(MALLOC_CAP_SPIRAM);
     m214_short_read=op==16; m214_allocation_failure=op==17;
     const bool accepted=load_name("m19p_mixed.wav");
     m214_short_read=m214_allocation_failure=false;
@@ -51,8 +53,8 @@ text=store.read_text().replace('  if(op==1) qseed();', '''  if(op==14 || op==16 
 store.write_text(text)
 with (root/'platformio.ini').open('a') as f:
     for policy in (0,1):
-        f.write(f'\n[env:guition_m214_sd_{policy}]\nextends = env:guition_app\n'
-                'build_flags = ${env:guition_app.build_flags} -DP4SDM_M213_DIAGNOSTICS=1 '
+        f.write(f'\n[env:guition_m214_sd_{policy}]\nextends = env:guition_app_base\n'
+                'build_flags = ${env:guition_app_base.build_flags} -DP4SDM_M213_DIAGNOSTICS=1 '
                 f'-DP4SDM_PCM_PLACEMENT={policy} -DP4SDM_INTERPOLATION=1 '
                 '-DP4SDM_LINEAR_32BIT=1 -DP4SDM_LINEAR_MAGNITUDE=1 -DP4SDM_PCM_READ_CACHE=0\n')
 print('M214 diagnostic SD consoles prepared; no flash or SD writes')
