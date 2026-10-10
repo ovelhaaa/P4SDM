@@ -172,6 +172,15 @@ is introduced in touch dispatch. Histograms execute in touch/UI tasks only.
 after final firmware restoration. No LCD photos or subjective listening results
 have been synthesized. Boot and automated serial stress do not certify fingers.
 
+The normal final image was restored and a ten-minute read-only serial capture
+was completed ([controller log](m22/HUMAN_CONTROLLER_SERIAL.log)). It contains
+zero dispatch/state-update/enqueue-ack/controller-to-submission observations:
+no finger interaction was recorded. Polling samples and idle redraws are not
+input latency evidence. The shared renderer label says
+`mixed_real_and_scripted_redraws`; this normal-image session injected no touches
+or musical commands. Only `U` queried existing software histograms. A–E remain
+pending until the human supplies observations.
+
 1. SEQ: select Track, toggle several steps rapidly, change tempo, EDIT STEP,
    velocity/probability, SEQ, bank A/B. Check white selection, yellow activity
    stripe and cyan ON fill remain distinguishable.
@@ -267,9 +276,14 @@ same production DSP; historical environments/flags remain intact.
 The added M22 CI job builds production/fallback/SAMPLE/SYNTH, executes gesture,
 font and screenshot checks, verifies production flags and runs strict inherited
 analyzers against fresh M22 captures. Firmware ELF/BIN/MAP, build/package/source
-hashes and raw serial capture archives are retained. Final remote SUCCESS is
-pending; local checks are not substituted for it.
-The local suite passed **114/114** after the initial refinement. Added
+hashes and raw serial capture archives are retained. The remote M22 job passed
+for `5d60532cb3a44bbf12ca2c102df5caf7f1854684`
+([Actions run 97](https://github.com/ovelhaaa/P4SDM/actions/runs/38087003883)).
+All jobs on the final branch revision must succeed; the final remote gate is
+tracked in [PR #17 checks](https://github.com/ovelhaaa/P4SDM/pull/17/checks).
+Local results do not substitute for that remote gate.
+The final local suite passed **115/115**, including fresh SAMPLE/SYNTH and SD
+qualification. Added
 screenshot assertions use real widget geometry to verify ON fill, yellow
 activity stripe, selected white Step edges and selected Track fill; the
 contact-sheet regression compares RGB pixels against checked-in evidence.
@@ -284,5 +298,8 @@ remain independent. Do not start M23 to compensate for pending acceptance.
 
 ## 16. Acceptance classification
 
-**TECHNICAL: PENDING** final device/CI gates. **PHYSICAL UX: PENDING** user
-walkthrough. **Overall: PARTIAL.** Update only from actual recorded results.
+**TECHNICAL: PASS** host checks, command semantics, final firmware builds,
+display diagnostics and real-device audio/SD stress. Remote acceptance also
+requires all final PR checks to report SUCCESS as described above.
+**PHYSICAL UX: PENDING** user walkthrough. **Overall: PARTIAL.**
+Human acceptance must be updated only from actual recorded observations.

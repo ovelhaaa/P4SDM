@@ -22,5 +22,11 @@
     "source_sha": "432abf2aa65857ec03a46e9d1a840c954607dc2a",
     "sha256": "8b48ac85c9cb6d5dec7945018b32936b99e49550375830c06af83a84846dcf86",
     "interaction": "scripted stress / no observed fingers"
+  },
+  "HUMAN_CONTROLLER_SERIAL.log": {
+    "archive": ".pio/m22-artifacts/20261010T210339Z/production",
+    "source_sha": "432abf2aa65857ec03a46e9d1a840c954607dc2a",
+    "sha256": "26b6795924296f9654fec9471c08ff1e358d49a34530197c555d9a5eedc1d2ee",
+    "interaction": "normal image / read-only U queries / zero recorded controller interactions / human UX pending"
   }
 }
