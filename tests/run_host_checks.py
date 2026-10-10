@@ -16,7 +16,8 @@ for workflow in Path('.github/workflows').glob('*.yml'):
         if not command.startswith(('g++ ', 'python ')):
             continue
         # Firmware artifact packaging depends on the separate PlatformIO job.
-        if command.startswith('python tests/archive_firmware.py '):
+        if command.startswith(('python tests/archive_firmware.py ',
+                               'python tests/m214_ci_build.py')):
             continue
         checks.append(command)
 failed = []

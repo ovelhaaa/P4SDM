@@ -5,10 +5,8 @@
 #include "projects.h"
 #include "qualification.h"
 #include "transient_service.h"
-#ifndef P4SDM_M213_LAYOUT
-#define P4SDM_M213_LAYOUT 0
-#endif
-#if P4SDM_M213_LAYOUT
+#include "pcm_placement.h"
+#if P4SDM_PCM_PLACEMENT
 #include "pcm_allocation.h"
 #endif
 #if P4SDM_M213_DIAGNOSTICS
@@ -36,7 +34,7 @@ portMUX_TYPE lock = portMUX_INITIALIZER_UNLOCKED;
 size_t payload = 0;
 const sampler::Sample *previews[16]{};
 sampler::Sample *owned[16]{}, *project_retired[16]{};
-#if P4SDM_M213_LAYOUT
+#if P4SDM_PCM_PLACEMENT
 struct LoadedSample : sampler::Sample { sampler::PcmAllocation pcm; };
 #endif
 void report(const char *s) {
@@ -48,7 +46,7 @@ void report(const char *s) {
 void destroy(sampler::Sample *s) {
   if (s) {
     payload -= s->allocation;
-#if P4SDM_M213_LAYOUT
+#if P4SDM_PCM_PLACEMENT
     auto *loaded = static_cast<LoadedSample *>(s);
     loaded->pcm.release([](void *base) { heap_caps_free(base); });
     delete loaded;
@@ -130,8 +128,8 @@ bool load_name(const char *name) {
   }
   size_t bytes = size_t(wav.frames) * 2;
   size_t allocation_bytes = bytes;
-#if P4SDM_M213_LAYOUT
-  if (!sampler::PcmAllocation::request(bytes, P4SDM_M213_LAYOUT, target, allocation_bytes))
+#if P4SDM_PCM_PLACEMENT
+  if (!sampler::PcmAllocation::request(bytes, P4SDM_PCM_PLACEMENT, target, allocation_bytes))
     return false;
 #endif
   size_t free = heap_caps_get_free_size(MALLOC_CAP_SPIRAM),
@@ -142,7 +140,7 @@ bool load_name(const char *name) {
     report("Sample exceeds PSRAM budget");
     return false;
   }
-#if P4SDM_M213_LAYOUT
+#if P4SDM_PCM_PLACEMENT
   auto *s = new (std::nothrow) LoadedSample;
 #else
   auto *s = new (std::nothrow) sampler::Sample;
@@ -151,8 +149,8 @@ bool load_name(const char *name) {
     report("Metadata allocation failed");
     return false;
   }
-#if P4SDM_M213_LAYOUT
-  if (s->pcm.acquire(bytes, P4SDM_M213_LAYOUT, target, [](size_t n) {
+#if P4SDM_PCM_PLACEMENT
+  if (s->pcm.acquire(bytes, P4SDM_PCM_PLACEMENT, target, [](size_t n) {
         return heap_caps_malloc(n, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
       })) s->data = s->pcm.data;
 #else
@@ -164,7 +162,7 @@ bool load_name(const char *name) {
     report("PSRAM allocation failed");
     return false;
   }
-#if P4SDM_M213_LAYOUT
+#if P4SDM_PCM_PLACEMENT
   // Include allocator rounding and possible metadata fallback in the reserve,
   // rather than assuming requested padding equals the actual heap decrease.
   if (heap_caps_get_free_size(MALLOC_CAP_SPIRAM) < reserve) {
@@ -245,7 +243,7 @@ bool load_name(const char *name) {
       (long long)free - (long long)heap_caps_get_free_size(MALLOC_CAP_SPIRAM));
 #if P4SDM_M213_DIAGNOSTICS
   sample_layout::address(target, *s,
-#if P4SDM_M213_LAYOUT
+#if P4SDM_PCM_PLACEMENT
     s->pcm.base,
 #else
     s->data,
